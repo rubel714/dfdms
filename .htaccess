@@ -1,10 +1,10 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteBase /edisp/
+RewriteBase /dfdms/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-l
-RewriteRule . /edisp/index.html [L]
+RewriteRule . /dfdms/index.html [L]
 </IfModule>
 
 ## Enable GZIP ##
