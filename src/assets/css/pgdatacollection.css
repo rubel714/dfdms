@@ -21,24 +21,7 @@
     flex-wrap: wrap;
 }
 
-#areaPartion-x {
-    /* PRODUCT RECEIVE INPUT AREA WIDTH SETUP AND GRID DESIGN */
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 equal-width columns per line */
-    gap: 16px; /* Gap between columns and rows */
-  }
-  
-  #areaPartion-x > div {
-    /* Each div inside #areaPartion-1 */
-    grid-column: span 1; /* Each div spans 1 column */
-  }
-  
-  #areaPartion-x label {
-    /* CUSTOM INFORMATION AREA LABEL SIZE-COLOR */
-    align-items: center;
-    margin-top: 2px;
-  }
+
   
 
   

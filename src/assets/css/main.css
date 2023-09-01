@@ -165,7 +165,10 @@ button:hover {
 .btnAdd {
     /* THIS CLASS IS USE FOR ADD BUTTON FOR ANY SECTION */
     background-color: rgb(120, 200, 10);  
-    min-width: 90px;
+   /*  min-width: 90px;*/
+    width: 232px;
+    height: 43px;
+    font-size: 1.2rem;
 }
 
 .btnPrint {
@@ -473,4 +476,31 @@ input {
 
 .mt-10{
     margin-top: 10px !important;
+}
+
+
+.formControl {
+    width: 100%;
+    border-radius: 8px;
+    padding: 4px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.formControl label {
+    font-size: 1.2rem;
+    /* font-weight: bold;*/
+    padding-top: 4px;
+    text-align: end;
+    padding-right: 8px;
+}
+
+.formControl select {
+    border: var(--input-border);
+    border-radius: 4px;
+    /* width: calc(100% - (38px)); */
+}
+
+.grid-container {
+    width: 100%;
 }

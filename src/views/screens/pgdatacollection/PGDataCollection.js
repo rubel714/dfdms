@@ -1084,7 +1084,7 @@ const PGDataCollection = (props) => {
       <div class="bodyContainer">
         <div class="topHeader">
           <h2>
-            <a href="#">Home</a> ❯ Data Collection ❯ গ্রুপের তথ্য সংগ্রহ (PG
+              Home ❯ Data Collection ❯ গ্রুপের তথ্য সংগ্রহ (PG
             data collection)
           </h2>
         </div>
@@ -1139,67 +1139,18 @@ const PGDataCollection = (props) => {
                 >
 
 
-           
-
-
-                  {/* <!--nth-child(1) = 1st GRID ITEM = 3rf--> */}
-                  {/* <div>
-                  <div>
-                    <label>Product Name *</label>
-                  </div>
-              
-                  <div>
-                    <Autocomplete
-                      autoHighlight
-                      // freeSolo
-                      className="chosen_dropdown"
-                      id="ProductId"
-                      name="ProductId"
-                      autoComplete
-                      class={errorObjectMany.ProductId}
-                      options={productList ? productList : []}
-                      getOptionLabel={(option) => option.name}
-                      // value={selectedSupplier}
-                      value={
-                        productList
-                          ? productList[
-                              productList.findIndex(
-                                (list) => list.id == currentMany.ProductId
-                              )
-                            ]
-                          : null
-                      }
-                      onChange={(event, valueobj) =>
-                        handleChangeChoosenMany(
-                          "ProductId",
-                          valueobj ? valueobj.id : ""
-                        )
-                      }
-                      renderOption={(option) => (
-                        <Typography className="chosen_dropdown_font">
-                          {option.name}
-                        </Typography>
-                      )}
-                      renderInput={(params) => (
-                        <TextField {...params} variant="standard" fullWidth />
-                      )}
-                    />
-
-                  </div>
-                </div>
- */}
-                  {/* <!--nth-child(2) = 2nd GRID ITEM = 3rf--> */}
+<div class="formControlX">
+      <h3>ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data Collection and Storage)</h3>
+        
+</div>
 
 
 
-                  <div>
-                
-                    <div>
-                      <label>ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data Collection andStorage)</label>
-                    </div>
 
-                      <div>
-                        <Autocomplete
+<div class="formControl">
+        
+              <label>বছর (Year)</label>
+              <Autocomplete
                           autoHighlight
                           // freeSolo
                           className="chosen_dropdown"
@@ -1233,59 +1184,142 @@ const PGDataCollection = (props) => {
                             <TextField {...params} variant="standard" fullWidth />
                           )}
                         />
-                      </div>
-              </div>
 
-                  <div>
-                    <div>
-                      <label>BQ1. দলের নাম (Group name)</label>
-                    </div>
-                    <div>
-                      {/* <input type="number" /> */}
-                      <input
-                        type="text"
-                        id="groupName"
-                        name="groupName"
-                        // class={errorObject.groupName}
-                        value={currentMany.groupName}
-                        onChange={(e) => handleChangeMany(e)}
-                      />
-                    </div>
-                  </div>
 
-                  <div>
-                    <div>
-                      <label>BQ2. দলের প্রকারঃ (Value Chain)</label>
-                    </div>
-                    <div>
-                      {/* <input type="number" /> */}
-                      <input
-                        type="text"
-                        id="valueChain"
-                        name="valueChain"
-                        // class={errorObject.valueChain}
-                        value={currentMany.valueChain}
-                        onChange={(e) => handleChangeMany(e)}
-                      />
-                    </div>
-                  </div>
+</div>
 
-                  <div>
-                    <div>
-                      <label>BQ3. দলের আই,ডিঃ ( Group identity code)</label>
-                    </div>
-                    <div>
-                      {/* <input type="number" /> */}
-                      <input
-                        type="text"
-                        id="groupIdentityCode"
-                        name="groupIdentityCode"
-                        // class={errorObject.groupIdentityCode}
-                        value={currentMany.groupIdentityCode}
-                        onChange={(e) => handleChangeMany(e)}
-                      />
-                    </div>
-                  </div>
+
+
+<div class="formControl">
+        
+            <label>ত্রৈমাসিক (Quarter)</label>
+              <Autocomplete
+                          autoHighlight
+                          // freeSolo
+                          className="chosen_dropdown"
+                          id="DataTypeId"
+                          name="DataTypeId"
+                          autoComplete
+                          options={datatypeList ? datatypeList : []}
+                          getOptionLabel={(option) => option.name}
+                          // value={selectedSupplier}
+                          value={
+                            datatypeList
+                              ? datatypeList[
+                                  datatypeList.findIndex(
+                                    (list) => list.id == currentMany.DataTypeId
+                                  )
+                                ]
+                              : null
+                          }
+                          onChange={(event, valueobj) =>
+                            handleChangeChoosenMany(
+                              "DataTypeId",
+                              valueobj ? valueobj.id : ""
+                            )
+                          }
+                          renderOption={(option) => (
+                            <Typography className="chosen_dropdown_font">
+                              {option.name}
+                            </Typography>
+                          )}
+                          renderInput={(params) => (
+                            <TextField {...params} variant="standard" fullWidth />
+                          )}
+                        />
+         
+        
+       
+
+</div>
+
+
+
+
+<div class="formControl">
+        
+              <label>পিজি গ্রুপ (PG Group):</label>
+              <Autocomplete
+                          autoHighlight
+                          // freeSolo
+                          className="chosen_dropdown"
+                          id="DataTypeId"
+                          name="DataTypeId"
+                          autoComplete
+                          options={datatypeList ? datatypeList : []}
+                          getOptionLabel={(option) => option.name}
+                          // value={selectedSupplier}
+                          value={
+                            datatypeList
+                              ? datatypeList[
+                                  datatypeList.findIndex(
+                                    (list) => list.id == currentMany.DataTypeId
+                                  )
+                                ]
+                              : null
+                          }
+                          onChange={(event, valueobj) =>
+                            handleChangeChoosenMany(
+                              "DataTypeId",
+                              valueobj ? valueobj.id : ""
+                            )
+                          }
+                          renderOption={(option) => (
+                            <Typography className="chosen_dropdown_font">
+                              {option.name}
+                            </Typography>
+                          )}
+                          renderInput={(params) => (
+                            <TextField {...params} variant="standard" fullWidth />
+                          )}
+                        />
+         
+        
+       
+
+</div>
+
+
+<div class="formControl">
+    <label>BQ1. দলের নাম (Group name):</label>
+    <input
+            type="text"
+            id="groupName"
+            name="groupName"
+            // class={errorObject.groupName}
+            value={currentMany.groupName}
+            onChange={(e) => handleChangeMany(e)}
+          />
+</div>
+
+
+
+<div class="formControl">
+    <label>BQ2. দলের প্রকারঃ (Value Chain)</label>
+      <input
+            type="text"
+            id="valueChain"
+            name="valueChain"
+            // class={errorObject.valueChain}
+            value={currentMany.valueChain}
+            onChange={(e) => handleChangeMany(e)}
+          />
+</div>
+
+
+<div class="formControl">
+  <label>BQ3. দলের আই,ডিঃ ( Group identity code)</label>
+          <input
+            type="text"
+            id="groupIdentityCode"
+            name="groupIdentityCode"
+            // class={errorObject.groupIdentityCode}
+            value={currentMany.groupIdentityCode}
+            onChange={(e) => handleChangeMany(e)}
+          />
+</div>
+
+
 
                   <div>
                     <div>

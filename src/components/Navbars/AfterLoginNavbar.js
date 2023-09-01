@@ -202,7 +202,7 @@ function AfterLoginNavbar(props) {
               {menuShowPermision("products") === 1 && (
                 <li class="dropdownMenu">
                   {" "}
-                  Product
+                  Data Collection
                   <ul class="dropdownList">
 
 

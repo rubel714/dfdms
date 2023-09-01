@@ -1,6 +1,6 @@
 .navbar {
     /*  NAVIGATION BAR */
-    height: 80px;
+    height: 100px;
     background-color: var(--primary-color);
     border: var(--header-border);
     display: flex;
