@@ -50,7 +50,7 @@
     /* display: inline-block; */
     margin-right: 16px;
     padding-left: 8px;
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 .dropdownMenu {
@@ -100,7 +100,7 @@
     list-style: none;
     color: white;
     display: inline-block;
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 
@@ -114,8 +114,8 @@
 }
 
 .menuIconBar img {
-    height: 30px;
-    width: 30px;
+    height: 35px;
+    width: 35px;
     border-radius: 4px;
     padding: 2px;
     border: 1px solid white;

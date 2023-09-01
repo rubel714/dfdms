@@ -16,7 +16,7 @@
 .inputArea {
     padding: 10px;
     background-color: bisque;
-    display: flex;
+    
     justify-content: space-between;
     flex-wrap: wrap;
 }
@@ -129,9 +129,10 @@
   /* If you want to style radio buttons themselves */
   .radio-label input[type="radio"] {
     margin-right: 5px; /* Add spacing between the radio button and label text */
+    width: 20px;  /* Adjust the width as needed */
+    height: 20px; /* Adjust the height as needed */
   }
   
-
   .checkbox-label {
     display: flex;
     align-items: center;
@@ -150,14 +151,19 @@
     cursor: pointer;
   }
   
+  .checkbox-label input[type="checkbox"]:checked {
+    background-color: #007BFF; /* Background color for the checkbox when checked */
+  }
+  
   .checkbox-label input[type="checkbox"]:checked::before {
     content: "\2713"; /* Unicode check mark character */
     font-size: 18px;
     line-height: 20px;
-    color: #007BFF;
+    color: white; /* White check mark color */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
+  
   
