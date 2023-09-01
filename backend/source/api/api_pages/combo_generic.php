@@ -12,6 +12,11 @@ switch($task){
 		$returnData = ProductGroupList($data);
 		break;
 	
+	
+	case "DataTypeList":
+		$returnData = DataTypeList($data);
+		break;
+	
 	case "ProductCategoryList":
 		$returnData = ProductCategoryList($data);
 		break;
@@ -75,6 +80,27 @@ function ProductGroupList($data) {
 
 		$dbh = new Db();
 		$query = "SELECT ProductGroupId id, GroupName `name` FROM t_productgroup where ClientId=$ClientId ORDER BY GroupName;"; 
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function DataTypeList($data) {
+	try{
+
+		$dbh = new Db();
+		$query = "SELECT DataTypeId id, DataTypeName `name` FROM t_datatype  ORDER BY DataTypeName;"; 
 		$resultdata = $dbh->query($query);
 
 		$returnData = [

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import { useQuery, useMutation, useQueryClient } from "react-query";
+//import { useQuery, useMutation, useQueryClient } from "react-query";
 import * as api from "../../../actions/api";
 import MyprofileFormData from "./MyprofileFormData.js";
  
@@ -35,55 +35,55 @@ const EditMyprofile = (props) => {
   const id = userId;
 
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-  // const { data } = useQuery(
-  //   ["Myprofile", id],
-  //   () =>
-  //     api.getUserProfile(id).then((res) => {
+  const { data } = useQuery(
+    ["Myprofile", id],
+    () =>
+      api.getUserProfile(id).then((res) => {
         
-  //       setFormData(res.data);
-  //       return res.data;
-  //     }),
-  //   {
-  //     enabled: Boolean(id),
-  //   }
-  // );
+        setFormData(res.data);
+        return res.data;
+      }),
+    {
+      enabled: Boolean(id),
+    }
+  );
 
-  // const { mutate } = useMutation(api.UserProfileupdate, {
-  //   onSuccess: (data) => {
+  const { mutate } = useMutation(api.UserProfileupdate, {
+    onSuccess: (data) => {
 
-  //     if (data.status == 200) {
-  //       api.getAllDropdown('ALL').then((response) => {
-  //         if (response.success == 1) {
+      if (data.status == 200) {
+        api.getAllDropdown('ALL').then((response) => {
+          if (response.success == 1) {
 
-  //           localStorage.setItem(
-  //             "language_preference",
-  //             JSON.stringify(response.datalist.t_language_preference)
-  //           );
-  //           localStorage.setItem("LangCode", data.data.LangCode);
-  //         }
+            localStorage.setItem(
+              "language_preference",
+              JSON.stringify(response.datalist.t_language_preference)
+            );
+            localStorage.setItem("LangCode", data.data.LangCode);
+          }
 
-  //         //
-  //       });
-  //       props.openNoticeModal({
-  //         isOpen: true,
-  //         msg: data.data.message,
-  //         msgtype: data.data.success,
-  //       });
-  //       queryClient.getQueriesData("userlist");
-  //       //props.history.push("/pack-size");
-  //     }else{
+          //
+        });
+        props.openNoticeModal({
+          isOpen: true,
+          msg: data.data.message,
+          msgtype: data.data.success,
+        });
+        queryClient.getQueriesData("userlist");
+        //props.history.push("/pack-size");
+      }else{
 
-  //       props.openNoticeModal({
-  //         isOpen: true,
-  //         msg: data.message,
-  //         msgtype: data.success,
-  //       });
+        props.openNoticeModal({
+          isOpen: true,
+          msg: data.message,
+          msgtype: data.success,
+        });
        
-  //     }
-  //   },
-  // });
+      }
+    },
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -185,7 +185,8 @@ const EditMyprofile = (props) => {
 
   const handleUpdate = async (e) => {
     if (validateForm(formData)) {
-      // mutate(formData);
+      mutate(formData);
+     // swal("Success!", "", "success");
     }
   };
 

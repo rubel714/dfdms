@@ -21,31 +21,29 @@
     flex-wrap: wrap;
 }
 
-#areaPartion-1 {
-    /*PRODUCT RECEIVE INPUT AREA WIDTH SETUP AND GRID DESIGN*/
+#areaPartion-x {
+    /* PRODUCT RECEIVE INPUT AREA WIDTH SETUP AND GRID DESIGN */
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    grid-column-gap: 16px;
-    grid-row-gap: 0px;
-}
-
-#areaPartion-1 :nth-child(1) {
-    /* SIZING PRODUCT NAME ENTRY AREA USING GRID SPAN */
-    grid-column: 1 / span 3;
-}
-
-#areaPartion-1 :nth-child(13) {
-    grid-column: 6 / span 4;
-    justify-self: center;
-    align-self: last baseline;
-}
-
-#areaPartion-1 label {
-    /* CUSTOM INFORMATION AREA LEBEL SIZE-COLOR*/
+    grid-template-columns: repeat(4, 1fr); /* 4 equal-width columns per line */
+    gap: 16px; /* Gap between columns and rows */
+  }
+  
+  #areaPartion-x > div {
+    /* Each div inside #areaPartion-1 */
+    grid-column: span 1; /* Each div spans 1 column */
+  }
+  
+  #areaPartion-x label {
+    /* CUSTOM INFORMATION AREA LABEL SIZE-COLOR */
     align-items: center;
     margin-top: 2px;
-}
+  }
+  
+
+  
+
+
 
 /* INPUT AREA PARTITION-2 USING GRID  */
 #areaPartion-2 {
@@ -133,4 +131,50 @@
 }
 
 
+/* CSS */
+.radio-group {
+    display: flex;
+    flex-direction: row; /* Display radio buttons and labels horizontally */
+  }
+  
+  .radio-label {
+    display: flex;
+    align-items: center; /* Vertically center the radio button and label */
+    margin-right: 10px; /* Add spacing between radio buttons and labels */
+  }
+  
+  /* If you want to style radio buttons themselves */
+  .radio-label input[type="radio"] {
+    margin-right: 5px; /* Add spacing between the radio button and label text */
+  }
+  
 
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .checkbox-label input[type="checkbox"] {
+    /* Hide the default checkbox */
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    border: 2px solid #007BFF; /* Border color for the checkbox */
+    border-radius: 4px;
+    margin-right: 8px;
+    cursor: pointer;
+  }
+  
+  .checkbox-label input[type="checkbox"]:checked::before {
+    content: "\2713"; /* Unicode check mark character */
+    font-size: 18px;
+    line-height: 20px;
+    color: #007BFF;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  

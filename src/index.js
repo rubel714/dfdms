@@ -36,11 +36,24 @@ import Product from "views/screens/product/index.js";
 import Receive from "views/screens/receive/index.js";
 import Sales from "views/screens/product/index.js";
 
+
+
+
+
+
+
+
+
+import DataType from "views/screens/datatype/index.js";
+import PGDataCollection from "views/screens/pgdatacollection/index.js";
+
+
+
 import UserContextProvider from './context/user-info-context';
 
-// import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+//import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
-// const queryClient = new QueryClient()
+//const queryClient = new QueryClient()
 
 const loading = (
   <div className="pt-3 text-center">
@@ -87,6 +100,17 @@ ReactDOM.render(
             <Route path="/sales" render={(props) => <Sales {...props} />} />
 
 
+
+
+
+
+
+
+
+            <Route path="/datatype" render={(props) => <DataType {...props} />} />
+            <Route path="/pgdatacollection" render={(props) => <PGDataCollection {...props} />} />
+
+
             {/* <Route path="/error-log" render={(props) => <Errorlog {...props} />} />
             <Route path="/audit-log" render={(props) => <Auditlog {...props} />}/> */}
 
@@ -95,7 +119,7 @@ ReactDOM.render(
           </Switch>
         </Suspense>
       </BrowserRouter>
-    {/* </QueryClientProvider> */}
+   {/*  </QueryClientProvider> */}
   </UserContextProvider>,
   document.getElementById("root")
 );
