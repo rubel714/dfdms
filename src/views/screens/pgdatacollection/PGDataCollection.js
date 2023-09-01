@@ -109,7 +109,6 @@ const PGDataCollection = (props) => {
   /* =====End of Excel Export Code==== */
 
   const newInvoice = () => {
-
     setManyDataList([]);
     setDeletedItems([]);
 
@@ -372,7 +371,6 @@ const PGDataCollection = (props) => {
       id: id,
     };
 
-    
     // const [currentInvoice, setCurrentInvoice] = useState([]); //this is for master information. It will send to sever for save
     // const [currentMany, setCurrentMany] = useState([]); //this is for many one record add/edit
     // const [manyDataList, setManyDataList] = useState([]); //This is for many table. It will send to sever for save
@@ -386,7 +384,7 @@ const PGDataCollection = (props) => {
   };
 
   useEffect(() => {
-    console.log('dataListSingle: ', dataListSingle);
+    console.log("dataListSingle: ", dataListSingle);
 
     if (dataListSingle.master) {
       // console.log('dataListSingle: ', dataListSingle.master[0]);
@@ -398,23 +396,14 @@ const PGDataCollection = (props) => {
     }
   }, [dataListSingle]);
 
-
-
-
-
   const backToList = () => {
     setListEditPanelToggle(true); // true = show list and hide add/edit panel
     getDataList(); //invoice list
   };
 
-
   const printInvoice = () => {
-
     console.log("Print not done yet.");
-    
   };
-
-  
 
   const deleteData = (rowData) => {
     swal({
@@ -611,7 +600,7 @@ const PGDataCollection = (props) => {
   };
 
   const calculationMasterFields = (list) => {
-    console.log('list: ', list);
+    console.log("list: ", list);
     let SumSubTotalAmount = 0;
     let SumVatAmount = 0;
     let SumDiscountAmount = 0;
@@ -619,14 +608,23 @@ const PGDataCollection = (props) => {
     let SumTotalAmount = 0;
 
     list.forEach((row, i) => {
-      console.log('row: ', row);
+      console.log("row: ", row);
       SumSubTotalAmount +=
-        (row.SubTotalAmount === "" || row.SubTotalAmount === null) ? 0 : parseFloat(row.SubTotalAmount);
-      SumVatAmount += (row.VatAmount === "" || row.VatAmount === null)? 0 : parseFloat(row.VatAmount);
+        row.SubTotalAmount === "" || row.SubTotalAmount === null
+          ? 0
+          : parseFloat(row.SubTotalAmount);
+      SumVatAmount +=
+        row.VatAmount === "" || row.VatAmount === null
+          ? 0
+          : parseFloat(row.VatAmount);
       SumDiscountAmount +=
-        (row.DiscountAmount === "" || row.DiscountAmount === null)? 0 : parseFloat(row.DiscountAmount);
+        row.DiscountAmount === "" || row.DiscountAmount === null
+          ? 0
+          : parseFloat(row.DiscountAmount);
       SumTotalAmount +=
-        (row.TotalAmount === "" || row.TotalAmount === null) ? 0 : parseFloat(row.TotalAmount);
+        row.TotalAmount === "" || row.TotalAmount === null
+          ? 0
+          : parseFloat(row.TotalAmount);
     });
 
     let data = { ...currentInvoice };
@@ -639,9 +637,14 @@ const PGDataCollection = (props) => {
     //   (data["SumCommission"] === "" || data["SumCommission"] === null) ? 0 : parseFloat(data["SumCommission"]);
 
     data["NetPaymentAmount"] = (
-      ((data["SumTotalAmount"] === "" || data["SumTotalAmount"] === null) ? 0 : parseFloat(data["SumTotalAmount"])) - 
-      ((data["SumCommission"] === "" || data["SumCommission"] === null) ? 0 : parseFloat(data["SumCommission"]))).toFixed(0);
-    console.log('data: ', data);
+      (data["SumTotalAmount"] === "" || data["SumTotalAmount"] === null
+        ? 0
+        : parseFloat(data["SumTotalAmount"])) -
+      (data["SumCommission"] === "" || data["SumCommission"] === null
+        ? 0
+        : parseFloat(data["SumCommission"]))
+    ).toFixed(0);
+    console.log("data: ", data);
 
     setCurrentInvoice(data);
   };
@@ -675,7 +678,6 @@ const PGDataCollection = (props) => {
 
       // console.log('selectedProduct: ', selectedProduct);
 
-
       // console.log("oldManyDataList: ", manyDataList);
 
       manyDataList.forEach((row, i) => {
@@ -704,8 +706,6 @@ const PGDataCollection = (props) => {
         rows.push(newRow);
       });
 
-
-      
       let newRow = {};
       newRow.autoId = currentMany.ProductId + moment().milliseconds(); //Just unique id for delete/update
       newRow.TransactionItemsId = currentMany.TransactionItemsId;
@@ -728,7 +728,6 @@ const PGDataCollection = (props) => {
       newRow.Commission = currentMany.Commission;
       newRow.TotalAmount = currentMany.TotalAmount;
       rows.push(newRow);
-
 
       setManyDataList(rows);
       // console.log("manyDataList: ", rows);
@@ -927,18 +926,18 @@ const PGDataCollection = (props) => {
     },
   ];
 
-
-
   /** Action from table row buttons*/
   function actioncontrol(rowData) {
     return (
       <>
-        {!currentInvoice.BPosted && (<DeleteOutline
-          className={"table-delete-icon"}
-          onClick={() => {
-            deleteDataMany(rowData);
-          }}
-        />)}
+        {!currentInvoice.BPosted && (
+          <DeleteOutline
+            className={"table-delete-icon"}
+            onClick={() => {
+              deleteDataMany(rowData);
+            }}
+          />
+        )}
       </>
     );
   }
@@ -984,16 +983,12 @@ const PGDataCollection = (props) => {
 
     let delItems = [...deletedItems];
     delItems.push(rowData);
-    console.log('delItems: ', delItems);
+    console.log("delItems: ", delItems);
 
     setDeletedItems(delItems);
   }
 
-
-
   const postInvoice = () => {
-
-   
     swal({
       title: "Are you sure?",
       text: "Do you really want to post the stock?",
@@ -1017,12 +1012,10 @@ const PGDataCollection = (props) => {
       dangerMode: true,
     }).then((allowAction) => {
       if (allowAction) {
-
-
-        let cInvoiceMaster = {...currentInvoice};
+        let cInvoiceMaster = { ...currentInvoice };
         cInvoiceMaster["BPosted"] = 1;
 
-          let params = {
+        let params = {
           action: "dataAddEdit",
           lan: language(),
           UserId: UserInfo.UserId,
@@ -1032,19 +1025,14 @@ const PGDataCollection = (props) => {
           InvoiceItems: manyDataList,
           DeletedItems: deletedItems,
         };
-    
+
         addEditAPICall(params);
-
-      }else{
-
-        
+      } else {
       }
     });
-    
   };
 
   function saveData(p) {
-
     let params = {
       action: "dataAddEdit",
       lan: language(),
@@ -1057,13 +1045,10 @@ const PGDataCollection = (props) => {
     };
 
     addEditAPICall(params);
-
   }
-
 
   function addEditAPICall(params) {
     if (validateFormMaster()) {
-
       apiCall.post(serverpage, { params }, apiOption()).then((res) => {
         // console.log('res: ', res);
 
@@ -1074,10 +1059,10 @@ const PGDataCollection = (props) => {
         });
 
         // console.log('currentInvoice: ', currentInvoice);
-        if(currentInvoice.id === ""){
+        if (currentInvoice.id === "") {
           //New
           getDataSingleFromServer(res.data.id);
-        }else{
+        } else {
           //Edit
           getDataSingleFromServer(currentInvoice.id);
         }
@@ -1085,7 +1070,6 @@ const PGDataCollection = (props) => {
         /**after save refresh the master list */
         // getDataList(); //invoice list
         // getDataSingleFromServer(res.data.id);
-
 
         // console.log('props modal: ', props);
         // if (res.data.success === 1) {
@@ -1099,39 +1083,11 @@ const PGDataCollection = (props) => {
     <>
       <div class="bodyContainer">
         <div class="topHeader">
-          <h4>
-            <a href="#">Home</a> ❯ Product ❯ PG Data Collection
-          </h4>
+          <h2>
+            <a href="#">Home</a> ❯ Data Collection ❯ গ্রুপের তথ্য সংগ্রহ (PG
+            data collection)
+          </h2>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
 
         {listEditPanelToggle && (
           <>
@@ -1159,93 +1115,35 @@ const PGDataCollection = (props) => {
 
         {!listEditPanelToggle && (
           <>
-
-            <div class="subContainer">
-
-
-                    <div className="header-block">
-                      <h3 className="header">
-                        গ্রুপের তথ্য সংগ্রহ ফরম (PG data collection form)
-                      </h3>
-                      <h5 className="subheader">
-                        Welcome LSP1 Savar, আপনার নির্ধারিত এলাকা (Your assigned area): Savar
-                      </h5>
-                    </div> 
-
-                <div class="input-areaPartition" id="areaPartion-1">
-                 
-
-                    <div>
-                          <div>
-                            <label>ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data Collection andStorage)</label>
-                          </div>
-                      
-                          <div>
-                            <Autocomplete
-                              autoHighlight
-                              // freeSolo
-                              className="chosen_dropdown"
-                              id="DataTypeId"
-                              name="DataTypeId"
-                              autoComplete
-                              
-                              options={datatypeList ? datatypeList : []}
-                              getOptionLabel={(option) => option.name}
-                              // value={selectedSupplier}
-                              value={
-                                datatypeList
-                                  ? datatypeList[
-                                    datatypeList.findIndex(
-                                        (list) => list.id == currentMany.DataTypeId
-                                      )
-                                    ]
-                                  : null
-                              }
-                              onChange={(event, valueobj) =>
-                                handleChangeChoosenMany(
-                                  "DataTypeId",
-                                  valueobj ? valueobj.id : ""
-                                )
-                              }
-                              renderOption={(option) => (
-                                <Typography className="chosen_dropdown_font">
-                                  {option.name}
-                                </Typography>
-                              )}
-                              renderInput={(params) => (
-                                <TextField {...params} variant="standard" fullWidth />
-                              )}
-                            />
-
-                          </div>
-                        </div>
-
-
-                      <div>
-                            <div>
-                              {/* <button class="btnAdd">ADD</button> */}
-
-                              <Button
-                                label={"Enter Data"}
-                                class={"btnAdd"}
-                                //onClick={addEditManyItem}
-                              />
-                            </div>
-                          </div>
-
-                      </div>
-                </div>
-
-
+         
 
             {/* <!-- ##########-----PRODUCT RECEIVED INPUT AREA----############  --> */}
-           {!currentInvoice.BPosted && (<div class="subContainer inputArea">
-              {/* <!-- INPUR AREA PARTITION-1 INSERTION AREA --> */}
-              <div class="input-areaPartition grid-container" id="areaPartion-x" >
+            {!currentInvoice.BPosted && (
+              <div class="subContainer inputArea">
+                {/* <!-- INPUR AREA PARTITION-1 INSERTION AREA --> */}
 
 
-                {/* <!--nth-child(1) = 1st GRID ITEM = 3rf--> */}
-                {/* <div>
+              <div>
+                <h1>
+                  গ্রুপের তথ্য সংগ্রহ ফরম (PG data collection form)
+                </h1>
+                {/* <h2 className="subheader">
+                        Welcome LSP1 Savar, আপনার নির্ধারিত এলাকা (Your assigned area): Savar
+                      </h2> */}
+              </div>
+
+
+                <div
+                  class="input-areaPartition grid-container"
+                  id="areaPartion-x"
+                >
+
+
+           
+
+
+                  {/* <!--nth-child(1) = 1st GRID ITEM = 3rf--> */}
+                  {/* <div>
                   <div>
                     <label>Product Name *</label>
                   </div>
@@ -1290,180 +1188,221 @@ const PGDataCollection = (props) => {
                   </div>
                 </div>
  */}
-                {/* <!--nth-child(2) = 2nd GRID ITEM = 3rf--> */}
-               
+                  {/* <!--nth-child(2) = 2nd GRID ITEM = 3rf--> */}
 
-                <div>
+
+
                   <div>
-                    <label>BQ1. দলের নাম (Group name)</label>
-                  </div>
-                  <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="groupName"
-                      name="groupName"
-                      // class={errorObject.groupName}
-                      value={currentMany.groupName}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
-
-
-                <div>
-                  <div>
-                    <label>BQ2. দলের প্রকারঃ (Value Chain)</label>
-                  </div>
-                  <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="valueChain"
-                      name="valueChain"
-                      // class={errorObject.valueChain}
-                      value={currentMany.valueChain}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <div>
-                    <label>BQ3. দলের আই,ডিঃ ( Group identity code)</label>
-                  </div>
-                  <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="groupIdentityCode"
-                      name="groupIdentityCode"
-                      // class={errorObject.groupIdentityCode}
-                      value={currentMany.groupIdentityCode}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
-
-
-
                 
-                <div>
-                  <div>
-                    <label>BQ4. পিজি এর সদস্য সংখ্যা (Number of PG members) পুরুষ / Male</label>
-                  </div>
-                  <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="maleMembers"
-                      name="maleMembers"
-                      // class={errorObject.groupIdentityCode}
-                      value={currentMany.maleMembers}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
-
-    
-                <div>
-                  <div>
-                    <label>BQ4. পিজি এর সদস্য সংখ্যা (Number of PG members) নারী/Female</label>
-                  </div>
-                  <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="femaleMembers"
-                      name="femaleMembers"
-                      // class={errorObject.groupIdentityCode}
-                      value={currentMany.femaleMembers}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
-
-
-                
-                <div>
-                  <div>
-                    <label>ট্রান্সজেন্ডার /Transgender</label>
-                  </div>
-                  <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="transgenderMembers"
-                      name="transgenderMembers"
-                      // class={errorObject.groupIdentityCode}
-                      value={currentMany.transgenderMembers}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
-
-
-            
-
-              
-                {/* <!--nth-child(11) = 11th GRID ITEM = 3rf--> */}
-                <div>
-                  <div>
-                    <label>BQ5. পিজি গঠনের তারিখ (Date of the PG formation)</label>
-                  </div>
-                  <div>
-                    {/* <input type="date" /> */}
-                    <input
-                      type="date"
-                      id="pgFormationDate"
-                      name="pgFormationDate"
-                      // class={errorObject.pgFormationDate}
-                      value={currentMany.pgFormationDate}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
-
-
-                <div>
-                  <div>
-                    <label>BQ6. গ্রাম/ওয়ার্ডঃ (Village/Ward)</label>
-                  </div>
-                  <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="villageWard"
-                      name="villageWard"
-                      // class={errorObject.groupIdentityCode}
-                      value={currentMany.villageWard}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
-
-
-                <div>
-                  <div>
-                    <label>BQ7. ইউনিয়ন/পৌরসভাঃ (Union/ Municipality)</label>
-                  </div>
-                  <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="unionMunicipality"
-                      name="unionMunicipality"
-                      // class={errorObject.groupIdentityCode}
-                      value={currentMany.unionMunicipality}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
-
-
-                <div>
                     <div>
-                      <label>MQ1. পিজি কি নিবন্ধিত? (Is the PG registered)</label>
+                      <label>ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data Collection andStorage)</label>
+                    </div>
+
+                      <div>
+                        <Autocomplete
+                          autoHighlight
+                          // freeSolo
+                          className="chosen_dropdown"
+                          id="DataTypeId"
+                          name="DataTypeId"
+                          autoComplete
+                          options={datatypeList ? datatypeList : []}
+                          getOptionLabel={(option) => option.name}
+                          // value={selectedSupplier}
+                          value={
+                            datatypeList
+                              ? datatypeList[
+                                  datatypeList.findIndex(
+                                    (list) => list.id == currentMany.DataTypeId
+                                  )
+                                ]
+                              : null
+                          }
+                          onChange={(event, valueobj) =>
+                            handleChangeChoosenMany(
+                              "DataTypeId",
+                              valueobj ? valueobj.id : ""
+                            )
+                          }
+                          renderOption={(option) => (
+                            <Typography className="chosen_dropdown_font">
+                              {option.name}
+                            </Typography>
+                          )}
+                          renderInput={(params) => (
+                            <TextField {...params} variant="standard" fullWidth />
+                          )}
+                        />
+                      </div>
+              </div>
+
+                  <div>
+                    <div>
+                      <label>BQ1. দলের নাম (Group name)</label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="groupName"
+                        name="groupName"
+                        // class={errorObject.groupName}
+                        value={currentMany.groupName}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <label>BQ2. দলের প্রকারঃ (Value Chain)</label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="valueChain"
+                        name="valueChain"
+                        // class={errorObject.valueChain}
+                        value={currentMany.valueChain}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <label>BQ3. দলের আই,ডিঃ ( Group identity code)</label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="groupIdentityCode"
+                        name="groupIdentityCode"
+                        // class={errorObject.groupIdentityCode}
+                        value={currentMany.groupIdentityCode}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <label>
+                        BQ4. পিজি এর সদস্য সংখ্যা (Number of PG members) পুরুষ /
+                        Male
+                      </label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="maleMembers"
+                        name="maleMembers"
+                        // class={errorObject.groupIdentityCode}
+                        value={currentMany.maleMembers}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <label>
+                        BQ4. পিজি এর সদস্য সংখ্যা (Number of PG members)
+                        নারী/Female
+                      </label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="femaleMembers"
+                        name="femaleMembers"
+                        // class={errorObject.groupIdentityCode}
+                        value={currentMany.femaleMembers}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <label>ট্রান্সজেন্ডার /Transgender</label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="transgenderMembers"
+                        name="transgenderMembers"
+                        // class={errorObject.groupIdentityCode}
+                        value={currentMany.transgenderMembers}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
+                  </div>
+
+                  {/* <!--nth-child(11) = 11th GRID ITEM = 3rf--> */}
+                  <div>
+                    <div>
+                      <label>
+                        BQ5. পিজি গঠনের তারিখ (Date of the PG formation)
+                      </label>
+                    </div>
+                    <div>
+                      {/* <input type="date" /> */}
+                      <input
+                        type="date"
+                        id="pgFormationDate"
+                        name="pgFormationDate"
+                        // class={errorObject.pgFormationDate}
+                        value={currentMany.pgFormationDate}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <label>BQ6. গ্রাম/ওয়ার্ডঃ (Village/Ward)</label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="villageWard"
+                        name="villageWard"
+                        // class={errorObject.groupIdentityCode}
+                        value={currentMany.villageWard}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <label>BQ7. ইউনিয়ন/পৌরসভাঃ (Union/ Municipality)</label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="unionMunicipality"
+                        name="unionMunicipality"
+                        // class={errorObject.groupIdentityCode}
+                        value={currentMany.unionMunicipality}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <label>
+                        MQ1. পিজি কি নিবন্ধিত? (Is the PG registered)
+                      </label>
                     </div>
                     <div className="radio-group">
                       <label className="radio-label">
@@ -1492,10 +1431,12 @@ const PGDataCollection = (props) => {
                     </div>
                   </div>
 
-
                   <div>
                     <div>
-                      <label>MQ2. এই পিজির কি দৃশ্যমান জায়গায় সাইনবোর্ড আছে? (Does this have a signboard in a visible place?)</label>
+                      <label>
+                        MQ2. এই পিজির কি দৃশ্যমান জায়গায় সাইনবোর্ড আছে? (Does
+                        this have a signboard in a visible place?)
+                      </label>
                     </div>
                     <div className="radio-group">
                       <label className="radio-label">
@@ -1524,10 +1465,12 @@ const PGDataCollection = (props) => {
                     </div>
                   </div>
 
-
                   <div>
                     <div>
-                      <label>MQ3. পিজি এর কি স্থায়ী অফিস আছে? (Does this PG have a permanent office?)</label>
+                      <label>
+                        MQ3. পিজি এর কি স্থায়ী অফিস আছে? (Does this PG have a
+                        permanent office?)
+                      </label>
                     </div>
                     <div className="radio-group">
                       <label className="radio-label">
@@ -1556,43 +1499,69 @@ const PGDataCollection = (props) => {
                     </div>
                   </div>
 
-
-
-
-                <div>
                   <div>
-                    <label>MQ4. নিচের কোন অফিস সরঞ্জামাদি LDDP থেকে পেয়েছেন? (Which of the following main office equipment the PG have received from LDDP?)</label>
-                  </div>
-                  <div>
-                   
-                    <div class="checkbox-label">
-                        <input type="checkbox" id="equipmentComputer" name="equipmentComputer" value="Computer / Laptop / Printer"/>
-                        <label for="equipmentComputer">কম্পিউটার / ল্যাপটপ/প্রিন্টার</label>
-                    </div>
-
-                    <div class="checkbox-label">
-                        <input type="checkbox" id="equipmentTableChair" name="equipmentTableChair" value="Table and Chair"/>
-                        <label for="equipmentTableChair">টেবিল চেয়ার</label>
-                    </div>
-
-                    <div class="checkbox-label">
-                        <input type="checkbox" id="equipmentCabinet" name="equipmentCabinet" value="Almirah / File Cabinet"/>
-                        <label for="equipmentCabinet">আলমারি / ফাইল কেবিনেট</label>
-                    </div>
-
-                    <div class="checkbox-label">
-                        <input type="checkbox" id="equipmentOther" name="equipmentOther" value="Other"/>
-                        <label for="equipmentOther">অন্যান্য (উল্লেখ করুন)</label>
-                    </div>
-
-                  </div>
-                </div>
-
-
-
-                <div>
                     <div>
-                      <label>MQ6. পিজি এর কি নির্বাহী কমিটি আছে? (Does this PG have an executive committee?)</label>
+                      <label>
+                        MQ4. নিচের কোন অফিস সরঞ্জামাদি LDDP থেকে পেয়েছেন?
+                        (Which of the following main office equipment the PG
+                        have received from LDDP?)
+                      </label>
+                    </div>
+                    <div>
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="equipmentComputer"
+                          name="equipmentComputer"
+                          value="Computer / Laptop / Printer"
+                        />
+                        <label for="equipmentComputer">
+                          কম্পিউটার / ল্যাপটপ/প্রিন্টার
+                        </label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="equipmentTableChair"
+                          name="equipmentTableChair"
+                          value="Table and Chair"
+                        />
+                        <label for="equipmentTableChair">টেবিল চেয়ার</label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="equipmentCabinet"
+                          name="equipmentCabinet"
+                          value="Almirah / File Cabinet"
+                        />
+                        <label for="equipmentCabinet">
+                          আলমারি / ফাইল কেবিনেট
+                        </label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="equipmentOther"
+                          name="equipmentOther"
+                          value="Other"
+                        />
+                        <label for="equipmentOther">
+                          অন্যান্য (উল্লেখ করুন)
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <label>
+                        MQ6. পিজি এর কি নির্বাহী কমিটি আছে? (Does this PG have
+                        an executive committee?)
+                      </label>
                     </div>
                     <div className="radio-group">
                       <label className="radio-label">
@@ -1621,10 +1590,12 @@ const PGDataCollection = (props) => {
                     </div>
                   </div>
 
-
                   <div>
                     <div>
-                      <label>MQ9. পিজি মিটিং কি নিয়মিত হয়? (Does PG meeting held on a regular basis?)</label>
+                      <label>
+                        MQ9. পিজি মিটিং কি নিয়মিত হয়? (Does PG meeting held on
+                        a regular basis?)
+                      </label>
                     </div>
                     <div className="radio-group">
                       <label className="radio-label">
@@ -1653,28 +1624,32 @@ const PGDataCollection = (props) => {
                     </div>
                   </div>
 
-
-                <div>
                   <div>
-                    <label>MQ10. সর্বশেষ মিটিং এ কতজন সদস্য উপস্থিত ছিল? (How many members attended the last meeting?)</label>
-                  </div>
-                  <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="lastMeetingMembers"
-                      name="lastMeetingMembers"
-                      // class={errorObject.groupIdentityCode}
-                      value={currentMany.lastMeetingMembers}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
-
-
-                <div>
                     <div>
-                      <label>MQ15. পিজির সদস্যদের কি সঞ্চয় পাস বই আছে? (Do the members of this PG have a savings passbook?)</label>
+                      <label>
+                        MQ10. সর্বশেষ মিটিং এ কতজন সদস্য উপস্থিত ছিল? (How many
+                        members attended the last meeting?)
+                      </label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="lastMeetingMembers"
+                        name="lastMeetingMembers"
+                        // class={errorObject.groupIdentityCode}
+                        value={currentMany.lastMeetingMembers}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div>
+                      <label>
+                        MQ15. পিজির সদস্যদের কি সঞ্চয় পাস বই আছে? (Do the
+                        members of this PG have a savings passbook?)
+                      </label>
                     </div>
                     <div className="radio-group">
                       <label className="radio-label">
@@ -1703,98 +1678,96 @@ const PGDataCollection = (props) => {
                     </div>
                   </div>
 
-
-                  
-                <div>
                   <div>
-                    <label>MQ16. মাসিক সঞ্চয়ের হার কত টাকা? (What is the rate of monthly savings in taka?)</label>
+                    <div>
+                      <label>
+                        MQ16. মাসিক সঞ্চয়ের হার কত টাকা? (What is the rate of
+                        monthly savings in taka?)
+                      </label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="monthlySavingsRate"
+                        name="monthlySavingsRate"
+                        // class={errorObject.groupIdentityCode}
+                        value={currentMany.monthlySavingsRate}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
                   </div>
-                  <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="monthlySavingsRate"
-                      name="monthlySavingsRate"
-                      // class={errorObject.groupIdentityCode}
-                      value={currentMany.monthlySavingsRate}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
 
-
-                <div>
                   <div>
-                    <label>মন্তব্য (Remarks)</label>
+                    <div>
+                      <label>মন্তব্য (Remarks)</label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="remarks"
+                        name="remarks"
+                        // class={errorObject.groupIdentityCode}
+                        value={currentMany.remarks}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
                   </div>
-                  <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="remarks"
-                      name="remarks"
-                      // class={errorObject.groupIdentityCode}
-                      value={currentMany.remarks}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
 
-                <div>
                   <div>
-                    <label>তথ্য সংগ্রহকারীর নাম: (Name of data collector)</label>
+                    <div>
+                      <label>
+                        তথ্য সংগ্রহকারীর নাম: (Name of data collector)
+                      </label>
+                    </div>
+                    <div>
+                      {/* <input type="number" /> */}
+                      <input
+                        type="text"
+                        id="dataCollectorName"
+                        name="dataCollectorName"
+                        // class={errorObject.groupIdentityCode}
+                        value={currentMany.dataCollectorName}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
                   </div>
+
                   <div>
-                    {/* <input type="number" /> */}
-                    <input
-                      type="text"
-                      id="dataCollectorName"
-                      name="dataCollectorName"
-                      // class={errorObject.groupIdentityCode}
-                      value={currentMany.dataCollectorName}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
+                    <div>
+                      <label>
+                        তথ্য সংগ্রহের তারিখঃ (Date of data collection)
+                      </label>
+                    </div>
+                    <div>
+                      {/* <input type="date" /> */}
+                      <input
+                        type="date"
+                        id="dataCollectionDate"
+                        name="dataCollectionDate"
+                        // class={errorObject.dataCollectionDate}
+                        value={currentMany.dataCollectionDate}
+                        onChange={(e) => handleChangeMany(e)}
+                      />
+                    </div>
                   </div>
-                </div>
 
-
-                <div>
+                  {/* <!--nth-child(13) = 14th GRID ITEM = 3rf--> */}
                   <div>
-                    <label>তথ্য সংগ্রহের তারিখঃ (Date of data collection)</label>
-                  </div>
-                  <div>
-                    {/* <input type="date" /> */}
-                    <input
-                      type="date"
-                      id="dataCollectionDate"
-                      name="dataCollectionDate"
-                      // class={errorObject.dataCollectionDate}
-                      value={currentMany.dataCollectionDate}
-                      onChange={(e) => handleChangeMany(e)}
-                    />
-                  </div>
-                </div>
+                    <div>
+                      {/* <button class="btnAdd">ADD</button> */}
 
-             
-                {/* <!--nth-child(13) = 14th GRID ITEM = 3rf--> */}
-                <div>
-                  <div>
-                    {/* <button class="btnAdd">ADD</button> */}
-
-                    <Button
-                      label={"সংরক্ষণ করুন (Save)"}
-                      class={"btnAdd"}
-                      onClick={addEditManyItem}
-                    />
+                      <Button
+                        label={"সংরক্ষণ করুন (Save)"}
+                        class={"btnAdd"}
+                        onClick={addEditManyItem}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-
-             
-            </div>)}
-
-          
-           
+            )}
           </>
         )}
       </div>
