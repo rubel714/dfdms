@@ -82,6 +82,15 @@ export function filterRows(rows, filters) {
 }
 
 export function sortRows(rows, sort) {
+  // console.log('sortRows rows: ', rows);
+  // console.log('sortRows rows length: ', rows.length);
+  // console.log('sortRows sort: ', sort);
+  // console.log('sortRows sort: ',Object.keys(sort).length);
+
+  if(rows.length === 0 || Object.keys(sort).length === 0){
+    return rows;
+  }
+
   // console.log('rows sortRows:  ', rows);
   if (rows.length>0) {
     return rows.sort((a, b) => {
@@ -105,8 +114,7 @@ export function sortRows(rows, sort) {
     });
   }else{
   // console.log('rows sortRows else:  ', rows);
-
-    return false;
+    return rows;
   }
 }
 

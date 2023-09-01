@@ -59,10 +59,14 @@ function CustomTable({
     () => filterRows(rows, filters),
     [rows, filters]
   );
+  
   const sortedRows = useMemo(
     () => sortRows(filteredRows, sort),
     [filteredRows, sort]
   );
+  // console.log('sortedRows useMemo: ', sortedRows);
+  // console.log('sort useMemo: ', sort.length);
+
   const calculatedRows = paginateRows(sortedRows, activePage, rowsPerPage);
 
   const count = filteredRows.length;
