@@ -94,6 +94,18 @@ function AfterLoginNavbar(props) {
                   {" "}
                   Settings
                   <ul class="dropdownList">
+
+                  {menuShowPermision("datatype") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("datatype")}
+                        >
+                          Data Type
+                        </a>
+                      </li>
+                    )}
+
                     {menuShowPermision("productgroup") === 1 && (
                       <li>
                         <a
@@ -192,6 +204,20 @@ function AfterLoginNavbar(props) {
                   {" "}
                   Product
                   <ul class="dropdownList">
+
+
+                  {menuShowPermision("pgdatacollection") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("pgdatacollection")}
+                        >
+                          PG Data Collection
+                        </a>
+                      </li>
+                    )}
+
+
                     {menuShowPermision("product") === 1 && (
                       <li>
                         <a
