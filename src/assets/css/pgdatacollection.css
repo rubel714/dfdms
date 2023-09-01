@@ -14,7 +14,7 @@
 
 /* #######---PRODUCT RECEIVE AREA---##### */
 .inputArea {
-    padding: 4px;
+    padding: 10px;
     background-color: bisque;
     display: flex;
     justify-content: space-between;
