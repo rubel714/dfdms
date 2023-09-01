@@ -1,13 +1,13 @@
 <?php
 
-define("DB_NAME", "pharmangpl_db");
+define("DB_NAME", "dfdms_db");
 define("DB_USER", "root");
 define("DB_PASSWORD", "");
 define("DB_SERVER", "localhost");
-define("sitetitleeng", "Pharma NGPL");
-define("sitetitlefr", "Pharma NGPL");
-define("reportsitetitleeng", "RÉPUBLIQUE DU BÉNIN<br/> MINISTÈRE DE LA SANTÉ<br/> PROGRAMME SANTE DE LUTTE<br/> CONTRE LE SIDA");
-define("reportsitetitlefr", "RÉPUBLIQUE DU BÉNIN<br/> MINISTÈRE DE LA SANTÉ<br/> PROGRAMME SANTE DE LUTTE<br/> CONTRE LE SIDA");
+define("sitetitleeng", "DFDMS");
+define("sitetitlefr", "DFDMS");
+define("reportsitetitleeng", "Digital Field Data Monitoring System");
+define("reportsitetitlefr", "Digital Field Data Monitoring System");
 define("loginonlyadmin", "0");  /*0=production mode, 1=maintanance mode*/
 
 

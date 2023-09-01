@@ -23,12 +23,12 @@ function DarkFooter() {
           // href=""
           // target="_blank"
           >
-            Supported by NGPL
+            Supported by DFDMS
           </a>
         </div> */}
 
         <div class="footer">
-            <h6>Powred By NextGen Software & Solutions Ltd. &#169; Reserved</h6>
+            <h6>Powred By DFDMS. &#169; Reserved</h6>
         </div>
       </Container>
     </footer>

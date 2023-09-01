@@ -48,13 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] != "POST") {
 }
 // CHECKING EMPTY FIELDS
 else if (
-    !isset($data->ClientId)
-    || empty(trim($data->ClientId))
-
-    // || !isset($data->BranchId)
-    // || empty(trim($data->BranchId))
-
-    || !isset($data->email)
+    !isset($data->email)
     || empty(trim($data->email))
 
     || !isset($data->password)
@@ -62,14 +56,12 @@ else if (
 ) {
 
     // $fields = ['fields' => ['Client', 'Branch', 'email', 'password']];
-    $fields = ['fields' => ['Client', 'email', 'password']];
+    $fields = ['fields' => ['email', 'password']];
     $returnData = msg(0, 422, 'Please Fill in all Required Fields!', $fields);
 }
 // IF THERE ARE NO EMPTY FIELDS THEN-
 else {
-    $ClientId = trim($data->ClientId);
-	$BranchId = isset($data->BranchId) && ($data->BranchId !== "") ? $data->BranchId : 0;
-
+ 
     $Email = trim($data->email);
     $Passowrd = trim($data->password);
 
@@ -81,11 +73,9 @@ else {
         $userRow = array();
 
         $sql = "SELECT * FROM t_users 
-            WHERE ClientId=:ClientId 
-            AND (Email=:Email OR LoginName =:Email ) 
+            WHERE (Email=:Email OR LoginName =:Email ) 
             AND IsActive=1";
         $query_u = $conn->prepare($sql);
-        $query_u->bindValue(':ClientId', $ClientId, PDO::PARAM_STR);
         $query_u->bindValue(':Email', $Email, PDO::PARAM_STR);
         $query_u->execute();
 
@@ -99,39 +89,12 @@ else {
             $uRow = $query_u->fetch(PDO::FETCH_ASSOC);
             $UserId = $uRow['UserId'];
         }
-        else if($query_u->rowCount() > 1){
-
-            $sql = "SELECT * FROM t_users
-            WHERE ClientId=:ClientId 
-            AND BranchId=:BranchId
-            AND (Email=:Email OR LoginName =:Email ) 
-            AND IsActive=1";
-            $query_u2 = $conn->prepare($sql);
-            $query_u2->bindValue(':ClientId', $ClientId, PDO::PARAM_STR);
-            $query_u2->bindValue(':BranchId', $BranchId, PDO::PARAM_STR);
-            $query_u2->bindValue(':Email', $Email, PDO::PARAM_STR);
-            $query_u2->execute();
-
-            if($query_u2->rowCount() === 0){
-                $returnData = msg(0,422,'User not found!');
-                echo json_encode($returnData);
-                return;
-            }else{
-                $uRow = $query_u2->fetch(PDO::FETCH_ASSOC);
-                $UserId = $uRow['UserId'];
-            }
-
-        }
-
-
 
 
         
-        $sql = "SELECT a.`UserId`,a.`ClientId`,a.`BranchId`,a.`UserName`,a.`LoginName`,a.`Email`,a.`Password`,
-        a.`DesignationId`,a.`IsActive`,a.PhotoUrl,b.`ClientName`,b.ClientCode,c.`BranchName`
+        $sql = "SELECT a.`UserId`,a.`UserName`,a.`LoginName`,a.`Email`,a.`Password`,
+        a.`DesignationId`,a.`IsActive`,a.PhotoUrl
             FROM `t_users` a
-            LEFT JOIN t_client b ON a.ClientId=b.ClientId
-            LEFT JOIN t_branch c ON a.BranchId=c.BranchId
             WHERE a.UserId=:UserId";
 
         $query_stmt = $conn->prepare($sql);
@@ -201,8 +164,6 @@ else {
                 $query = "SELECT DISTINCT a.MenuId,a.MenuKey,a.MenuTitle,a.Url,a.ParentId,a.MenuLevel,a.SortOrder
                 FROM t_menu a
                 INNER JOIN t_role_menu_map b ON a.MenuId=b.MenuId 
-                and b.ClientId=$ClientId 
-                and (b.BranchId=$BranchId OR $BranchId=0)
                 and b.RoleId = $RoleId
                 order by a.SortOrder ASC;";
 

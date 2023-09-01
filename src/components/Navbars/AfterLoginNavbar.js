@@ -28,7 +28,7 @@ function AfterLoginNavbar(props) {
       <nav class="navbar">
         {/* <!-- LOGO --> */}
         <div class="logo">
-          <img alt="..." src={require("assets/img/ngpl_logo.png")}></img>
+          <img alt="..." src={require("assets/img/main_logo.png")}></img>
         </div>
 
         {/* <!-- MENUE LIST  BAR --> */}
@@ -64,13 +64,13 @@ function AfterLoginNavbar(props) {
                   {" "}
                   Reports
                   <ul class="dropdownList">
-                    {menuShowPermision("stockstatus") === 1 && (
+                    {menuShowPermision("report1") === 1 && (
                       <li>
                         <a
                           href="javascript:void(0)"
-                          onClick={() => props.history.push("stockstatus")}
+                          onClick={() => props.history.push("report1")}
                         >
-                          Stock Status
+                          Report 1
                         </a>
                       </li>
                     )}
@@ -89,10 +89,10 @@ function AfterLoginNavbar(props) {
                 </li>
               )}
 
-              {menuShowPermision("settings") === 1 && (
+              {menuShowPermision("admin") === 1 && (
                 <li class="dropdownMenu">
                   {" "}
-                  Settings
+                  Admin
                   <ul class="dropdownList">
 
                   {menuShowPermision("datatype") === 1 && (
@@ -106,82 +106,6 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
-                    {menuShowPermision("productgroup") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("productgroup")}
-                        >
-                          Product Group
-                        </a>
-                      </li>
-                    )}
-
-                    {menuShowPermision("productcategory") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("productcategory")}
-                        >
-                          Product Category
-                        </a>
-                      </li>
-                    )}
-
-                    {menuShowPermision("productgeneric") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("productgeneric")}
-                        >
-                          Product Generic
-                        </a>
-                      </li>
-                    )}
-
-                    {menuShowPermision("strength") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("strength")}
-                        >
-                          Strength
-                        </a>
-                      </li>
-                    )}
-
-                    {menuShowPermision("manufacturer") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("manufacturer")}
-                        >
-                          Manufacturer
-                        </a>
-                      </li>
-                    )}
-
-                    {menuShowPermision("supplier") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("supplier")}
-                        >
-                          Supplier
-                        </a>
-                      </li>
-                    )}
-
-                    {menuShowPermision("customer") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("customer")}
-                        >
-                          Customer
-                        </a>
-                      </li>
-                    )}
 
 {menuShowPermision("userrole") === 1 && (
                       <li>
@@ -199,7 +123,7 @@ function AfterLoginNavbar(props) {
 
 
 
-              {menuShowPermision("products") === 1 && (
+              {menuShowPermision("datacollection") === 1 && (
                 <li class="dropdownMenu">
                   {" "}
                   Data Collection
@@ -217,39 +141,6 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
-
-                    {menuShowPermision("product") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("product")}
-                        >
-                          Product
-                        </a>
-                      </li>
-                    )}
-
-                    {menuShowPermision("receive") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("receive")}
-                        >
-                          Receive
-                        </a>
-                      </li>
-                    )}
-
-                    {menuShowPermision("sales") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("sales")}
-                        >
-                          Sales
-                        </a>
-                      </li>
-                    )}
                   </ul>
                 </li>
               )}

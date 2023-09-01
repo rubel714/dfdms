@@ -110,7 +110,7 @@ function CustomTable({
       {/* <div className="bodyContainer"> */}
       {/* <div className="topHeader">
         <h4>
-          <a href="#">Home</a> ❯ Settings ❯ Product Cetegory
+          <a href="#">Home</a> ❯ Admin ❯ Product Cetegory
         </h4>
       </div> */}
 

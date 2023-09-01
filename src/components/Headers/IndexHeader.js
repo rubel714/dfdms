@@ -31,8 +31,8 @@ function IndexHeader() {
 
   return (
     <>
-      <h1>NGPL</h1>
-      <h3>Integrated Receive, sales and stock management</h3>
+      <h1>DFDMS</h1>
+      <h3>Integrated Data collection and monitoring</h3>
 
       {/* {loading ? (
         <div className="loader-div">
@@ -55,7 +55,7 @@ function IndexHeader() {
         ></div>
         <Container>
           <div className="content-center brand">
-            <h1 className="h1-seo">NGPL</h1>
+            <h1 className="h1-seo">DFDMS</h1>
             <h3>Integrated Receive, sales and stock management</h3>
           </div>
         </Container>

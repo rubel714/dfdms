@@ -8,7 +8,7 @@ function BeforeLoginNavbar(props) {
       <nav class="navbar">
         {/* <!-- LOGO --> */}
         <div class="logo">
-          <img alt="..." src={require("assets/img/ngpl_logo.png")}></img>
+          <img alt="..." src={require("assets/img/main_logo.png")}></img>
         </div>
 
         {/* <!-- USER PANEL --> */}
