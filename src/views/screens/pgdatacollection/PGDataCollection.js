@@ -32,7 +32,7 @@ const PGDataCollection = (props) => {
 
 
   const initialYearList = [
-    { id: "", name: "-Select a year-" },
+    { id: "", name: "Select a year" },
     { id: "2023", name: "2023" },
     { id: "2024", name: "2024" },
     { id: "2025", name: "2025" },
@@ -47,7 +47,7 @@ const PGDataCollection = (props) => {
 
 
   const initialQuarterList = [
-    { id: "", name: "-Select a quarter-" },
+    { id: "", name: "Select a quarter" },
     { id: "Q1", name: "Jan-Mar" },
     { id: "Q2", name: "Apr-Jun" },
     { id: "Q3", name: "Jul-Sep" },
@@ -57,7 +57,7 @@ const PGDataCollection = (props) => {
 
 
   const initialPgGroupList = [
-    { id: "", name: "-Select a group-" },
+    { id: "", name: "Select a group" },
     { "id": 1, "name": "গাজীবাড়ী ডেইরী পিজি" },
     { "id": 2, "name": "গোপেরবাড়ী ডেইরী পিজি" },
     { "id": 3, "name": "তরফরাজাঘাট ডেইরী পিজি" },
@@ -273,7 +273,7 @@ const PGDataCollection = (props) => {
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
       setDataTypeList(
-        [{ id: "", name: "-Select a group-" }].concat(res.data.datalist)
+        [{ id: "", name: "Select a group" }].concat(res.data.datalist)
       );
     });
   }
