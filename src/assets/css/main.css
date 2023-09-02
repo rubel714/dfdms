@@ -43,7 +43,7 @@ body {
 
 label {
     /* color: white; */
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin-right:2px;
     padding: 0px;
     text-align: end;
@@ -58,7 +58,7 @@ select {
     height: 32px;
     /* font-size: .9rem; */
     /* font-size: 1.1rem; */
-    font-size: 17px; 
+    font-size: 16px; 
     border: var(--input-border);
     border-radius: 4px;
     padding: 8px 6px;
@@ -492,7 +492,7 @@ input {
     padding: 8px 6px !important;
 	height: 19px;
     background-color:var(--bg-color);
-    font-size: 17px !important; 
+    font-size: 16px !important; 
 	/* font-size: 12px !important; */
     width: 100% !important;
 
