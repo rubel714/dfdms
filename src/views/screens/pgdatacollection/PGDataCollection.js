@@ -25,7 +25,7 @@ const PGDataCollection = (props) => {
 
   const { useState } = React;
   const [bFirst, setBFirst] = useState(true);
-  const [listEditPanelToggle, setListEditPanelToggle] = useState(false); //when true then show list, when false then show add/edit
+  const [listEditPanelToggle, setListEditPanelToggle] = useState(true); //when true then show list, when false then show add/edit
   const [supplierList, setSupplierList] = useState(null);
   const [productList, setProductList] = useState(null);
   const [datatypeList, setDataTypeList] = useState(null);
@@ -278,7 +278,7 @@ const PGDataCollection = (props) => {
     });
   }
 
- /*  const masterColumnList = [
+  const masterColumnList = [
     { field: "rownumber", label: "SL", align: "center", width: "5%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
     {
@@ -345,7 +345,7 @@ const PGDataCollection = (props) => {
       // sort: false,
       // filter: false,
     },
-  ]; */
+  ];
 
   /** Action from table row buttons*/
   function actioncontrolmaster(rowData) {
@@ -1128,7 +1128,7 @@ const PGDataCollection = (props) => {
             </div>
 
             {/* <!-- ####---Master invoice list---####s --> */}
-            {/* <div class="subContainer">
+             <div class="subContainer">
               <div className="App">
                 <CustomTable
                   columns={masterColumnList}
@@ -1136,7 +1136,7 @@ const PGDataCollection = (props) => {
                   actioncontrol={actioncontrolmaster}
                 />
               </div>
-            </div> */}
+            </div> 
           </>
         )}
 
@@ -1670,13 +1670,14 @@ const PGDataCollection = (props) => {
                   <div class="formControl">
                     <label> মন্তব্য (Remarks):</label>
                         
-                    <input
+                    <textarea
                         type="text"
                         id="remarks"
                         name="remarks"
                         // class={errorObject.groupIdentityCode}
                         value={currentMany.remarks}
                         onChange={(e) => handleChangeMany(e)}
+                        rows={4}
                       />
                   </div>
 
