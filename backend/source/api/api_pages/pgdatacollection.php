@@ -31,23 +31,21 @@ switch ($task) {
 
 function getDataList($data)
 {
-	$ClientId = trim($data->ClientId);
-	$BranchId = trim($data->BranchId);
+/* 	$ClientId = trim($data->ClientId);
+	$BranchId = trim($data->BranchId); */
 	$TransactionTypeId = trim($data->TransactionTypeId);
 
 	try {
 		$dbh = new Db();
 
-		$query = "SELECT a.`TransactionId` AS id, a.`TransactionDate`, a.`InvoiceNo`, a.`SupplierId`,b.SupplierName,
-		a.`ChallanNo`, a.`BPosted`, a.`Remarks`, a.`ImageUrl`, a.`SumSubTotalAmount`, a.`SumVatAmount`, a.`SumDiscountAmount`, 
-		a.`SumTotalAmount`, a.`SumCommission`, a.`NetPaymentAmount`, 
-		case when a.BPosted=1 then 'Posted' else 'Draft' end StatusName
-		FROM t_transaction a
-		INNER JOIN t_supplier b on a.SupplierId=b.SupplierId
-		where a.ClientId=$ClientId
-		and a.BranchId=$BranchId
-		and a.TransactionTypeId=$TransactionTypeId
-		ORDER BY a.TransactionDate DESC, a.`InvoiceNo` DESC;";
+
+		$query = "SELECT `DataTypeId`,
+		`DataTypeName`,
+		`UpdateTs`,
+		`CreateTs`
+		FROM t_datatype
+		ORDER BY DataTypeId DESC;";
+
 
 		$resultdata = $dbh->query($query);
 

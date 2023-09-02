@@ -69,6 +69,7 @@ input[type=number]{
 }
 
 textarea {
+    padding: 8px 6px;
     font-size: 1.1rem;
   }
 

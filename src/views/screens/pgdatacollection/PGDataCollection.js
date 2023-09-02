@@ -28,55 +28,10 @@ const PGDataCollection = (props) => {
   const [listEditPanelToggle, setListEditPanelToggle] = useState(true); //when true then show list, when false then show add/edit
   const [supplierList, setSupplierList] = useState(null);
   const [productList, setProductList] = useState(null);
-  const [datatypeList, setDataTypeList] = useState(null);
+  const [pgGroupList, setPgGroupList] = useState(null);
+  const [quarterList, setQuarterList] = useState(null);
+  const [yearList, setYearList] = useState(null);
 
-
-  const initialYearList = [
-    { id: "", name: "Select a year" },
-    { id: "2023", name: "2023" },
-    { id: "2024", name: "2024" },
-    { id: "2025", name: "2025" },
-    { id: "2026", name: "2026" },
-    { id: "2027", name: "2027" },
-    { id: "2028", name: "2028" },
-    { id: "2029", name: "2029" },
-    { id: "2030", name: "2030" }
-  ];
-  const [yearList, setYearList] = useState(initialYearList);
-
-
-
-  const initialQuarterList = [
-    { id: "", name: "Select a quarter" },
-    { id: "Q1", name: "Jan-Mar" },
-    { id: "Q2", name: "Apr-Jun" },
-    { id: "Q3", name: "Jul-Sep" },
-    { id: "Q4", name: "Oct-Dec" }
-  ];
-  const [quarterList, setQuarterList] = useState(initialQuarterList);
-
-
-  const initialPgGroupList = [
-    { id: "", name: "Select a group" },
-    { "id": 1, "name": "গাজীবাড়ী ডেইরী পিজি" },
-    { "id": 2, "name": "গোপেরবাড়ী ডেইরী পিজি" },
-    { "id": 3, "name": "তরফরাজাঘাট ডেইরী পিজি" },
-    { "id": 4, "name": "চানপুর কবুতর পিজি" },
-    { "id": 5, "name": "পলাশবাড়ী ভেড়া পিজি" },
-    { "id": 6, "name": "নামাগেন্ডা ডেইরী পিজি" },
-    { "id": 7, "name": "ডেন্ডাবর ডেইরী পিজি" },
-    { "id": 8, "name": "দক্ষিণ রাজাশন ডেইরী পিজি" },
-    { "id": 9, "name": "নয়াপাড়া দেশী মুরগি পিজি" },
-    { "id": 10, "name": "পুরানবাড়ী দেশী মুরগি পিজি" },
-    { "id": 11, "name": "কাকাব ছাগল পিজি" },
-    { "id": 12, "name": "সামাইর ডেইরী পিজি" },
-    { "id": 13, "name": "সাধাপুর গরু হৃষ্টপুষ্টকরণ পিজি" },
-    { "id": 14, "name": "নয়াপাড়া ডেইরী পিজি" },
-    { "id": 15, "name": "তৈয়বপুর ডেইরী পিজি" },
-    { "id": 16, "name": "খাগুরিয়া ডেইরী পিজি" },
-    { "id": 17, "name": "কুমকুমারী ছাগল পিজি" }
-  ];
-  const [PgGroupList, setPgGroupList] = useState(initialPgGroupList);
 
 
   // const [selectedSupplier, setSelectedSupplier] = useState({});
@@ -141,8 +96,6 @@ const PGDataCollection = (props) => {
       action: "NextInvoiceNumber",
       lan: language(),
       UserId: UserInfo.UserId,
-      ClientId: UserInfo.ClientId,
-      BranchId: UserInfo.BranchId,
       TransactionTypeId: 1,
     };
 
@@ -193,7 +146,7 @@ const PGDataCollection = (props) => {
       TotalAmount: "",
       QuarterId: "",
       YearId: "",
-      PgGroupId: "",
+      PGId: "",
     });
   }
 
@@ -203,8 +156,6 @@ const PGDataCollection = (props) => {
       action: "getDataList",
       lan: language(),
       UserId: UserInfo.UserId,
-      ClientId: UserInfo.ClientId,
-      BranchId: UserInfo.BranchId,
       TransactionTypeId: 1,
     };
     // console.log('LoginUserInfo params: ', params);
@@ -218,7 +169,10 @@ const PGDataCollection = (props) => {
 
     getSupplierList();
     getProductList();
-    getDataTypeList();
+
+    getPgGroupList();
+    getQuarterList();
+    getYearList();
 
     getDataList(); //invoice list
 
@@ -235,8 +189,6 @@ const PGDataCollection = (props) => {
       action: "SupplierList",
       lan: language(),
       UserId: UserInfo.UserId,
-      ClientId: UserInfo.ClientId,
-      BranchId: UserInfo.BranchId,
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
@@ -251,8 +203,6 @@ const PGDataCollection = (props) => {
       action: "ProductList",
       lan: language(),
       UserId: UserInfo.UserId,
-      ClientId: UserInfo.ClientId,
-      BranchId: UserInfo.BranchId,
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
@@ -262,18 +212,47 @@ const PGDataCollection = (props) => {
     });
   }
 
-  function getDataTypeList() {
+  function getPgGroupList() {
     let params = {
-      action: "DataTypeList",
+      action: "PgGroupList",
       lan: language(),
       UserId: UserInfo.UserId,
-      ClientId: UserInfo.ClientId,
-      BranchId: UserInfo.BranchId,
+      DivisionId: 1,
+      DistrictId: 1,
+      UpazilaId: 1
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDataTypeList(
-        [{ id: "", name: "Select a group" }].concat(res.data.datalist)
+      setPgGroupList(
+        [{ id: "", name: "পিজি গ্রুপ নির্বাচন করুন" }].concat(res.data.datalist)
+      );
+    });
+  }
+
+  function getQuarterList() {
+    let params = {
+      action: "QuarterList",
+      lan: language(),
+      UserId: UserInfo.UserId
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setQuarterList(
+        [{ id: "", name: "ত্রৈমাসিক নির্বাচন করুন" }].concat(res.data.datalist)
+      );
+    });
+  }
+
+  function getYearList() {
+    let params = {
+      action: "YearList",
+      lan: language(),
+      UserId: UserInfo.UserId
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setYearList(
+        [{ id: "", name: "বছর নির্বাচন করুন" }].concat(res.data.datalist)
       );
     });
   }
@@ -282,8 +261,8 @@ const PGDataCollection = (props) => {
     { field: "rownumber", label: "SL", align: "center", width: "5%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
     {
-      field: "TransactionDate",
-      label: "Date",
+      field: "DataTypeName",
+      label: "Data Type Name",
       width: "10%",
       align: "left",
       visible: true,
@@ -291,8 +270,8 @@ const PGDataCollection = (props) => {
       filter: true,
     },
     {
-      field: "InvoiceNo",
-      label: "Invoice No.",
+      field: "DataTypeName",
+      label: "Data Type Name",
       width: "15%",
       align: "left",
       visible: true,
@@ -300,8 +279,8 @@ const PGDataCollection = (props) => {
       filter: true,
     },
     {
-      field: "SupplierName",
-      label: "Supplier",
+      field: "DataTypeName",
+      label: "Data Type Name",
       align: "left",
       // width: "30%",
       visible: true,
@@ -309,33 +288,15 @@ const PGDataCollection = (props) => {
       filter: true,
     },
     {
-      field: "ChallanNo",
-      label: "Challan No.",
+      field: "DataTypeName",
+      label: "Data Type Name",
       width: "10%",
       align: "left",
       visible: true,
       sort: true,
       filter: true,
     },
-    {
-      field: "NetPaymentAmount",
-      label: "Net Payment",
-      width: "10%",
-      align: "right",
-      type: "number",
-      visible: true,
-      sort: true,
-      filter: true,
-    },
-    {
-      field: "StatusName",
-      label: "Status",
-      width: "5%",
-      align: "center",
-      visible: true,
-      sort: true,
-      filter: true,
-    },
+    
     {
       field: "custom",
       label: "Action",
@@ -351,6 +312,8 @@ const PGDataCollection = (props) => {
   function actioncontrolmaster(rowData) {
     return (
       <>
+
+      
         {rowData.BPosted === 0 && (
           <Edit
             className={"table-edit-icon"}
@@ -394,8 +357,6 @@ const PGDataCollection = (props) => {
       action: "getDataSingle",
       lan: language(),
       UserId: UserInfo.UserId,
-      ClientId: UserInfo.ClientId,
-      BranchId: UserInfo.BranchId,
       id: id,
     };
 
@@ -467,8 +428,6 @@ const PGDataCollection = (props) => {
       action: "deleteData",
       lan: language(),
       UserId: UserInfo.UserId,
-      ClientId: UserInfo.ClientId,
-      BranchId: UserInfo.BranchId,
       rowData: rowData,
     };
 
@@ -1047,8 +1006,6 @@ const PGDataCollection = (props) => {
           action: "dataAddEdit",
           lan: language(),
           UserId: UserInfo.UserId,
-          ClientId: UserInfo.ClientId,
-          BranchId: UserInfo.BranchId,
           InvoiceMaster: cInvoiceMaster,
           InvoiceItems: manyDataList,
           DeletedItems: deletedItems,
@@ -1065,8 +1022,6 @@ const PGDataCollection = (props) => {
       action: "dataAddEdit",
       lan: language(),
       UserId: UserInfo.UserId,
-      ClientId: UserInfo.ClientId,
-      BranchId: UserInfo.BranchId,
       InvoiceMaster: currentInvoice,
       InvoiceItems: manyDataList,
       DeletedItems: deletedItems,
@@ -1124,7 +1079,7 @@ const PGDataCollection = (props) => {
               <label></label>
 
               {/* <Button label={"ADD"} class={"btnAdd"} onClick={addData} /> */}
-              <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
+              <Button label={"Enter Data"} class={"btnAdd"} onClick={addData} />
             </div>
 
             {/* <!-- ####---Master invoice list---####s --> */}
@@ -1247,24 +1202,24 @@ const PGDataCollection = (props) => {
                       autoHighlight
                       // freeSolo
                       className="chosen_dropdown"
-                      id="PgGroupId"
-                      name="PgGroupId"
+                      id="PGId"
+                      name="PGId"
                       autoComplete
-                      options={PgGroupList ? PgGroupList : []}
+                      options={pgGroupList ? pgGroupList : []}
                       getOptionLabel={(option) => option.name}
                       // value={selectedSupplier}
                       value={
-                        PgGroupList
-                          ? PgGroupList[
-                            PgGroupList.findIndex(
-                                (list) => list.id == currentMany.PgGroupId
+                        pgGroupList
+                          ? pgGroupList[
+                            pgGroupList.findIndex(
+                                (list) => list.id == currentMany.PGId
                               )
                             ]
                           : null
                       }
                       onChange={(event, valueobj) =>
                         handleChangeChoosenMany(
-                          "PgGroupId",
+                          "PGId",
                           valueobj ? valueobj.id : ""
                         )
                       }
