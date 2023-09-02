@@ -1111,9 +1111,9 @@ const PGDataCollection = (props) => {
     <>
       <div class="bodyContainer">
         <div class="topHeader">
-          <h2>
+          <h3>
             Home ❯ Data Collection ❯ গ্রুপের তথ্য সংগ্রহ (PG data collection)
-          </h2>
+          </h3>
         </div>
 
         {listEditPanelToggle && (
@@ -1148,7 +1148,7 @@ const PGDataCollection = (props) => {
                 {/* <!-- INPUR AREA PARTITION-1 INSERTION AREA --> */}
 
                 <div class="text-center">
-                  <h1>গ্রুপের তথ্য সংগ্রহ ফরম (PG data collection form)</h1>
+                  <h2>গ্রুপের তথ্য সংগ্রহ ফরম (PG data collection form)</h2>
                   {/* <h2 className="subheader">
                         Welcome LSP1 Savar, আপনার নির্ধারিত এলাকা (Your assigned area): Savar
                       </h2> */}
@@ -1159,14 +1159,14 @@ const PGDataCollection = (props) => {
                   id="areaPartion-x"
                 >
                   <div class="marginBottom text-center">
-                    <h3>
+                    <h4>
                       ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data
                       Collection and Storage)
-                    </h3>
+                    </h4>
                   </div>
 
                   <div class="formControl">
-                    <label>বছর (Year):</label>
+                    <label>তথ্য সংগ্রহ বছর (Year):</label>
                     <Autocomplete
                       autoHighlight
                       // freeSolo
@@ -1204,7 +1204,7 @@ const PGDataCollection = (props) => {
                   </div>
 
                   <div class="formControl">
-                    <label>ত্রৈমাসিক (Quarter):</label>
+                    <label>তথ্য সংগ্রহ ত্রৈমাসিক (Quarter):</label>
                     <Autocomplete
                       autoHighlight
                       // freeSolo
@@ -1715,6 +1715,13 @@ const PGDataCollection = (props) => {
                         class={"btnAddCustom"}
                         onClick={addEditManyItem}
                       />
+
+                      <Button
+                        label={"ফেরত যান (Back To List)"}
+                        class={"btnBackCustom"}
+                        onClick={backToList}
+                      />
+
                     </div>
                  
 

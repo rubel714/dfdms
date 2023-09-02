@@ -177,6 +177,16 @@ button:hover {
     font-size: 1.2rem;
 }
 
+.btnBackCustom {
+    background-color: rgb(150, 75, 75);
+    /* min-width: 90px; */
+    width: 256px;
+    height: 43px;
+    font-size: 1.2rem;
+    margin-left: 5px;
+}
+
+
 .btnPrint {
     background-color:rgb(105, 175, 178);
     min-width: 90px;
@@ -494,11 +504,11 @@ input {
     border-radius: 8px;
     padding: 4px;
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr;
 }
 
 .formControl label {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     /* font-weight: bold;*/
     padding-top: 4px;
     text-align: end;
