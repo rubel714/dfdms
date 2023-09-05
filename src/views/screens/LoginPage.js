@@ -139,9 +139,9 @@ function LoginPage(props) {
 
           <Button label={"Login"} class={"btnLogin"} onClick={LoginPage} />
 
-          <span>
+         {/* <span>
             * If you forget your password, contact your with Administrator
-          </span>
+          </span> */}
         </div>
       </div>
 
