@@ -54,7 +54,7 @@ input[type=text],
 input[type=number],
 input[type=date],
 select {
-    width: 100%;
+    /* width: 100%; */
     height: 32px;
     /* font-size: .9rem; */
     /* font-size: 1.1rem; */
@@ -428,7 +428,7 @@ input {
     /* -webkit-appearance: none; */
     border: 1px solid gray;
     padding: 2px;
-    width: 100%;
+    /* width: 100%; */
     max-width: 100%;
     /* background: #f0f0f0; */
   }
