@@ -17,6 +17,8 @@ import CheckPermission from "views/screens/CheckPermission.js";
 import UserRole from "views/screens/userrole/index.js";
 import DataType from "views/screens/datatype/index.js";
 import PGDataCollection from "views/screens/pgdatacollection/index.js";
+import PGDataCollectionEntry from "views/screens/pgdatacollectionentry/index.js";
+import FarmersDataCollection from "views/screens/farmersdatacollection/index.js";
 
 import UserContextProvider from "./context/user-info-context";
 
@@ -51,6 +53,15 @@ ReactDOM.render(
           <Route
             path="/pgdatacollection"
             render={(props) => <PGDataCollection {...props} />}
+          />
+          <Route
+            path="/pgdatacollectionentry"
+            render={(props) => <PGDataCollectionEntry {...props} />}
+          />
+
+          <Route
+            path="/farmersdatacollection"
+            render={(props) => <FarmersDataCollection {...props} />}
           />
 
           <Route path="/" render={(props) => <Index {...props} />} />

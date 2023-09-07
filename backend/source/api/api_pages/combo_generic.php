@@ -105,7 +105,7 @@ function QuarterList($data) {
 		
 		$query = "SELECT `QuarterId` id,`QuarterName` `name`
 	 			 	FROM `t_quarter` 
-					ORDER BY QuarterName;"; 
+					ORDER BY QuarterId;"; 
 	
 		$resultdata = $dbh->query($query);
 

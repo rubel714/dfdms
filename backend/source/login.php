@@ -93,8 +93,11 @@ else {
 
         
         $sql = "SELECT a.`UserId`,a.`UserName`,a.`LoginName`,a.`Email`,a.`Password`,
-        a.`DesignationId`,a.`IsActive`,a.PhotoUrl
+        a.`DesignationId`,a.`IsActive`,a.PhotoUrl,a.DivisionId,b.DivisionName,a.DistrictId,c.DistrictName,a.UpazilaId,d.UpazilaName
             FROM `t_users` a
+            left join t_division b on a.DivisionId=b.DivisionId
+            left join t_district c on a.DistrictId=c.DistrictId
+            left join t_upazila d on a.UpazilaId=d.UpazilaId
             WHERE a.UserId=:UserId";
 
         $query_stmt = $conn->prepare($sql);

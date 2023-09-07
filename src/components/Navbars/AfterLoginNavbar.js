@@ -141,6 +141,30 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+
+                  {menuShowPermision("pgdatacollectionentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("pgdatacollectionentry")}
+                        >
+                          PG Data Collection Entry
+                        </a>
+                      </li>
+                    )}
+
+
+{menuShowPermision("farmersdatacollection") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("farmersdatacollection")}
+                        >
+                          Farmers Data Collection
+                        </a>
+                      </li>
+                    )}
+
                   </ul>
                 </li>
               )}
