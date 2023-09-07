@@ -19,6 +19,7 @@ import DataType from "views/screens/datatype/index.js";
 import PGDataCollection from "views/screens/pgdatacollection/index.js";
 import PGDataCollectionEntry from "views/screens/pgdatacollectionentry/index.js";
 import FarmersDataCollection from "views/screens/farmersdatacollection/index.js";
+import DataFromLGD from "views/screens/datafromlgd/index.js";
 
 import UserContextProvider from "./context/user-info-context";
 
@@ -62,6 +63,11 @@ ReactDOM.render(
           <Route
             path="/farmersdatacollection"
             render={(props) => <FarmersDataCollection {...props} />}
+          />
+
+        <Route
+            path="/datafromlgd"
+            render={(props) => <DataFromLGD {...props} />}
           />
 
           <Route path="/" render={(props) => <Index {...props} />} />
