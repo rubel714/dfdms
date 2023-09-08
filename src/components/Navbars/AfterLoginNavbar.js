@@ -107,7 +107,7 @@ function AfterLoginNavbar(props) {
                     )}
 
 
-{menuShowPermision("userrole") === 1 && (
+                    {menuShowPermision("userrole") === 1 && (
                       <li>
                         <a
                           href="javascript:void(0)"
@@ -117,6 +117,19 @@ function AfterLoginNavbar(props) {
                         </a>
                       </li>
                     )}
+
+                  {menuShowPermision("roletomenupermissionentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("roletomenupermissionentry")}
+                        >
+                          Role to Menu Permission Entry
+                        </a>
+                      </li>
+                    )}
+
+
                   </ul>
                 </li>
               )}
