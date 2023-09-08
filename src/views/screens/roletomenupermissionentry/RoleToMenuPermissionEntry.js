@@ -28,7 +28,7 @@ const RoleToMenuPermissionEntry = (props) => {
   const [listEditPanelToggle, setListEditPanelToggle] = useState(true); //when true then show list, when false then show add/edit
 
   const [roleList, setRoleList] = useState([]);
-  const [currRoleId, setCurrRoleId] = useState(0);
+  const [currRoleId, setCurrRoleId] = useState(1);
 
   const [currentDate, setCurrentDate] = useState(
     moment().format("YYYY-MM-DD")
@@ -292,10 +292,10 @@ const RoleToMenuPermissionEntry = (props) => {
                 ADD
               </button> */}
 
-              <div class="header-item">
-                <div>
-                  <label>Role</label>
-                </div>
+              <div class="formControl-filter">
+               
+                  <label>Role:</label>
+              
                 {/* <div class="plusGroup"> */}
                 <div class="">
                   <Autocomplete
@@ -308,7 +308,7 @@ const RoleToMenuPermissionEntry = (props) => {
                     autoComplete
                     options={roleList ? roleList : []}
                     getOptionLabel={(option) => option.name}
-                    defaultValue={{ id: 0, name: "Select a Role" }}
+                    defaultValue={{ id: 1, name: "Super Admin" }}
                   
                     onChange={(event, valueobj) =>
                       handleChangeChoosenMany(

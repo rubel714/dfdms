@@ -443,6 +443,7 @@ input {
 }
 .MuiSvgIcon-root{
     cursor:pointer;
+    height: 0em !important;
 }
 
 .table-edit-icon{
@@ -544,3 +545,38 @@ input {
   .marginBottom {
     margin-bottom: 10px;  /* Add a margin of 10px at the bottom */
   }
+
+  .formControl-filter {
+    /* width: 100%; */
+    border-radius: 8px;
+    padding: 4px;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+.formControl-filter label {
+    font-size: 1.1rem;
+    /* font-weight: bold;*/
+    padding-top: 7px !important;
+    text-align: end;
+    padding-right: 8px;
+}
+
+.formControl-filter select {
+    border: var(--input-border);
+    border-radius: 4px;
+    /* width: calc(100% - (38px)); */
+}
+
+.MuiIconButton-root {
+    display: none !important;
+}
+
+.MuiInput-underline:before {
+    display: none !important;
+}
+
+
+.MuiInput-underline:after {
+    display: none !important;
+}
