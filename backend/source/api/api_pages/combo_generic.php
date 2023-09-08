@@ -24,6 +24,12 @@ switch($task){
 	case "YearList":
 		$returnData = YearList($data);
 		break;
+
+			
+	case "RoleList":
+		$returnData = RoleList($data);
+		break;
+	
 	
 		
 	// case "NextInvoiceNumber":
@@ -132,6 +138,31 @@ function YearList($data) {
 		$query = "SELECT `YearId` id,`YearName` `name`
 	 			 	FROM `t_year` 
 					ORDER BY YearName;"; 
+	
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+ 
+function RoleList($data) {
+	try{
+
+		$dbh = new Db();
+		
+		$query = "SELECT `RoleId` id,`RoleName` `name`
+	 			 	FROM `t_roles` 
+					ORDER BY RoleName;"; 
 	
 		$resultdata = $dbh->query($query);
 
