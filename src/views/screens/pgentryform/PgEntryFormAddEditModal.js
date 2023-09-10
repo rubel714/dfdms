@@ -317,6 +317,7 @@ const PgEntryFormAddEditModal = (props) => {
                     <textarea 
                       id="Address"
                       name="Address"
+                      class={errorObject.Address}
                       value={currentRow.Address}
                       onChange={(e) => handleChange(e)}
                     >
