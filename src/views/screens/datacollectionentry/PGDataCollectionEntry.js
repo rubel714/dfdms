@@ -17,37 +17,229 @@ import {
 } from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
-const PGDataCollection = (props) => {
+const PGDataCollectionEntry = (props) => {
+  // console.log("props.DataTypeId: ", props.DataTypeId);
   const serverpage = "datacollection"; // this is .php server page
 
   const { useState } = React;
   const [bFirst, setBFirst] = useState(true);
+
+  const [entryFormTitle, setEntryFormTitle] = useState("");
+  const [entryFormSubTitle, setEntryFormSubTitle] = useState("");
+
   const [listEditPanelToggle, setListEditPanelToggle] = useState(true); //when true then show list, when false then show add/edit
-  // const [supplierList, setSupplierList] = useState(null);
-  // const [productList, setProductList] = useState(null);
   const [pgGroupList, setPgGroupList] = useState(null);
   const [quarterList, setQuarterList] = useState(null);
   const [yearList, setYearList] = useState(null);
 
   const [currentInvoice, setCurrentInvoice] = useState([]); //this is for master information. It will send to sever for save
-  const [currentDate, setCurrentDate] = useState(
-    //new Date()
-    moment().format("YYYY-MM-DD")
-  );
+  const [manyDataList, setManyDataList] = useState([]); //This is for many table. It will send to sever for save
+
+  const [currentDate, setCurrentDate] = useState(moment().format("YYYY-MM-DD"));
   const [currentYear, setCurrentYear] = useState(moment().format("YYYY"));
   const [currentQuarterId, setcurrentQuarterId] = useState(3);
+  const [dataTypeId, setDataTypeId] = useState(props.DataTypeId);
 
-  // const [currentRow, setCurrentRow] = useState([]);
   const [errorObjectMaster, setErrorObjectMaster] = useState({});
-  // const [errorObjectMany, setErrorObjectMany] = useState({});
+  const [errorObjectMany, setErrorObjectMany] = useState({});
 
-  const [MQ4Values, setMQ4Values] = useState({
-    MQ4_Computer: "",
-    MQ4_TableChair: "",
-    MQ4_Almira: "",
-    MQ4_Other: "",
-  });
+  const [questionsList, setQuestionsList] = useState([]);
 
+  //   const [questionsList, setQuestionsList] = useState([
+  //   {
+  //     QuestionId: 1,
+  //     QuestionCode: "BQ1",
+  //     QuestionName: "BQ1. দলের নাম (Group name)",
+  //     QuestionType: "Text",
+  //     IsMandatory: 1,
+  //     SortOrder: 1,
+  //   },
+  //   {
+  //     QuestionId: 2,
+  //     QuestionCode: "BQ2",
+  //     QuestionName: "BQ2. দলের প্রকারঃ (Value Chain)",
+  //     QuestionType: "Number",
+  //     IsMandatory: 1,
+  //     SortOrder: 2,
+  //   },
+  //   {
+  //     QuestionId: 3,
+  //     QuestionCode: "BQ3",
+  //     QuestionName: "BQ3. দলের আই,ডিঃ ( Group identity code)",
+  //     QuestionType: "Text",
+  //     IsMandatory: 0,
+  //     SortOrder: 3,
+  //   },
+  //   {
+  //     QuestionId: 4,
+  //     QuestionCode: "BQ4",
+  //     QuestionName: "BQ4. পিজি এর সদস্য সংখ্যা (Number of PG members)",
+  //     QuestionType: "Label",
+  //     IsMandatory: 0,
+  //     SortOrder: 4,
+  //   },
+  //   {
+  //     QuestionId: 5,
+  //     QuestionCode: "BQ4.1",
+  //     QuestionName: "পুরুষ / Male",
+  //     QuestionType: "Number",
+  //     IsMandatory: 0,
+  //     SortOrder: 5,
+  //   },
+  //   {
+  //     QuestionId: 6,
+  //     QuestionCode: "BQ4.2",
+  //     QuestionName: "নারী/Female",
+  //     QuestionType: "Number",
+  //     IsMandatory: 0,
+  //     SortOrder: 6,
+  //   },
+  //   {
+  //     QuestionId: 7,
+  //     QuestionCode: "BQ4.3",
+  //     QuestionName: "ট্রান্সজেন্ডার /Transgender",
+  //     QuestionType: "Number",
+  //     IsMandatory: 0,
+  //     SortOrder: 7,
+  //   },
+  //   {
+  //     QuestionId: 8,
+  //     QuestionCode: "BQ5",
+  //     QuestionName: "BQ5. পিজি গঠনের তারিখ (Date of the PG formation)",
+  //     QuestionType: "Date",
+  //     IsMandatory: 0,
+  //     SortOrder: 8,
+  //   },
+  //   {
+  //     QuestionId: 9,
+  //     QuestionCode: "BQ6",
+  //     QuestionName: "BQ6. গ্রাম/ওয়ার্ডঃ (Village/Ward)",
+  //     QuestionType: "Text",
+  //     IsMandatory: 0,
+  //     SortOrder: 9,
+  //   },
+  //   {
+  //     QuestionId: 10,
+  //     QuestionCode: "BQ7",
+  //     QuestionName: "BQ7. ইউনিয়ন/পৌরসভাঃ (Union/ Municipality)",
+  //     QuestionType: "Text",
+  //     IsMandatory: 0,
+  //     SortOrder: 10,
+  //   },
+  //   {
+  //     QuestionId: 11,
+  //     QuestionCode: "MQ1",
+  //     QuestionName: "MQ1. পিজি কি নিবন্ধিত? (Is the PG registered)",
+  //     QuestionType: "YesNO",
+  //     IsMandatory: 0,
+  //     SortOrder: 11,
+  //   },
+  //   {
+  //     QuestionId: 12,
+  //     QuestionCode: "MQ2",
+  //     QuestionName:
+  //       "MQ2. এই পিজির কি দৃশ্যমান জায়গায় সাইনবোর্ড আছে? (Does this have a signboard in a visible place?)",
+  //     QuestionType: "YesNO",
+  //     IsMandatory: 0,
+  //     SortOrder: 12,
+  //   },
+  //   {
+  //     QuestionId: 13,
+  //     QuestionCode: "MQ3",
+  //     QuestionName:
+  //       "MQ3. পিজি এর কি স্থায়ী অফিস আছে? (Does this PG have a permanent office?)",
+  //     QuestionType: "YesNO",
+  //     IsMandatory: 0,
+  //     SortOrder: 13,
+  //   },
+  //   {
+  //     QuestionId: 14,
+  //     QuestionCode: "MQ4",
+  //     QuestionName:
+  //       "MQ4. নিচের কোন অফিস সরঞ্জামাদি LDDP থেকে পেয়েছেন? (Which of the following main office equipment the PG have received from LDDP?)",
+  //     QuestionType: "MultiOption",
+  //     IsMandatory: 0,
+  //     SortOrder: 14,
+  //   },
+  //   {
+  //     QuestionId: 15,
+  //     QuestionCode: "MQ4.1",
+  //     QuestionName: "কম্পিউটার/ল্যাপটপ/প্রিন্টার",
+  //     QuestionType: "Check",
+  //     IsMandatory: 0,
+  //     SortOrder: 15,
+  //   },
+  //   {
+  //     QuestionId: 16,
+  //     QuestionCode: "MQ4.2",
+  //     QuestionName: "টেবিল চেয়ার",
+  //     QuestionType: "Check",
+  //     IsMandatory: 0,
+  //     SortOrder: 16,
+  //   },
+  //   {
+  //     QuestionId: 17,
+  //     QuestionCode: "MQ4.3",
+  //     QuestionName: "আলমারি/ফাইল কেবিনেট",
+  //     QuestionType: "Check",
+  //     IsMandatory: 0,
+  //     SortOrder: 17,
+  //   },
+  //   {
+  //     QuestionId: 16,
+  //     QuestionCode: "MQ4.4",
+  //     QuestionName: "অন্যান্য (উল্লেখ করুন)",
+  //     QuestionType: "CheckText",
+  //     IsMandatory: 0,
+  //     SortOrder: 16,
+  //   },
+  //   {
+  //     QuestionId: 17,
+  //     QuestionCode: "MQ6",
+  //     QuestionName:
+  //       "MQ6. পিজি এর কি নির্বাহী কমিটি আছে? (Does this PG have an executive committee?)",
+  //     QuestionType: "YesNo",
+  //     IsMandatory: 0,
+  //     SortOrder: 17,
+  //   },
+  //   {
+  //     QuestionId: 18,
+  //     QuestionCode: "MQ9",
+  //     QuestionName:
+  //       "MQ9. পিজি মিটিং কি নিয়মিত হয়? (Does PG meeting held on a regular basis?)",
+  //     QuestionType: "YesNo",
+  //     IsMandatory: 0,
+  //     SortOrder: 18,
+  //   },
+  //   {
+  //     QuestionId: 19,
+  //     QuestionCode: "MQ10",
+  //     QuestionName:
+  //       "MQ10. সর্বশেষ মিটিং এ কতজন সদস্য উপস্থিত ছিল? (How many members attended the last meeting?)",
+  //     QuestionType: "Text",
+  //     IsMandatory: 0,
+  //     SortOrder: 19,
+  //   },
+  //   {
+  //     QuestionId: 20,
+  //     QuestionCode: "MQ15",
+  //     QuestionName:
+  //       "MQ15. পিজির সদস্যদের কি সঞ্চয় পাস বই আছে? (Do the members of this PG have a savings passbook?)",
+  //     QuestionType: "YesNo",
+  //     IsMandatory: 0,
+  //     SortOrder: 20,
+  //   },
+  //   {
+  //     QuestionId: 21,
+  //     QuestionCode: "MQ16",
+  //     QuestionName:
+  //       "MQ16. মাসিক সঞ্চয়ের হার কত টাকা? (What is the rate of monthly savings in taka?)",
+  //     QuestionType: "Number",
+  //     IsMandatory: 0,
+  //     SortOrder: 21,
+  //   },
+  // ]);
+  // console.log("questionsList: ", questionsList);
 
   const { isLoading, data: dataList, error, ExecuteQuery } = ExecuteQueryHook(); //Fetch data master list
 
@@ -78,64 +270,58 @@ const PGDataCollection = (props) => {
   /* =====End of Excel Export Code==== */
 
   const newInvoice = () => {
+    console.log("dataTypeId: ", dataTypeId);
+
     setCurrentInvoice({
       id: "",
       DivisionId: UserInfo.DivisionId,
       DistrictId: UserInfo.DistrictId,
       UpazilaId: UserInfo.UpazilaId,
-      PGId: "",
       YearId: currentYear,
       QuarterId: currentQuarterId,
-      BQ1: "",
-      BQ2: "",
-      BQ3: "",
-      BQ4Male: "",
-      BQ4FeMale: "",
-      BQ4Transgender: "",
-      BQ5: "",
-      BQ6: "",
-      BQ7: "",
-      MQ1: "0",
-      MQ2: "0",
-      MQ3: "0",
-      MQ4: "",
-      MQ6: "0",
-      MQ9: "0",
-      MQ10: "",
-      MQ15: "0",
-      MQ16: "",
+      DataTypeId: dataTypeId,
+      PGId: "",
+      FarmerId: "",
       Remarks: "",
       DataCollectorName: "",
       DataCollectionDate: currentDate,
       UserId: UserInfo.UserId,
       BPosted: 0,
     });
+
+    setManyDataList([]);
   };
 
-  /**Get data for table list */
-  function getDataList() {
-    let params = {
-      action: "getDataList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-      DivisionId: UserInfo.DivisionId,
-      DistrictId: UserInfo.DistrictId,
-      UpazilaId: UserInfo.UpazilaId,
-    };
-    // console.log('LoginUserInfo params: ', params);
-
-    ExecuteQuery(serverpage, params);
-  }
-
   if (bFirst) {
+    if (dataTypeId === 1) {
+      setEntryFormTitle("গ্রুপের তথ্য সংগ্রহ ফরম (PG data collection form)");
+      setEntryFormSubTitle(
+        "ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data Collection and Storage)"
+      );
+    } else if (dataTypeId === 2) {
+      setEntryFormTitle("খামারীর তথ্য ফরম (Farmers Data Collection Form)");
+      setEntryFormSubTitle(
+        "ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data Collection and Storage)"
+      );
+    } else if (dataTypeId === 3) {
+      setEntryFormTitle(
+        "গ্ৰুপের তথ্য সংগ্রহ ফরম (Large Group Discussion Data)"
+      );
+      setEntryFormSubTitle(
+        "ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data Collection and Storage)"
+      );
+    }
+
     /**First time call for datalist */
     newInvoice();
 
-    getPgGroupList();
-    getQuarterList();
-    getYearList();
+    getQuestionList();
 
-    getDataList(); //invoice list
+    getPgGroupList();
+    getYearList();
+    getQuarterList();
+
+    // getDataList(); //invoice list
 
     setBFirst(false);
   }
@@ -143,6 +329,25 @@ const PGDataCollection = (props) => {
   function addData() {
     newInvoice();
     setListEditPanelToggle(false); // false = hide list and show add/edit panel
+  }
+
+  function getQuestionList() {
+    console.log("getQuestionList dataTypeId: ", dataTypeId);
+
+    let params = {
+      action: "getQuestionList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DataTypeId: dataTypeId,
+    };
+
+    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+      console.log("getQuestionList: ", res);
+
+      setQuestionsList(res.data.datalist); /**set question list */
+
+      getDataList(); //invoice list
+    });
   }
 
   function getPgGroupList() {
@@ -156,6 +361,8 @@ const PGDataCollection = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      console.log("res.data.datalist: ", res.data.datalist);
+
       setPgGroupList(
         [{ id: "", name: "পিজি গ্রুপ নির্বাচন করুন" }].concat(res.data.datalist)
       );
@@ -188,6 +395,22 @@ const PGDataCollection = (props) => {
         [{ id: "", name: "বছর নির্বাচন করুন" }].concat(res.data.datalist)
       );
     });
+  }
+
+  /**Get data for table list */
+  function getDataList() {
+    let params = {
+      action: "getDataList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DivisionId: UserInfo.DivisionId,
+      DistrictId: UserInfo.DistrictId,
+      UpazilaId: UserInfo.UpazilaId,
+      DataTypeId: dataTypeId,
+    };
+    // console.log('LoginUserInfo params: ', params);
+
+    ExecuteQuery(serverpage, params);
   }
 
   const masterColumnList = [
@@ -310,30 +533,29 @@ const PGDataCollection = (props) => {
     // console.log("dataListSingle: ", dataListSingle);
 
     if (dataListSingle.master) {
-      // console.log('dataListSingle: ', dataListSingle.master[0]);
-      let master = dataListSingle.master[0];
-      console.log('master: ', master);
-      console.log('master MQ4: ', master.MQ4);
-      if(master.MQ4 === null){
-        console.log(11111);
-      }else{
-        console.log(2222);
+      console.log("dataListSingle master: ", dataListSingle.master[0]);
 
-        // let str = 'aaaa,bbbbb,cccc';
+      // let master = dataListSingle.master[0];
+      // console.log("master: ", master);
+      // console.log("master MQ4: ", master.MQ4);
+      // if (master.MQ4 === null) {
+      //   console.log(11111);
+      // } else {
+      //   console.log(2222);
 
-        let MQ4List = master.MQ4.split(',');
-        MQ4List.forEach(element => {
-          console.log('element: ', element);
-          
-        });
-
-
-
-      }
-      // data["MQ4"] = MQ4;
-
+      //   let MQ4List = master.MQ4.split(",");
+      //   MQ4List.forEach((element) => {
+      //     console.log("element: ", element);
+      //   });
+      // }
 
       setCurrentInvoice(dataListSingle.master[0]);
+    }
+
+    if (dataListSingle.items) {
+      setManyDataList(dataListSingle.items);
+      console.log("dataListSingle items: ", dataListSingle.items);
+      // console.log('dataListSingle: ', dataListSingle.items[0]);
     }
   }, [dataListSingle]);
 
@@ -391,17 +613,19 @@ const PGDataCollection = (props) => {
   }
 
   const handleChangeMaster = (e) => {
-    console.log('e: ', e);
+    // console.log("e: ", e);
 
     const { name, value } = e.target;
+    // console.log("name, value: ", name, value);
     let data = { ...currentInvoice };
+    // data["Questions"][name] = value;
     data[name] = value;
-      setCurrentInvoice(data);
-    // console.log('data: ', data);
+    setCurrentInvoice(data);
+    console.log("data currentInvoice: ", data);
+    // const [currentInvoice, setCurrentInvoice] = useState([]); //this is for master information. It will send to sever for save
 
     setErrorObjectMaster({ ...errorObjectMaster, [name]: null });
   };
-
 
   function handleChangeCheckMaster(e) {
     // console.log('e.target.checked: ', e.target.checked);
@@ -410,60 +634,98 @@ const PGDataCollection = (props) => {
     let data = { ...currentInvoice };
     // data[name] = e.target.checked;
     // console.log('e.target.checked: ', e.target.checked);
-    
-    
-    if (
-      name === "MQ4_Computer" ||
-      name === "MQ4_TableChair" ||
-      name === "MQ4_Almira" ||
-      name === "MQ4_Other"
-    ) {
-      let MQ4Data = { ...MQ4Values };
 
-      for (const key in MQ4Data) {
-        if (name === key) {
-          if(e.target.checked){
-            MQ4Data[key] = value;
-          }else{
-            MQ4Data[key] = "";
-          }
-          
-        }
-      }
-
-      // console.log("MQ4Data after: ", MQ4Data);
-
-      let MQ4 = "";
-      for (const key in MQ4Data) {
-        if (MQ4Data[key] !== "") {
-          if (MQ4 !== "") {
-            MQ4 += ",";
-          }
-          MQ4 += MQ4Data[key];
-        }
-      }
-
-      data["MQ4"] = MQ4;
-      setMQ4Values(MQ4Data);
-      console.log('MQ4Data: ', MQ4Data);
-    }else{
-
-      data[name] = e.target.checked;
-
-    }
-
+    // data[name] = e.target.checked;
+    data[name] = e.target.checked;
+    // data["Questions"][name] = e.target.checked;
 
     setCurrentInvoice(data);
-    console.log('data: ', data);
-
+    console.log("data: ", data);
   }
 
   const handleChangeChoosenMaster = (name, value) => {
     let data = { ...currentInvoice };
     data[name] = value;
+
     setCurrentInvoice(data);
 
     setErrorObjectMaster({ ...errorObjectMaster, [name]: null });
+  };
+
+  const handleChangeMany = (e, cType = "") => {
+    console.log("cType: ", cType);
+    // console.log("e: ", e);
+
+    const { name, value } = e.target;
+    // console.log("name, value: ", name, value);
+    let data = { ...manyDataList };
+    // data["Questions"][name] = value;
+    if (cType === "CheckText" && value === "") {
+      data[name] = true;
+    } else {
+      data[name] = value;
+    }
+
+    setManyDataList(data);
+    console.log("data manyDataList: ", data);
+
+    setErrorObjectMany({ ...errorObjectMany, [name]: null });
+  };
+
+  function handleChangeCheckMany(e) {
+    // console.log('e.target.checked: ', e.target.checked);
+    const { name, value } = e.target;
+    console.log('name: ', name);
+    console.log('value: ', value);
+
+    let data = { ...manyDataList };
+    // data[name] = e.target.checked;
+    // console.log('e.target.checked: ', e.target.checked);
+
+    // data[name] = e.target.checked;
+    data[name] = e.target.checked;
+    // data["Questions"][name] = e.target.checked;
+
+    setManyDataList(data);
+    console.log("data manyDataList: ", data);
+  }
+
+
+  function handleChangeRadioMany(e,qName,questionParentId) {
+    // console.log('e.target.checked: ', e.target.checked);
+    // const { name, value } = e.target;
+    // console.log('name: ', qName);
+    // console.log('value: ', value);
+
+    let data = { ...manyDataList };
+
+      // console.log('questionsList: ', questionsList);
+
+    // data[name] = e.target.checked;
+    // console.log('e.target.checked: ', e.target.checked);
+
+    /**First false all option under this parent */
+    questionsList.map((question) => {
+      if (question.QuestionParentId === questionParentId) {
+        data[question.QuestionCode] = false;
+      }
+    });
+
+    // data[name] = e.target.checked;
+    data[qName] = e.target.checked; //set true only this option under this parent.
+
+    setManyDataList(data);
+    console.log("data manyDataList: ", data);
+  }
+
+  const handleChangeChoosenMany = (name, value) => {
+    let data = { ...manyDataList };
+    data[name] = value;
+
+    setManyDataList(data);
+    console.log("data manyDataList: ", data);
+
+    setErrorObjectMany({ ...errorObjectMany, [name]: null });
   };
 
   const validateFormMaster = () => {
@@ -483,6 +745,29 @@ const PGDataCollection = (props) => {
       }
     });
     setErrorObjectMaster(errorData);
+    return isValid;
+  };
+
+  const validateFormMany = () => {
+    let validateFields = [];
+    questionsList.map((question) => {
+      if (question.IsMandatory) {
+        validateFields.push(question.QuestionCode);
+      }
+    });
+
+    console.log("validateFields: ", validateFields);
+
+    let errorData = {};
+    let isValid = true;
+    validateFields.map((field) => {
+      if (!manyDataList[field]) {
+        errorData[field] = "validation-style";
+        isValid = false;
+      }
+    });
+    setErrorObjectMany(errorData);
+    console.log("errorData: ", errorData);
     return isValid;
   };
 
@@ -532,13 +817,17 @@ const PGDataCollection = (props) => {
       lan: language(),
       UserId: UserInfo.UserId,
       InvoiceMaster: currentInvoice,
+      InvoiceItems: manyDataList,
     };
+    console.log("params: ", params);
 
     addEditAPICall(params);
   }
 
   function addEditAPICall(params) {
-    if (validateFormMaster()) {
+    let validMaster = validateFormMaster();
+    let validMany = validateFormMany();
+    if (validMaster && validMany) {
       apiCall.post(serverpage, { params }, apiOption()).then((res) => {
         // console.log('res: ', res);
 
@@ -557,6 +846,12 @@ const PGDataCollection = (props) => {
           getDataSingleFromServer(currentInvoice.id);
         }
       });
+    } else {
+      props.openNoticeModal({
+        isOpen: true,
+        msg: "Please enter required fields.",
+        msgtype: 0,
+      });
     }
   }
 
@@ -564,9 +859,21 @@ const PGDataCollection = (props) => {
     <>
       <div class="bodyContainer">
         <div class="topHeader">
-          <h3>
-            Home ❯ Data Collection ❯ গ্রুপের তথ্য সংগ্রহ (PG data collection)
-          </h3>
+          {dataTypeId === 1 && (
+            <h3>
+              Home ❯ Data Collection ❯ গ্রুপের তথ্য সংগ্রহ (PG data collection)
+            </h3>
+          )}
+
+          {dataTypeId === 2 && (
+            <h3>
+              Home ❯ Data Collection ❯ খামারীর তথ্য (Farmers Data Collection)
+            </h3>
+          )}
+
+          {dataTypeId === 3 && (
+            <h3>Home ❯ Data Collection ❯ এলজিডি তথ্য (LGD Data Collection)</h3>
+          )}
         </div>
 
         {listEditPanelToggle && (
@@ -596,16 +903,11 @@ const PGDataCollection = (props) => {
 
         {!listEditPanelToggle && (
           <>
-            {/* <!-- ##########-----PRODUCT RECEIVED INPUT AREA----############  --> */}
             {!currentInvoice.BPosted && (
               <div class="subContainer inputArea">
-                {/* <!-- INPUR AREA PARTITION-1 INSERTION AREA --> */}
-
                 <div class="text-center">
-                  <h2>গ্রুপের তথ্য সংগ্রহ ফরম (PG data collection form)</h2>
-                  {/* <h2 className="subheader">
-                        Welcome LSP1 Savar, আপনার নির্ধারিত এলাকা (Your assigned area): Savar
-                      </h2> */}
+                  <h2>{entryFormTitle}</h2>
+                  {/* <h2>গ্রুপের তথ্য সংগ্রহ ফরম (PG data collection form)</h2> */}
                 </div>
 
                 <div
@@ -613,10 +915,11 @@ const PGDataCollection = (props) => {
                   id="areaPartion-x"
                 >
                   <div class="marginBottom text-center">
-                    <h4>
+                    <h4>{entryFormSubTitle}</h4>
+                    {/* <h4>
                       ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data
                       Collection and Storage)
-                    </h4>
+                    </h4> */}
                   </div>
 
                   <div class="formControl">
@@ -736,7 +1039,395 @@ const PGDataCollection = (props) => {
                     />
                   </div>
 
-                  <div class="formControl">
+                  {/* 
+Rubel */}
+
+                  {/* questionsList */}
+
+                  {/* menuList.forEach((menu, i) => {
+      if (menu.MenuKey === pMenuKey) {
+        isShow = 1;
+        return;
+      }
+    }); */}
+
+                  {/* <tr> */}
+                  {/* {Object.keys(questionsList).length} */}
+
+                  {questionsList.map((question) => {
+                    // console.log("question: ", question.QuestionType);
+                    // console.log("question: ", question.QuestionCode);
+
+                    // const sortIcon = () => {
+                    //   if (column.field === sort.orderBy) {
+                    //     if (sort.order === "asc") {
+                    //       return "⬆️";
+                    //     }
+                    //     return "⬇️";
+                    //   } else {
+                    //     return "️↕️";
+                    //   }
+                    // };
+
+                    if (question.QuestionType === "Label") {
+                      return (
+                        <>
+                          <div class="formControl">
+                            <label>
+                              {/* তথ্য সংগ্রহকারীর নামdddddddddd: (Name of data collector)*: */}
+                              {question.QuestionName}
+                            </label>
+                          </div>
+                        </>
+                      );
+                    } else if (
+                      question.QuestionType === "MultiOption" ||
+                      question.QuestionType === "MultiRadio"
+                    ) {
+                      return (
+                        <>
+                          <div class="formControl">
+                            <label>
+                              {/* তথ্য সংগ্রহকারীর নামdddddddddd: (Name of data collector)*: */}
+                              {question.QuestionName + ":"}
+                            </label>
+                          </div>
+                        </>
+                      );
+                    } else if (question.QuestionType === "Radio") {
+                      return (
+                        <>
+
+                          <div class="formControl">
+                            <label>
+                              {/* {question.QuestionName} */}
+                              {/* MQ4. নিচের কোন অফিস সরঞ্জামাদি LDDP থেকে পেয়েছেন?
+                              (Which of the following main office equipment the
+                              PG have received from LDDP?): */}
+                            </label>
+                            <div>
+                              <div class="checkbox-label">
+                                <input
+                                  type="radio"
+                                  id={question.QuestionCode}
+                                  //when name is same then this is consider radio group
+                                  name={question.QuestionParentId}
+                                  value={manyDataList[question.QuestionCode]}
+                                  checked={
+                                    manyDataList[question.QuestionCode] ===
+                                      "true" ||
+                                    manyDataList[question.QuestionCode] === true
+                                    ||
+                                    manyDataList[question.QuestionCode] === "1"
+                                  }
+                                  onChange={(e) => handleChangeRadioMany(e,question.QuestionCode,question.QuestionParentId)}
+                                />
+                                <label>{question.QuestionName}</label>
+                              </div>
+
+                            </div>
+                          </div>
+
+
+                        </>
+                      );
+                    } else if (question.QuestionType === "Number") {
+                      return (
+                        <>
+                          <div class="formControl">
+                            <label>
+                              {/* তথ্য সংগ্রহকারীর নামdddddddddd: (Name of data collector)*: */}
+                              {question.QuestionName +
+                                (question.IsMandatory ? "*" : "") +
+                                ":"}
+                            </label>
+
+                            <input
+                              type="number"
+                              id={question.QuestionCode}
+                              name={question.QuestionCode}
+                              class={
+                                question.IsMandatory
+                                  ? errorObjectMany[question.QuestionCode]
+                                  : ""
+                              }
+                              // value={manyDataList.BQ2}
+                              value={manyDataList[question.QuestionCode]}
+                              // value={eval("manyDataList."+question.QuestionCode)}
+                              onChange={(e) => handleChangeMany(e)}
+                            />
+                          </div>
+                        </>
+                      );
+                    } else if (question.QuestionType === "YesNo") {
+                      return (
+                        <>
+                          <div class="formControl">
+                            <label>
+                              {question.QuestionName +
+                                (question.IsMandatory ? "*" : "") +
+                                ":"}
+                              {/* MQ15. পিজির সদস্যদের কি সঞ্চয় পাস বই আছে? (Do the
+                              members of this PG have a savings passbook?): */}
+                            </label>
+                            <div
+                              className={
+                                question.IsMandatory
+                                  ? "radio-group " +
+                                    errorObjectMany[question.QuestionCode]
+                                  : "radio-group"
+                              }
+                            >
+                              <label className="radio-label">
+                                <input
+                                  type="radio"
+                                  id={question.QuestionCode}
+                                  name={question.QuestionCode}
+                                  value={true}
+                                  // class={question.IsMandatory ? errorObjectMany[question.QuestionCode] : ""}
+                                  checked={
+                                    manyDataList[question.QuestionCode] ===
+                                      "true" ||
+                                    manyDataList[question.QuestionCode] === true
+                                  }
+                                  onChange={(e) => handleChangeMany(e)}
+                                />
+                                Yes
+                              </label>
+
+                              <label className="radio-label">
+                                <input
+                                  type="radio"
+                                  id={question.QuestionCode}
+                                  name={question.QuestionCode}
+                                  value={false}
+                                  // class={question.IsMandatory ? errorObjectMany[question.QuestionCode] : ""}
+                                  checked={
+                                    manyDataList[question.QuestionCode] ===
+                                      "false" ||
+                                    manyDataList[question.QuestionCode] ===
+                                      false
+                                  }
+                                  onChange={(e) => handleChangeMany(e)}
+                                />
+                                No
+                              </label>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    } else if (question.QuestionType === "Check") {
+                      return (
+                        <>
+                          <div class="formControl">
+                            <label>
+                              {/* {question.QuestionName} */}
+                              {/* MQ4. নিচের কোন অফিস সরঞ্জামাদি LDDP থেকে পেয়েছেন?
+                              (Which of the following main office equipment the
+                              PG have received from LDDP?): */}
+                            </label>
+                            <div>
+                              <div class="checkbox-label">
+                                <input
+                                  type="checkbox"
+                                  id={question.QuestionCode}
+                                  name={question.QuestionCode}
+                                  // value="কম্পিউটার/ল্যাপটপ/প্রিন্টার"
+                                  value={manyDataList[question.QuestionCode]}
+                                  // checked={true}
+                                  checked={
+                                    manyDataList[question.QuestionCode] ===
+                                      "true" ||
+                                    manyDataList[question.QuestionCode] ===
+                                      true ||
+                                    manyDataList[question.QuestionCode] === "1"
+                                  }
+                                  onChange={(e) => handleChangeCheckMany(e)}
+                                />
+                                <label>{question.QuestionName}</label>
+                                {/* <label>কম্পিউটার/ল্যাপটপ/প্রিন্টার</label> */}
+                              </div>
+
+                              {/* <div class="checkbox-label">
+                                <input
+                                  type="checkbox"
+                                  id="MQ4_TableChair"
+                                  name="MQ4_TableChair"
+                                  value="টেবিল চেয়ার"
+                                  onChange={(e) => handleChangeCheckMaster(e)}
+                                />
+                                <label>টেবিল চেয়ার</label>
+                              </div>
+
+                              <div class="checkbox-label">
+                                <input
+                                  type="checkbox"
+                                  id="MQ4_Almira"
+                                  name="MQ4_Almira"
+                                  value="আলমারি/ফাইল কেবিনেট"
+                                  onChange={(e) => handleChangeCheckMaster(e)}
+                                />
+                                <label>আলমারি/ফাইল কেবিনেট</label>
+                              </div>
+
+                              <div class="checkbox-label">
+                                <input
+                                  type="checkbox"
+                                  id="MQ4_Other"
+                                  name="MQ4_Other"
+                                  value="অন্যান্য (উল্লেখ করুন)"
+                                  onChange={(e) => handleChangeCheckMaster(e)}
+                                />
+                                <label>অন্যান্য (উল্লেখ করুন)</label>
+                              </div> */}
+                            </div>
+                          </div>
+                        </>
+                      );
+                    } else if (question.QuestionType === "CheckText") {
+                      return (
+                        <>
+                          <div class="formControl">
+                            <label>
+                              {/* {question.QuestionName} */}
+                              {/* MQ4. নিচের কোন অফিস সরঞ্জামাদি LDDP থেকে পেয়েছেন?
+                              (Which of the following main office equipment the
+                              PG have received from LDDP?): */}
+                            </label>
+                            <div>
+                              <div class="checkbox-label">
+                                <input
+                                  type="checkbox"
+                                  id={question.QuestionCode}
+                                  name={question.QuestionCode}
+                                  // value="কম্পিউটার/ল্যাপটপ/প্রিন্টার"
+                                  // value={question.QuestionName}
+                                  //   value={manyDataList[question.QuestionCode]}
+                                  //   // checked={true}
+                                  //   checked={manyDataList[question.QuestionCode] === "true"
+                                  //   || manyDataList[question.QuestionCode] === true
+                                  // }
+                                  // value={manyDataList[question.QuestionCode]}
+
+                                  checked={
+                                    manyDataList[question.QuestionCode] !==
+                                      false &&
+                                    manyDataList[question.QuestionCode] !==
+                                      undefined
+                                  }
+                                  // checked={manyDataList[question.QuestionCode] === "true" || manyDataList[question.QuestionCode] === true}
+                                  onChange={(e) => handleChangeCheckMany(e)}
+                                />
+                                <label>{question.QuestionName}</label>
+                                {/* <label>কম্পিউটার/ল্যাপটপ/প্রিন্টার</label> */}
+
+                                {manyDataList[question.QuestionCode] && (
+                                  <input
+                                    type="text"
+                                    id={question.QuestionCode}
+                                    name={question.QuestionCode}
+                                    // id="BQ5"
+                                    // name="BQ5"
+                                    // value={currentInvoice.BQ5}
+                                    value={
+                                      manyDataList[question.QuestionCode] ===
+                                      true
+                                        ? ""
+                                        : manyDataList[question.QuestionCode]
+                                    }
+                                    onChange={(e) =>
+                                      handleChangeMany(e, "CheckText")
+                                    }
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    } else if (question.QuestionType === "Date") {
+                      return (
+                        <>
+                          <div class="formControl">
+                            <label>
+                              {/* BQ5. পিজি গঠনের তারিখ (Date of the PG formation): */}
+                              {question.QuestionName +
+                                (question.IsMandatory ? "*" : "") +
+                                ":"}
+                            </label>
+                            <input
+                              type="date"
+                              id={question.QuestionCode}
+                              name={question.QuestionCode}
+                              // id="BQ5"
+                              // name="BQ5"
+                              // value={currentInvoice.BQ5}
+                              class={
+                                question.IsMandatory
+                                  ? errorObjectMany[question.QuestionCode]
+                                  : ""
+                              }
+                              value={manyDataList[question.QuestionCode]}
+                              onChange={(e) => handleChangeMany(e)}
+                            />
+                          </div>
+                        </>
+                      );
+                    } else {
+                      return (
+                        <>
+                          <div class="formControl">
+                            <label>
+                              {/* তথ্য সংগ্রহকারীর নাম: (Name of data collector)*: */}
+                              {question.QuestionName +
+                                (question.IsMandatory ? "*" : "") +
+                                ":"}
+                            </label>
+
+                            <input
+                              type="text"
+                              id={question.QuestionCode}
+                              name={question.QuestionCode}
+                              class={
+                                question.IsMandatory
+                                  ? errorObjectMany[question.QuestionCode]
+                                  : ""
+                              }
+                              // value={currentInvoice.DataCollectorName}
+                              value={manyDataList[question.QuestionCode]}
+                              onChange={(e) => handleChangeMany(e)}
+                            />
+                          </div>
+
+                          {/* {column.visible && (
+                      <th
+                        key={column.field}
+                        style={{ textAlign: column.align, width: column.width }}
+                      >
+                        <span>{column.label}</span>
+
+                        {column.sort && (
+                          <button
+                            class="btn-table-sort"
+                            onClick={() => handleSort(column.field)}
+                          >
+                            {sortIcon()}
+                          </button>
+                        )}
+                      </th>
+                    )} */}
+                        </>
+                      );
+                    }
+                  })}
+
+                  {/* </tr> */}
+
+                  {/* {
+                    "========================================================================="
+                  } */}
+
+                  {/* <div class="formControl">
                     <label>BQ1. দলের নাম (Group name):</label>
                     <input
                       type="text"
@@ -1092,7 +1783,7 @@ const PGDataCollection = (props) => {
                       <label className="radio-label">
                         <input
                           type="radio"
-                          id="MQ15"
+                          id="MQ15qqq"
                           name="MQ15"
                           value="0"
                           checked={currentInvoice.MQ15 === "0"}
@@ -1117,7 +1808,7 @@ const PGDataCollection = (props) => {
                       value={currentInvoice.MQ16}
                       onChange={(e) => handleChangeMaster(e)}
                     />
-                  </div>
+                  </div> */}
 
                   <div class="formControl">
                     <label> মন্তব্য (Remarks):</label>
@@ -1134,7 +1825,6 @@ const PGDataCollection = (props) => {
 
                   <div class="formControl">
                     <label>
-                      {" "}
                       তথ্য সংগ্রহকারীর নাম: (Name of data collector)*:
                     </label>
 
@@ -1150,7 +1840,6 @@ const PGDataCollection = (props) => {
 
                   <div class="formControl">
                     <label>
-                      {" "}
                       তথ্য সংগ্রহের তারিখঃ (Date of data collection)*:
                     </label>
 
@@ -1187,4 +1876,4 @@ const PGDataCollection = (props) => {
   );
 };
 
-export default PGDataCollection;
+export default PGDataCollectionEntry;

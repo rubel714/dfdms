@@ -17,6 +17,10 @@ switch($task){
 		$returnData = PgGroupList($data);
 		break;
 	
+	case "FarmerList":
+		$returnData = FarmerList($data);
+		break;
+	
 	case "QuarterList":
 		$returnData = QuarterList($data);
 		break;
@@ -102,7 +106,43 @@ function PgGroupList($data) {
 	return $returnData;
 }
 
-   
+  
+function FarmerList($data) {
+	try{
+
+		$DivisionId = trim($data->DivisionId);
+		$DistrictId = trim($data->DistrictId);
+		$UpazilaId = trim($data->UpazilaId);
+		$PGId = trim($data->PGId);
+
+
+		$dbh = new Db();
+		
+		$query = "SELECT `FarmerId` id,
+			concat(`FarmerName`,'-',NID,'-',Phone) `name`
+			FROM t_farmer  
+			WHERE DivisionId=$DivisionId 
+			AND DistrictId=$DistrictId
+			AND UpazilaId=$UpazilaId
+			AND (PGId=$PGId OR $PGId=0)
+		ORDER BY FarmerName;"; 
+	
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+ 
  
 function QuarterList($data) {
 	try{

@@ -14,13 +14,17 @@ import Index from "views/Index.js";
 import LoginPage from "views/screens/LoginPage.js";
 import CheckPermission from "views/screens/CheckPermission.js";
 
-import UserRole from "views/screens/userrole/index.js";
 import DataType from "views/screens/datatype/index.js";
+import UserRole from "views/screens/userrole/index.js";
+import RoleToMenuPermissionEntry from "views/screens/roletomenupermissionentry/index.js";
+
+import PGDataCollectionEntry from "views/screens/datacollectionentry/index.js";
+import FarmersDataCollectionEntry from "views/screens/datacollectionentry/indexfarmer.js";
+import LGDDataCollectionEntry from "views/screens/datacollectionentry/indexlgd.js";
+
 import PGDataCollection from "views/screens/pgdatacollection/index.js";
-import PGDataCollectionEntry from "views/screens/pgdatacollectionentry/index.js";
 import FarmersDataCollection from "views/screens/farmersdatacollection/index.js";
 import DataFromLGD from "views/screens/datafromlgd/index.js";
-import RoleToMenuPermissionEntry from "views/screens/roletomenupermissionentry/index.js";
 
 import UserContextProvider from "./context/user-info-context";
 
@@ -49,31 +53,38 @@ ReactDOM.render(
             path="/check-permission"
             render={(props) => <CheckPermission {...props} />}
           />
-          <Route path="/userrole" render={(props) => <UserRole {...props} />} />
 
           <Route path="/datatype" render={(props) => <DataType {...props} />} />
+          <Route path="/userrole" render={(props) => <UserRole {...props} />} />
+          <Route
+            path="/roletomenupermissionentry"
+            render={(props) => <RoleToMenuPermissionEntry {...props} />}
+          />
+
           <Route
             path="/pgdatacollection"
             render={(props) => <PGDataCollection {...props} />}
           />
-           <Route
+          <Route
             path="/pgdatacollectionentry"
             render={(props) => <PGDataCollectionEntry {...props} />}
-          /> 
+          />
+          <Route
+            path="/farmersdatacollectionentry"
+            render={(props) => <FarmersDataCollectionEntry {...props} />}
+          />
+          <Route
+            path="/lgddatacollectionentry"
+            render={(props) => <LGDDataCollectionEntry {...props} />}
+          />
 
           <Route
             path="/farmersdatacollection"
             render={(props) => <FarmersDataCollection {...props} />}
           />
-
-        <Route
+          <Route
             path="/datafromlgd"
             render={(props) => <DataFromLGD {...props} />}
-          />
-
-          <Route
-            path="/roletomenupermissionentry"
-            render={(props) => <RoleToMenuPermissionEntry {...props} />}
           />
 
           <Route path="/" render={(props) => <Index {...props} />} />

@@ -143,16 +143,7 @@ function AfterLoginNavbar(props) {
                   <ul class="dropdownList">
 
 
-                  {menuShowPermision("pgdatacollection") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("pgdatacollection")}
-                        >
-                          PG Data Collection
-                        </a>
-                      </li>
-                    )}
+               
 
 
                   {menuShowPermision("pgdatacollectionentry") === 1 && (
@@ -166,6 +157,40 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+                  {menuShowPermision("farmersdatacollectionentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("farmersdatacollectionentry")}
+                        >
+                          Farmers Data Collection Entry
+                        </a>
+                      </li>
+                    )}
+
+
+                  {menuShowPermision("lgddatacollectionentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("lgddatacollectionentry")}
+                        >
+                          LGD Data Collection Entry
+                        </a>
+                      </li>
+                    )}
+
+
+                  {menuShowPermision("pgdatacollection") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("pgdatacollection")}
+                        >
+                          PG Data Collection
+                        </a>
+                      </li>
+                    )}
 
                   {menuShowPermision("farmersdatacollection") === 1 && (
                       <li>
@@ -177,8 +202,6 @@ function AfterLoginNavbar(props) {
                         </a>
                       </li>
                     )}
-
-
                     
                   {menuShowPermision("datafromlgd") === 1 && (
                       <li>
@@ -186,7 +209,7 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("datafromlgd")}
                         >
-                          Data From LGD
+                          LGD Data Collection
                         </a>
                       </li>
                     )}
