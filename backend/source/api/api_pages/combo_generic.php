@@ -34,7 +34,18 @@ switch($task){
 		$returnData = RoleList($data);
 		break;
 	
+	case "DivisionList":
+		$returnData = DivisionList($data);
+		break;
 	
+	case "DistrictList":
+		$returnData = DistrictList($data);
+		break;
+
+	case "UpazilaList":
+		$returnData = UpazilaList($data);
+		break;
+
 		
 	// case "NextInvoiceNumber":
 	// 	$returnData = NextInvoiceNumber($data);
@@ -204,6 +215,85 @@ function RoleList($data) {
 	 			 	FROM `t_roles` 
 					ORDER BY RoleName;"; 
 	
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
+
+function DivisionList($data) {
+	try{
+	
+		$dbh = new Db();
+		$query = "SELECT DivisionId id, DivisionName `name` FROM t_division ORDER BY DivisionName;"; 
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function DistrictList($data) {
+	try{
+	
+		$dbh = new Db();
+
+		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+		$query = "SELECT DistrictId id, DistrictName `name` FROM t_district 
+			where DivisionId=$DivisionId
+			ORDER BY DistrictName;"; 
+
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function UpazilaList($data) {
+	try{
+	
+		$dbh = new Db();
+
+		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+		$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
+
+
+		$query = "SELECT UpazilaId id, UpazilaName `name` FROM t_upazila 
+			where DivisionId=$DivisionId
+			AND DistrictId=$DistrictId
+			ORDER BY UpazilaName;"; 
+
 		$resultdata = $dbh->query($query);
 
 		$returnData = [
