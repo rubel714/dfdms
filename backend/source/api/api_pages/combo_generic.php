@@ -46,7 +46,10 @@ switch($task){
 		$returnData = UpazilaList($data);
 		break;
 
-		
+	case "QuestionTypeList":
+		$returnData = QuestionTypeList($data);
+		break;
+	
 	// case "NextInvoiceNumber":
 	// 	$returnData = NextInvoiceNumber($data);
 	// 	break;
@@ -254,6 +257,7 @@ function DivisionList($data) {
 	return $returnData;
 }
 
+
 function DistrictList($data) {
 	try{
 	
@@ -310,6 +314,46 @@ function UpazilaList($data) {
 	return $returnData;
 }
 
+
+
+function QuestionTypeList($data) {
+	try{
+	
+		$dbh = new Db();
+		/* $query = "SELECT DivisionId id, DivisionName `name` FROM t_division ORDER BY DivisionName;"; 
+		$resultdata = $dbh->query($query); 
+		print_r($resultdata);
+		exit; */
+	
+		$jsonData = '[
+			{"id":"Label","name":"Label"},
+			{"id":"Text","name":"Text"},
+			{"id":"Number","name":"Number"},
+			{"id":"Date","name":"Date"},
+			{"id":"MultiOption","name":"MultiOption"},
+			{"id":"YesNo","name":"YesNo"},
+			{"id":"Check","name":"Check"},
+			{"id":"CheckText","name":"CheckText"},
+			{"id":"DropDown","name":"DropDown"},
+			{"id":"MultiRadio","name":"MultiRadio"},
+			{"id":"Radio","name":"Radio"}
+		]';
+
+		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
    
 // function NextInvoiceNumber($data) {
 // 	try{
