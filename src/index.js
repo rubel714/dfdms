@@ -25,6 +25,8 @@ import LGDDataCollectionEntry from "views/screens/datacollectionentry/indexlgd.j
 import PGDataCollection from "views/screens/pgdatacollection/index.js";
 import FarmersDataCollection from "views/screens/farmersdatacollection/index.js";
 import DataFromLGD from "views/screens/datafromlgd/index.js";
+import PgEntryForm from "views/screens/pgentryform/index.js";
+import QuestionsEntry from "views/screens/questionsentry/index.js";
 
 import UserContextProvider from "./context/user-info-context";
 
@@ -85,6 +87,14 @@ ReactDOM.render(
           <Route
             path="/datafromlgd"
             render={(props) => <DataFromLGD {...props} />}
+          />
+          <Route
+            path="/pgentryform"
+            render={(props) => <PgEntryForm {...props} />}
+          />
+          <Route
+            path="/questionsentry"
+            render={(props) => <QuestionsEntry {...props} />}
           />
 
           <Route path="/" render={(props) => <Index {...props} />} />

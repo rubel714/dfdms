@@ -46,6 +46,9 @@ const PgEntryFormAddEditModal = (props) => {
         [{ id: "", name: "Select Division" }].concat(res.data.datalist)
       );
 
+/*       setErrorObject({ ...errorObject, ["DistrictId"]: null });
+      setErrorObject({ ...errorObject, ["UpazilaId"]: null }); */
+
       setCurrDivisionId(selectDivisionId);
 
       getDistrict(

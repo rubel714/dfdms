@@ -129,6 +129,28 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+                  {menuShowPermision("pgentryform") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("pgentryform")}
+                        >
+                          PG Entry
+                        </a>
+                      </li>
+                    )}
+
+                {menuShowPermision("questionsentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("questionsentry")}
+                        >
+                          Question Entry
+                        </a>
+                      </li>
+                    )}
+
 
                   </ul>
                 </li>
