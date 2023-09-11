@@ -172,6 +172,7 @@ const PgEntryFormAddEditModal = (props) => {
                   type="text"
                   id="QuestionCode"
                   name="QuestionCode"
+                  disabled={currentRow.QuestionCode?true:false}
                   class={errorObject.QuestionCode}
                   placeholder="Enter Code"
                   value={currentRow.QuestionCode}
