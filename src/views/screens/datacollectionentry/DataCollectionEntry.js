@@ -37,7 +37,21 @@ const DataCollectionEntry = (props) => {
 
   const [currentDate, setCurrentDate] = useState(moment().format("YYYY-MM-DD"));
   const [currentYear, setCurrentYear] = useState(moment().format("YYYY"));
-  const [currentQuarterId, setcurrentQuarterId] = useState(3);
+
+  let curMonthId = parseInt(moment().format("MM"));
+  let defaultMonthId = 1;
+  if(curMonthId <= 3){
+    defaultMonthId = 1;
+  }else if(curMonthId <= 6){
+    defaultMonthId = 2;
+  }else if(curMonthId <= 9){
+    defaultMonthId = 3;
+  }else{
+    defaultMonthId = 4;
+  }
+  // console.log('curMonthId: ', parseInt(curMonthId));
+
+  const [currentQuarterId, setcurrentQuarterId] = useState(defaultMonthId);
   const [dataTypeId, setDataTypeId] = useState(props.DataTypeId);
 
   const [errorObjectMaster, setErrorObjectMaster] = useState({});
@@ -1367,7 +1381,7 @@ Rubel */}
                                   ? errorObjectMany[question.QuestionCode]
                                   : ""
                               }
-                              value={manyDataList[question.QuestionCode]}
+                              value={manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:""}
                               onChange={(e) => handleChangeMany(e)}
                             />
                           </div>
@@ -1394,7 +1408,7 @@ Rubel */}
                                   : ""
                               }
                               // value={currentInvoice.DataCollectorName}
-                              value={manyDataList[question.QuestionCode]}
+                              value={manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:""}
                               onChange={(e) => handleChangeMany(e)}
                             />
                           </div>
