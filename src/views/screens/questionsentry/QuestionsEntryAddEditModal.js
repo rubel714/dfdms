@@ -213,7 +213,7 @@ const PgEntryFormAddEditModal = (props) => {
                   type="text"
                   id="Settings"
                   name="Settings"
-                  placeholder="Settings"
+                  placeholder="Enter Settings"
                   value={currentRow.Settings}
                   onChange={(e) => handleChange(e)}
                 />
