@@ -17,7 +17,7 @@ import {
 } from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
-const PGDataCollectionEntry = (props) => {
+const DataCollectionEntry = (props) => {
   // console.log("props.DataTypeId: ", props.DataTypeId);
   const serverpage = "datacollection"; // this is .php server page
 
@@ -1876,4 +1876,4 @@ Rubel */}
   );
 };
 
-export default PGDataCollectionEntry;
+export default DataCollectionEntry;

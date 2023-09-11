@@ -5,7 +5,7 @@ import AfterLoginNavbar from "components/Navbars/AfterLoginNavbar";
 import Notification from "../../../services/Notification"; 
 import {checkLogin, checkUserPermission} from "../../../services/CheckUserAccess";
 import DarkFooter from "../../../components/Footers/DarkFooter.js";
-import PGDataCollectionEntry from "./PGDataCollectionEntry";
+import DataCollectionEntry from "./DataCollectionEntry";
 import "../../../assets/css/pgdatacollection.css";
 
 // receive.css
@@ -51,7 +51,7 @@ const Index = (props) => {
           <Route
             path={`${path}/`}
             render={(props) => (
-              <PGDataCollectionEntry {...props} openNoticeModal={openNoticeModal} DataTypeId={3} />
+              <DataCollectionEntry {...props} openNoticeModal={openNoticeModal} DataTypeId={3} />
             )}
           ></Route>
         </Switch>
