@@ -42,6 +42,7 @@
 .modal input[type=checkbox] {
     height: 18px;
     width: 18px;
+    margin-top: 5px;
 }
 
 
@@ -113,6 +114,7 @@
     grid-template-columns: 18% 35% 17% 30%;
     row-gap: 8px;
 }
+
 
 .contactmodalBody :nth-child(5) {
     grid-column: 1;
@@ -208,4 +210,11 @@
 .productSettings input {
     height: 20px !important;
     font-size: .8rem !important;
+}
+
+
+.contactmodalBodyLearge {
+    display: grid;
+    grid-template-columns: 18% 82% 17% 30%;
+    row-gap: 8px;
 }

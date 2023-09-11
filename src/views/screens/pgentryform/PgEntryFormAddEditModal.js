@@ -316,7 +316,7 @@ const PgEntryFormAddEditModal = (props) => {
           </div>
 
           <div class="contactmodalBody pt-10">
-              <label>Address</label>
+              <label>Address *</label>
                     <textarea 
                       id="Address"
                       name="Address"

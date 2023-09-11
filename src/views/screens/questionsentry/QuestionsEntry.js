@@ -39,7 +39,7 @@ const QuestionsEntry = (props) => {
 
 
   const columnList = [
-    { field: "rownumber", label: "SL", align: "center", width: "5%" },
+    { field: "rownumber", label: "SL", align: "center", width: "3%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
     {
       field: "QuestionCode",
@@ -48,7 +48,7 @@ const QuestionsEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "1%",
     },
    
     {
@@ -67,7 +67,7 @@ const QuestionsEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "15%",
+      width: "2%",
     },
     {
       field: "Settings",
@@ -76,7 +76,7 @@ const QuestionsEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "15%",
+      width: "2%",
     },
     {
       field: "IsMandatoryName",
@@ -85,7 +85,7 @@ const QuestionsEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "15%",
+      width: "2%",
     },
     {
       field: "custom",

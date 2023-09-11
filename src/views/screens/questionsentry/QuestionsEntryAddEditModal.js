@@ -172,25 +172,12 @@ const PgEntryFormAddEditModal = (props) => {
                   type="text"
                   id="QuestionCode"
                   name="QuestionCode"
-                  disabled={currentRow.QuestionCode?true:false}
+                  disabled={currentRow.id?true:false}
                   class={errorObject.QuestionCode}
                   placeholder="Enter Code"
                   value={currentRow.QuestionCode}
                   onChange={(e) => handleChange(e)}
                 />
-
-
-               <label>Question *</label>
-                <input
-                  type="text"
-                  id="QuestionName"
-                  name="QuestionName"
-                  class={errorObject.QuestionName}
-                  placeholder="Enter Question"
-                  value={currentRow.QuestionName}
-                  onChange={(e) => handleChange(e)}
-                />
-
 
 
                <label>Question Type *</label>
@@ -207,31 +194,71 @@ const PgEntryFormAddEditModal = (props) => {
                     })}
                 </select>
 
-          
-                <label>Settings </label>
-                <input
-                  type="text"
-                  id="Settings"
-                  name="Settings"
-                  placeholder="Enter Settings"
-                  value={currentRow.Settings}
-                  onChange={(e) => handleChange(e)}
-                />
+                </div>
+
+
+          <div class="contactmodalBodyLearge pt-10">
+              <label>Question *</label>
+                    <textarea 
+                      id="QuestionName"
+                      name="QuestionName"
+                      class={errorObject.QuestionName}
+                      value={currentRow.QuestionName}
+                      onChange={(e) => handleChange(e)}
+                    >
+              </textarea>
+          </div>
+              {/* 
+                <div class="contactmodalBody ">
+                              
+                            <label>Question *</label>
+                              <input
+                                type="text"
+                                id="QuestionName"
+                                name="QuestionName"
+                                class={errorObject.QuestionName}
+                                placeholder="Enter Question"
+                                value={currentRow.QuestionName}
+                                onChange={(e) => handleChange(e)}
+                              />
+
+              </div> */}
+
+
+              <div class="contactmodalBody pt-10 ">
+                    <label>Settings </label>
+                    <input
+                      type="text"
+                      id="Settings"
+                      name="Settings"
+                      placeholder="Enter Settings"
+                      value={currentRow.Settings}
+                      onChange={(e) => handleChange(e)}
+                    />
 
           
+
+                  <label> Is Mandatory?</label>
+                  <input
+                    id="IsMandatory"
+                    name="IsMandatory"
+                    type="checkbox"
+                    checked={currentRow.IsMandatory}
+                    onChange={handleChangeCheck}
+                  />
 
           </div>
 
-          <div class="contactmodalBody modalItem">
-            <label> Is Mandatory?</label>
-              <input
-                id="IsMandatory"
-                name="IsMandatory"
-                type="checkbox"
-                checked={currentRow.IsMandatory}
-                onChange={handleChangeCheck}
-              />
-          </div>
+            {/*  <div class="contactmodalBody modalItem">
+                <label> Is Mandatory?</label>
+                  <input
+                    id="IsMandatory"
+                    name="IsMandatory"
+                    type="checkbox"
+                    checked={currentRow.IsMandatory}
+                    onChange={handleChangeCheck}
+                  />
+              </div> */}
 
 
 
