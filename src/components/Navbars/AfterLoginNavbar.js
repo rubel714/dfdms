@@ -101,7 +101,30 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("datatype")}
                         >
-                          Data Type
+                          Data Form Type
+                        </a>
+                      </li>
+                    )}
+
+                  {menuShowPermision("pgentryform") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("pgentryform")}
+                        >
+                          PG Entry
+                        </a>
+                      </li>
+                    )}
+
+
+                  {menuShowPermision("questionsentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("questionsentry")}
+                        >
+                          Question Entry
                         </a>
                       </li>
                     )}
@@ -124,32 +147,13 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("roletomenupermissionentry")}
                         >
-                          Role to Menu Permission Entry
+                          Role to Menu Permission
                         </a>
                       </li>
                     )}
 
-                  {menuShowPermision("pgentryform") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("pgentryform")}
-                        >
-                          PG Entry
-                        </a>
-                      </li>
-                    )}
+                  
 
-                {menuShowPermision("questionsentry") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("questionsentry")}
-                        >
-                          Question Entry
-                        </a>
-                      </li>
-                    )}
 
 
                   </ul>
@@ -179,7 +183,7 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
-                  {menuShowPermision("farmersdatacollectionentry") === 1 && (
+                  {/* {menuShowPermision("farmersdatacollectionentry") === 1 && (
                       <li>
                         <a
                           href="javascript:void(0)"
@@ -188,10 +192,10 @@ function AfterLoginNavbar(props) {
                           Farmers Data Collection Entry
                         </a>
                       </li>
-                    )}
+                    )} */}
 
 
-                  {menuShowPermision("lgddatacollectionentry") === 1 && (
+                  {/* {menuShowPermision("lgddatacollectionentry") === 1 && (
                       <li>
                         <a
                           href="javascript:void(0)"
@@ -200,9 +204,9 @@ function AfterLoginNavbar(props) {
                           LGD Data Collection Entry
                         </a>
                       </li>
-                    )}
+                    )} */}
 
-
+{/* 
                   {menuShowPermision("pgdatacollection") === 1 && (
                       <li>
                         <a
@@ -234,7 +238,7 @@ function AfterLoginNavbar(props) {
                           LGD Data Collection
                         </a>
                       </li>
-                    )}
+                    )} */}
 
 
                   </ul>
