@@ -31,17 +31,20 @@ function getDataList($data){
 
 
 		$query = "SELECT 
-			`QuestionId` id,
-			`QuestionCode`,
-			`QuestionName`,
-			`QuestionType`,
-			`Settings`,
-			`IsMandatory`,
-			`QuestionParentId`,
-			`SortOrderChild`
-			, case when IsMandatory=1 then 'Mandatory' else 'Not Mandatory' end IsMandatoryName
-		FROM `t_questions`
-		ORDER BY QuestionName ASC;";
+			tq.`QuestionId` id,
+			tq. QuestionId,
+			tq.`QuestionCode`,
+			tq.`QuestionName`,
+			tq.`QuestionType`,
+			tq.`Settings`,
+			tq.`IsMandatory`,
+			tq.`QuestionParentId`,
+			tq.`SortOrderChild`,
+			tp.`QuestionName` AS ParentQuestionName
+			, case when tq.IsMandatory=1 then 'Yes' else 'No' end IsMandatoryName
+		FROM `t_questions` tq
+		LEFT JOIN `t_questions` tp ON tq.`QuestionParentId` = tp.`QuestionId`
+		ORDER BY tq.QuestionName ASC;";
 		
 		$resultdata = $dbh->query($query);
 		
@@ -77,6 +80,7 @@ function dataAddEdit($data) {
 		$QuestionType = $data->rowData->QuestionType;
 		$Settings = isset($data->rowData->Settings) && ($data->rowData->Settings !== "") ? $data->rowData->Settings : NULL;
 		$IsMandatory = isset($data->rowData->IsMandatory) ? $data->rowData->IsMandatory : 0;
+		$QuestionParentId = isset($data->rowData->QuestionParentId) ? $data->rowData->QuestionParentId : 0;
 		
 
 
@@ -97,8 +101,8 @@ function dataAddEdit($data) {
 
 				$q = new insertq();
 				$q->table = 't_questions';
-				$q->columns = ['QuestionName','QuestionCode','QuestionType','Settings','IsMandatory','SortOrderChild'];
-				$q->values = [$QuestionName,$QuestionCode,$QuestionType,$Settings,$IsMandatory,$SortOrderChild];
+				$q->columns = ['QuestionName','QuestionCode','QuestionType','Settings','IsMandatory','SortOrderChild','QuestionParentId'];
+				$q->values = [$QuestionName,$QuestionCode,$QuestionType,$Settings,$IsMandatory,$SortOrderChild, $QuestionParentId];
 				$q->pks = ['QuestionId'];
 				$q->bUseInsetId = false;
 				$q->build_query();
@@ -106,8 +110,8 @@ function dataAddEdit($data) {
 			}else{
 				$u = new updateq();
 				$u->table = 't_questions';
-				$u->columns = ['QuestionName','QuestionType','Settings','IsMandatory'];
-				$u->values = [$QuestionName,$QuestionType,$Settings,$IsMandatory];
+				$u->columns = ['QuestionName','QuestionType','Settings','IsMandatory','QuestionParentId'];
+				$u->values = [$QuestionName,$QuestionType,$Settings,$IsMandatory,$QuestionParentId];
 				$u->pks = ['QuestionId'];
 				$u->pk_values = [$QuestionId];
 				$u->build_query();

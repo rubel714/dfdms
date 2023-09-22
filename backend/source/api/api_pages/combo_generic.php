@@ -34,6 +34,10 @@ switch($task){
 		$returnData = RoleList($data);
 		break;
 	
+	case "ParentQuestionList":
+		$returnData = ParentQuestionList($data);
+		break;
+	
 	case "DivisionList":
 		$returnData = DivisionList($data);
 		break;
@@ -218,6 +222,32 @@ function RoleList($data) {
 	 			 	FROM `t_roles` 
 					ORDER BY RoleName;"; 
 	
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+ 
+function ParentQuestionList($data) {
+	try{
+
+		$dbh = new Db();
+		
+		$query = "SELECT `QuestionId` id,`QuestionName` `name`
+			FROM `t_questions`
+			WHERE `QuestionType` IN ('MultiOption', 'MultiRadio')
+		ORDER BY QuestionName;"; 
+		
 		$resultdata = $dbh->query($query);
 
 		$returnData = [

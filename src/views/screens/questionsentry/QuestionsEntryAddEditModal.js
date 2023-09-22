@@ -13,12 +13,15 @@ const PgEntryFormAddEditModal = (props) => {
   const [questionTypeList, setQuestionTypeList] = useState(null);
   const [currQuestionType, setCurrQuestionType] = useState(null);
 
+  const [parentQuestionList, setParentQuestionList] = useState(null);
+  const [currParentQuestion, setCurrParentQuestion] = useState(null);
+
   React.useEffect(() => {
     getQuestionType(
       props.currentRow.QuestionType
     );
+    getParentQuestion(!props.currentRow.id?"":props.currentRow.QuestionParentId);
 
-   
     //getStrengthList();
     //getManufacturerList();
   }, []);
@@ -38,6 +41,33 @@ const PgEntryFormAddEditModal = (props) => {
       );
 
       setCurrQuestionType(selectQuestionType);
+
+
+
+
+    });
+  }
+
+  function getParentQuestion(
+    selectParentQuestion
+  ) {
+    let params = {
+      action: "ParentQuestionList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setParentQuestionList(
+        [{ id: "", name: "Select Parent Question" }].concat(res.data.datalist)
+      );
+
+
+      //getParentQuestion(!props.currentRow.id?"":props.currentRow.QuestionId);
+
+       //console.log("aaaaaaaaa === ",selectParentQuestion);
+
+       setCurrParentQuestion(selectParentQuestion);
 
 
 
@@ -72,6 +102,16 @@ const PgEntryFormAddEditModal = (props) => {
     if (name === "QuestionType") {
       setCurrQuestionType(value);
 
+      if((value === 'Label') || (value === 'MultiOption') || (value === 'MultiRadio') ){
+        data['IsMandatory'] = false; 
+
+      }
+      
+
+
+    } 
+    if (name === "QuestionParentId") {
+      setCurrParentQuestion(value);
 
     } 
   };
@@ -198,6 +238,23 @@ const PgEntryFormAddEditModal = (props) => {
 
 
           <div class="contactmodalBodyLearge pt-10">
+              <label>Parent Question</label>
+              <select
+                  id="QuestionParentId"
+                  name="QuestionParentId"
+                  class={errorObject.QuestionParentId}
+                  value={currParentQuestion}
+                  onChange={(e) => handleChange(e)}
+                >
+                  {parentQuestionList &&
+                    parentQuestionList.map((item, index) => {
+                      return <option value={item.id}>{item.name}</option>;
+                    })}
+                </select>
+          </div>
+
+
+          <div class="contactmodalBodyLearge pt-10">
               <label>Question *</label>
                     <textarea 
                       id="QuestionName"
@@ -236,13 +293,14 @@ const PgEntryFormAddEditModal = (props) => {
                       onChange={(e) => handleChange(e)}
                     />
 
-          
+
 
                   <label> Is Mandatory?</label>
                   <input
                     id="IsMandatory"
                     name="IsMandatory"
                     type="checkbox"
+                    disabled={currQuestionType === 'Label' || currQuestionType === 'MultiOption' || currQuestionType === 'MultiRadio' || currentRow.currQuestionType === 'Label' || currentRow.currQuestionType === 'MultiOption' || currentRow.currQuestionType === 'MultiRadio'?true:false}
                     checked={currentRow.IsMandatory}
                     onChange={handleChangeCheck}
                   />
