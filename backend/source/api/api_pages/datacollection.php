@@ -91,7 +91,7 @@ function getQuestionList($data)
 		// ORDER BY b.SortOrder ASC, a.SortOrderChild ASC;";
 
 		$query = "SELECT a.`QuestionId`, a.`QuestionCode`, a.`QuestionName`, a.`QuestionType`, 
-		a.`IsMandatory`, a.`QuestionParentId`, b.`SortOrder`, 0 SortOrderChild
+		a.`IsMandatory`, a.`QuestionParentId`, b.`SortOrder`, 0 SortOrderChild,a.Settings
 		FROM t_questions a
 		INNER JOIN t_datatype_questions_map b ON a.QuestionId=b.QuestionId
 		WHERE b.DataTypeId = $DataTypeId
@@ -101,7 +101,7 @@ function getQuestionList($data)
 		SELECT child.`QuestionId`, child.`QuestionCode`, child.`QuestionName`, child.`QuestionType`, 
 		child.`IsMandatory`, child.`QuestionParentId`, 
 		(SELECT s.SortOrder FROM t_datatype_questions_map s WHERE s.QuestionId=child.QuestionParentId) `SortOrder`, 
-		child.SortOrderChild
+		child.SortOrderChild,child.Settings
 		FROM t_questions AS child
 		INNER JOIN t_datatype_questions_map AS m ON child.QuestionParentId=m.QuestionId
 		WHERE child.QuestionParentId != 0 AND m.DataTypeId = $DataTypeId
@@ -109,12 +109,42 @@ function getQuestionList($data)
 		ORDER BY SortOrder ASC, SortOrderChild ASC;";
 
 		$resultdata = $dbh->query($query);
+		$datalist=array();
+		foreach($resultdata as $row){
+
+			if($row["QuestionType"] === "DropDown"){
+				$Settings = $row["Settings"];
+
+				$sq = "SELECT QueryStatic FROM t_questiondropdown 
+				where DropdownName='$Settings';"; 
+				$sqr = $dbh->query($sq);
+
+				$Settingsdata = array();
+				if($sqr){
+					$Settingsquery = $sqr[0]["QueryStatic"]; 
+					$Settingsdata = $dbh->query($Settingsquery);
+				}
+
+				array_unshift($Settingsdata,array("id"=>"","name"=>"নির্বাচন করুন"));
+				// $Settingsdata[] = array("id"=>"","name"=>"নির্বাচন করুন");
+
+				// $Settingsquery = "SELECT DesignationId as id, DesignationName as name 
+				// FROM t_designation order by DesignationName"; 
+				$row["SettingsList"]=$Settingsdata;
+
+			}else{
+				$row["SettingsList"]=[];
+				
+			}
+
+			$datalist[] = $row;
+		}
 
 		$returnData = [
 			"success" => 1,
 			"status" => 200,
 			"message" => "",
-			"datalist" => $resultdata
+			"datalist" => $datalist
 		];
 	} catch (PDOException $e) {
 		$returnData = msg(0, 500, $e->getMessage());

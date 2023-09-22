@@ -183,7 +183,7 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
-                  {/* {menuShowPermision("farmersdatacollectionentry") === 1 && (
+                  {menuShowPermision("farmersdatacollectionentry") === 1 && (
                       <li>
                         <a
                           href="javascript:void(0)"
@@ -192,10 +192,10 @@ function AfterLoginNavbar(props) {
                           Farmers Data Collection Entry
                         </a>
                       </li>
-                    )} */}
+                    )}
 
 
-                  {/* {menuShowPermision("lgddatacollectionentry") === 1 && (
+                  {menuShowPermision("lgddatacollectionentry") === 1 && (
                       <li>
                         <a
                           href="javascript:void(0)"
@@ -204,7 +204,7 @@ function AfterLoginNavbar(props) {
                           LGD Data Collection Entry
                         </a>
                       </li>
-                    )} */}
+                    )}
 
 {/* 
                   {menuShowPermision("pgdatacollection") === 1 && (

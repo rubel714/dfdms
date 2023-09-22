@@ -405,6 +405,7 @@ const DataCollectionEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      // console.log('res: ', res);
       setYearList(
         [{ id: "", name: "বছর নির্বাচন করুন" }].concat(res.data.datalist)
       );
@@ -742,6 +743,7 @@ const DataCollectionEntry = (props) => {
     setErrorObjectMany({ ...errorObjectMany, [name]: null });
   };
 
+
   const validateFormMaster = () => {
     let validateFields = [
       "YearId",
@@ -1071,7 +1073,8 @@ Rubel */}
                   {questionsList.map((question) => {
                     // console.log("question: ", question.QuestionType);
                     // console.log("question: ", question.QuestionCode);
-
+                    // (manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:"")
+                    console.log('question.QuestionCode: ',    (manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:"999"));
                     // const sortIcon = () => {
                     //   if (column.field === sort.orderBy) {
                     //     if (sort.order === "asc") {
@@ -1385,6 +1388,62 @@ Rubel */}
                               onChange={(e) => handleChangeMany(e)}
                             />
                           </div>
+                        </>
+                      );
+                    } else if (question.QuestionType === "DropDown") {
+                      return (
+                        <>
+                        <div class="formControl chosen_dropdown">
+                          <label>
+                              {question.QuestionName +
+                                (question.IsMandatory ? "*" : "") +
+                                ":"}
+                          </label>
+                          <Autocomplete
+                            autoHighlight
+                            // freeSolo
+                            className="chosen_dropdown"
+                            id={question.QuestionCode}
+                            name={question.QuestionCode}
+                            autoComplete
+                            // class={errorObjectMaster.PGId}
+                            class={
+                              question.IsMandatory
+                                ? errorObjectMany[question.QuestionCode]
+                                : ""
+                            }
+                            // options={pgGroupList ? pgGroupList : []}
+                            options={question.SettingsList ? question.SettingsList : []}
+                            getOptionLabel={(option) => option.name}
+                            // value={selectedSupplier}
+                            value={
+                              question.SettingsList
+                                ? question.SettingsList[
+                                  question.SettingsList.findIndex(
+                                      (list) => list.id == (manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:"")
+                                    )
+                                  ]
+                                : null
+                            }
+                            // value={manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:""}
+
+                            onChange={(event, valueobj) =>
+                              handleChangeChoosenMany(
+                                question.QuestionCode,
+                                valueobj ? valueobj.id : ""
+                              )
+                            }
+                            renderOption={(option) => (
+                              <Typography className="chosen_dropdown_font">
+                                {option.name}
+                              </Typography>
+                            )}
+                            renderInput={(params) => (
+                              <TextField {...params} variant="standard" fullWidth />
+                            )}
+                          />
+                        </div>
+                       
                         </>
                       );
                     } else {
