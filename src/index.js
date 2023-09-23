@@ -27,6 +27,7 @@ import FarmersDataCollection from "views/screens/farmersdatacollection/index.js"
 import DataFromLGD from "views/screens/datafromlgd/index.js";
 import PgEntryForm from "views/screens/pgentryform/index.js";
 import QuestionsEntry from "views/screens/questionsentry/index.js";
+import UserEntry from "views/screens/userentry/index.js";
 
 import UserContextProvider from "./context/user-info-context";
 
@@ -61,6 +62,11 @@ ReactDOM.render(
           <Route
             path="/roletomenupermissionentry"
             render={(props) => <RoleToMenuPermissionEntry {...props} />}
+          />
+
+          <Route
+            path="/userentry"
+            render={(props) => <UserEntry {...props} />}
           />
 
           <Route

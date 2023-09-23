@@ -53,6 +53,10 @@ switch($task){
 	case "QuestionTypeList":
 		$returnData = QuestionTypeList($data);
 		break;
+
+	case "DesignationList":
+		$returnData = DesignationList($data);
+		break;
 	
 	// case "NextInvoiceNumber":
 	// 	$returnData = NextInvoiceNumber($data);
@@ -384,6 +388,34 @@ function QuestionTypeList($data) {
 	
 	return $returnData;
 }
+
+
+
+function DesignationList($data) {
+	try{
+
+		$dbh = new Db();
+
+		$query = "SELECT `DesignationId` id,`DesignationName` `name`
+	 			 	FROM `t_designation` 
+					ORDER BY DesignationName;"; 
+	
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+ 
    
 // function NextInvoiceNumber($data) {
 // 	try{
