@@ -149,8 +149,12 @@ const PgEntryFormAddEditModal = (props) => {
     //for dependancy
     if (name === "DivisionId") {
       setCurrDivisionId(value);
+
+      setCurrDistrictId("");
+      setCurrUpazilaId("");
       getDistrict(value, "", "");
       getUpazila(value, "", "");
+ 
 
     } else if (name === "DistrictId") {
       setCurrDistrictId(value);
@@ -198,6 +202,20 @@ const PgEntryFormAddEditModal = (props) => {
   function addEditAPICall(){
 
     if (validateForm()) {
+
+        // Check if DistrictId is ""
+        if (currDistrictId === "") {
+          // Display an error or show a message indicating that District is required
+          setErrorObject({ ...errorObject, ["DistrictId"]: "validation-style" });
+          return; // Return early without proceeding with the update
+        }
+
+        // Check if UpazilaId is ""
+        if (currUpazilaId === "") {
+          // Display an error or show a message indicating that Upazila is required
+          setErrorObject({ ...errorObject, ["UpazilaId"]: "validation-style" });
+          return; // Return early without proceeding with the update
+        }
 
       let params = {
         action: "dataAddEdit",
