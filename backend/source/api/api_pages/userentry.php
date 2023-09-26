@@ -34,7 +34,7 @@ function getDataList($data){
 		$query = "SELECT a.UserId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`UserName`, 
 		a.Password,
 		a.LoginName, a.`Email`, b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`,
-		a.`IsActive`, case when a.IsActive=1 then 'Yes' else 'No' end IsActiveName, a.DesignationId, DesignationName
+		a.`IsActive`, case when a.IsActive=1 then 'Yes' else 'No' end IsActiveName, a.DesignationId, e.DesignationName
 			FROM `t_users` a
 			LEFT JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
 			LEFT JOIN t_district c ON a.`DistrictId` = c.`DistrictId`

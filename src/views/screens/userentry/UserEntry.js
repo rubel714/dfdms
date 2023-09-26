@@ -66,8 +66,8 @@ const UserEntry = (props) => {
       filter: true,
     },
     {
-      field: "Designation",
-      label: "DesignationName",
+      field: "DesignationName",
+      label: "Designation",
       align: "left",
       visible: true,
       width: "15%",
