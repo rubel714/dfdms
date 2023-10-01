@@ -73,7 +73,7 @@ function DataTypeList($data) {
 	try{
 
 		$dbh = new Db();
-		$query = "SELECT DataTypeId id, DataTypeName `name` FROM t_datatype  ORDER BY DataTypeName;"; 
+		$query = "SELECT DataTypeId id, DataTypeName `name` FROM t_datatype  ORDER BY id ASC;"; 
 		$resultdata = $dbh->query($query);
 
 		$returnData = [

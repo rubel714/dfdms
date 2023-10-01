@@ -163,6 +163,17 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+                    {menuShowPermision("datatypequestionsmap") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("datatypequestionsmap")}
+                        >
+                          Data Type Questions Map
+                        </a>
+                      </li>
+                    )}
+
                   
 
 

@@ -28,6 +28,7 @@ import DataFromLGD from "views/screens/datafromlgd/index.js";
 import PgEntryForm from "views/screens/pgentryform/index.js";
 import QuestionsEntry from "views/screens/questionsentry/index.js";
 import UserEntry from "views/screens/userentry/index.js";
+import DatatypeQuestionsMap from "views/screens/datatypequestionsmap/index.js";
 
 import UserContextProvider from "./context/user-info-context";
 
@@ -67,6 +68,10 @@ ReactDOM.render(
           <Route
             path="/userentry"
             render={(props) => <UserEntry {...props} />}
+          />
+          <Route
+            path="/datatypequestionsmap"
+            render={(props) => <DatatypeQuestionsMap {...props} />}
           />
 
           <Route

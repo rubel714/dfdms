@@ -8,7 +8,10 @@ function CustomTable({
   actioncontrol,
   ispagination = true,
   params = {},
+  handleRowClick,
+  selectedRows = [], // Provide a default value to avoid undefined
 }) {
+
   // const columns2 = [
   //   { field: 'rownumber', label: 'SL' ,align:'center',width:'5%'},
   //   // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
@@ -105,6 +108,8 @@ function CustomTable({
     setFilters({});
   };
 
+
+
   return (
     <>
       {/* <div className="bodyContainer"> */}
@@ -182,8 +187,86 @@ function CustomTable({
           <tbody>
             {calculatedRows.length > 0 &&
               calculatedRows.map((row, rowsl) => {
-                return (
-                  <tr key={row.id}>
+
+                // Assuming this part is inside your map function
+                  {
+                    if (handleRowClick) {
+                      return (
+                        <tr
+                          key={row.id}
+                          className={selectedRows.includes(row) ? 'selected-row' : ''}
+                          onClick={() => {
+                            handleRowClick(row);
+                          }}
+                        >
+                          {columns.map((column, i) => {
+                            if (columns[i].visible) {
+                              if (column.field === "custom") {
+                                return (
+                                  <td
+                                    key={column.field}
+                                    style={{ textAlign: columns[i].align }}
+                                  >
+                                    {actioncontrol(row)}
+                                  </td>
+                                );
+                              }
+                              return (
+                                <td
+                                  key={column.field}
+                                  style={{ textAlign: columns[i].align }}
+                                >
+                                  {column.field === "rownumber"
+                                    ? (activePage - 1) * rowsPerPage + (rowsl + 1)
+                                    : (column.type === "number"
+                                        ? new Intl.NumberFormat('hi-IN').format(row[column.field])
+                                        : row[column.field])}
+                                </td>
+                              );
+                            }
+                          })}
+                        </tr>
+                      );
+                    } else {
+                      // Render a basic row without the onClick handler
+                      return (
+                        <tr key={row.id}>
+                          {columns.map((column, i) => {
+                            if (columns[i].visible) {
+                              if (column.field === "custom") {
+                                return (
+                                  <td
+                                    key={column.field}
+                                    style={{ textAlign: columns[i].align }}
+                                  >
+                                    {actioncontrol(row)}
+                                  </td>
+                                );
+                              }
+                              return (
+                                <td
+                                  key={column.field}
+                                  style={{ textAlign: columns[i].align }}
+                                >
+                                  {column.field === "rownumber"
+                                    ? (activePage - 1) * rowsPerPage + (rowsl + 1)
+                                    : (column.type === "number"
+                                        ? new Intl.NumberFormat('hi-IN').format(row[column.field])
+                                        : row[column.field])}
+                                </td>
+                              );
+                            }
+                          })}
+                        </tr>
+                      );
+                    }
+                  }
+
+
+
+                /* return (
+                    <tr key={row.id}>
+                    
                     {columns.map((column, i) => {
                       if (columns[i].visible) {
                         // if (column.format) {
@@ -227,7 +310,7 @@ function CustomTable({
                       }
                     })}
                   </tr>
-                );
+                ); */
               })}
           </tbody>
         </table>
