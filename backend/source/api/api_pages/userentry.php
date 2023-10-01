@@ -34,7 +34,7 @@ function getDataList($data){
 		$query = "SELECT a.UserId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`UserName`, 
 		a.Password,
 		a.LoginName, a.`Email`, b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`,
-		a.`IsActive`, case when a.IsActive=1 then 'Yes' else 'No' end IsActiveName, a.DesignationId, DesignationName
+		a.`IsActive`, case when a.IsActive=1 then 'Yes' else 'No' end IsActiveName, a.DesignationId, e.DesignationName
 			FROM `t_users` a
 			LEFT JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
 			LEFT JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
@@ -82,7 +82,8 @@ function dataAddEdit($data) {
 		$DesignationId = $data->rowData->DesignationId;
 		$IsActive = $data->rowData->IsActive ? $data->rowData->IsActive : 0;
 
-
+		$Cpassword =  empty($data->rowData->Password) ?  '':$data->rowData->Password;	
+		$PhotoUrl = 'rubel.jpg';
 
 		try{
 
@@ -92,8 +93,8 @@ function dataAddEdit($data) {
 			if($id == ""){
 				$q = new insertq();
 				$q->table = 't_users';
-				$q->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId'];
-				$q->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId];
+				$q->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId','PhotoUrl'];
+				$q->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId,$PhotoUrl];
 				$q->pks = ['UserId'];
 				$q->bUseInsetId = false;
 				$q->build_query();
@@ -101,8 +102,17 @@ function dataAddEdit($data) {
 			}else{
 				$u = new updateq();
 				$u->table = 't_users';
-				$u->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId'];
-				$u->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId];
+
+					if($Cpassword != ''){
+						$u->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId'];
+						$u->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId];
+						
+					}else{
+						$u->columns = ['UserName','LoginName','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId'];
+						$u->values = [$UserName,$LoginName,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId];
+				
+					}
+
 				$u->pks = ['UserId'];
 				$u->pk_values = [$id];
 				$u->build_query();

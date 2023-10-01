@@ -204,16 +204,31 @@ const UserEntryAddEditModal = (props) => {
 
   
   const validateForm = () => {
+    console.log("--------",currentRow);
 
     // let validateFields = ["UserName", "DiscountAmount", "DiscountPercentage"]
-    let validateFields = [
-      "UserName",
-      "LoginName",
-      "Password",
-      "Email",
-      "DesignationId",
+    let validateFields = [];
+    if(currentRow["id"]){
+       validateFields = [
+        "UserName",
+        "LoginName",
+        "Email",
+        "DesignationId",
+  
+      ]
 
-    ]
+    }else{
+       validateFields = [
+        "UserName",
+        "LoginName",
+        "Password",
+        "Email",
+        "DesignationId",
+  
+      ]
+
+    }
+  
     let errorData = {}
     let isValid = true
     validateFields.map((field) => {
@@ -221,6 +236,17 @@ const UserEntryAddEditModal = (props) => {
         errorData[field] = "validation-style";
         isValid = false
       }
+
+        let InEdit = '';
+        if(currentRow["id"]){
+          InEdit = currentRow["id"];
+        }else{
+          InEdit = '';
+        }
+
+        if(InEdit){
+          errorData["Password"] = '';
+        }
 
 
           //-----start confirm change password-----
@@ -430,7 +456,7 @@ const UserEntryAddEditModal = (props) => {
                     />
 
 
-                  <label>Confirm Password *</label>
+                  <label>Confirm Password</label>
                     <input
                       id="confirmChangePassword"
                       name="confirmChangePassword"
