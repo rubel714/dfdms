@@ -8,7 +8,6 @@ import DarkFooter from "../../../components/Footers/DarkFooter.js";
 import DataCollectionEntry from "./DataCollectionEntry";
 import "../../../assets/css/pgdatacollection.css";
 
-// receive.css
 const Index = (props) => {
   const { path } = useRouteMatch();
   const menukey = "pgdatacollection"; // this is in t_menu table

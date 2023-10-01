@@ -1452,6 +1452,7 @@ Rubel */}
                           <div class="formControl">
                             <label>
                               {/* তথ্য সংগ্রহকারীর নাম: (Name of data collector)*: */}
+                              
                               {question.QuestionName +
                                 (question.IsMandatory ? "*" : "") +
                                 ":"}
