@@ -82,7 +82,8 @@ function dataAddEdit($data) {
 		$DesignationId = $data->rowData->DesignationId;
 		$IsActive = $data->rowData->IsActive ? $data->rowData->IsActive : 0;
 
-
+		$Cpassword =  empty($data->rowData->Password) ?  '':$data->rowData->Password;	
+		$PhotoUrl = 'rubel.jpg';
 
 		try{
 
@@ -92,8 +93,8 @@ function dataAddEdit($data) {
 			if($id == ""){
 				$q = new insertq();
 				$q->table = 't_users';
-				$q->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId'];
-				$q->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId];
+				$q->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId','PhotoUrl'];
+				$q->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId,$PhotoUrl];
 				$q->pks = ['UserId'];
 				$q->bUseInsetId = false;
 				$q->build_query();
@@ -101,8 +102,17 @@ function dataAddEdit($data) {
 			}else{
 				$u = new updateq();
 				$u->table = 't_users';
-				$u->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId'];
-				$u->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId];
+
+					if($Cpassword != ''){
+						$u->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId'];
+						$u->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId];
+						
+					}else{
+						$u->columns = ['UserName','LoginName','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId'];
+						$u->values = [$UserName,$LoginName,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId];
+				
+					}
+
 				$u->pks = ['UserId'];
 				$u->pk_values = [$id];
 				$u->build_query();
