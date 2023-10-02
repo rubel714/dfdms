@@ -285,7 +285,7 @@ const DatatypeQuestionsMap = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            <a href="#">Home</a> ❯ Admin ❯ Data Type Questions Map
+           Home ❯ Admin ❯ Data Type Questions Map
           </h4>
         </div>
 
