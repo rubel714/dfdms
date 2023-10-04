@@ -195,7 +195,7 @@ const DataType = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            <a href="#">Home</a> ❯ Admin ❯ Data Type
+            Home ❯ Admin ❯ Data Type
           </h4>
         </div>
 

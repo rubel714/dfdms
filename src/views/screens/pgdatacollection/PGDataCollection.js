@@ -564,9 +564,9 @@ const PGDataCollection = (props) => {
     <>
       <div class="bodyContainer">
         <div class="topHeader">
-          <h3>
+          <h4>
             Home ❯ Data Collection ❯ গ্রুপের তথ্য সংগ্রহ (PG data collection)
-          </h3>
+          </h4>
         </div>
 
         {listEditPanelToggle && (

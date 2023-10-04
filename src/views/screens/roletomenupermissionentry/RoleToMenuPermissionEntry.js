@@ -273,9 +273,9 @@ const RoleToMenuPermissionEntry = (props) => {
     <>
       <div class="bodyContainer">
         <div class="topHeader">
-          <h3>
+          <h4>
             Home ❯ Admin ❯ Role to Menu Permission
-          </h3>
+          </h4>
         </div>
 
         {listEditPanelToggle && (

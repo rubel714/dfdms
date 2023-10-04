@@ -460,7 +460,7 @@ const UserEntryAddEditModal = (props) => {
                     <input
                       id="confirmChangePassword"
                       name="confirmChangePassword"
-                      type="text"
+                      type="Password"
                       class={errorObject.confirmChangePassword}
                       placeholder="Enter Confirm Password"
                       value={currentRow.confirmChangePassword}

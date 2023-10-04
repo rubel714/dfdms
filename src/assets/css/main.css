@@ -403,7 +403,7 @@ tr:nth-child(odd) {
     /* background-color: var(--primary-color);
     margin-right: 20px; */
     background-color: var(--btnAdd-color);
-    margin: 10px auto;
+   /* margin: 10px auto;*/
     padding: 5px;
     border-radius: 5px;
     color: brown;

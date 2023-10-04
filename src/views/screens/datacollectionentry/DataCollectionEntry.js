@@ -876,19 +876,19 @@ const DataCollectionEntry = (props) => {
       <div class="bodyContainer">
         <div class="topHeader">
           {dataTypeId === 1 && (
-            <h3>
+            <h4>
               Home ❯ Data Collection ❯ গ্রুপের তথ্য সংগ্রহ (PG data collection)
-            </h3>
+            </h4>
           )}
 
           {dataTypeId === 2 && (
-            <h3>
+            <h4>
               Home ❯ Data Collection ❯ খামারীর তথ্য (Farmers Data Collection)
-            </h3>
+            </h4>
           )}
 
           {dataTypeId === 3 && (
-            <h3>Home ❯ Data Collection ❯ এলজিডি তথ্য (LGD Data Collection)</h3>
+            <h4>Home ❯ Data Collection ❯ এলজিডি তথ্য (LGD Data Collection)</h4>
           )}
         </div>
 
