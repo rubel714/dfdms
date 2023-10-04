@@ -382,7 +382,7 @@ tr:nth-child(odd) {
     margin: 25px;
     display: grid;
     grid-template-columns: 1fr 2fr;
-    grid-row-gap: 8px;
+    grid-row-gap: 8px; 
 }
 
 .userLogin input[type=text],
@@ -392,12 +392,27 @@ tr:nth-child(odd) {
     border: var(--input-border);
     border-radius: 4px;
     padding: 4px;
+    margin-bottom: 10px; /* Adjust as needed */
+    width: 100%;
 }
 .userLogin label{
     font-size: .8rem;
     padding-top: 6px;
     padding-right: 8px;
 }
+
+.userLogin i {
+    margin-bottom: 10px;
+    top: 50%;
+    right: 5px;
+    background-color: rgb(231, 243, 255);
+    padding: 8px;
+    cursor: pointer;
+    margin-top: 0px;
+    border: 1px solid #ccc; /* Add border */
+    border-top-right-radius: 4px; /* Adjust the radius as needed */
+    border-bottom-right-radius: 4px; /* Adjust the radius as needed */
+  }
 
 .btnLogin{
     /* background-color: var(--primary-color);
@@ -408,6 +423,10 @@ tr:nth-child(odd) {
     border-radius: 5px;
     color: brown;
     cursor: pointer;
+    width: 60px;
+}
+.btnLoginDiv{
+    margin: 0px 0px 15px 0px;
 }
 .loginContainer span{
     color: black;
@@ -579,4 +598,8 @@ input {
 
 .MuiInput-underline:after {
     display: none !important;
+}
+
+.MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon .MuiAutocomplete-inputRoot {
+    padding-right: 2px !important;
 }

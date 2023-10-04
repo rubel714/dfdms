@@ -108,6 +108,16 @@ function LoginPage(props) {
     setBFirst(false);
   }
 
+  const [passwordShown, setPasswordShown] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordShown(!passwordShown);
+  };
+
+  const togglePasswordVisiblity = () => {
+    setPasswordShown(passwordShown ? false : true);
+  };
+
   return (
     <>
       {isLoading && <LoadingSpinnerOpaque />}
@@ -119,7 +129,7 @@ function LoginPage(props) {
           <div class="loginHeader">
             <h3>User Login</h3>
           </div>
-          <div class="userLogin">
+          {/* <div class="userLogin">
 
             <label>User Name</label>
             <input
@@ -130,14 +140,58 @@ function LoginPage(props) {
             />
             <label>Password</label>
             <input
-              type="password"
+              //type="password"
+              type={passwordShown ? "text" : "password"}
               id="password"
               name="password"
               onChange={(e) => handleChange(e)}
             />
-          </div>
 
-          <Button label={"Login"} class={"btnLogin"} onClick={LoginPage} />
+            <i
+              onClick={togglePasswordVisiblity}
+              //className="fa fa-eye"
+              className={`fa ${passwordShown ? 'fa-eye-slash' : 'fa-eye'}`}
+              aria-hidden="true"
+              style={{ cursor: 'pointer' }}
+            ></i>
+          </div> */}
+
+
+            <div className="userLogin">
+              <label>User Name</label>
+                <input 
+                  type="text" 
+                  id="email" 
+                  name="email"
+                  onChange={(e) => handleChange(e)} 
+                />
+                
+              <label>Password</label>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <input
+                  type={passwordShown ? 'text' : 'password'}
+                  id="password"
+                  name="password"
+                  onChange={(e) => handleChange(e)}
+                  
+                />
+                
+                <i
+                  onClick={togglePasswordVisibility}
+                  className={`fa ${passwordShown ? 'fa-eye-slash' : 'fa-eye'}`}
+                  aria-hidden="true"
+                  
+                ></i>
+              </div>
+
+            </div>
+
+              <div class={"btnLoginDiv"} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Button label={"Login"} class={"btnLogin"} onClick={LoginPage} style={{ marginTop: '0px', marginBottom: '5px' }} />
+               </div>
+
+            
+          
 
          {/* <span>
             * If you forget your password, contact your with Administrator
