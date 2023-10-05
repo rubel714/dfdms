@@ -44,7 +44,7 @@ function getDataList($data){
 			, case when tq.IsMandatory=1 then 'Yes' else 'No' end IsMandatoryName
 		FROM `t_questions` tq
 		LEFT JOIN `t_questions` tp ON tq.`QuestionParentId` = tp.`QuestionId`
-		ORDER BY tq.QuestionName ASC;";
+		ORDER BY tq.`QuestionCode`, tq.`SortOrderChild` ;";
 		
 		$resultdata = $dbh->query($query);
 		

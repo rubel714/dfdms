@@ -146,6 +146,10 @@ button{
     cursor: pointer;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 button:hover {
     background-color: var(--secondary-color);
     color: white;

@@ -97,7 +97,7 @@ const RoleToMenuPermissionEntry = (props) => {
     },
     {
       field: "custom",
-      label: "Action",
+      label: "Access",
       width: "5%",
       align: "center",
       visible: true,
@@ -113,7 +113,30 @@ const RoleToMenuPermissionEntry = (props) => {
       <>
 
       
-        {rowData.bChecked === 0 && (
+          {rowData.bChecked === 0 && (
+            <span
+              //className={"table-edit-icon"}
+              className={"table-delete-icon clickable"}
+              onClick={() => {
+                assignData(rowData);
+              }}
+            >
+              No
+            </span>
+          )}
+
+          {rowData.bChecked === 1 && (
+            <span
+              className={"clickable"}
+              onClick={() => {
+                deleteData(rowData);
+              }}
+            >
+              Yes
+            </span>
+          )}
+
+        {/* {rowData.bChecked === 0 && (
           <Edit
             className={"table-edit-icon"}
             onClick={() => {
@@ -129,7 +152,7 @@ const RoleToMenuPermissionEntry = (props) => {
               deleteData(rowData);
             }}
           />
-        )}
+        )} */}
 
         {/* {rowData.BPosted === 1 && (
           <ViewList
@@ -151,7 +174,10 @@ const RoleToMenuPermissionEntry = (props) => {
 
 
   const deleteData = (rowData) => {
-    swal({
+
+    deleteApi(rowData);
+
+    /* swal({
       title: "Are you sure?",
       text: "You want to un-assign this menu!",
       icon: "warning",
@@ -176,7 +202,7 @@ const RoleToMenuPermissionEntry = (props) => {
       if (allowAction) {
         deleteApi(rowData);
       }
-    });
+    }); */
   };
 
   function deleteApi(rowData) {
@@ -214,8 +240,9 @@ const RoleToMenuPermissionEntry = (props) => {
       return;
     }
 
+    assignApi(rowData);
 
-    swal({
+    /* swal({
       title: "Are you sure?",
       text: "You want to assign menu to this role!",
       icon: "warning",
@@ -240,7 +267,7 @@ const RoleToMenuPermissionEntry = (props) => {
       if (allowAction) {
         assignApi(rowData);
       }
-    });
+    }); */
   };
 
   function assignApi(rowData) {
