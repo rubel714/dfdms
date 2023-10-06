@@ -67,7 +67,7 @@ const QuestionsEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "2%",
+      width: "7%",
     },
     {
       field: "ParentQuestionName",
@@ -76,7 +76,7 @@ const QuestionsEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "5%",
+      width: "30%",
     },
     {
       field: "Settings",
