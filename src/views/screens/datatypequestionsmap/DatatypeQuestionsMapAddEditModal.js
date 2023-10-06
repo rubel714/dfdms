@@ -50,6 +50,7 @@ const DatatypeQuestionsMapAddEditModal = (props) => {
       visible: true,
       sort: true,
       filter: true,
+      width:'7%',
     },
     
   ];

@@ -38,7 +38,7 @@ function getDataList($data){
 
 	try{
 		$dbh = new Db();
-		$query = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName
+		$query = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName, c.QuestionCode
 		FROM t_datatype_questions_map a
 		INNER JOIN t_datatype b ON a.DataTypeId = b.DataTypeId
 		INNER JOIN t_questions c ON a.QuestionId = c.QuestionId
@@ -168,64 +168,66 @@ function questionAdd($data) {
 			$dbh = new Db();
 			$aQuerys = array();
 
+			$cq="SELECT QuestionId FROM t_datatype_questions_map WHERE DataTypeId = $DataTypeId";
+		    $questionMapped = $dbh->query($cq);
 
+		
+			$initialValue = 0;
 			foreach ($data->rowData as $row) {
+				$shouldInsert = true;
 
-				$LabelName = null;
-                $MapType = 'Question';
-				if($row->QuestionType == "Label"){
-					$MapType = 'Label';
-				}else{
-					$MapType = 'Question';
+				foreach ($questionMapped as $mappedRow) {
+					if ($row->id == $mappedRow['QuestionId']) {
+						$shouldInsert = false;
+						//break; 
+					}
 				}
 
-				$q="SELECT (IFNULL(MAX(SortOrder),0) + 1) AS M FROM t_datatype_questions_map";
-				$resultdata = $dbh->query($q);
-				$SortOrder = $resultdata[0]['M'];
+				if ($row->QuestionType == "Label") {
+					$shouldInsert = true;
+				}
+				
+					if ($shouldInsert) {
+						$LabelName = null;
+						$MapType = 'Question';
+						if($row->QuestionType == "Label"){
+							$MapType = 'Label';
+						}else{
+							$MapType = 'Question';
+						}
 
-				$q = new insertq();
-				$q->table = 't_datatype_questions_map';
-				$q->columns = [
-					'DataTypeId',
-					'MapType',
-					'QuestionId',
-					'LabelName',
-					'SortOrder'
-				];
-				$q->values = [
-					$DataTypeId,
-					$MapType,
-					$row->id,
-					$LabelName,
-					$SortOrder
-				];
-			
-				$q->pks = ['QMapId'];
-				$q->bUseInsetId = false;
-				$q->build_query();
-				$aQuerys[] = $q;
+						$q="SELECT IFNULL(MAX(SortOrder), 0) AS M FROM t_datatype_questions_map";
+						$resultdata = $dbh->query($q);
+						$currentSortOrder  = $resultdata[0]['M'];
+
+						$initialValue++;
+						$SortOrder = $currentSortOrder + $initialValue;
+
+
+						$q = new insertq();
+						$q->table = 't_datatype_questions_map';
+						$q->columns = [
+							'DataTypeId',
+							'MapType',
+							'QuestionId',
+							'LabelName',
+							'SortOrder'
+						];
+						$q->values = [
+							$DataTypeId,
+							$MapType,
+							$row->id,
+							$LabelName,
+							$SortOrder
+						];
+					
+						$q->pks = ['QMapId'];
+						$q->bUseInsetId = false;
+						$q->build_query();
+						$aQuerys[] = $q;
+					}
 			}
-			
 
-			/* if($QMapId == ""){
-				$q = new insertq();
-				$q->table = 't_datatype_questions_map';
-				$q->columns = ['MapType'];
-				$q->values = [$MapType];
-				$q->pks = ['QMapId'];
-				$q->bUseInsetId = false;
-				$q->build_query();
-				$aQuerys = array($q); 
-			}else{
-				$u = new updateq();
-				$u->table = 't_datatype_questions_map';
-				$u->columns = ['MapType'];
-				$u->values = [$MapType];
-				$u->pks = ['QMapId'];
-				$u->pk_values = [$QMapId];
-				$u->build_query();
-				$aQuerys = array($u);
-			} */
 			
 			$res = exec_query($aQuerys, $UserId, $lan);  
 			$success=($res['msgType']=='success')?1:0;

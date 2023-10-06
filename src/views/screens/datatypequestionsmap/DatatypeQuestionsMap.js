@@ -57,20 +57,21 @@ const DatatypeQuestionsMap = (props) => {
       field: "DataTypeName",
       label: "Data Type",
       align: "left",
-      visible: true,
+      visible: false,
       sort: true,
       filter: true,
       width: "5%"
     },
     {
-      field: "MapType",
-      label: "Map Type",
+      field: "QuestionCode",
+      label: "Question Code",
       align: "left",
       visible: true,
       sort: true,
       filter: true,
-      width: "5%"
+      width: "7%"
     },
+   
     {
       field: "QuestionName",
       label: "Question Name",
@@ -78,6 +79,15 @@ const DatatypeQuestionsMap = (props) => {
       visible: true,
       sort: true,
       filter: true,
+    },
+    {
+      field: "MapType",
+      label: "Type",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "5%"
     },
     {
       field: "LabelName",
