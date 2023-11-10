@@ -27,6 +27,14 @@ switch($task){
 		$returnData = deleteData($data);
 	break;
 
+	case "downOrderData":
+		$returnData = downOrderData($data);
+		break;
+
+	case "upOrderData":
+		$returnData = upOrderData($data);
+		break;
+
 	default :
 		echo "{failure:true}";
 		break;
@@ -38,7 +46,7 @@ function getDataList($data){
 
 	try{
 		$dbh = new Db();
-		$query = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName, c.QuestionCode
+		$query = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName, c.QuestionCode, a.SortOrder, a.DataTypeId
 		FROM t_datatype_questions_map a
 		INNER JOIN t_datatype b ON a.DataTypeId = b.DataTypeId
 		INNER JOIN t_questions c ON a.QuestionId = c.QuestionId
@@ -81,6 +89,7 @@ function getQuestionDataList($data){
 		`CreateTs` 
 	  FROM
 		`t_questions` 
+		WHERE QuestionParentId = 0
 		ORDER BY QuestionName ASC;";
 		
 		$resultdata = $dbh->query($query);
@@ -293,6 +302,166 @@ function deleteData($data) {
 		return $returnData;
 	}
 }
+
+
+
+
+function downOrderData($data)
+{
+    if ($_SERVER["REQUEST_METHOD"] != "POST") {
+        return $returnData = msg(0, 404, 'Page Not Found!');
+    } {
+
+        $id = $data->rowData->id;
+        $lan = trim($data->lan);
+        $UserId = trim($data->UserId);
+        //$DataTypeId = trim($data->DataTypeId);
+        $dataList = $data->dataList;
+
+        try {
+
+            $dbh = new Db();
+
+            $aQuerys = array();
+
+            // Find the index of the element with id = $id
+            $currentIndex = null;
+            foreach ($dataList as $index => $dataItem) {
+                if ($dataItem->id == $id) {
+                    $currentIndex = $index;
+                    break;
+                }
+            }
+
+            if ($currentIndex !== null && isset($dataList[$currentIndex + 1])) {
+                // Swap SortOrder values between the current and next elements
+                $currentSortOrder = $dataList[$currentIndex]->SortOrder;
+                $nextSortOrder = $dataList[$currentIndex + 1]->SortOrder;
+
+                $dataList[$currentIndex]->SortOrder = $nextSortOrder;
+                $dataList[$currentIndex + 1]->SortOrder = $currentSortOrder;
+
+                // Update the database
+                $u1 = new updateq();
+                $u1->table = 't_datatype_questions_map';
+                $u1->columns = ['SortOrder'];
+                $u1->values = [$dataList[$currentIndex]->SortOrder];
+                $u1->pks = ['QMapId'];
+                $u1->pk_values = [$id];
+                $u1->build_query();
+                $aQuerys[] = $u1;
+
+                $u2 = new updateq();
+                $u2->table = 't_datatype_questions_map';
+                $u2->columns = ['SortOrder'];
+                $u2->values = [$dataList[$currentIndex + 1]->SortOrder];
+                $u2->pks = ['QMapId'];
+                $u2->pk_values = [$dataList[$currentIndex + 1]->id];
+                $u2->build_query();
+                $aQuerys[] = $u2;
+
+                // Execute the update queries here
+                // Assuming there's a function to execute queries like execute_queries($aQuerys)
+                // execute_queries($aQuerys);
+            }
+
+            $res = exec_query($aQuerys, $UserId, $lan);
+            $success = ($res['msgType'] == 'success') ? 1 : 0;
+            $status = ($res['msgType'] == 'success') ? 200 : 500;
+
+            $returnData = [
+                "success" => $success,
+                "status" => $status,
+                "UserId" => $UserId,
+                //"message" => $res['msg']
+                "message" => "SortOrder updated successfully."
+            ];
+        } catch (PDOException $e) {
+            $returnData = msg(0, 500, $e->getMessage());
+        }
+
+        return $returnData;
+    }
+}
+
+function upOrderData($data)
+{
+    if ($_SERVER["REQUEST_METHOD"] != "POST") {
+        return $returnData = msg(0, 404, 'Page Not Found!');
+    } {
+
+        $id = $data->rowData->id;
+        $lan = trim($data->lan);
+        $UserId = trim($data->UserId);
+        //$DataTypeId = trim($data->DataTypeId);
+        $dataList = $data->dataList;
+
+        try {
+
+            $dbh = new Db();
+
+            $aQuerys = array();
+
+            // Find the index of the element with id = $id
+            $currentIndex = null;
+            foreach ($dataList as $index => $dataItem) {
+                if ($dataItem->id == $id) {
+                    $currentIndex = $index;
+                    break;
+                }
+            }
+
+            if ($currentIndex !== null && $currentIndex > 0) {
+                // Swap SortOrder values between the current and previous elements
+                $currentSortOrder = $dataList[$currentIndex]->SortOrder;
+                $previousSortOrder = $dataList[$currentIndex - 1]->SortOrder;
+
+                $dataList[$currentIndex]->SortOrder = $previousSortOrder;
+                $dataList[$currentIndex - 1]->SortOrder = $currentSortOrder;
+
+                // Update the database
+                $u1 = new updateq();
+                $u1->table = 't_datatype_questions_map';
+                $u1->columns = ['SortOrder'];
+                $u1->values = [$dataList[$currentIndex]->SortOrder];
+                $u1->pks = ['QMapId'];
+                $u1->pk_values = [$id];
+                $u1->build_query();
+                $aQuerys[] = $u1;
+
+                $u2 = new updateq();
+                $u2->table = 't_datatype_questions_map';
+                $u2->columns = ['SortOrder'];
+                $u2->values = [$dataList[$currentIndex - 1]->SortOrder];
+                $u2->pks = ['QMapId'];
+                $u2->pk_values = [$dataList[$currentIndex - 1]->id];
+                $u2->build_query();
+                $aQuerys[] = $u2;
+
+                // Execute the update queries here
+                // Assuming there's a function to execute queries like execute_queries($aQuerys)
+                // execute_queries($aQuerys);
+            }
+
+            $res = exec_query($aQuerys, $UserId, $lan);
+            $success = ($res['msgType'] == 'success') ? 1 : 0;
+            $status = ($res['msgType'] == 'success') ? 200 : 500;
+
+            $returnData = [
+                "success" => $success,
+                "status" => $status,
+                "UserId" => $UserId,
+                "message" => "SortOrder updated successfully."
+            ];
+        } catch (PDOException $e) {
+            $returnData = msg(0, 500, $e->getMessage());
+        }
+
+        return $returnData;
+    }
+}
+
+
 
 
 ?>

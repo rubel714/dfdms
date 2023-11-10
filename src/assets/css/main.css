@@ -55,10 +55,10 @@ input[type=number],
 input[type=date],
 select {
     /* width: 100%; */
-    height: 32px;
+    height: 28px;
     /* font-size: .9rem; */
     /* font-size: 1.1rem; */
-    font-size: 16px; 
+    font-size: 0.9em; 
     border: var(--input-border);
     border-radius: 4px;
     padding: 8px 6px;
@@ -71,7 +71,7 @@ input[type=number]{
 
 textarea {
     padding: 8px 6px;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
 
 /* #############---GLOBAL CLASSE---############### */
@@ -511,13 +511,13 @@ input {
 
 .chosen_dropdown_font {
 	/* font-size: 12px !important; */
-	font-size: 1.1rem !important;
+	font-size: 0.8em !important; 
 }
 .chosen_dropdown input{
     padding: 8px 6px !important;
-	height: 19px;
+	height: 10px;
     background-color:var(--bg-color);
-    font-size: 16px !important; 
+    font-size: 0.8em !important; 
 	/* font-size: 12px !important; */
     width: 100% !important;
 
@@ -542,9 +542,9 @@ input {
 }
 
 .formControl label {
-    font-size: 1.1rem;
+    font-size: 0.9em;
     /* font-weight: bold;*/
-    padding-top: 4px;
+    padding-top: 1px;
     text-align: end;
     padding-right: 8px;
 }
@@ -578,7 +578,7 @@ input {
 }
 
 .formControl-filter label {
-    font-size: 1.1rem;
+    font-size: 0.9em;
     /* font-weight: bold;*/
     padding-top: 7px !important;
     text-align: end;

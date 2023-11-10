@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef, useEffect } from "react";
 import swal from "sweetalert";
-import { DeleteOutline, Edit } from "@material-ui/icons";
+import { DeleteOutline, Edit, ArrowUpward, ArrowDownward } from "@material-ui/icons";
 import {Button}  from "../../../components/CustomControl/Button";
 
 import {
@@ -51,6 +51,8 @@ const DatatypeQuestionsMap = (props) => {
 
 
   const columnList = [
+    { field: "SortOrder", label: "SortOrder", align: "center", visible: false },
+    { field: "DataTypeId", label: "DataTypeId", align: "center", visible: false },
     { field: "rownumber", label: "SL", align: "center", width: "5%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
     {
@@ -156,6 +158,23 @@ const DatatypeQuestionsMap = (props) => {
     return (
       <>
 
+
+        <ArrowDownward
+            color="success"
+            className={"table-edit-icon"}
+            onClick={() => {
+              downOrderApi(rowData);
+            }}
+          />
+
+          <ArrowUpward
+            color="primary"
+            className={"table-edit-icon"}
+            onClick={() => {
+              upOrderApi(rowData);
+            }}
+          />
+
           {rowData.MapType === "Label" && (
           <Edit
             className={"table-edit-icon"}
@@ -182,6 +201,50 @@ const DatatypeQuestionsMap = (props) => {
       </>
     );
   }
+
+
+  function downOrderApi(rowData) {
+    let params = {
+      action: "downOrderData",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DataTypeId: currDataTypeId,
+      rowData: rowData,
+      dataList: dataList,
+    };
+
+    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+      // console.log('res: ', res);
+      /* props.openNoticeModal({
+        isOpen: true,
+        msg: res.data.message,
+        msgtype: res.data.success,
+      }); */
+      getDataList(currDataTypeId);
+    });
+  }
+
+  function upOrderApi(rowData) {
+    let params = {
+      action: "upOrderData",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DataTypeId: currDataTypeId,
+      rowData: rowData,
+      dataList: dataList,
+    };
+
+    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+      // console.log('res: ', res);
+      /* props.openNoticeModal({
+        isOpen: true,
+        msg: res.data.message,
+        msgtype: res.data.success,
+      }); */
+      getDataList(currDataTypeId);
+    });
+  }
+
 
   const addData = () => {
     // console.log("rowData: ", rowData);
