@@ -29,6 +29,7 @@ const DataCollectionEntry = (props) => {
 
   const [listEditPanelToggle, setListEditPanelToggle] = useState(true); //when true then show list, when false then show add/edit
   const [pgGroupList, setPgGroupList] = useState(null);
+  const [farmerList, setFarmerList] = useState(null);
   const [quarterList, setQuarterList] = useState(null);
   const [yearList, setYearList] = useState(null);
 
@@ -40,13 +41,13 @@ const DataCollectionEntry = (props) => {
 
   let curMonthId = parseInt(moment().format("MM"));
   let defaultMonthId = 1;
-  if(curMonthId <= 3){
+  if (curMonthId <= 3) {
     defaultMonthId = 1;
-  }else if(curMonthId <= 6){
+  } else if (curMonthId <= 6) {
     defaultMonthId = 2;
-  }else if(curMonthId <= 9){
+  } else if (curMonthId <= 9) {
     defaultMonthId = 3;
-  }else{
+  } else {
     defaultMonthId = 4;
   }
   // console.log('curMonthId: ', parseInt(curMonthId));
@@ -58,6 +59,26 @@ const DataCollectionEntry = (props) => {
   const [errorObjectMany, setErrorObjectMany] = useState({});
 
   const [questionsList, setQuestionsList] = useState([]);
+
+  let qvList = {
+    DAIRY: "displaynone",
+    BEEFFATTENING: "displaynone",
+    BUFFALO: "displaynone",
+    GOAT: "displaynone",
+    SHEEP: "displaynone",
+    SCAVENGINGCHICKENLOCAL: "displaynone",
+    SONALI: "displaynone",
+    COMMERCIALBROILER: "displaynone",
+    QUAIL: "displaynone",
+    TURKEY: "displaynone",
+    GUINEAFOWL: "displaynone",
+    PIGEON: "displaynone",
+    DUCK: "displaynone",
+    LAYER: "displaynone",
+  };
+  const [questionsVisibleList, setQuestionsVisibleList] = useState(qvList);
+  // console.log("questionsVisibleList: ", questionsVisibleList);
+  // console.log("questionsVisibleList: ", questionsVisibleList[2]);
 
   //   const [questionsList, setQuestionsList] = useState([
   //   {
@@ -285,6 +306,7 @@ const DataCollectionEntry = (props) => {
 
   const newInvoice = () => {
     console.log("dataTypeId: ", dataTypeId);
+    setQuestionsVisibleList(qvList);
 
     setCurrentInvoice({
       id: "",
@@ -296,6 +318,7 @@ const DataCollectionEntry = (props) => {
       DataTypeId: dataTypeId,
       PGId: "",
       FarmerId: "",
+      Categories: "",
       Remarks: "",
       DataCollectorName: "",
       DataCollectionDate: currentDate,
@@ -332,6 +355,7 @@ const DataCollectionEntry = (props) => {
     getQuestionList();
 
     getPgGroupList();
+
     getYearList();
     getQuarterList();
 
@@ -359,6 +383,7 @@ const DataCollectionEntry = (props) => {
       console.log("getQuestionList: ", res);
 
       setQuestionsList(res.data.datalist); /**set question list */
+      console.log("getQuestionList: ", res.data.datalist);
 
       getDataList(); //invoice list
     });
@@ -379,6 +404,26 @@ const DataCollectionEntry = (props) => {
 
       setPgGroupList(
         [{ id: "", name: "পিজি গ্রুপ নির্বাচন করুন" }].concat(res.data.datalist)
+      );
+    });
+  }
+
+  function getFarmerList(PGId) {
+    let params = {
+      action: "FarmerList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DivisionId: UserInfo.DivisionId,
+      DistrictId: UserInfo.DistrictId,
+      UpazilaId: UserInfo.UpazilaId,
+      PGId: PGId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      console.log("res.data.datalist: ", res.data.datalist);
+
+      setFarmerList(
+        [{ id: "", name: "ফার্মার নির্বাচন করুন" }].concat(res.data.datalist)
       );
     });
   }
@@ -564,6 +609,41 @@ const DataCollectionEntry = (props) => {
       //   });
       // }
 
+      // Categories
+      // let qvList = {
+      //   DAIRY: "displaynone",
+      //   BEEFFATTENING: "displaynone",
+      //   BUFFALO: "displaynone",
+      //   GOAT: "displaynone",
+      //   SHEEP: "displaynone",
+      //   SCAVENGINGCHICKENLOCAL: "displaynone",
+      //   SONALI: "displaynone",
+      //   COMMERCIALBROILER: "displaynone",
+      //   QUAIL: "displaynone",
+      //   TURKEY: "displaynone",
+      //   GUINEAFOWL: "displaynone",
+      //   PIGEON: "displaynone",
+      //   DUCK: "displaynone",
+      //   LAYER: "displaynone",
+      // };
+      // const [questionsVisibleList, setQuestionsVisibleList] = useState(qvList);
+
+//DataTypeId
+      let qvListFromMaster = dataListSingle.master[0].Categories;
+      console.log('qvList: ', qvList);
+
+      let qvListTmp = {...qvList};
+      if(qvListFromMaster){
+        let qvListDBArr = qvListFromMaster.split(",");
+        qvListDBArr.forEach(element=>{
+          qvListTmp[element] = "";
+        });
+      }
+      setQuestionsVisibleList(qvListTmp);
+      console.log('qvListTmp: ', qvListTmp);
+
+
+      getFarmerList(dataListSingle.master[0].PGId);
       setCurrentInvoice(dataListSingle.master[0]);
     }
 
@@ -641,7 +721,9 @@ const DataCollectionEntry = (props) => {
 
     setErrorObjectMaster({ ...errorObjectMaster, [name]: null });
   };
-
+  const divStyle = {
+    color: "blue",
+  };
   function handleChangeCheckMaster(e) {
     // console.log('e.target.checked: ', e.target.checked);
     const { name, value } = e.target;
@@ -658,13 +740,131 @@ const DataCollectionEntry = (props) => {
     console.log("data: ", data);
   }
 
+  const changeVisibilityCheck = (e) => {
+    const { name, value } = e.target;
+    let chkVal = e.target.checked;
+    console.log("changeVisibilityCheck name: ", name);
+    console.log("changeVisibilityCheck chkVal: ", chkVal);
+    let data = { ...currentInvoice };
+
+    let qList = { ...questionsVisibleList };
+
+    let CategoriesList = [];
+    if(data["Categories"]){
+      CategoriesList = data["Categories"].split(",");
+    }
+    // console.log('CategoriesList: ', CategoriesList);
+
+
+    if (chkVal) {
+      qList[name] = "";
+
+      CategoriesList.push(name);
+  
+    } else {
+      qList[name] = "displaynone";
+      
+      let list=[];
+      CategoriesList.forEach(element => {
+        if(element != name){
+          list.push(element);
+        }
+      });
+      CategoriesList=list;
+    }
+
+    data["Categories"] = CategoriesList.toString();
+    setCurrentInvoice(data);
+    console.log('data: ', data);
+
+
+    // const { name, value } = e.target;
+    // console.log("name, value: ", name, value);
+    // let data = { ...currentInvoice };
+    // data["Questions"][name] = value;
+    // data[name] = value;
+    // setCurrentInvoice(data);
+    // console.log("data currentInvoice: ", data);
+    // const [currentInvoice, setCurrentInvoice] = useState([]); //this is for master information. It will send to sever for save
+
+
+
+
+    // setCurrentInvoice({
+    //   id: "",
+    //   DivisionId: UserInfo.DivisionId,
+    //   DistrictId: UserInfo.DistrictId,
+    //   UpazilaId: UserInfo.UpazilaId,
+    //   YearId: currentYear,
+    //   QuarterId: currentQuarterId,
+    //   DataTypeId: dataTypeId,
+    //   PGId: "",
+    //   FarmerId: "",
+    //   Categories: "",
+    //   Remarks: "",
+    //   DataCollectorName: "",
+    //   DataCollectionDate: currentDate,
+    //   UserId: UserInfo.UserId,
+    //   BPosted: 0,
+    // });
+    // if(name == "DAIRY"){
+    //   if(chkVal){
+    //     qList["DAIRY"] = "";
+    //   }else{
+    //     qList["DAIRY"] = "displaynone";
+    //   }
+    // }
+    // else if(name == "CHICKEN"){
+    //   if(chkVal){
+    //     qList["CHICKEN"] = "";
+    //   }else{
+    //     qList["CHICKEN"] = "displaynone";
+    //   }
+    // }
+    // else if(name == "DUCK"){
+    //   if(chkVal){
+    //     qList["DUCK"] = "";
+    //   }else{
+    //     qList["DUCK"] = "displaynone";
+    //   }
+    // }
+
+    // let qSingle = qList[0];
+    // qSingle.QuestionName = "This is updated name";
+    // console.log('qSingle: ', qSingle);
+    // console.log('qSingle: ', qSingle.QuestionName);
+    // qList[2] = false;
+    console.log("qList after: ", qList);
+
+    setQuestionsVisibleList(qList);
+
+    // let qList = { ...questionsList };
+    // let qSingle = qList[0];
+    // qSingle.QuestionName = "This is updated name";
+    // console.log('qSingle: ', qSingle);
+    // console.log('qSingle: ', qSingle.QuestionName);
+    // qList[0] = qSingle;
+    // console.log('qList after: ', qList);
+
+    // setQuestionsList(qList);
+
+    // const [questionsVisibleList, setQuestionsVisibleList] = useState({2:1,32:1,24:1,10:1});
+  };
+
   const handleChangeChoosenMaster = (name, value) => {
+    console.log("name: ", name);
+    console.log("value: ", value);
     let data = { ...currentInvoice };
     data[name] = value;
 
     setCurrentInvoice(data);
 
     setErrorObjectMaster({ ...errorObjectMaster, [name]: null });
+
+    if (name == "PGId" && dataTypeId === 2) {
+      /**when change PG from combo and data collection for farmer then fillup Farmar List */
+      getFarmerList(value);
+    }
   };
 
   const handleChangeMany = (e, cType = "") => {
@@ -690,8 +890,8 @@ const DataCollectionEntry = (props) => {
   function handleChangeCheckMany(e) {
     // console.log('e.target.checked: ', e.target.checked);
     const { name, value } = e.target;
-    console.log('name: ', name);
-    console.log('value: ', value);
+    console.log("name: ", name);
+    console.log("value: ", value);
 
     let data = { ...manyDataList };
     // data[name] = e.target.checked;
@@ -705,8 +905,7 @@ const DataCollectionEntry = (props) => {
     console.log("data manyDataList: ", data);
   }
 
-
-  function handleChangeRadioMany(e,qName,questionParentId) {
+  function handleChangeRadioMany(e, qName, questionParentId) {
     // console.log('e.target.checked: ', e.target.checked);
     // const { name, value } = e.target;
     // console.log('name: ', qName);
@@ -714,7 +913,7 @@ const DataCollectionEntry = (props) => {
 
     let data = { ...manyDataList };
 
-      // console.log('questionsList: ', questionsList);
+    // console.log('questionsList: ', questionsList);
 
     // data[name] = e.target.checked;
     // console.log('e.target.checked: ', e.target.checked);
@@ -742,7 +941,6 @@ const DataCollectionEntry = (props) => {
 
     setErrorObjectMany({ ...errorObjectMany, [name]: null });
   };
-
 
   const validateFormMaster = () => {
     let validateFields = [
@@ -1055,26 +1253,240 @@ const DataCollectionEntry = (props) => {
                     />
                   </div>
 
-                  {/* 
-Rubel */}
 
-                  {/* questionsList */}
 
-                  {/* menuList.forEach((menu, i) => {
-      if (menu.MenuKey === pMenuKey) {
-        isShow = 1;
-        return;
-      }
-    }); */}
 
-                  {/* <tr> */}
-                  {/* {Object.keys(questionsList).length} */}
+
+
+
+
+
+
+
+
+
+
+
+                 {dataTypeId==2 && (<>
+                 <div class="formControl">
+                    <label>ফার্মার (Farmer):</label>
+                    <Autocomplete
+                      autoHighlight
+                      // freeSolo
+                      className="chosen_dropdown"
+                      id="FarmerId"
+                      name="FarmerId"
+                      autoComplete
+                      // class={errorObjectMaster.FarmerId}
+                      options={farmerList ? farmerList : []}
+                      getOptionLabel={(option) => option.name}
+                      // value={selectedSupplier}
+                      value={
+                        farmerList
+                          ? farmerList[
+                              farmerList.findIndex(
+                                (list) => list.id == currentInvoice.FarmerId
+                              )
+                            ]
+                          : null
+                      }
+                      onChange={(event, valueobj) =>
+                        handleChangeChoosenMaster(
+                          "FarmerId",
+                          valueobj ? valueobj.id : ""
+                        )
+                      }
+                      renderOption={(option) => (
+                        <Typography className="chosen_dropdown_font">
+                          {option.name}
+                        </Typography>
+                      )}
+                      renderInput={(params) => (
+                        <TextField {...params} variant="standard" fullWidth />
+                      )}
+                    />
+                  </div>
+ 
+                  <div class="formControl">
+                    <label>Type of Farmer</label>
+                  </div>
+
+                  <div class="formControl">
+                    <label></label>
+                    <div class="checkbox-group-type">
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="DAIRY"
+                          name="DAIRY"
+                          checked={questionsVisibleList["DAIRY"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>1 Dairy</label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="BEEFFATTENING"
+                          name="BEEFFATTENING"
+                          checked={questionsVisibleList["BEEFFATTENING"]!="displaynone"}
+
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>2 Beef Fattening</label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="BUFFALO"
+                          name="BUFFALO"
+                          checked={questionsVisibleList["BUFFALO"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>3 Buffalo</label>
+                      </div>
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="GOAT"
+                          name="GOAT"
+                          checked={questionsVisibleList["GOAT"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>4 Goat</label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="SHEEP"
+                          name="SHEEP"
+                          checked={questionsVisibleList["SHEEP"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>5 Sheep</label>
+                      </div>
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="SCAVENGINGCHICKENLOCAL"
+                          name="SCAVENGINGCHICKENLOCAL"
+                          checked={questionsVisibleList["SCAVENGINGCHICKENLOCAL"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>6 Scavenging Chicken Local</label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="SONALI"
+                          name="SONALI"
+                          checked={questionsVisibleList["SONALI"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>7 Sonali</label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="COMMERCIALBROILER"
+                          name="COMMERCIALBROILER"
+                          checked={questionsVisibleList["COMMERCIALBROILER"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>8 Commercial Broiler</label>
+                      </div>
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="QUAIL"
+                          name="QUAIL"
+                          checked={questionsVisibleList["QUAIL"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>9 Quail</label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="TURKEY"
+                          name="TURKEY"
+                          checked={questionsVisibleList["TURKEY"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>10 Turkey</label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="GUINEAFOWL"
+                          name="GUINEAFOWL"
+                          checked={questionsVisibleList["GUINEAFOWL"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>11 Guinea Fowl</label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="PIGEON"
+                          name="PIGEON"
+                          checked={questionsVisibleList["PIGEON"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>12 Pigeon</label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="DUCK"
+                          name="DUCK"
+                          checked={questionsVisibleList["DUCK"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>13 Duck</label>
+                      </div>
+
+                      <div class="checkbox-label">
+                        <input
+                          type="checkbox"
+                          id="LAYER"
+                          name="LAYER"
+                          checked={questionsVisibleList["LAYER"]!="displaynone"}
+                          onChange={(e) => changeVisibilityCheck(e)}
+                        />
+                        <label>14 Layer</label>
+                      </div>
+                    </div>
+                  </div>
+                  </>
+                 )}
+ 
+
+
+
+
+
+
+
+
+
+
+
 
                   {questionsList.map((question) => {
                     // console.log("question: ", question.QuestionType);
                     // console.log("question: ", question.QuestionCode);
                     // (manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:"")
-                    console.log('question.QuestionCode: ',    (manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:"999"));
+                    // console.log('question.QuestionCode: ',    (manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:"999"));
                     // const sortIcon = () => {
                     //   if (column.field === sort.orderBy) {
                     //     if (sort.order === "asc") {
@@ -1089,7 +1501,13 @@ Rubel */}
                     if (question.QuestionType === "Label") {
                       return (
                         <>
-                          <div class="formControl">
+                          <div
+                            class={
+                              "formControl bordertop fontbold " +
+                              questionsVisibleList[question.Category] +
+                              ""
+                            }
+                          >
                             <label>
                               {/* তথ্য সংগ্রহকারীর নামdddddddddd: (Name of data collector)*: */}
                               {question.QuestionName}
@@ -1103,7 +1521,13 @@ Rubel */}
                     ) {
                       return (
                         <>
-                          <div class="formControl">
+                          <div
+                            class={
+                              "formControl " +
+                              questionsVisibleList[question.Category] +
+                              ""
+                            }
+                          >
                             <label>
                               {/* তথ্য সংগ্রহকারীর নামdddddddddd: (Name of data collector)*: */}
                               {question.QuestionName + ":"}
@@ -1114,8 +1538,13 @@ Rubel */}
                     } else if (question.QuestionType === "Radio") {
                       return (
                         <>
-
-                          <div class="formControl">
+                          <div
+                            class={
+                              "formControl " +
+                              questionsVisibleList[question.Category] +
+                              ""
+                            }
+                          >
                             <label>
                               {/* {question.QuestionName} */}
                               {/* MQ4. নিচের কোন অফিস সরঞ্জামাদি LDDP থেকে পেয়েছেন?
@@ -1133,25 +1562,34 @@ Rubel */}
                                   checked={
                                     manyDataList[question.QuestionCode] ===
                                       "true" ||
-                                    manyDataList[question.QuestionCode] === true
-                                    ||
+                                    manyDataList[question.QuestionCode] ===
+                                      true ||
                                     manyDataList[question.QuestionCode] === "1"
                                   }
-                                  onChange={(e) => handleChangeRadioMany(e,question.QuestionCode,question.QuestionParentId)}
+                                  onChange={(e) =>
+                                    handleChangeRadioMany(
+                                      e,
+                                      question.QuestionCode,
+                                      question.QuestionParentId
+                                    )
+                                  }
                                 />
                                 <label>{question.QuestionName}</label>
                               </div>
-
                             </div>
                           </div>
-
-
                         </>
                       );
                     } else if (question.QuestionType === "Number") {
                       return (
                         <>
-                          <div class="formControl">
+                          <div
+                            class={
+                              "formControl " +
+                              questionsVisibleList[question.Category] +
+                              ""
+                            }
+                          >
                             <label>
                               {/* তথ্য সংগ্রহকারীর নামdddddddddd: (Name of data collector)*: */}
                               {question.QuestionName +
@@ -1179,7 +1617,13 @@ Rubel */}
                     } else if (question.QuestionType === "YesNo") {
                       return (
                         <>
-                          <div class="formControl">
+                          <div
+                            class={
+                              "formControl " +
+                              questionsVisibleList[question.Category] +
+                              ""
+                            }
+                          >
                             <label>
                               {question.QuestionName +
                                 (question.IsMandatory ? "*" : "") +
@@ -1236,7 +1680,13 @@ Rubel */}
                     } else if (question.QuestionType === "Check") {
                       return (
                         <>
-                          <div class="formControl">
+                          <div
+                            class={
+                              "formControl " +
+                              questionsVisibleList[question.Category] +
+                              ""
+                            }
+                          >
                             <label>
                               {/* {question.QuestionName} */}
                               {/* MQ4. নিচের কোন অফিস সরঞ্জামাদি LDDP থেকে পেয়েছেন?
@@ -1304,7 +1754,13 @@ Rubel */}
                     } else if (question.QuestionType === "CheckText") {
                       return (
                         <>
-                          <div class="formControl">
+                          <div
+                            class={
+                              "formControl " +
+                              questionsVisibleList[question.Category] +
+                              ""
+                            }
+                          >
                             <label>
                               {/* {question.QuestionName} */}
                               {/* MQ4. নিচের কোন অফিস সরঞ্জামাদি LDDP থেকে পেয়েছেন?
@@ -1365,7 +1821,13 @@ Rubel */}
                     } else if (question.QuestionType === "Date") {
                       return (
                         <>
-                          <div class="formControl">
+                          <div
+                            class={
+                              "formControl " +
+                              questionsVisibleList[question.Category] +
+                              ""
+                            }
+                          >
                             <label>
                               {/* BQ5. পিজি গঠনের তারিখ (Date of the PG formation): */}
                               {question.QuestionName +
@@ -1384,7 +1846,13 @@ Rubel */}
                                   ? errorObjectMany[question.QuestionCode]
                                   : ""
                               }
-                              value={manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:""}
+                              value={
+                                manyDataList.hasOwnProperty(
+                                  question.QuestionCode
+                                )
+                                  ? manyDataList[question.QuestionCode]
+                                  : ""
+                              }
                               onChange={(e) => handleChangeMany(e)}
                             />
                           </div>
@@ -1393,66 +1861,94 @@ Rubel */}
                     } else if (question.QuestionType === "DropDown") {
                       return (
                         <>
-                        <div class="formControl chosen_dropdown">
-                          <label>
+                          <div
+                            class={
+                              "formControl chosen_dropdown " +
+                              questionsVisibleList[question.Category] +
+                              ""
+                            }
+                          >
+                            <label>
                               {question.QuestionName +
                                 (question.IsMandatory ? "*" : "") +
                                 ":"}
-                          </label>
-                          <Autocomplete
-                            autoHighlight
-                            // freeSolo
-                            className="chosen_dropdown"
-                            id={question.QuestionCode}
-                            name={question.QuestionCode}
-                            autoComplete
-                            // class={errorObjectMaster.PGId}
-                            class={
-                              question.IsMandatory
-                                ? errorObjectMany[question.QuestionCode]
-                                : ""
-                            }
-                            // options={pgGroupList ? pgGroupList : []}
-                            options={question.SettingsList ? question.SettingsList : []}
-                            getOptionLabel={(option) => option.name}
-                            // value={selectedSupplier}
-                            value={
-                              question.SettingsList
-                                ? question.SettingsList[
-                                  question.SettingsList.findIndex(
-                                      (list) => list.id == (manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:"")
-                                    )
-                                  ]
-                                : null
-                            }
-                            // value={manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:""}
+                            </label>
+                            <Autocomplete
+                              autoHighlight
+                              // freeSolo
+                              className="chosen_dropdown"
+                              id={question.QuestionCode}
+                              name={question.QuestionCode}
+                              autoComplete
+                              // class={errorObjectMaster.PGId}
+                              class={
+                                question.IsMandatory
+                                  ? errorObjectMany[question.QuestionCode]
+                                  : ""
+                              }
+                              // options={pgGroupList ? pgGroupList : []}
+                              options={
+                                question.SettingsList
+                                  ? question.SettingsList
+                                  : []
+                              }
+                              getOptionLabel={(option) => option.name}
+                              // value={selectedSupplier}
+                              value={
+                                question.SettingsList
+                                  ? question.SettingsList[
+                                      question.SettingsList.findIndex(
+                                        (list) =>
+                                          list.id ==
+                                          (manyDataList.hasOwnProperty(
+                                            question.QuestionCode
+                                          )
+                                            ? manyDataList[
+                                                question.QuestionCode
+                                              ]
+                                            : "")
+                                      )
+                                    ]
+                                  : null
+                              }
+                              // value={manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:""}
 
-                            onChange={(event, valueobj) =>
-                              handleChangeChoosenMany(
-                                question.QuestionCode,
-                                valueobj ? valueobj.id : ""
-                              )
-                            }
-                            renderOption={(option) => (
-                              <Typography className="chosen_dropdown_font">
-                                {option.name}
-                              </Typography>
-                            )}
-                            renderInput={(params) => (
-                              <TextField {...params} variant="standard" fullWidth />
-                            )}
-                          />
-                        </div>
-                       
+                              onChange={(event, valueobj) =>
+                                handleChangeChoosenMany(
+                                  question.QuestionCode,
+                                  valueobj ? valueobj.id : ""
+                                )
+                              }
+                              renderOption={(option) => (
+                                <Typography className="chosen_dropdown_font">
+                                  {option.name}
+                                </Typography>
+                              )}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  variant="standard"
+                                  fullWidth
+                                />
+                              )}
+                            />
+                          </div>
                         </>
+                        // )}
                       );
                     } else {
                       return (
                         <>
-                          <div class="formControl">
+                          <div
+                            class={
+                              "formControl " +
+                              questionsVisibleList[question.Category] +
+                              ""
+                            }
+                          >
                             <label>
                               {/* তথ্য সংগ্রহকারীর নাম: (Name of data collector)*: */}
-                              
+
                               {question.QuestionName +
                                 (question.IsMandatory ? "*" : "") +
                                 ":"}
@@ -1468,7 +1964,13 @@ Rubel */}
                                   : ""
                               }
                               // value={currentInvoice.DataCollectorName}
-                              value={manyDataList.hasOwnProperty(question.QuestionCode)?manyDataList[question.QuestionCode]:""}
+                              value={
+                                manyDataList.hasOwnProperty(
+                                  question.QuestionCode
+                                )
+                                  ? manyDataList[question.QuestionCode]
+                                  : ""
+                              }
                               onChange={(e) => handleChangeMany(e)}
                             />
                           </div>

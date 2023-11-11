@@ -45,7 +45,7 @@ function getDataList($data)
 	try {
 		$dbh = new Db();
 
-		$query = "SELECT a.`DataValueMasterId` as id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGId`, a.`YearId`, a.`QuarterId`,
+		$query = "SELECT a.`DataValueMasterId` as id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGId`,a.FarmerId,a.Categories, a.`YearId`, a.`QuarterId`,
 		 a.`Remarks`, a.`DataCollectorName`, a.`DataCollectionDate`, a.`UserId`,a.BPosted
 		, concat(a.YearId,' (',e.QuarterName,')') QuarterName, b.DivisionName,c.DistrictName,d.UpazilaName,f.PGName
 		FROM t_datavaluemaster a
@@ -90,8 +90,9 @@ function getQuestionList($data)
 		// where b.DataTypeId=$DataTypeId
 		// ORDER BY b.SortOrder ASC, a.SortOrderChild ASC;";
 
-		$query = "SELECT a.`QuestionId`, a.`QuestionCode`, a.`QuestionName`, a.`QuestionType`, 
-		a.`IsMandatory`, a.`QuestionParentId`, b.`SortOrder`, 0 SortOrderChild,a.Settings
+		$query = "SELECT a.`QuestionId`, a.`QuestionCode`, 
+		CASE WHEN a.`QuestionType`='Label' THEN b.`LabelName` ELSE a.`QuestionName` END QuestionName, a.`QuestionType`, 
+		a.`IsMandatory`, a.`QuestionParentId`, b.`SortOrder`, 0 SortOrderChild,a.Settings,b.Category
 		FROM t_questions a
 		INNER JOIN t_datatype_questions_map b ON a.QuestionId=b.QuestionId
 		WHERE b.DataTypeId = $DataTypeId
@@ -101,7 +102,7 @@ function getQuestionList($data)
 		SELECT child.`QuestionId`, child.`QuestionCode`, child.`QuestionName`, child.`QuestionType`, 
 		child.`IsMandatory`, child.`QuestionParentId`, 
 		(SELECT s.SortOrder FROM t_datatype_questions_map s WHERE s.QuestionId=child.QuestionParentId) `SortOrder`, 
-		child.SortOrderChild,child.Settings
+		child.SortOrderChild,child.Settings,m.Category
 		FROM t_questions AS child
 		INNER JOIN t_datatype_questions_map AS m ON child.QuestionParentId=m.QuestionId
 		WHERE child.QuestionParentId != 0 AND m.DataTypeId = $DataTypeId
@@ -163,7 +164,7 @@ function getDataSingle($data)
 		$dbh = new Db();
 
 		/**Master Data */
-		$query = "SELECT `DataValueMasterId` as id, `DivisionId`, `DistrictId`, `UpazilaId`, `PGId`, `YearId`, `QuarterId`,
+		$query = "SELECT `DataValueMasterId` as id, `DivisionId`, `DistrictId`, `UpazilaId`,DataTypeId, `PGId`,FarmerId,Categories, `YearId`, `QuarterId`,
 		 `Remarks`, `DataCollectorName`, `DataCollectionDate`, `UserId`, `BPosted`, `UpdateTs`, `CreateTs`
 		FROM t_datavaluemaster
 		where DataValueMasterId=$DataValueMasterId;";
@@ -229,6 +230,8 @@ function dataAddEdit($data)
 			$UpazilaId = $InvoiceMaster->UpazilaId;
 			$DataTypeId = $InvoiceMaster->DataTypeId;
 			$PGId = $InvoiceMaster->PGId;
+			$FarmerId = isset($InvoiceMaster->FarmerId) && ($InvoiceMaster->FarmerId !== "") ? $InvoiceMaster->FarmerId : NULL;
+			$Categories = isset($InvoiceMaster->Categories) && ($InvoiceMaster->Categories !== "") ? $InvoiceMaster->Categories : NULL;
 			$YearId = $InvoiceMaster->YearId;
 			$QuarterId = $InvoiceMaster->QuarterId;
 			$Remarks = isset($InvoiceMaster->Remarks) && ($InvoiceMaster->Remarks !== "") ? $InvoiceMaster->Remarks : NULL;
@@ -244,8 +247,8 @@ function dataAddEdit($data)
 			if ($DataValueMasterId === "") {
 				$q = new insertq();
 				$q->table = 't_datavaluemaster';
-				$q->columns = ['DivisionId', 'DistrictId', 'UpazilaId','DataTypeId', 'PGId', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'UserId', 'BPosted'];
-				$q->values = [$DivisionId,$DistrictId,$UpazilaId,$DataTypeId,$PGId,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$UserId,$BPosted];
+				$q->columns = ['DivisionId', 'DistrictId', 'UpazilaId','DataTypeId', 'PGId','FarmerId','Categories', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'UserId', 'BPosted'];
+				$q->values = [$DivisionId,$DistrictId,$UpazilaId,$DataTypeId,$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$UserId,$BPosted];
 				$q->pks = ['DataValueMasterId'];
 				$q->bUseInsetId = true;
 				$q->build_query();
@@ -253,8 +256,8 @@ function dataAddEdit($data)
 			} else {
 				$u = new updateq();
 				$u->table = 't_datavaluemaster';
-				$u->columns = ['PGId', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'BPosted'];
-				$u->values = [$PGId,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$BPosted];
+				$u->columns = ['PGId','FarmerId','Categories', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'BPosted'];
+				$u->values = [$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$BPosted];
 				$u->pks = ['DataValueMasterId'];
 				$u->pk_values = [$DataValueMasterId];
 				$u->build_query();
