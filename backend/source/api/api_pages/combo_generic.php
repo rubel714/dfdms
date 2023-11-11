@@ -148,7 +148,19 @@ function FarmerList($data) {
 			AND UpazilaId=$UpazilaId
 			AND (PGId=$PGId OR $PGId=0)
 		ORDER BY FarmerName;"; 
-	
+	// 	$query = "SELECT `FarmerId` id,
+	// 	concat(`FarmerName`,'-',NID,'-',Phone) `name`
+	// 	FROM t_farmer  
+		
+	// ORDER BY FarmerName;"; 
+
+
+		// $query = "SELECT `FarmerId` id,
+		// concat(`FarmerName`,'-',NID,'-',Phone) `name`
+		// FROM t_farmer  
+		// WHERE (PGId=$PGId OR $PGId=0)
+		// ORDER BY FarmerName;"; 
+
 		$resultdata = $dbh->query($query);
 
 		$returnData = [
