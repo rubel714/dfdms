@@ -197,7 +197,10 @@ button:hover {
     margin-left: 5px;
 }
 
-
+.btnDetails {
+    background-color: rgb(120, 200, 10);
+    width: 80px;
+}
 .btnPrint {
     background-color:rgb(105, 175, 178);
     min-width: 90px;
@@ -627,5 +630,6 @@ input[type=search] {
     display: none !important;
 
 }
+
 
 

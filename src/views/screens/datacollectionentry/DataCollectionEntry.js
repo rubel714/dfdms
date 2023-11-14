@@ -1024,6 +1024,11 @@ const DataCollectionEntry = (props) => {
   //     }
   //   });
   // };
+  
+  function showFarmerDetails(p) {
+
+    
+  }
 
   function saveData(p) {
     let params = {
@@ -1305,7 +1310,14 @@ const DataCollectionEntry = (props) => {
                         <TextField {...params} variant="standard" fullWidth />
                       )}
                     />
+                    <Button
+                      label={"Details"}
+                      class={"btnDetails"}
+                      onClick={showFarmerDetails}
+                    />
                   </div>
+ 
+
  
                   <div class="formControl">
                     <label>Type of Farmer</label>
@@ -2386,7 +2398,7 @@ const DataCollectionEntry = (props) => {
                     />
                   </div> */}
 
-                  <div class="formControl">
+                  <div class="formControl bordertop">
                     <label> মন্তব্য (Remarks):</label>
 
                     <textarea
