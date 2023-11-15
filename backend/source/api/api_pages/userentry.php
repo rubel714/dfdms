@@ -33,15 +33,22 @@ function getDataList($data){
 		
 		$query = "SELECT a.UserId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`UserName`, 
 		a.Password,
+		h.RoleGroupName,
+		h.RoleIds,
 		a.LoginName, a.`Email`, b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`,
 		a.`IsActive`, case when a.IsActive=1 then 'Yes' else 'No' end IsActiveName, a.DesignationId, e.DesignationName
 			FROM `t_users` a
+			LEFT JOIN (SELECT p.`UserId`,GROUP_CONCAT(q.RoleId ORDER BY q.`RoleId` ASC SEPARATOR ', ') RoleIds, GROUP_CONCAT(q.RoleName ORDER BY q.`RoleId` ASC SEPARATOR ', ') RoleGroupName
+					 FROM t_user_role_map p
+					 INNER JOIN `t_roles` q ON p.`RoleId` = q.`RoleId`					
+					 GROUP BY p.`UserId`
+				 ) h  ON a.`UserId` = h.`UserId`
 			LEFT JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
 			LEFT JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
 			LEFT JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
 			LEFT JOIN t_designation e ON a.`DesignationId` = e.`DesignationId`
 			ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`UserName` ASC;";
-		
+	
 		$resultdata = $dbh->query($query);
 		
 		$returnData = [
@@ -61,6 +68,7 @@ function getDataList($data){
 
 
 function dataAddEdit($data) {
+
 
 	if($_SERVER["REQUEST_METHOD"] != "POST"){
 		return $returnData = msg(0,404,'Page Not Found!');
@@ -84,6 +92,25 @@ function dataAddEdit($data) {
 
 		$Cpassword =  empty($data->rowData->Password) ?  '':$data->rowData->Password;	
 		$PhotoUrl = 'rubel.jpg';
+	
+		$multiselectPGroup = isset($data->rowData->multiselectPGroup) ? $data->rowData->multiselectPGroup : '';
+
+
+		$msgType = 'Please, Assign Roles';		
+      
+
+        if ($multiselectPGroup == '') {
+
+			$returnData = [
+			    "success" => 0 ,
+				"status" => 0,
+				"UserId"=> $UserId,
+				"message" => $msgType
+			];
+            return $returnData;
+            
+        } 
+
 
 		try{
 
@@ -96,9 +123,28 @@ function dataAddEdit($data) {
 				$q->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId','PhotoUrl'];
 				$q->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId,$PhotoUrl];
 				$q->pks = ['UserId'];
-				$q->bUseInsetId = false;
+				$q->bUseInsetId = true;
 				$q->build_query();
-				$aQuerys = array($q); 
+				$aQuerys[] = $q;
+
+				
+				foreach ($multiselectPGroup as $keyrole_id => $RoleId) {
+
+					if ($RoleId == 0){
+						$RoleId = NULL;
+					}
+					$q = new insertq();
+					$q->table = 't_user_role_map';
+					$q->columns = ['UserId', 'RoleId'];
+					$q->values = ['[LastInsertedId]', $RoleId];
+					$q->pks = ['UserRoleId'];
+					$q->bUseInsetId = false;
+					$q->build_query();
+					// $aQuerys = array($q);
+					$aQuerys[] = $q;
+				}
+
+
 			}else{
 				$u = new updateq();
 				$u->table = 't_users';
@@ -116,7 +162,31 @@ function dataAddEdit($data) {
 				$u->pks = ['UserId'];
 				$u->pk_values = [$id];
 				$u->build_query();
-				$aQuerys = array($u);
+				$aQuerys[] = $u;
+
+
+				$query = "DELETE FROM `t_user_role_map` WHERE UserId = $id;";
+				$aRow = $dbh->query($query);
+
+
+				foreach ($multiselectPGroup as $keyrole_id => $RoleId) {
+
+					if ($RoleId == 0){
+						$RoleId = NULL;
+					}
+					$q = new insertq();
+					$q->table = 't_user_role_map';
+					$q->columns = ['UserId', 'RoleId'];
+					$q->values = ['[LastInsertedId]', $RoleId];
+					$q->pks = ['UserRoleId'];
+					$q->bUseInsetId = false;
+					$q->build_query();
+					// $aQuerys = array($q);
+					$aQuerys[] = $q;
+				}
+
+
+
 			}
 
 

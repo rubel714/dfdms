@@ -20,7 +20,10 @@ const UserEntryAddEditModal = (props) => {
   const [currUpazilaId, setCurrUpazilaId] = useState(null);
 
   const [DesignationList, setDesignationList] = useState(null);
+  const [RoleList, setRoleList] = useState(null);
   const [currDesignationId, setCurrDesignationId] = useState(null);
+
+  console.log("RoleIds-----",props.currentRow.RoleIds);
 
 
   React.useEffect(() => {
@@ -32,6 +35,7 @@ const UserEntryAddEditModal = (props) => {
 
    
     getDesignation(props.currentRow.DesignationId);
+    getRoleList(props.currentRow.RoleIds);
     //getManufacturerList();
   }, []);
 
@@ -91,6 +95,28 @@ const UserEntryAddEditModal = (props) => {
   }
 
 
+  function getRoleList(
+    selectRoleId
+  ) {
+    let params = {
+      action: "gRoleList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setRoleList(
+        res.data.datalist
+      );
+
+      //setCurrDesignationId(selectRoleId);
+
+    });
+  }
+
+  
+
+//console.log("RoleList==== ",RoleList);
   
   function getDistrict(
     selectDivisionId,
@@ -308,7 +334,7 @@ const UserEntryAddEditModal = (props) => {
     return isValid
   }
 
-
+ 
   function addEditAPICall(){
 
     if (validateForm()) {
@@ -348,6 +374,37 @@ const UserEntryAddEditModal = (props) => {
     props.modalCallback("close");
   }
 
+
+
+
+  const [selectedRoles, setSelectedRoles] = useState([]);
+ 
+  React.useEffect(() => {
+    if (props.currentRow.RoleIds && typeof props.currentRow.RoleIds === 'string') {
+      const roleIds = props.currentRow.RoleIds.split(',').map((id) => id.trim());
+      currentRow["multiselectPGroup"] = roleIds;
+      setSelectedRoles(roleIds);
+    }
+  }, [props.currentRow.RoleIds]);
+ 
+  const rolesToDisplay = RoleList || [];
+
+const handleRoleCheckboxChange = (roleId) => {
+    const updatedRoles = [...selectedRoles];
+    if (updatedRoles.includes(roleId)) {
+      // If roleId is already selected, remove it
+      updatedRoles.splice(updatedRoles.indexOf(roleId), 1);
+    } else {
+      // If roleId is not selected, add it
+      updatedRoles.push(roleId);
+    }
+    currentRow["multiselectPGroup"] = updatedRoles;
+    setSelectedRoles(updatedRoles);
+  };
+
+
+  console.log("RoleList:", RoleList);
+  console.log("selectedRoles:", selectedRoles);
 
   return (
     <>
@@ -514,6 +571,39 @@ const UserEntryAddEditModal = (props) => {
 
 
           </div>
+
+
+
+
+          <div class="contactmodalBody pt-10">
+              <label>Roles:</label>
+              
+          </div>
+
+
+          <div class="contactmodalBodyLeargeBox pt-10">
+    <label></label>
+    <div class="checkbox-group-type">
+        {rolesToDisplay.map((role) => (
+            <div class="checkbox-container" key={role.id}>
+                <input
+                    type="checkbox"
+                    id={`id_${role.id}`}
+                    name="multiselectPGroup[]"
+                    value={String(role.id)}
+                    className="checkBoxClass"
+                    checked={selectedRoles.includes(String(role.id))}
+                    onChange={() => handleRoleCheckboxChange(String(role.id))}
+                />
+                <label className="control-label">
+                    {role.role}
+                </label>
+            </div>
+        ))}
+    </div>
+</div>
+
+
 
 
 

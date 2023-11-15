@@ -39,13 +39,14 @@ const UserEntry = (props) => {
 
 
   const columnList = [
-    { field: "rownumber", label: "SL", align: "center", width: "5%" },
+    { field: "rownumber", label: "SL", align: "center", width: "2%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
     {
       field: "UserName",
       label: "User Name",
       align: "left",
       visible: true,
+      width: "12%",
       sort: true,
       filter: true,
     },
@@ -55,6 +56,7 @@ const UserEntry = (props) => {
       align: "left",
       visible: true,
       sort: true,
+      width: "12%",
       filter: true,
     },
     {
@@ -63,6 +65,7 @@ const UserEntry = (props) => {
       align: "left",
       visible: true,
       sort: true,
+      width: "10%",
       filter: true,
     },
     {
@@ -70,7 +73,7 @@ const UserEntry = (props) => {
       label: "Designation",
       align: "left",
       visible: true,
-      width: "15%",
+      width: "10%",
       sort: true,
       filter: false,
     },
@@ -81,7 +84,7 @@ const UserEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "15%",
+      width: "10%",
     },
     {
       field: "DistrictName",
@@ -90,7 +93,7 @@ const UserEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "15%",
+      width: "10%",
     },
     {
       field: "UpazilaName",
@@ -99,7 +102,7 @@ const UserEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "15%",
+      width: "10%",
     },
     {
       field: "IsActiveName",
@@ -108,12 +111,21 @@ const UserEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "5%",
+      width: "7%",
+    },
+    {
+      field: "RoleGroupName",
+      label: "Role",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "10%",
     },
     {
       field: "custom",
       label: "Action",
-      width: "15%",
+      width: "5%",
       align: "center",
       visible: true,
       sort: false,
@@ -179,6 +191,8 @@ const UserEntry = (props) => {
             DesignationId: "",
             confirmPassword: "",
             IsActive: false,
+            multiselectPGroup: "",
+            RoleIds: [],
           });
     openModal();
   };

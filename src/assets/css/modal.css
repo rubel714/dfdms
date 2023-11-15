@@ -222,3 +222,24 @@
 .selected-row {
     background-color: #0491ad !important; /* or any other color */
   }
+
+  .contactmodalBodyLeargeBox {
+    display: grid;
+    grid-template-columns: 17% 82% 17% 30%;
+    row-gap: 8px;
+}
+
+.checkbox-group-type {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Adjust as needed for spacing between checkboxes */
+}
+
+.checkBoxClass {
+    margin-right: 5px;
+}

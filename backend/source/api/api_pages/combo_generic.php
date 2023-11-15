@@ -57,7 +57,14 @@ switch($task){
 	case "DesignationList":
 		$returnData = DesignationList($data);
 		break;
-	
+	case "gRoleList":
+		$returnData = gRoleList($data);
+		break;
+
+	case "IsRegularBeneficiaryList":
+		$returnData = IsRegularBeneficiaryList($data);
+		break;
+
 	// case "NextInvoiceNumber":
 	// 	$returnData = NextInvoiceNumber($data);
 	// 	break;
@@ -403,6 +410,7 @@ function QuestionTypeList($data) {
 
 
 
+
 function DesignationList($data) {
 	try{
 
@@ -428,6 +436,60 @@ function DesignationList($data) {
 	return $returnData;
 }
  
+
+
+function gRoleList($data) {
+	try{
+
+		$dbh = new Db();
+
+		$query = "SELECT RoleId id, RoleName role
+		FROM t_roles ORDER BY RoleName;"; 
+	
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+ 
+
+
+
+function IsRegularBeneficiaryList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+		$jsonData = '[
+			{"id":"1","name":"Regular"}
+		]';
+
+		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
    
 // function NextInvoiceNumber($data) {
 // 	try{
