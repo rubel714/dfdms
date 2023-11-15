@@ -628,20 +628,19 @@ const DataCollectionEntry = (props) => {
       // };
       // const [questionsVisibleList, setQuestionsVisibleList] = useState(qvList);
 
-//DataTypeId
+      //DataTypeId
       let qvListFromMaster = dataListSingle.master[0].Categories;
-      console.log('qvList: ', qvList);
+      console.log("qvList: ", qvList);
 
-      let qvListTmp = {...qvList};
-      if(qvListFromMaster){
+      let qvListTmp = { ...qvList };
+      if (qvListFromMaster) {
         let qvListDBArr = qvListFromMaster.split(",");
-        qvListDBArr.forEach(element=>{
+        qvListDBArr.forEach((element) => {
           qvListTmp[element] = "";
         });
       }
       setQuestionsVisibleList(qvListTmp);
-      console.log('qvListTmp: ', qvListTmp);
-
+      console.log("qvListTmp: ", qvListTmp);
 
       getFarmerList(dataListSingle.master[0].PGId);
       setCurrentInvoice(dataListSingle.master[0]);
@@ -750,33 +749,30 @@ const DataCollectionEntry = (props) => {
     let qList = { ...questionsVisibleList };
 
     let CategoriesList = [];
-    if(data["Categories"]){
+    if (data["Categories"]) {
       CategoriesList = data["Categories"].split(",");
     }
     // console.log('CategoriesList: ', CategoriesList);
-
 
     if (chkVal) {
       qList[name] = "";
 
       CategoriesList.push(name);
-  
     } else {
       qList[name] = "displaynone";
-      
-      let list=[];
-      CategoriesList.forEach(element => {
-        if(element != name){
+
+      let list = [];
+      CategoriesList.forEach((element) => {
+        if (element != name) {
           list.push(element);
         }
       });
-      CategoriesList=list;
+      CategoriesList = list;
     }
 
     data["Categories"] = CategoriesList.toString();
     setCurrentInvoice(data);
-    console.log('data: ', data);
-
+    console.log("data: ", data);
 
     // const { name, value } = e.target;
     // console.log("name, value: ", name, value);
@@ -786,9 +782,6 @@ const DataCollectionEntry = (props) => {
     // setCurrentInvoice(data);
     // console.log("data currentInvoice: ", data);
     // const [currentInvoice, setCurrentInvoice] = useState([]); //this is for master information. It will send to sever for save
-
-
-
 
     // setCurrentInvoice({
     //   id: "",
@@ -1024,11 +1017,8 @@ const DataCollectionEntry = (props) => {
   //     }
   //   });
   // };
-  
-  function showFarmerDetails(p) {
 
-    
-  }
+  function showFarmerDetails(p) {}
 
   function saveData(p) {
     let params = {
@@ -1073,6 +1063,51 @@ const DataCollectionEntry = (props) => {
       });
     }
   }
+
+  const tableHtml = `<table class="tg" style="table-layout: fixed;">
+                          <thead>
+                            <tr>
+                              <td class="tg-zv4m" rowspan="2">Serial No</td>
+                              <td style="width: 120px; max-width: 120px;" class="tg-zv4m" rowspan="2">Name of grass</td>
+                              <td style="width: 120px; max-width: 120px;" class="tg-zv4m" rowspan="2">Type of land (1 = Homestead; 2 = Cultivable Land; 3 = Others)</td>
+                              <td class="tg-nlfa" colspan="4">Area of land cultivated, production sale for fodder (green grass)</td>
+                            
+                              </tr>
+                            <tr>
+                              <td style="width: 90px; max-width: 90px;" class="tg-22sb">Cultivation in decimal</td>
+                              <td style="width: 90px; max-width: 90px;" class="tg-dhoh">Production in last year (kg)</td>
+                              <td style="width: 90px; max-width: 90px;" class="tg-22sb">Consumption in last year (kg)</td>
+                              <td style="width: 90px; max-width: 90px;" class="tg-dhoh">Sales in last year (kg)</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td >
+                                <select class="fullWidthSelect">
+                                  <option value="option1">Option 1</option>
+                                  <option value="option2">Option 2</option>
+                                </select>
+                              </td>
+                              <td >
+                                <select class="fullWidthSelect">
+                                  <option value="optionA">Option A</option>
+                                  <option value="optionB">Option B</option>
+                                </select>
+                              </td>
+                              <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
+                              <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
+                              <td class="tg-dhohs"><input type="number" class="numberInput" /></td>
+                              <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
+                              
+                              <td>
+                                <i class="fa fa-trash-alt" style="color: red;" onclick="deleteData(rowData)"></i>
+                            </td>
+                            </tr>
+                          </tbody>
+                        </table>`;
+
+
 
   return (
     <>
@@ -1258,22 +1293,9 @@ const DataCollectionEntry = (props) => {
                     />
                   </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                 {dataTypeId==2 && (<>
-                 <div class="formControl">
+                  {dataTypeId == 2 && (
+                    <>
+                      {/*  <div class="formControl">
                     <label>ফার্মার (Farmer):</label>
                     <Autocomplete
                       autoHighlight
@@ -1315,184 +1337,266 @@ const DataCollectionEntry = (props) => {
                       class={"btnDetails"}
                       onClick={showFarmerDetails}
                     />
-                  </div>
- 
+                  </div> */}
 
- 
+                      <div className="formControl">
+                        <label>ফার্মার (Farmer):</label>
+                        <div className="autocompleteContainer">
+                          <Autocomplete
+                            autoHighlight
+                            className="chosen_dropdown specificAutocomplete"
+                            id="FarmerId"
+                            name="FarmerId"
+                            autoComplete
+                            options={farmerList ? farmerList : []}
+                            getOptionLabel={(option) => option.name}
+                            value={
+                              farmerList
+                                ? farmerList[
+                                    farmerList.findIndex(
+                                      (list) =>
+                                        list.id == currentInvoice.FarmerId
+                                    )
+                                  ]
+                                : null
+                            }
+                            onChange={(event, valueobj) =>
+                              handleChangeChoosenMaster(
+                                "FarmerId",
+                                valueobj ? valueobj.id : ""
+                              )
+                            }
+                            renderOption={(option) => (
+                              <Typography className="chosen_dropdown_font">
+                                {option.name}
+                              </Typography>
+                            )}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="standard"
+                                fullWidth
+                              />
+                            )}
+                          />
+
+                          <Button
+                            label={"Details"}
+                            class={"btnDetails"}
+                            onClick={showFarmerDetails}
+                          />
+                        </div>
+                      </div>
+
+                      <div class="formControl">
+                        <label>Type of Farmer</label>
+                      </div>
+
+                      <div class="formControl">
+                        <label></label>
+                        <div class="checkbox-group-type">
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="DAIRY"
+                              name="DAIRY"
+                              checked={
+                                questionsVisibleList["DAIRY"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>1 Dairy</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="BEEFFATTENING"
+                              name="BEEFFATTENING"
+                              checked={
+                                questionsVisibleList["BEEFFATTENING"] !=
+                                "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>2 Beef Fattening</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="BUFFALO"
+                              name="BUFFALO"
+                              checked={
+                                questionsVisibleList["BUFFALO"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>3 Buffalo</label>
+                          </div>
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="GOAT"
+                              name="GOAT"
+                              checked={
+                                questionsVisibleList["GOAT"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>4 Goat</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="SHEEP"
+                              name="SHEEP"
+                              checked={
+                                questionsVisibleList["SHEEP"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>5 Sheep</label>
+                          </div>
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="SCAVENGINGCHICKENLOCAL"
+                              name="SCAVENGINGCHICKENLOCAL"
+                              checked={
+                                questionsVisibleList[
+                                  "SCAVENGINGCHICKENLOCAL"
+                                ] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>6 Scavenging Chicken Local</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="SONALI"
+                              name="SONALI"
+                              checked={
+                                questionsVisibleList["SONALI"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>7 Sonali</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="COMMERCIALBROILER"
+                              name="COMMERCIALBROILER"
+                              checked={
+                                questionsVisibleList["COMMERCIALBROILER"] !=
+                                "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>8 Commercial Broiler</label>
+                          </div>
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="QUAIL"
+                              name="QUAIL"
+                              checked={
+                                questionsVisibleList["QUAIL"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>9 Quail</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="TURKEY"
+                              name="TURKEY"
+                              checked={
+                                questionsVisibleList["TURKEY"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>10 Turkey</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="GUINEAFOWL"
+                              name="GUINEAFOWL"
+                              checked={
+                                questionsVisibleList["GUINEAFOWL"] !=
+                                "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>11 Guinea Fowl</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="PIGEON"
+                              name="PIGEON"
+                              checked={
+                                questionsVisibleList["PIGEON"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>12 Pigeon</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="DUCK"
+                              name="DUCK"
+                              checked={
+                                questionsVisibleList["DUCK"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>13 Duck</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="LAYER"
+                              name="LAYER"
+                              checked={
+                                questionsVisibleList["LAYER"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>14 Layer</label>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
                   <div class="formControl">
-                    <label>Type of Farmer</label>
+                      <label></label>
+                      <div
+                        className="newTableDiv"
+                        dangerouslySetInnerHTML={{ __html: tableHtml }}
+
+                      />
+                      <label></label>
+                      <button className="middleButton">
+                      <i className="fa fa-plus" />
+                    </button>
+                          
+
                   </div>
-
-                  <div class="formControl">
-                    <label></label>
-                    <div class="checkbox-group-type">
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="DAIRY"
-                          name="DAIRY"
-                          checked={questionsVisibleList["DAIRY"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>1 Dairy</label>
-                      </div>
-
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="BEEFFATTENING"
-                          name="BEEFFATTENING"
-                          checked={questionsVisibleList["BEEFFATTENING"]!="displaynone"}
-
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>2 Beef Fattening</label>
-                      </div>
-
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="BUFFALO"
-                          name="BUFFALO"
-                          checked={questionsVisibleList["BUFFALO"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>3 Buffalo</label>
-                      </div>
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="GOAT"
-                          name="GOAT"
-                          checked={questionsVisibleList["GOAT"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>4 Goat</label>
-                      </div>
-
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="SHEEP"
-                          name="SHEEP"
-                          checked={questionsVisibleList["SHEEP"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>5 Sheep</label>
-                      </div>
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="SCAVENGINGCHICKENLOCAL"
-                          name="SCAVENGINGCHICKENLOCAL"
-                          checked={questionsVisibleList["SCAVENGINGCHICKENLOCAL"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>6 Scavenging Chicken Local</label>
-                      </div>
-
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="SONALI"
-                          name="SONALI"
-                          checked={questionsVisibleList["SONALI"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>7 Sonali</label>
-                      </div>
-
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="COMMERCIALBROILER"
-                          name="COMMERCIALBROILER"
-                          checked={questionsVisibleList["COMMERCIALBROILER"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>8 Commercial Broiler</label>
-                      </div>
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="QUAIL"
-                          name="QUAIL"
-                          checked={questionsVisibleList["QUAIL"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>9 Quail</label>
-                      </div>
-
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="TURKEY"
-                          name="TURKEY"
-                          checked={questionsVisibleList["TURKEY"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>10 Turkey</label>
-                      </div>
-
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="GUINEAFOWL"
-                          name="GUINEAFOWL"
-                          checked={questionsVisibleList["GUINEAFOWL"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>11 Guinea Fowl</label>
-                      </div>
-
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="PIGEON"
-                          name="PIGEON"
-                          checked={questionsVisibleList["PIGEON"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>12 Pigeon</label>
-                      </div>
-
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="DUCK"
-                          name="DUCK"
-                          checked={questionsVisibleList["DUCK"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>13 Duck</label>
-                      </div>
-
-                      <div class="checkbox-label">
-                        <input
-                          type="checkbox"
-                          id="LAYER"
-                          name="LAYER"
-                          checked={questionsVisibleList["LAYER"]!="displaynone"}
-                          onChange={(e) => changeVisibilityCheck(e)}
-                        />
-                        <label>14 Layer</label>
-                      </div>
-                    </div>
-                  </div>
-                  </>
-                 )}
- 
-
-
-
-
-
-
-
-
-
-
-
 
                   {questionsList.map((question) => {
                     // console.log("question: ", question.QuestionType);

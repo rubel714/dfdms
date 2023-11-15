@@ -631,5 +631,42 @@ input[type=search] {
 
 }
 
+.autocompleteContainer {
+  display: flex;
+  align-items: center;
+}
+
+.specificAutocomplete {
+    width: 90%;
+  }
 
 
+  .tg-nlfa {
+    background-color: green;
+  }
+  
+  .tg-22sb {
+    background-color: yellow;
+  }
+  
+  .tg-dhoh {
+    background-color: orange;
+  }
+
+
+  .tg-dhohs input.numberInput {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.fullWidthSelect {
+    width: 100%;
+    padding: 6px;
+}
+
+.middleButton {
+    display: block;
+    margin: 0 auto;
+    width: 150px;
+    background-color: #3c3cd2;
+}
