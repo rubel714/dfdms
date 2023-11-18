@@ -46,7 +46,7 @@ function getDataList($data){
 
 	try{
 		$dbh = new Db();
-		$query = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName, c.QuestionCode, a.SortOrder, a.DataTypeId
+		$query = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName, c.QuestionCode, a.SortOrder, a.DataTypeId, a.Category
 		FROM t_datatype_questions_map a
 		INNER JOIN t_datatype b ON a.DataTypeId = b.DataTypeId
 		INNER JOIN t_questions c ON a.QuestionId = c.QuestionId
@@ -121,8 +121,8 @@ function dataAddEdit($data) {
 		$UserId = trim($data->UserId); 
 
 		$QMapId = $data->rowData->id;
-		$LabelName = $data->rowData->LabelName;
-
+		$LabelName = $data->rowData->LabelName? $data->rowData->LabelName : null;
+		$Category = $data->rowData->Category? $data->rowData->Category : null;
 
 		try{
 
@@ -131,8 +131,8 @@ function dataAddEdit($data) {
 
 			$u = new updateq();
 			$u->table = 't_datatype_questions_map';
-			$u->columns = ['LabelName'];
-			$u->values = [$LabelName];
+			$u->columns = ['LabelName', 'Category'];
+			$u->values = [$LabelName, $Category];
 			$u->pks = ['QMapId'];
 			$u->pk_values = [$QMapId];
 			$u->build_query();

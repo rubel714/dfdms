@@ -53,6 +53,7 @@ const DatatypeQuestionsMap = (props) => {
   const columnList = [
     { field: "SortOrder", label: "SortOrder", align: "center", visible: false },
     { field: "DataTypeId", label: "DataTypeId", align: "center", visible: false },
+    { field: "Category", label: "Category", align: "center", visible: false },
     { field: "rownumber", label: "SL", align: "center", width: "5%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
     {
@@ -103,7 +104,7 @@ const DatatypeQuestionsMap = (props) => {
     {
       field: "custom",
       label: "Action",
-      width: "7%",
+      width: "9%",
       align: "center",
       visible: true,
       sort: false,
@@ -175,22 +176,22 @@ const DatatypeQuestionsMap = (props) => {
             }}
           />
 
-          {rowData.MapType === "Label" && (
+          {/* {rowData.MapType === "Label" && (
           <Edit
             className={"table-edit-icon"}
             onClick={() => {
               editData(rowData);
             }}
           />
-        )}
+        )} */}
 
-
-        {/* <Edit
+        <Edit
           className={"table-edit-icon"}
           onClick={() => {
             editData(rowData);
           }}
-        /> */}
+        />
+
 
         <DeleteOutline
           className={"table-delete-icon"}
