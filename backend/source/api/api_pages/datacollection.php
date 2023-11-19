@@ -190,12 +190,30 @@ function getDataSingle($data)
 			
 		}
 
+		/**Items Details Data */
+		$query = "SELECT a.DataValueItemDetailsId,a.`DataValueMasterId`, a.`DataValueItemId`, a.`GrassId`,
+		a.LandTypeId,a.Cultivation,a.Production, a.Consumption,a.Sales
+		FROM t_datavalueitemsdetails a
+		where a.DataValueMasterId=$DataValueMasterId
+		order by a.DataValueItemDetailsId;";
+		$resultdataItemsDetails = $dbh->query($query);
+
+		// $itemsDetails = array();
+		// foreach ($resultdataItemsDetails as $row) {
+
+		// 	if($row['QuestionType'] === "CheckText"){
+		// 		$items[$row['QuestionCode']] = $row['DataValue'] === "0" ? false : $row['DataValue'];
+		// 	}else{
+		// 		$items[$row['QuestionCode']] = $row['DataValue'];
+		// 	}
+			
+		// }
 
 		$returnData = [
 			"success" => 1,
 			"status" => 200,
 			"message" => "",
-			"datalist" => array("master" => $resultdataMaster, "items" => $items)
+			"datalist" => array("master" => $resultdataMaster, "items" => $items, "itemsdetails" => $resultdataItemsDetails)
 		];
 	} catch (PDOException $e) {
 		$returnData = msg(0, 500, $e->getMessage());
@@ -308,9 +326,7 @@ function dataAddEdit($data)
 				}
 				
 				// echo $DataValueItemId."==";
-
 				// $dataValuesList[$rowd['QuestionId']] = $rowd['DataValueItemId'];
-
 			
 
 				if ($DataValueItemId === "") {
@@ -343,6 +359,9 @@ function dataAddEdit($data)
 
 			// BQ1=>reBQ2=>3543BQ3=>345rfeBQ4.1=>3454BQ4.3=>34MQ15=>falseMQ16=>345
 			// BQ1=>AAA======BQ2=>3000======BQ3=>BBB======BQ4.1=>18======BQ4.2=>10======MQ4.1=>1======MQ16=>200======
+
+
+	
 // exit;
 // echo "<pre>";
 // print_r($aQuerys);
@@ -358,6 +377,93 @@ function dataAddEdit($data)
 				"id" => $res['id'],
 				"message" => $res['msg']
 			];
+
+			if($success == 1){
+				
+
+				/**Insert or update items details */
+				$InvoiceItemsDetails = isset($data->InvoiceItemsDetails) ? ($data->InvoiceItemsDetails) : [];
+				if(count($InvoiceItemsDetails)>0){
+
+					if ($DataValueMasterId === "") {
+						$DataValueMasterId = $res['id'];
+					}
+
+					
+					/**When the question has "Do you cultivate fodder (green grass)?" 
+					 * and select YES then following code execute for save TABLE date under this question* */
+					$sq = "SELECT ifnull(max(a.DataValueItemId),0) as DataValueItemId
+					FROM t_datavalueitems a
+					inner join t_questions b on a.QuestionId=b.QuestionId
+					where a.DataValueMasterId=$DataValueMasterId
+					and b.QuestionCode='GRASS__00000';"; 
+					$sqr = $dbh->query($sq);
+					$DataValueItemId = $sqr[0]["DataValueItemId"]; 
+					// echo "==".$DataValueItemId."==";
+
+					if($DataValueItemId > 0){
+						$aQuerys = array();
+						foreach($InvoiceItemsDetails as $key=>$DataValueDetails){
+
+							$DataValueItemDetailsId = $DataValueDetails->DataValueItemDetailsId;
+							//$DataValueItemId = $DataValueDetails->DataValueItemId;
+							$GrassId = $DataValueDetails->GrassId;
+							$LandTypeId = $DataValueDetails->LandTypeId;
+							$Cultivation = $DataValueDetails->Cultivation;
+							$Production = $DataValueDetails->Production;
+							$Consumption = $DataValueDetails->Consumption;
+							$Sales = $DataValueDetails->Sales;
+							$RowType = $DataValueDetails->RowType;
+							
+							if ($RowType === "delete") {
+								$d = new deleteq();
+								$d->table = 't_datavalueitemsdetails';
+								$d->pks = ['DataValueItemDetailsId'];
+								$d->pk_values = [$DataValueItemDetailsId];
+								$d->build_query();
+								$aQuerys[] = $d;
+
+							}
+							else if ($RowType === "new") {
+								$q = new insertq();
+								$q->table = 't_datavalueitemsdetails';
+								$q->columns = ['DataValueMasterId', 'DataValueItemId', 'GrassId','LandTypeId','Cultivation','Production','Consumption','Sales'];
+								$q->values = [$DataValueMasterId,$DataValueItemId,$GrassId,$LandTypeId,$Cultivation,$Production,$Consumption,$Sales];
+								$q->pks = ['DataValueItemDetailsId'];
+								$q->bUseInsetId = false;
+								$q->build_query();
+								$aQuerys[] = $q;
+
+							} else {
+								$u = new updateq();
+								$u->table = 't_datavalueitemsdetails';
+								$u->columns = ['GrassId','LandTypeId','Cultivation','Production','Consumption','Sales'];
+								$u->values = [$GrassId,$LandTypeId,$Cultivation,$Production,$Consumption,$Sales];
+								$u->pks = ['DataValueItemDetailsId'];
+								$u->pk_values = [$DataValueItemDetailsId];
+								$u->build_query();
+								$aQuerys[] = $u;
+							}
+			
+						}
+
+						$res1 = exec_query($aQuerys, $UserId, $lan);
+						$success = ($res1['msgType'] === 'success') ? 1 : 0;
+						$status = ($res1['msgType'] === 'success') ? 200 : 500;
+						if($success==0){
+							$returnData = [
+								"success" => $success,
+								"status" => $status,
+								"id" => $res1['id'],
+								"message" => $res1['msg']
+							];
+						}
+				}
+
+
+					
+			}
+		}
 
 
 		} catch (PDOException $e) {
@@ -389,6 +495,13 @@ function deleteData($data)
 			// $dbh = new Db();
 
 			$aQuerys = array();
+
+			$d = new deleteq();
+			$d->table = 't_datavalueitemsdetails';
+			$d->pks = ['DataValueMasterId'];
+			$d->pk_values = [$DataValueMasterId];
+			$d->build_query();
+			$aQuerys[] = $d;
 
 			$d = new deleteq();
 			$d->table = 't_datavalueitems';

@@ -28,6 +28,14 @@ switch($task){
 	case "YearList":
 		$returnData = YearList($data);
 		break;
+	
+	case "GrassList":
+		$returnData = GrassList($data);
+		break;
+	
+	case "LandTypeList":
+		$returnData = LandTypeList($data);
+		break;
 
 			
 	case "RoleList":
@@ -219,6 +227,58 @@ function YearList($data) {
 		$query = "SELECT `YearId` id,`YearName` `name`
 	 			 	FROM `t_year` 
 					ORDER BY YearName;"; 
+	
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+   
+ 
+function GrassList($data) {
+	try{
+
+		$dbh = new Db();
+		
+		$query = "SELECT `GrassId` id,`GrassName` `name`
+	 			 	FROM `t_grasslist` 
+					ORDER BY GrassName;"; 
+	
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+   
+ 
+function LandTypeList($data) {
+	try{
+
+		$dbh = new Db();
+		
+		$query = "SELECT `LandTypeId` id,`LandType` `name`
+	 			 	FROM `t_landtype` 
+					ORDER BY LandType;"; 
 	
 		$resultdata = $dbh->query($query);
 

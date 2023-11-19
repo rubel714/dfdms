@@ -670,3 +670,72 @@ input[type=search] {
     width: 150px;
     background-color: #3c3cd2;
 }
+
+/ for html table /
+  .tg-nlfa {
+    background-color: green;
+  }
+  
+  .tg-22sb {
+    background-color: yellow;
+  }
+  
+  .tg-dhoh {
+    background-color: orange;
+  }
+
+
+  .tg-dhohs input.numberInput {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.fullWidthSelect {
+    width: 100%;
+    padding: 6px;
+}
+
+.middleButton {
+    display: block;
+    margin: 0 auto;
+    width: 150px;
+    background-color: #3c3cd2;
+}
+
+.tg {
+    table-layout: fixed;
+  }
+  
+  .tg-sl {
+    width: 65px;
+    max-width: 65px;
+    text-align: center;
+  }
+  
+  .tg-zv4m {
+    width: 120px;
+    max-width: 120px;
+  }
+  
+  .tg-22sb {
+    width: 90px;
+    max-width: 90px;
+  }
+  
+  .tg-dhoh {
+    width: 90px;
+    max-width: 90px;
+  }
+  
+  .tg-nlfa {
+    colspan: 4;
+  }
+  
+  .fullWidthSelect {
+    width: 100%;
+  }
+  
+  
+  .fa-trash-alt {
+    color: red;
+  }

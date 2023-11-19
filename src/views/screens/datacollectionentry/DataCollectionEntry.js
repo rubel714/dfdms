@@ -60,6 +60,80 @@ const DataCollectionEntry = (props) => {
 
   const [questionsList, setQuestionsList] = useState([]);
 
+
+
+  
+  const [landTypeList, setLandTypeList] = useState([]);
+    // {
+  //   LandTypeId: 1,
+  //   LandType: "Homostead",
+  // },
+  // {
+  //   LandTypeId: 2,
+  //   LandType: "Cultivable Land",
+  // },
+  // {
+  //   LandTypeId: 3,
+  //   LandType: "Others",
+  // },
+
+  const [grassList, setGrassList] = useState([]);
+  // {
+  //   GrassId: 1,
+  //   GrassName: "Dema",
+  // },
+  // {
+  //   GrassId: 2,
+  //   GrassName: "Gama",
+  // },
+  // {
+  //   GrassId: 3,
+  //   GrassName: "Jambu",
+  // },
+  // {
+  //   GrassId: 4,
+  //   GrassName: "Job",
+  // },
+  // {
+  //   GrassId: 5,
+  //   GrassName: "Napier",
+  // },
+
+  const [grassTypeTableRow, setGrassTypeTableRow] = useState([]);
+  // {
+  //   DataValueItemDetailsId: 1,
+  //   DataValueItemId: 239,
+  //   GrassId: 1,
+  //   LandTypeId: 3,
+  //   Cultivation: 100,
+  //   Production: 50,
+  //   Consumption: 20,
+  //   Sales: 30,
+  //   RowType:0
+  // },
+  // {
+  //   DataValueItemDetailsId: 2,
+  //   DataValueItemId: 239,
+  //   GrassId: 1,
+  //   LandTypeId: 2,
+  //   Cultivation: 300,
+  //   Production: 40,
+  //   Consumption: 60,
+  //   Sales: 10,
+  //   RowType:0
+  // },
+  // {
+  //   DataValueItemDetailsId: 3,
+  //   DataValueItemId: 239,
+  //   GrassId: 5,
+  //   LandTypeId: 2,
+  //   Cultivation: 300,
+  //   Production: 40,
+  //   Consumption: 60,
+  //   Sales: 25,
+  //   RowType:0
+  // },
+
   let qvList = {
     DAIRY: "displaynone",
     BEEFFATTENING: "displaynone",
@@ -76,7 +150,10 @@ const DataCollectionEntry = (props) => {
     DUCK: "displaynone",
     LAYER: "displaynone",
   };
+
+
   const [questionsVisibleList, setQuestionsVisibleList] = useState(qvList);
+
   // console.log("questionsVisibleList: ", questionsVisibleList);
   // console.log("questionsVisibleList: ", questionsVisibleList[2]);
 
@@ -329,6 +406,192 @@ const DataCollectionEntry = (props) => {
     setManyDataList([]);
   };
 
+
+
+
+
+
+
+
+
+  // function getRandomNumber(min, max) {
+  //   return Math.floor(Math.random() * (max - min + 1)) + min;
+  // }
+
+  const addGrassTypeRow = () => {
+    //console.log('deleteGrassTypeRow: ', 'deleteGrassTypeRow');
+      
+      let rows = [];
+      //let autoId=0;
+
+
+      grassTypeTableRow.forEach((row,i) => {
+        //autoId++;
+        let newRow={} ; 
+
+        newRow.DataValueItemDetailsId = row.DataValueItemDetailsId;
+        newRow.GrassId = row.GrassId;
+        newRow.LandTypeId = row.LandTypeId;
+        newRow.Cultivation = row.Cultivation;
+        newRow.Production = row.Production;
+        newRow.Consumption = row.Consumption;
+        newRow.Sales = row.Sales;
+        newRow.RowType = row.RowType;
+        // newRow.autoId = row.DataValueItemDetailsId;
+
+
+        rows.push(newRow);
+
+    }); 
+
+
+
+    let newRow={} ;
+    newRow.DataValueItemDetailsId = Date.now();
+    newRow.GrassId = "";
+    newRow.LandTypeId = "";
+    newRow.Cultivation = null;
+    newRow.Production = null;
+    newRow.Consumption = null;
+    newRow.Sales = null;
+    newRow.RowType = 'new';
+    // newRow.autoId = Date.now();
+
+
+    rows.push(newRow);
+
+    setGrassTypeTableRow(rows);   
+
+
+  };
+
+  const changeCustomTableCellExtend = (e, field, id) => {
+    console.log(e);
+    const { name, value } = e.target;
+
+    console.log("name, value, id: ", field, value, id);
+   
+    let rows = [];
+   // let autoId=0;
+
+    grassTypeTableRow.forEach((row,i) => {
+      //autoId++;
+      let newRow={} ; 
+
+      if(row.DataValueItemDetailsId == id){
+        newRow.DataValueItemDetailsId = row.DataValueItemDetailsId;
+        
+        if(field == 'GrassId'){
+          newRow.GrassId = value;
+        }else{
+          newRow.GrassId = row.GrassId;
+        }
+
+        if(field == 'LandTypeId'){
+          newRow.LandTypeId = value;
+        }else{
+          newRow.LandTypeId = row.LandTypeId;
+        }
+        
+        if(field == 'Cultivation'){
+          newRow.Cultivation = value;
+        }else{
+          newRow.Cultivation = row.Cultivation;
+        }
+
+        if(field == 'Production'){
+          newRow.Production = value;
+        }else{
+          newRow.Production = row.Production;
+        }
+
+        if(field == 'Consumption'){
+          newRow.Consumption = value;
+        }else{
+          newRow.Consumption = row.Consumption;
+        }
+
+        if(field == 'Sales'){
+          newRow.Sales = value;
+        }else{
+          newRow.Sales = row.Sales;
+        }
+
+        newRow.RowType = row.RowType;
+        // newRow.autoId = row.autoId;
+
+      }else{
+        newRow.DataValueItemDetailsId = row.DataValueItemDetailsId;
+        newRow.GrassId = row.GrassId;
+        newRow.LandTypeId = row.LandTypeId;
+        newRow.Cultivation = row.Cultivation;
+        newRow.Production = row.Production;
+        newRow.Consumption = row.Consumption;
+        newRow.Sales = row.Sales;
+  
+        newRow.RowType = row.RowType;
+        // newRow.autoId = row.autoId;
+      }
+
+
+
+      rows.push(newRow);
+
+  }); 
+
+
+
+  setGrassTypeTableRow(rows);   
+  console.log('rows: ', rows);
+
+
+  };
+
+  const deleteGrassTypeRow = (e, id) => {
+    console.log('deleteGrassTypeRow: ', 'deleteGrassTypeRow');
+   // console.log(e);
+    //const { name, value } = e.target;
+
+    console.log("id: ", id);
+    let rows = [];
+
+    grassTypeTableRow.forEach((row,i) => {
+      let newRow={} ; 
+
+      newRow.DataValueItemDetailsId = row.DataValueItemDetailsId;
+      newRow.GrassId = row.GrassId;
+      newRow.LandTypeId = row.LandTypeId;
+      newRow.Cultivation = row.Cultivation;
+      newRow.Production = row.Production;
+      newRow.Consumption = row.Consumption;
+      newRow.Sales = row.Sales;
+      
+      if(row.DataValueItemDetailsId == id){
+        newRow.RowType = 'delete';
+      }else{
+        newRow.RowType = row.RowType;
+      }
+
+
+
+      rows.push(newRow);
+
+  }); 
+
+
+
+  setGrassTypeTableRow(rows);   
+  console.log('rows: ', rows);
+  };
+
+  // Function to handle the input change
+  // window.changeCustomTableCell = (value) => {
+  //   changeCustomTableCellExtend(value);
+  // };
+  //   const htmlContent = `
+  //   <input type="number" value="120" onchange="changeCustomTableCell(6)" />
+  // `;
+
   if (bFirst) {
     if (dataTypeId === 1) {
       setEntryFormTitle("গ্রুপের তথ্য সংগ্রহ ফরম (PG data collection form)");
@@ -340,6 +603,167 @@ const DataCollectionEntry = (props) => {
       setEntryFormSubTitle(
         "ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data Collection and Storage)"
       );
+
+      //   const [landTypeList, setLandTypeList] = useState([
+      //     {
+      //       LandTypeId: 1,
+      //       LandType: "Homostead"
+      //     },
+      //     {
+      //       LandTypeId: 2,
+      //       LandType: "Cultivable Land"
+      //     },
+      //     {
+      //       LandTypeId: 3,
+      //       LandType: "Others"
+      //     },
+      // ]);
+
+      // const [grassList, setGrassList] = useState([
+
+      //   let dlist = [
+      //     {
+      //       DataValueItemDetailsId: 1,
+      //       DataValueItemId: 237,
+      //       GrassId: 1,
+      //       LandTypeId: 3,
+      //       Cultivation: 100,
+      //       Production: 50,
+      //       Consumption: 20,
+      //       Sales: 30
+      //     },
+      //     {
+      //       DataValueItemDetailsId: 2,
+      //       DataValueItemId: 237,
+      //       GrassId: 1,
+      //       LandTypeId: 2,
+      //       Cultivation: 300,
+      //       Production: 40,
+      //       Consumption: 60,
+      //       Sales: 10
+      //     },
+      //     {
+      //       DataValueItemDetailsId: 3,
+      //       DataValueItemId: 237,
+      //       GrassId: 2,
+      //       LandTypeId: 2,
+      //       Cultivation: 300,
+      //       Production: 40,
+      //       Consumption: 60,
+      //       Sales: 25
+      //     }
+      // ];
+
+      // let grassTypeTableHTML = "";
+
+      // dlist.forEach((obj,i)=>{
+      //   grassTypeTableHTML += '<tr>'+
+      //                           '<td>'+ (i+1) +'</td>'+
+      //                           '<td >'+
+      //                             '<select id="GrassId'+ getRandomNumber(1,500) +'" class="fullWidthSelect" onchange="changeCustomTableCell(this)">'+
+
+      //                             grassList.map((row,i)=>{
+      //                               let s = "";
+      //                               if(obj.GrassId == row.GrassId){
+      //                                 s = "selected";
+      //                               }
+      //                               return '<option '+s+' value='+row.GrassId+'>'+row.GrassName+'</option>';
+      //                             })+
+
+      //                               // '<option value="1">Dema</option>'+
+      //                               // '<option value="2">Gama</option>'+
+      //                               // '<option selected value="3">Jambu</option>'+
+      //                               // '<option value="4">Job</option>'+
+      //                               // '<option value="5">Napier</option>'+
+
+      //                             '</select>'+
+      //                           '</td>'+
+      //                           '<td >'+
+      //                             '<select id="LandType'+ getRandomNumber(1,500) +'" class="fullWidthSelect" onchange="changeCustomTableCell(this)">'+
+      //                             landTypeList.map((row,i)=>{
+      //                               let s = "";
+      //                               if(obj.LandTypeId == row.LandTypeId){
+      //                                 s = "selected";
+      //                               }
+      //                                 return '<option '+s+' value='+row.LandTypeId+'>'+row.LandType+'</option>';
+      //                               })+
+      //                               // '<option value="1">Homostead</option>'+
+      //                               // '<option value="2">Cultivable Land</option>'+
+      //                               // '<option value="3">Others</option>'+
+      //                             '</select>'+
+      //                           '</td>'+
+      //                           '<td class="tg-dhohs"><input type="number" id="Cultivation'+ getRandomNumber(1,500) +'" class="numberInput" value="'+obj.Cultivation+'" onchange="changeCustomTableCell(this)" /></td>'+
+      //                           '<td class="tg-dhohs"><input type="number" id="Production'+ getRandomNumber(1,500) +'" class="numberInput" value="'+obj.Production+'" onchange="changeCustomTableCell(this)" /></td>'+
+      //                           '<td class="tg-dhohs"><input type="number" id="Consumption'+ getRandomNumber(1,500) +'" class="numberInput" value="'+obj.Consumption+'" onchange="changeCustomTableCell(this)" /></td>'+
+      //                           '<td class="tg-dhohs"><input type="number" id="Sales'+ getRandomNumber(1,500) +'" class="numberInput" value="'+obj.Sales+'" onchange="changeCustomTableCell(this)" /></td>'+
+      //                           // onchange={() => changeCustomTableCell(3)}
+      //                           //onChange={(e) => changeVisibilityCheck(e)}
+
+      //                           '<td>'+
+      //                             '<i class="fa fa-trash-alt" style="color: red;" onclick="deleteGrassTypeRow('+obj.DataValueItemDetailsId+')"></i>'+
+      //                         '</td>'+
+      //                         '</tr>';
+
+      // });
+
+      // setGrassTypeTableRow(grassTypeTableHTML);
+
+      // setGrassTypeTableRow(
+      //   '<tr>'+
+      //     '<td>1</td>'+
+      //     '<td >'+
+      //       '<select class="fullWidthSelect">'+
+      //         '<option value="1">Dema</option>'+
+      //         '<option value="2">Gama</option>'+
+      //         '<option value="3">Jambu</option>'+
+      //         '<option value="4">Job</option>'+
+      //         '<option value="5">Napier</option>'+
+      //       '</select>'+
+      //     '</td>'+
+      //     '<td >'+
+      //       '<select class="fullWidthSelect">'+
+      //         '<option value="1">Homostead</option>'+
+      //         '<option value="2">Cultivable Land</option>'+
+      //         '<option value="3">Others</option>'+
+      //       '</select>'+
+      //     '</td>'+
+      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
+      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
+      //     '<td class="tg-dhohs"><input type="number" class="numberInput" /></td>'+
+      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
+
+      //     '<td>'+
+      //       '<i class="fa fa-trash-alt" style="color: red;" onclick="deleteData(rowData)"></i>'+
+      //   '</td>'+
+      //   '</tr>'+
+
+      //   '<tr>'+
+      //     '<td>1</td>'+
+      //     '<td >'+
+      //       '<select class="fullWidthSelect">'+
+      //         '<option value="1">Dema</option>'+
+      //         '<option value="2">Gama</option>'+
+      //         '<option value="3">Jambu</option>'+
+      //         '<option value="4">Job</option>'+
+      //         '<option value="5">Napier</option>'+
+      //       '</select>'+
+      //     '</td>'+
+      //     '<td >'+
+      //       '<select class="fullWidthSelect">'+
+      //       '<option value="1">Homostead</option>'+
+      //       '<option value="2">Cultivable Land</option>'+
+      //       '<option value="3">Others</option>'+
+      //       '</select>'+
+      //     '</td>'+
+      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
+      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
+      //     '<td class="tg-dhohs"><input type="number" class="numberInput" /></td>'+
+      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
+
+      //     '<td>'+
+      //       '<i class="fa fa-trash-alt" style="color: red;" onclick="deleteData(rowData)"></i>'+
+      //   '</td>'+
+      //   '</tr>');
     } else if (dataTypeId === 3) {
       setEntryFormTitle(
         "গ্ৰুপের তথ্য সংগ্রহ ফরম (Large Group Discussion Data)"
@@ -353,10 +777,14 @@ const DataCollectionEntry = (props) => {
     newInvoice();
 
     getQuestionList();
-
     getPgGroupList();
-
     getYearList();
+
+
+    getLandTypeList();
+    getGrassList();
+
+
     getQuarterList();
 
     // getDataList(); //invoice list
@@ -453,6 +881,37 @@ const DataCollectionEntry = (props) => {
       // console.log('res: ', res);
       setYearList(
         [{ id: "", name: "বছর নির্বাচন করুন" }].concat(res.data.datalist)
+      );
+    });
+  }
+
+  
+  function getGrassList() {
+    let params = {
+      action: "GrassList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      // console.log('res: ', res);
+      setGrassList(
+        [{ id: "", name: "নির্বাচন করুন" }].concat(res.data.datalist)
+      );
+    });
+  }
+
+  function getLandTypeList() {
+    let params = {
+      action: "LandTypeList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      // console.log('res: ', res);
+      setLandTypeList(
+        [{ id: "", name: "নির্বাচন করুন" }].concat(res.data.datalist)
       );
     });
   }
@@ -651,11 +1110,24 @@ const DataCollectionEntry = (props) => {
       console.log("dataListSingle items: ", dataListSingle.items);
       // console.log('dataListSingle: ', dataListSingle.items[0]);
     }
+
+    if (dataListSingle.itemsdetails) {
+      setGrassTypeTableRow(dataListSingle.itemsdetails);
+      console.log("dataListSingle itemsdetails: ", dataListSingle.itemsdetails);
+      // console.log('dataListSingle: ', dataListSingle.items[0]);
+    }
+
+
   }, [dataListSingle]);
 
+  
+
+  
   const backToList = () => {
     setListEditPanelToggle(true); // true = show list and hide add/edit panel
     getDataList(); //invoice list
+    setGrassTypeTableRow([]);
+
   };
 
   const deleteData = (rowData) => {
@@ -1027,6 +1499,7 @@ const DataCollectionEntry = (props) => {
       UserId: UserInfo.UserId,
       InvoiceMaster: currentInvoice,
       InvoiceItems: manyDataList,
+      InvoiceItemsDetails: grassTypeTableRow,
     };
     console.log("params: ", params);
 
@@ -1064,50 +1537,48 @@ const DataCollectionEntry = (props) => {
     }
   }
 
-  const tableHtml = `<table class="tg" style="table-layout: fixed;">
-                          <thead>
-                            <tr>
-                              <td class="tg-zv4m" rowspan="2">Serial No</td>
-                              <td style="width: 120px; max-width: 120px;" class="tg-zv4m" rowspan="2">Name of grass</td>
-                              <td style="width: 120px; max-width: 120px;" class="tg-zv4m" rowspan="2">Type of land (1 = Homestead; 2 = Cultivable Land; 3 = Others)</td>
-                              <td class="tg-nlfa" colspan="4">Area of land cultivated, production sale for fodder (green grass)</td>
-                            
-                              </tr>
-                            <tr>
-                              <td style="width: 90px; max-width: 90px;" class="tg-22sb">Cultivation in decimal</td>
-                              <td style="width: 90px; max-width: 90px;" class="tg-dhoh">Production in last year (kg)</td>
-                              <td style="width: 90px; max-width: 90px;" class="tg-22sb">Consumption in last year (kg)</td>
-                              <td style="width: 90px; max-width: 90px;" class="tg-dhoh">Sales in last year (kg)</td>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td >
-                                <select class="fullWidthSelect">
-                                  <option value="option1">Option 1</option>
-                                  <option value="option2">Option 2</option>
-                                </select>
-                              </td>
-                              <td >
-                                <select class="fullWidthSelect">
-                                  <option value="optionA">Option A</option>
-                                  <option value="optionB">Option B</option>
-                                </select>
-                              </td>
-                              <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
-                              <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
-                              <td class="tg-dhohs"><input type="number" class="numberInput" /></td>
-                              <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
-                              
-                              <td>
-                                <i class="fa fa-trash-alt" style="color: red;" onclick="deleteData(rowData)"></i>
-                            </td>
-                            </tr>
-                          </tbody>
-                        </table>`;
+  // const tableHtml = `<table class="tg" style="table-layout: fixed;">
+  //                         <thead>
+  //                           <tr>
+  //                             <td class="tg-zv4m" rowspan="2">Serial No</td>
+  //                             <td style="width: 120px; max-width: 120px;" class="tg-zv4m" rowspan="2">Name of grass</td>
+  //                             <td style="width: 120px; max-width: 120px;" class="tg-zv4m" rowspan="2">Type of land (1 = Homestead; 2 = Cultivable Land; 3 = Others)</td>
+  //                             <td class="tg-nlfa" colspan="4">Area of land cultivated, production sale for fodder (green grass)</td>
 
+  //                             </tr>
+  //                           <tr>
+  //                             <td style="width: 90px; max-width: 90px;" class="tg-22sb">Cultivation in decimal</td>
+  //                             <td style="width: 90px; max-width: 90px;" class="tg-dhoh">Production in last year (kg)</td>
+  //                             <td style="width: 90px; max-width: 90px;" class="tg-22sb">Consumption in last year (kg)</td>
+  //                             <td style="width: 90px; max-width: 90px;" class="tg-dhoh">Sales in last year (kg)</td>
+  //                           </tr>
+  //                         </thead>
+  //                         <tbody>
+  //                           <tr>
+  //                             <td>1</td>
+  //                             <td >
+  //                               <select class="fullWidthSelect">
+  //                                 <option value="option1">Option 1</option>
+  //                                 <option value="option2">Option 2</option>
+  //                               </select>
+  //                             </td>
+  //                             <td >
+  //                               <select class="fullWidthSelect">
+  //                                 <option value="optionA">Option A</option>
+  //                                 <option value="optionB">Option B</option>
+  //                               </select>
+  //                             </td>
+  //                             <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
+  //                             <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
+  //                             <td class="tg-dhohs"><input type="number" class="numberInput" /></td>
+  //                             <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
 
+  //                             <td>
+  //                               <i class="fa fa-trash-alt" style="color: red;" onclick="deleteData(rowData)"></i>
+  //                           </td>
+  //                           </tr>
+  //                         </tbody>
+  //                       </table>`;
 
   return (
     <>
@@ -1582,21 +2053,10 @@ const DataCollectionEntry = (props) => {
                       </div>
                     </>
                   )}
+                
+                
 
-                  <div class="formControl">
-                      <label></label>
-                      <div
-                        className="newTableDiv"
-                        dangerouslySetInnerHTML={{ __html: tableHtml }}
-
-                      />
-                      <label></label>
-                      <button className="middleButton">
-                      <i className="fa fa-plus" />
-                    </button>
-                          
-
-                  </div>
+                 
 
                   {questionsList.map((question) => {
                     // console.log("question: ", question.QuestionType);
@@ -1791,6 +2251,174 @@ const DataCollectionEntry = (props) => {
                               </label>
                             </div>
                           </div>
+
+
+
+                          
+                          {(question.QuestionCode=='GRASS__00000') && (manyDataList[question.QuestionCode]=="true") && (<div className="formControl">
+                            <label></label>
+                            <div className="newTableDiv">
+                              <table className="tg">
+                                <thead>
+                                  <tr>
+                                    <td className="tg-sl" rowSpan="2">
+                                      Serial No
+                                    </td>
+                                    <td className="tg-zv4m" rowSpan="2">
+                                      Name of grass
+                                    </td>
+                                    <td className="tg-zv4m" rowSpan="2">
+                                      Type of land (1 = Homestead; 2 = Cultivable Land;
+                                      3 = Others)
+                                    </td>
+                                    <td className="tg-nlfa" colSpan="4">
+                                      Area of land cultivated, production sale for
+                                      fodder (green grass)
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="tg-22sb">Cultivation in decimal</td>
+                                    <td className="tg-dhoh">
+                                      Production in last year (kg)
+                                    </td>
+                                    <td className="tg-22sb">
+                                      Consumption in last year (kg)
+                                    </td>
+                                    <td className="tg-dhoh">Sales in last year (kg)</td>
+                                  </tr>
+                                </thead>
+                                <tbody>
+
+
+                                  {grassTypeTableRow.map((grassRow, i) => {
+                                    return (
+                                      <>
+
+
+                                      {grassRow.RowType != 'delete' && (<tr>
+                                          <td className="tg-sl">{i + 1}</td>
+                                          <td>
+                                            <select 
+                                            onChange={(e) => changeCustomTableCellExtend(e,'GrassId',grassRow.DataValueItemDetailsId)}
+
+                                            className="fullWidthSelect">
+                                              {grassList.map((gObj) => {
+                                                return (
+                                                  <>
+                                                    {grassRow.GrassId ==
+                                                      gObj.id && (
+                                                      <option
+                                                        selected
+                                                        value={gObj.id}
+                                                      >
+                                                        {gObj.name}
+                                                      </option>
+                                                    )}
+
+                                                    {grassRow.GrassId !=
+                                                      gObj.id && (
+                                                      <option value={gObj.id}>
+                                                        {gObj.name}
+                                                      </option>
+                                                    )}
+                                                  </>
+                                                );
+                                              })}
+                                            </select>
+                                          </td>
+                                          <td>
+                                            <select 
+                                            onChange={(e) => changeCustomTableCellExtend(e,'LandTypeId',grassRow.DataValueItemDetailsId)}
+
+                                            className="fullWidthSelect">
+                                            {landTypeList.map((gObj) => {
+                                                return (
+                                                  <>
+                                                    {grassRow.LandTypeId ==
+                                                      gObj.id && (
+                                                      <option
+                                                        selected
+                                                        value={gObj.id}
+                                                      >
+                                                        {gObj.name}
+                                                      </option>
+                                                    )}
+
+                                                    {grassRow.LandTypeId !=
+                                                      gObj.id && (
+                                                      <option value={gObj.id}>
+                                                        {gObj.name}
+                                                      </option>
+                                                    )}
+                                                  </>
+                                                );
+                                              })}
+                                            </select>
+                                          </td>
+                                          <td className="tg-dhohs">
+                                            <input
+                                              type="number"
+                                              className="numberInput"
+                                              value={grassRow.Cultivation}
+                                              onChange={(e) => changeCustomTableCellExtend(e,'Cultivation',grassRow.DataValueItemDetailsId)}
+
+                                            />
+                                          </td>
+                                          <td className="tg-dhohs">
+                                            <input
+                                              type="number"
+                                              className="numberInput"
+                                              value={grassRow.Production}
+                                              onChange={(e) => changeCustomTableCellExtend(e,'Production',grassRow.DataValueItemDetailsId)}
+
+
+                                            />
+                                          </td>
+                                          <td className="tg-dhohs">
+                                            <input
+                                              type="number"
+                                              className="numberInput"
+                                              value={grassRow.Consumption}
+                                              onChange={(e) => changeCustomTableCellExtend(e,'Consumption',grassRow.DataValueItemDetailsId)}
+
+
+                                            />
+                                          </td>
+                                          <td className="tg-dhohs">
+                                            <input
+                                              type="number"
+                                              className="numberInput"
+                                              value={grassRow.Sales}
+                                              onChange={(e) => changeCustomTableCellExtend(e,'Sales',grassRow.DataValueItemDetailsId)}
+
+                                            />
+                                          </td>
+                                          <td>
+                                            <i 
+                                            className="fa fa-trash-alt"
+                                            onClick={(e) => deleteGrassTypeRow(e,grassRow.DataValueItemDetailsId)}
+                                            >
+                                            </i>
+                                          </td>
+                                        </tr>)}
+
+
+                                      </>
+                                    );
+                                  })}
+
+                                </tbody>
+                              </table>
+                            </div> 
+                            <label></label>
+                            <button className="middleButton"
+                            onClick={(e) => addGrassTypeRow(e)}
+                            >
+                              <i className="fa fa-plus" />
+                            </button>
+                          </div>
+                          )}
+
                         </>
                       );
                     } else if (question.QuestionType === "Check") {
