@@ -174,6 +174,16 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+                  {/* {menuShowPermision("regularbeneficiaryentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("regularbeneficiaryentry")}
+                        >
+                          Regular Beneficiary
+                        </a>
+                      </li>
+                    )} */}
                   
 
 
@@ -271,16 +281,16 @@ function AfterLoginNavbar(props) {
 
           {/* <!-- ICON BAR --> */}
           <div class="menuIconBar">
-            <a href="./Customer.html">
-              <img src={require("assets/ico/customer.png")} alt="Customer" />
+            <a href="./pgdatacollectionentry">
+              <img src={require("assets/ico/pgdatacollectionentry.png")} alt="Customer" />
             </a>
-            <a href="./receive.html">
-              <img src={require("assets/ico/receive.png")} alt="Receive" />
+            <a href="./farmersdatacollectionentry">
+              <img src={require("assets/ico/farmersdatacollectionentry.png")} alt="Receive" />
             </a>
-            <a href="./receive.html">
-              <img src={require("assets/ico/sales.png")} alt="Sales" />
+            <a href="./lgddatacollectionentry">
+              <img src={require("assets/ico/lgddatacollectionentry.png")} alt="Sales" />
             </a>
-            <a href="./receive.html">
+           {/*  <a href="./receive.html">
               <img src={require("assets/ico/return.png")} alt="Return" />
             </a>
             <a href="./receive.html">
@@ -291,7 +301,7 @@ function AfterLoginNavbar(props) {
             </a>
             <a href="./receive.html">
               <img src={require("assets/ico/expense.png")} alt="Expense" />
-            </a>
+            </a> */}
           </div>
         </div>
 

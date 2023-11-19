@@ -73,6 +73,10 @@ switch($task){
 		$returnData = IsRegularBeneficiaryList($data);
 		break;
 
+	case "QuestionMapCategoryList":
+		$returnData = QuestionMapCategoryList($data);
+		break;
+
 	// case "NextInvoiceNumber":
 	// 	$returnData = NextInvoiceNumber($data);
 	// 	break;
@@ -550,7 +554,48 @@ function IsRegularBeneficiaryList($data) {
 	return $returnData;
 }
 
-   
+
+
+function QuestionMapCategoryList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$jsonData = '[
+			{"id":"DAIRY","name":"Dairy"},
+			{"id":"BEEFFATTENING","name":"Beef Fattening"},
+			{"id":"BUFFALO","name":"Buffalo"},
+			{"id":"GOAT","name":"Goat"},
+			{"id":"SHEEP","name":"Sheep"},
+			{"id":"SCAVENGINGCHICKENLOCAL","name":"Scavenging Chicken Local"},
+			{"id":"SONALI","name":"Sonali"},
+			{"id":"COMMERCIALBROILER","name":"Commercial Broiler"},
+			{"id":"QUAIL","name":"Quail"},
+			{"id":"TURKEY","name":"Turkey"},
+			{"id":"GUINEAFOWL","name":"Guinea Fowl"},
+			{"id":"PIGEON","name":"Pigeon"},
+			{"id":"DUCK","name":"Duck"},
+			{"id":"LAYER","name":"Layer"}
+		]';
+
+		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
 // function NextInvoiceNumber($data) {
 // 	try{
 
