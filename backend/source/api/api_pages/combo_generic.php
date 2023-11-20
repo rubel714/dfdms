@@ -57,6 +57,10 @@ switch($task){
 	case "UpazilaList":
 		$returnData = UpazilaList($data);
 		break;
+		
+	case "UnionList":
+		$returnData = UnionList($data);
+		break;
 
 	case "QuestionTypeList":
 		$returnData = QuestionTypeList($data);
@@ -76,7 +80,11 @@ switch($task){
 	case "QuestionMapCategoryList":
 		$returnData = QuestionMapCategoryList($data);
 		break;
-
+		
+	case "GenderList":
+		$returnData = GenderList($data);
+		break;
+		
 	// case "NextInvoiceNumber":
 	// 	$returnData = NextInvoiceNumber($data);
 	// 	break;
@@ -433,6 +441,39 @@ function UpazilaList($data) {
 
 
 
+function UnionList($data) {
+	try{
+	
+		$dbh = new Db();
+
+		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+		$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
+		$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
+
+
+		$query = "SELECT UnionId id, UnionName `name` FROM t_union 
+			where DivisionId=$DivisionId
+			AND DistrictId=$DistrictId
+			AND UpazilaId=$UpazilaId
+			ORDER BY UnionName;"; 
+
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
 function QuestionTypeList($data) {
 	try{
 	
@@ -562,7 +603,12 @@ function QuestionMapCategoryList($data) {
 		$dbh = new Db();
 	
 
-		$jsonData = '[
+		$query = "SELECT ValuechainId id, ValueChainName name
+		FROM t_valuechain ORDER BY ValueChainName;"; 
+
+		$resultdata = $dbh->query($query);
+
+		/* $jsonData = '[
 			{"id":"DAIRY","name":"Dairy"},
 			{"id":"BEEFFATTENING","name":"Beef Fattening"},
 			{"id":"BUFFALO","name":"Buffalo"},
@@ -577,6 +623,34 @@ function QuestionMapCategoryList($data) {
 			{"id":"PIGEON","name":"Pigeon"},
 			{"id":"DUCK","name":"Duck"},
 			{"id":"LAYER","name":"Layer"}
+		]'; */
+
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
+function GenderList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$jsonData = '[
+			{"id":"1","name":"Male"},
+			{"id":"2","name":"Female"},
+			{"id":"3","name":"Others"}
 		]';
 
 		$resultdata = json_decode($jsonData, true);
@@ -594,7 +668,6 @@ function QuestionMapCategoryList($data) {
 	
 	return $returnData;
 }
-
 
 // function NextInvoiceNumber($data) {
 // 	try{

@@ -42,12 +42,51 @@ const PgEntryForm = (props) => {
     { field: "rownumber", label: "SL", align: "center", width: "5%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
     {
+      field: "PgGroupCode",
+      label: "Group Code",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "7%"
+    },
+    {
       field: "PGName",
       label: "PG Name",
       align: "left",
       visible: true,
       sort: true,
       filter: true,
+    },
+
+    {
+      field: "PgBankAccountNumber",
+      label: "Bank Account Number",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "11%"
+    },
+
+    {
+      field: "BankName",
+      label: "Bank Name",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "12%"
+    },
+
+    {
+      field: "ValueChainName",
+      label: "Value Chain",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "10%"
     },
     {
       field: "DivisionName",
@@ -56,7 +95,7 @@ const PgEntryForm = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "15%",
+      width: "10%",
     },
     {
       field: "DistrictName",
@@ -65,7 +104,7 @@ const PgEntryForm = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "15%",
+      width: "10%",
     },
     {
       field: "UpazilaName",
@@ -74,7 +113,7 @@ const PgEntryForm = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "15%",
+      width: "10%",
     },
     {
       field: "custom",
@@ -140,6 +179,14 @@ const PgEntryForm = (props) => {
             DistrictId: "",
             UpazilaId: "",
             Address: "",
+            UnionId: "",
+            PgGroupCode: "",
+            PgBankAccountNumber: "",
+            BankName: "",
+            ValuechainId: "",
+            IsLeadByWomen: 0,
+            GenderId: "",
+            IsActive: 0,
           });
     openModal();
   };
