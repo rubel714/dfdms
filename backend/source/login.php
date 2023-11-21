@@ -90,7 +90,7 @@ else {
             $UserId = $uRow['UserId'];
         }
 
-
+        // $UserId = 33333333333333;
         
         $sql = "SELECT a.`UserId`,a.`UserName`,a.`LoginName`,a.`Email`,a.`Password`,
         a.`DesignationId`,a.`IsActive`,a.PhotoUrl,a.DivisionId,b.DivisionName,a.DistrictId,c.DistrictName,a.UpazilaId,d.UpazilaName
@@ -113,14 +113,24 @@ else {
         $query_stmtrole->bindValue(':UserId', $UserId,PDO::PARAM_STR);
         $query_stmtrole->execute();
         
-        $rowrole = $query_stmtrole->fetch(PDO::FETCH_ASSOC);
+        $rowrole = $query_stmtrole->fetchAll(PDO::FETCH_ASSOC);
 
-        if($rowrole){
-            $RoleId = $rowrole['RoleId'];
-            $userRow["RoleId"] = array($RoleId);
-            $userRow["DefaultRedirect"] = $rowrole['DefaultRedirect'];
 
-        }else{
+        if(count($rowrole)>0){
+
+            foreach($rowrole as $r){
+
+                $RoleId = $r['RoleId'];
+                $userRow["RoleId"][] = $r["RoleId"];
+                $userRow["DefaultRedirect"] = $r['DefaultRedirect'];
+
+                // $RoleId = $rowrole['RoleId'];
+                // $userRow["RoleId"] = array($RoleId);
+                // $userRow["DefaultRedirect"] = $rowrole['DefaultRedirect'];
+
+            }
+        }
+        else{
             $RoleId = 0;
             $userRow["RoleId"] = [];
             $userRow["DefaultRedirect"] = "/home";
@@ -133,7 +143,8 @@ else {
             if(loginonlyadmin==1){
 
                 //role id = 1 = Super Admin. If site is maintenance mode then only super admin able to login
-                if($RoleId != 1){
+                if(!in_array(1,$userRow["RoleId"])){
+                // if($RoleId != 1){
                     $returnData = [
                         "success" => 0,
                         "status" => 404,
@@ -163,11 +174,11 @@ else {
                 );
 
                 
-
-                $query = "SELECT DISTINCT a.MenuId,a.MenuKey,a.MenuTitle,a.Url,a.ParentId,a.MenuLevel,a.SortOrder
+                $RoleIds = implode(',',$userRow["RoleId"]);
+                 $query = "SELECT DISTINCT a.MenuId,a.MenuKey,a.MenuTitle,a.Url,a.ParentId,a.MenuLevel,a.SortOrder
                 FROM t_menu a
                 INNER JOIN t_role_menu_map b ON a.MenuId=b.MenuId 
-                and b.RoleId = $RoleId
+                and b.RoleId IN ($RoleIds)
                 order by a.SortOrder ASC;";
 
                 $dataMenu = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
