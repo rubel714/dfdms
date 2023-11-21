@@ -1518,15 +1518,18 @@ const DataCollectionEntry = (props) => {
           msg: res.data.message,
           msgtype: res.data.success,
         });
-
-        // console.log('currentInvoice: ', currentInvoice);
-        if (currentInvoice.id === "") {
-          //New
-          getDataSingleFromServer(res.data.id);
-        } else {
-          //Edit
-          getDataSingleFromServer(currentInvoice.id);
+      
+        if(res.success){
+          // console.log('currentInvoice: ', currentInvoice);
+          if (currentInvoice.id === "") {
+            //New
+            getDataSingleFromServer(res.data.id);
+          } else {
+            //Edit
+            getDataSingleFromServer(currentInvoice.id);
+          }
         }
+
       });
     } else {
       props.openNoticeModal({
