@@ -174,7 +174,7 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
-                  {/* {menuShowPermision("regularbeneficiaryentry") === 1 && (
+                  {menuShowPermision("regularbeneficiaryentry") === 1 && (
                       <li>
                         <a
                           href="javascript:void(0)"
@@ -183,7 +183,7 @@ function AfterLoginNavbar(props) {
                           Regular Beneficiary
                         </a>
                       </li>
-                    )} */}
+                    )} 
                   
 
 

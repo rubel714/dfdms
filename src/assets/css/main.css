@@ -739,3 +739,20 @@ input[type=search] {
   .fa-trash-alt {
     color: red;
   }
+
+  .image-preview {
+    width: 80px; /* Set the desired width */
+    height: 80px; /* Set the desired height */
+    overflow: hidden; /* Ensure the image stays within the specified dimensions */
+  }
+  
+  .preview-image {
+    width: 100%; /* Make the image fill the container */
+    height: 100%; /* Make the image fill the container */
+    object-fit: cover; /* Maintain the aspect ratio and cover the entire container */
+  }
+
+  .table-image {
+    width: 100px; /* Set the desired width for the images */
+    height: auto; /* Maintain the aspect ratio */
+  }

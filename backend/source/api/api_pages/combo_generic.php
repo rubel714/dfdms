@@ -85,6 +85,10 @@ switch($task){
 		$returnData = GenderList($data);
 		break;
 		
+	case "DisabilityStatusList":
+		$returnData = DisabilityStatusList($data);
+		break;
+		
 	// case "NextInvoiceNumber":
 	// 	$returnData = NextInvoiceNumber($data);
 	// 	break;
@@ -651,6 +655,33 @@ function GenderList($data) {
 			{"id":"1","name":"Male"},
 			{"id":"2","name":"Female"},
 			{"id":"3","name":"Others"}
+		]';
+
+		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function DisabilityStatusList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$jsonData = '[
+			{"id":"1","name":"Yes"},
+			{"id":"2","name":"No"}
 		]';
 
 		$resultdata = json_decode($jsonData, true);
