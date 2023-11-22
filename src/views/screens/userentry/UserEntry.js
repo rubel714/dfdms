@@ -102,7 +102,16 @@ const UserEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "7%",
+    },
+    {
+      field: "UnionName",
+      label: "Union",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "7%",
     },
     {
       field: "IsActiveName",
@@ -111,7 +120,7 @@ const UserEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "7%",
+      width: "6%",
     },
     {
       field: "RoleGroupName",
@@ -120,7 +129,7 @@ const UserEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "8%",
     },
     {
       field: "custom",
@@ -187,6 +196,7 @@ const UserEntry = (props) => {
             DivisionId: "",
             DistrictId: "",
             UpazilaId: "",
+            UnionId: "",
             Email: "",
             DesignationId: "",
             confirmPassword: "",
