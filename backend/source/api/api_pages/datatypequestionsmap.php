@@ -46,7 +46,12 @@ function getDataList($data){
 
 	try{
 		$dbh = new Db();
-		$query = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName, c.QuestionCode, a.SortOrder, a.DataTypeId, a.Category
+	 	$query = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName, c.QuestionCode, a.SortOrder, a.DataTypeId, a.Category
+		,/*(SELECT COUNT(DataValueItemId)
+		FROM t_datavaluemaster m
+		INNER JOIN t_datavalueitems n ON m.DataValueMasterId=n.DataValueMasterId
+		WHERE m.DataTypeId=a.DataTypeId AND n.QuestionId=a.QuestionId)*/ 0 QDataCount
+
 		FROM t_datatype_questions_map a
 		INNER JOIN t_datatype b ON a.DataTypeId = b.DataTypeId
 		INNER JOIN t_questions c ON a.QuestionId = c.QuestionId

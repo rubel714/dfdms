@@ -7,6 +7,7 @@ function CustomTable({
   rows,
   actioncontrol,
   ispagination = true,
+  paginationsize = 15,
   params = {},
   handleRowClick,
   selectedRows = [], // Provide a default value to avoid undefined
@@ -25,9 +26,14 @@ function CustomTable({
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState({});
   // const [sort, setSort] = useState({ order: "asc", orderBy: "id" });
-  let rowsPerPage = 15;
+  let rowsPerPage = 0;
+
   if (!ispagination) {
     rowsPerPage = rows.length;
+  }else{
+    if(paginationsize){
+      rowsPerPage = paginationsize;
+    }
   }
   // const isPagination = true;
 

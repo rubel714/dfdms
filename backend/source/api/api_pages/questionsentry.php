@@ -42,6 +42,7 @@ function getDataList($data){
 			tq.`SortOrderChild`,
 			tp.`QuestionName` AS ParentQuestionName
 			, case when tq.IsMandatory=1 then 'Yes' else 'No' end IsMandatoryName
+			,/*(SELECT COUNT(QMapId) FROM t_datatype_questions_map m WHERE m.QuestionId=tq.QuestionId)*/ 0 AS QMapCount
 		FROM `t_questions` tq
 		LEFT JOIN `t_questions` tp ON tq.`QuestionParentId` = tp.`QuestionId`
 		ORDER BY tq.`QuestionCode`, tq.`SortOrderChild` ;";

@@ -193,12 +193,12 @@ const DatatypeQuestionsMap = (props) => {
         />
 
 
-        <DeleteOutline
+        {(rowData.QDataCount == 0) && (<DeleteOutline
           className={"table-delete-icon"}
           onClick={() => {
             deleteData(rowData);
           }}
-        />
+        />)}
       </>
     );
   }
@@ -427,6 +427,7 @@ const DatatypeQuestionsMap = (props) => {
               columns={columnList}
               rows={dataList?dataList:{}}
               actioncontrol={actioncontrol}
+              ispagination={false}
             />
           </div>
         </div>

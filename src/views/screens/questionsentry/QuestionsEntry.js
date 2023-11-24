@@ -130,8 +130,10 @@ const QuestionsEntry = (props) => {
 
   /** Action from table row buttons*/
   function actioncontrol(rowData) {
+    console.log('rowData: ', rowData);
     return (
       <>
+
         <Edit
           className={"table-edit-icon"}
           onClick={() => {
@@ -139,12 +141,14 @@ const QuestionsEntry = (props) => {
           }}
         />
 
-        <DeleteOutline
+       {(rowData.QMapCount==0) && (<DeleteOutline
           className={"table-delete-icon"}
           onClick={() => {
             deleteData(rowData);
           }}
-        />
+        />)}
+
+
       </>
     );
   }
@@ -279,6 +283,7 @@ const QuestionsEntry = (props) => {
               columns={columnList}
               rows={dataList?dataList:{}}
               actioncontrol={actioncontrol}
+              // paginationsize={20}
             />
           </div>
         </div>
