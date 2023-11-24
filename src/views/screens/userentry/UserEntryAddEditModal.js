@@ -14,10 +14,12 @@ const UserEntryAddEditModal = (props) => {
   const [divisionList, setDivisionList] = useState(null);
   const [districtList, setDistrictList] = useState(null);
   const [upazilaList, setUpazilaList] = useState(null);
+  const [unionList, setUnionList] = useState(null);
 
   const [currDivisionId, setCurrDivisionId] = useState(null);
   const [currDistrictId, setCurrDistrictId] = useState(null);
   const [currUpazilaId, setCurrUpazilaId] = useState(null);
+  const [currUnionId, setCurrUnionId] = useState(null);
 
   const [DesignationList, setDesignationList] = useState(null);
   const [RoleList, setRoleList] = useState(null);
@@ -30,7 +32,8 @@ const UserEntryAddEditModal = (props) => {
     getDivision(
       props.currentRow.DivisionId,
       props.currentRow.DistrictId,
-      props.currentRow.UpazilaId
+      props.currentRow.UpazilaId,
+      props.currentRow.UnionId
     );
 
    
@@ -39,10 +42,12 @@ const UserEntryAddEditModal = (props) => {
     //getManufacturerList();
   }, []);
 
+  
   function getDivision(
     selectDivisionId,
     SelectDistrictId,
-    selectUpazilaId
+    selectUpazilaId,
+    selectUnionId
   ) {
     let params = {
       action: "DivisionList",
@@ -63,7 +68,8 @@ const UserEntryAddEditModal = (props) => {
       getDistrict(
         selectDivisionId,
         SelectDistrictId,
-        selectUpazilaId
+        selectUpazilaId,
+        selectUnionId
       );
 
       /* getProductGeneric(
@@ -74,6 +80,101 @@ const UserEntryAddEditModal = (props) => {
 
     });
   }
+
+
+  
+  function getDistrict(
+    selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId,
+    selectUnionId
+  ) {
+    let params = {
+      action: "DistrictList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DivisionId: selectDivisionId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setDistrictList(
+        [{ id: "", name: "Select District" }].concat(res.data.datalist)
+      );
+      setErrorObject({ ...errorObject, ["DistrictId"]: null });
+
+      setCurrDistrictId(SelectDistrictId);
+      getUpazila(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId,
+        selectUnionId
+      );
+     
+    });
+  }
+
+
+  
+  function getUpazila(
+    selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId,
+    selectUnionId
+  ) {
+    let params = {
+      action: "UpazilaList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DivisionId: selectDivisionId,
+      DistrictId: SelectDistrictId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setUpazilaList(
+        [{ id: "", name: "Select Upazila" }].concat(res.data.datalist)
+      );
+      setErrorObject({ ...errorObject, ["UpazilaId"]: null });
+
+      setCurrUpazilaId(selectUpazilaId);
+      getUnion(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId,
+        selectUnionId
+      );
+ 
+     
+    });
+  }
+  
+  function getUnion(
+    selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId,
+    selectUnionId
+  ) {
+    let params = {
+      action: "UnionList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DivisionId: selectDivisionId,
+      DistrictId: SelectDistrictId,
+      UpazilaId: selectUpazilaId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setUnionList(
+        [{ id: "", name: "Select Union" }].concat(res.data.datalist)
+      );
+      setErrorObject({ ...errorObject, ["UnionId"]: null });
+
+      setCurrUnionId(selectUnionId);
+ 
+     
+    });
+  }
+
+  
 
   function getDesignation(
     selectDesignationId
@@ -116,62 +217,6 @@ const UserEntryAddEditModal = (props) => {
 
   
 
-//console.log("RoleList==== ",RoleList);
-  
-  function getDistrict(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId
-  ) {
-    let params = {
-      action: "DistrictList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-      DivisionId: selectDivisionId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDistrictList(
-        [{ id: "", name: "Select District" }].concat(res.data.datalist)
-      );
-      setErrorObject({ ...errorObject, ["DistrictId"]: null });
-
-      setCurrDistrictId(SelectDistrictId);
-      getUpazila(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId
-      );
-     
-    });
-  }
-
-
-  
-  function getUpazila(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId
-  ) {
-    let params = {
-      action: "UpazilaList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-      DivisionId: selectDivisionId,
-      DistrictId: SelectDistrictId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setUpazilaList(
-        [{ id: "", name: "Select Upazila" }].concat(res.data.datalist)
-      );
-      setErrorObject({ ...errorObject, ["UpazilaId"]: null });
-
-      setCurrUpazilaId(selectUpazilaId);
- 
-     
-    });
-  }
 
   
  /*  const handleChange = (e) => {
@@ -202,16 +247,21 @@ const UserEntryAddEditModal = (props) => {
 
       setCurrDistrictId("");
       setCurrUpazilaId("");
-      getDistrict(value, "", "");
-      getUpazila(value, "", "");
+      getDistrict(value, "", "", "");
+      getUpazila(value, "", "", "");
+      getUnion(value, "", "", "");
  
 
     } else if (name === "DistrictId") {
       setCurrDistrictId(value);
-       getUpazila(currentRow.DivisionId, value, "");
+       getUpazila(currentRow.DivisionId, value, "", "");
     } else if (name === "UpazilaId") {
       setCurrUpazilaId(value);
+      getUnion(currentRow.DivisionId, currentRow.DistrictId, value, "");
+    } else if (name === "UnionId") {
+      setCurrUnionId(value);
     } 
+
     else if (name === "DesignationId") {
       setCurrDesignationId(value);
     } 
@@ -466,6 +516,7 @@ const handleRoleCheckboxChange = (roleId) => {
                       return <option value={item.id}>{item.name}</option>;
                     })}
                 </select>
+                
               
                 <label>User Name *</label>
                 <input
@@ -482,7 +533,35 @@ const handleRoleCheckboxChange = (roleId) => {
 
           </div>
 
+          <div class="contactmodalBody pt-10">
 
+              <label>Union </label>
+                <select
+                  id="UnionId"
+                  name="UnionId"
+                  class={errorObject.UnionId}
+                  value={currUnionId}
+                  onChange={(e) => handleChange(e)}
+                >
+                  {unionList &&
+                    unionList.map((item, index) => {
+                      return <option value={item.id}>{item.name}</option>;
+                    })}
+                </select>
+
+
+                <label>Password *</label>
+                    <input
+                      id="Password"
+                      name="Password"
+                      type="Password"
+                      class={errorObject.Password}
+                      placeholder="Enter Password"
+                      value={currentRow.Password}
+                      onChange={(e) => handleChange(e)}
+                    />
+
+          </div>
 
           <div class="contactmodalBody pt-10">
 
@@ -501,16 +580,7 @@ const handleRoleCheckboxChange = (roleId) => {
                   onChange={(e) => handleChange(e)}
                 />
 
-                <label>Password *</label>
-                    <input
-                      id="Password"
-                      name="Password"
-                      type="Password"
-                      class={errorObject.Password}
-                      placeholder="Enter Password"
-                      value={currentRow.Password}
-                      onChange={(e) => handleChange(e)}
-                    />
+             
 
 
                   <label>Confirm Password</label>
@@ -543,6 +613,15 @@ const handleRoleCheckboxChange = (roleId) => {
 
 
 
+                <label> IsActive?</label>
+                  <input
+                    id="IsActive"
+                    name="IsActive"
+                    type="checkbox"
+                    checked={currentRow.IsActive}
+                    onChange={handleChangeCheck}
+                  />
+
 
 
         </div>
@@ -560,14 +639,7 @@ const handleRoleCheckboxChange = (roleId) => {
               </input>
 
 
-              <label> IsActive?</label>
-                  <input
-                    id="IsActive"
-                    name="IsActive"
-                    type="checkbox"
-                    checked={currentRow.IsActive}
-                    onChange={handleChangeCheck}
-                  />
+           
 
 
           </div>

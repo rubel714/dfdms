@@ -31,11 +31,11 @@ function getDataList($data){
 
 
 		
-		$query = "SELECT a.UserId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`UserName`, 
+		$query = "SELECT a.UserId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.UnionId, a.`UserName`, 
 		a.Password,
 		h.RoleGroupName,
 		h.RoleIds,
-		a.LoginName, a.`Email`, b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`,
+		a.LoginName, a.`Email`, b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, u.UnionName,
 		a.`IsActive`, case when a.IsActive=1 then 'Yes' else 'No' end IsActiveName, a.DesignationId, e.DesignationName
 			FROM `t_users` a
 			LEFT JOIN (SELECT p.`UserId`,GROUP_CONCAT(q.RoleId ORDER BY q.`RoleId` ASC SEPARATOR ', ') RoleIds, GROUP_CONCAT(q.RoleName ORDER BY q.`RoleId` ASC SEPARATOR ', ') RoleGroupName
@@ -46,6 +46,7 @@ function getDataList($data){
 			LEFT JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
 			LEFT JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
 			LEFT JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
+			LEFT JOIN t_union u ON a.`UnionId` = u.`UnionId`
 			LEFT JOIN t_designation e ON a.`DesignationId` = e.`DesignationId`
 			ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`UserName` ASC;";
 	
@@ -86,6 +87,7 @@ function dataAddEdit($data) {
 		$DivisionId = $data->rowData->DivisionId? $data->rowData->DivisionId : null;
 		$DistrictId = $data->rowData->DistrictId? $data->rowData->DistrictId : null;
 		$UpazilaId = $data->rowData->UpazilaId? $data->rowData->UpazilaId : null;
+		$UnionId = $data->rowData->UnionId? $data->rowData->UnionId : null;
 		$Email = $data->rowData->Email;
 		$DesignationId = $data->rowData->DesignationId;
 		$IsActive = $data->rowData->IsActive ? $data->rowData->IsActive : 0;
@@ -120,8 +122,8 @@ function dataAddEdit($data) {
 			if($id == ""){
 				$q = new insertq();
 				$q->table = 't_users';
-				$q->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId','PhotoUrl'];
-				$q->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId,$PhotoUrl];
+				$q->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','UnionId','Email','IsActive','DesignationId','PhotoUrl'];
+				$q->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$UnionId, $Email,$IsActive,$DesignationId,$PhotoUrl];
 				$q->pks = ['UserId'];
 				$q->bUseInsetId = true;
 				$q->build_query();
@@ -150,12 +152,12 @@ function dataAddEdit($data) {
 				$u->table = 't_users';
 
 					if($Cpassword != ''){
-						$u->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId'];
-						$u->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId];
+						$u->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','UnionId','Email','IsActive','DesignationId'];
+						$u->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$UnionId, $Email,$IsActive,$DesignationId];
 						
 					}else{
-						$u->columns = ['UserName','LoginName','DivisionId','DistrictId','UpazilaId','Email','IsActive','DesignationId'];
-						$u->values = [$UserName,$LoginName,$DivisionId,$DistrictId,$UpazilaId,$Email,$IsActive,$DesignationId];
+						$u->columns = ['UserName','LoginName','DivisionId','DistrictId','UpazilaId','UnionId','Email','IsActive','DesignationId'];
+						$u->values = [$UserName,$LoginName,$DivisionId,$DistrictId,$UpazilaId,$UnionId, $Email,$IsActive,$DesignationId];
 				
 					}
 
