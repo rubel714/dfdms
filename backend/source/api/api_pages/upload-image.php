@@ -4,12 +4,19 @@ header('Content-Type: application/json');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["file"])) {
-    $targetDir = "./../../../media/";
+
+
+ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["file"])) {
+    //$targetDir = "./../../../media/";
+    $targetDir = "./../../../src/assets/farmerimage/";
+
+	$timestamp = $_POST["timestamp"];
+
+
 	if (!is_dir($targetDir)) {
 		mkdir($targetDir, 0755, true);
 	}
-    $timestamp = time();
+
     $fileName = $timestamp . "_" . basename($_FILES["file"]["name"]);
     $targetFilePath = $targetDir . $fileName;
 

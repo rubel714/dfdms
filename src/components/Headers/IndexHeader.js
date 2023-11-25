@@ -32,7 +32,7 @@ function IndexHeader() {
   return (
     <>
       <h1>DFDMS</h1>
-      <h3>Integrated Data collection and monitoring</h3>
+      <h3 className="mt-10">Integrated Data collection and monitoring</h3>
 
       {/* {loading ? (
         <div className="loader-div">

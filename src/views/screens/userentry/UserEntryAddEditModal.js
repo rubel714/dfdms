@@ -518,24 +518,7 @@ const handleRoleCheckboxChange = (roleId) => {
                 </select>
                 
               
-                <label>User Name *</label>
-                <input
-                  type="text"
-                  id="UserName"
-                  name="UserName"
-                  class={errorObject.UserName}
-                  placeholder="Enter User Name"
-                  value={currentRow.UserName}
-                  onChange={(e) => handleChange(e)}
-                />
-
-               
-
-          </div>
-
-          <div class="contactmodalBody pt-10">
-
-              <label>Union </label>
+                <label>Union </label>
                 <select
                   id="UnionId"
                   name="UnionId"
@@ -548,6 +531,25 @@ const handleRoleCheckboxChange = (roleId) => {
                       return <option value={item.id}>{item.name}</option>;
                     })}
                 </select>
+
+               
+
+          </div>
+
+          <div class="contactmodalBody pt-10">
+
+          <label>User Name *</label>
+                <input
+                  type="text"
+                  id="UserName"
+                  name="UserName"
+                  class={errorObject.UserName}
+                  placeholder="Enter User Name"
+                  value={currentRow.UserName}
+                  onChange={(e) => handleChange(e)}
+                />
+
+             
 
 
                 <label>Password *</label>
