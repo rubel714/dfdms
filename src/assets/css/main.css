@@ -795,3 +795,10 @@ input[type=search] {
     background-color: rgb(120, 200, 10);
     width: 192px;
 }
+
+.wrapper{
+    margin: 20px;
+  }
+  .mt-10{
+    margin-top: 10px;
+  }
