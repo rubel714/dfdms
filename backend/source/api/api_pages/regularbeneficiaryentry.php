@@ -30,7 +30,7 @@ function getDataList($data){
 		$dbh = new Db();
 
 
-		$query = "SELECT 
+		/* $query = "SELECT 
 			a.`FarmerId` id,
 			a.`DivisionId`,
 			a.`DistrictId`,
@@ -61,7 +61,53 @@ function getDataList($data){
 			a.`PGFarmerCode`,
 			case when a.IsRegular=1 then 'Regular' else 'No' end IsRegularBeneficiary
 		FROM
-			t_farmer a ;";
+			t_farmer a ;"; */
+		
+	$query = "SELECT 
+			a.`FarmerId`,
+			a.`FarmerId` id,
+			a.`DivisionId`,
+			a.`DistrictId`,
+			a.`UpazilaId`,
+			a.`UnionId`,
+			a.`CityCorporation`,
+			a.`Ward`,
+			a.`PGId`,
+			a.`FarmerName`,
+			a.`NID`,
+			a.`Phone`,
+			a.`FatherName`,
+			a.`ValueChain`,
+			a.`MotherName`,
+			a.`LiveStockNo`,
+			a.`LiveStockOther`,
+			a.`Address`,
+			a.`IsRegular`,
+			a.`NidFrontPhoto`,
+			a.`NidBackPhoto`,
+			a.`BeneficiaryPhoto`,
+			a.`SpouseName`,
+			a.`Gender`,
+			a.`FarmersAge`,
+			a.`DisabilityStatus`,
+			a.`RelationWithHeadOfHH`,
+			a.`HeadOfHHSex`,
+			a.`PGRegistered`,
+			a.`PGPartnershipWithOtherCompany`,
+			a.`TypeOfMember`,
+			a.`PGFarmerCode`,
+			a.`FamilyOccupation`,
+			a.`VillageName`,
+			a.`Latitute`,
+			a.`Longitute`,
+			a.`IsHeadOfTheGroup`,
+			a.`ValuechainId`,
+			a.`TypeOfFarmerId`,
+			case when a.IsRegular=1 then 'Regular' else 'No' end IsRegularBeneficiary
+		  FROM
+		  `t_farmer` a ;";
+		  
+	
 		
 		$resultdata = $dbh->query($query);
 		
@@ -97,44 +143,53 @@ function dataAddEdit($data) {
 		$UserId = trim($data->UserId); 
 
 		$FarmerId = $data->rowData->id;
-		$FarmerName = $data->rowData->FarmerName;
-		$NID = $data->rowData->NID;
-		$NidFrontPhoto = $data->rowData->NidFrontPhoto;
-		$IsRegular = isset($data->rowData->IsRegular) && ($data->rowData->IsRegular !== "") ? $data->rowData->IsRegular : NULL;
-		$NidBackPhoto = isset($data->rowData->NidBackPhoto) && ($data->rowData->NidBackPhoto !== "") ? $data->rowData->NidBackPhoto : NULL;
-		//$IsRegular = isset($data->rowData->IsRegular) ? $data->rowData->IsRegular : 0;
-		$QuestionParentId = isset($data->rowData->QuestionParentId) ? $data->rowData->QuestionParentId : 0;
-		
 
-	
-		$DivisionId = 1;
-		$DistrictId = 1;
-		$UpazilaId = 1;
-		$PGId = 1;
-		$FarmerName = "Test Name";
-		$NID = "91411428374x";
-		$Phone = "01608022999";
-		$FatherName = "Father Test Name";
-		$ValueChain = "4. Goat";
-		$MotherName = "";
-		$LiveStockNo = 8;
-		$LiveStockOther = null;
-		$Address = "Savar, Dhaka, Dhaka";
-		$IsRegular = 0;
-		//$NidFrontPhoto = null;
-		$NidBackPhoto = null;
-		$BeneficiaryPhoto = null;
-		$SpouseName = null;
-		$Gender = 1;
-		$FarmersAge = "50";
-		$DisabilityStatus = null;
-		$RelationWithHeadOfHH = null;
-		$HeadOfHHSex = null;
-		$PGRegistered = 0;
-		$PGPartnershipWithOtherCompany = 0;
-		$TypeOfMember = 0;
-		$PGFarmerCode = "";
-	
+		$NidFrontPhoto = $data->rowData->NidFrontPhoto;
+		
+		//$NidBackPhoto = isset($data->rowData->NidBackPhoto) && ($data->rowData->NidBackPhoto !== "") ? $data->rowData->NidBackPhoto : NULL;
+
+		$DivisionId = $data->rowData->DivisionId? $data->rowData->DivisionId : null;
+		$DistrictId = $data->rowData->DistrictId? $data->rowData->DistrictId : null;
+		$UpazilaId = $data->rowData->UpazilaId? $data->rowData->UpazilaId : null;
+
+		$PGId = $data->rowData->PGId? $data->rowData->PGId : null;
+
+		$FarmerName =  $data->rowData->FarmerName ? $data->rowData->FarmerName : null;
+		$NID =  $data->rowData->NID ? $data->rowData->NID : null;
+		$Phone = $data->rowData->Phone ? $data->rowData->Phone : null;
+		$FatherName =  $data->rowData->FatherName ? $data->rowData->FatherName : null;
+		$ValueChain = $data->rowData->ValueChain ? $data->rowData->ValueChain : null;
+		$MotherName =  $data->rowData->MotherName ? $data->rowData->MotherName : null;
+		$LiveStockNo = $data->rowData->LiveStockNo ? $data->rowData->LiveStockNo : null;
+		$LiveStockOther = $data->rowData->LiveStockOther ? $data->rowData->LiveStockOther : null;
+		$Address = $data->rowData->Address ? $data->rowData->Address : null;
+		$IsRegular = isset($data->rowData->IsRegular) && ($data->rowData->IsRegular !== "") ? $data->rowData->IsRegular : null;
+		$NidBackPhoto = $data->rowData->NidBackPhoto ? $data->rowData->NidBackPhoto : null;
+		$BeneficiaryPhoto = $data->rowData->BeneficiaryPhoto ? $data->rowData->SpouseNBeneficiaryPhotoame : null;
+		$SpouseName =  $data->rowData->SpouseName ? $data->rowData->SpouseName : null;
+		$Gender = $data->rowData->Gender ? $data->rowData->Gender : null;
+		$FarmersAge = $data->rowData->FarmersAge ? $data->rowData->FarmersAge : null;
+		$DisabilityStatus = $data->rowData->DisabilityStatus ? $data->rowData->DisabilityStatus : null;
+		$RelationWithHeadOfHH = $data->rowData->RelationWithHeadOfHH ? $data->rowData->RelationWithHeadOfHH : 0;
+		$HeadOfHHSex = $data->rowData->HeadOfHHSex ? $data->rowData->HeadOfHHSex : null;
+		$PGRegistered = $data->rowData->PGRegistered ? $data->rowData->PGRegistered : 0;
+		$PGPartnershipWithOtherCompany =  $data->rowData->PGPartnershipWithOtherCompany ? $data->rowData->PGPartnershipWithOtherCompany : 0;
+		$TypeOfMember = $data->rowData->TypeOfMember? $data->rowData->TypeOfMember : null;
+		$PGFarmerCode = $data->rowData->PGFarmerCode? $data->rowData->PGFarmerCode : null;
+		$FamilyOccupation =  $data->rowData->FamilyOccupation? $data->rowData->FamilyOccupation : null;
+		$UnionId = $data->rowData->UnionId? $data->rowData->UnionId : null;
+		$CityCorporation = $data->rowData->CityCorporation? $data->rowData->CityCorporation : null;
+		$Ward = $data->rowData->Ward? $data->rowData->Ward : null;
+		$VillageName = $data->rowData->VillageName ? $data->rowData->VillageName : null;
+		$Latitute =  $data->rowData->Latitute ? $data->rowData->Latitute : null;
+		$Longitute =  $data->rowData->Longitute ? $data->rowData->Longitute : null;
+		$IsHeadOfTheGroup = $data->rowData->IsHeadOfTheGroup ? $data->rowData->IsHeadOfTheGroup : 0;
+		$ValuechainId = $data->rowData->ValuechainId ? $data->rowData->ValuechainId : null;
+
+		$multiselectPGroup = isset($data->rowData->multiselectPGroup) ? $data->rowData->multiselectPGroup : '';
+		$TypeOfFarmerIdc = implode(",", $multiselectPGroup);
+		$TypeOfFarmerId = $TypeOfFarmerIdc? $TypeOfFarmerIdc : null;
+
 
 
 		try{
@@ -143,12 +198,11 @@ function dataAddEdit($data) {
 			$aQuerys = array();
 
 			if($FarmerId == ""){
-
 				
 				$q = new insertq();
 				$q->table = 't_farmer';
-				$q->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode'];
-				$q->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode];
+				$q->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'UnionId', 'CityCorporation', 'Ward', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode','FamilyOccupation','VillageName','Latitute','Longitute','IsHeadOfTheGroup','ValuechainId', 'TypeOfFarmerId'];
+				$q->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $UnionId, $CityCorporation, $Ward, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode, $FamilyOccupation, $VillageName,$Latitute, $Longitute,  $IsHeadOfTheGroup, $ValuechainId, $TypeOfFarmerId];
 				$q->pks = ['FarmerId'];
 				$q->bUseInsetId = false;
 				$q->build_query();
@@ -156,10 +210,11 @@ function dataAddEdit($data) {
 
 	
 			}else{
+				
 				$u = new updateq();
 				$u->table = 't_farmer';
-				$u->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode'];
-				$u->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode];
+				$u->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'UnionId', 'CityCorporation', 'Ward', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode','FamilyOccupation','VillageName','Latitute','Longitute','IsHeadOfTheGroup','ValuechainId', 'TypeOfFarmerId'];
+				$u->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $UnionId, $CityCorporation, $Ward, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode, $FamilyOccupation, $VillageName,$Latitute, $Longitute, $IsHeadOfTheGroup, $ValuechainId, $TypeOfFarmerId];
 				$u->pks = ['FarmerId'];
 				$u->pk_values = [$FarmerId];
 				$u->build_query();

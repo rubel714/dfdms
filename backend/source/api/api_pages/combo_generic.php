@@ -84,6 +84,25 @@ switch($task){
 	case "GenderList":
 		$returnData = GenderList($data);
 		break;
+	case "HeadOfHHSexList":
+		$returnData = HeadOfHHSexList($data);
+		break;
+		
+	case "TypeOfMemberList":
+		$returnData = TypeOfMemberList($data);
+		break;
+		
+	case "FamilyOccupationList":
+		$returnData = FamilyOccupationList($data);
+		break;
+		
+	case "CityCorporationList":
+		$returnData = CityCorporationList($data);
+		break;
+		
+	case "WardList":
+		$returnData = WardList($data);
+		break;
 		
 	case "DisabilityStatusList":
 		$returnData = DisabilityStatusList($data);
@@ -654,7 +673,222 @@ function GenderList($data) {
 		$jsonData = '[
 			{"id":"1","name":"Male"},
 			{"id":"2","name":"Female"},
-			{"id":"3","name":"Others"}
+			{"id":"3","name":"Male-Female Both"},
+			{"id":"4","name":"Others"}
+		]';
+
+		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function HeadOfHHSexList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$jsonData = '[
+			{"id":"1","name":"Male"},
+			{"id":"2","name":"Female"},
+			{"id":"4","name":"Others"}
+		]';
+
+		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function TypeOfMemberList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$jsonData = '[
+			{"id":"1","name":"Type 1"},
+			{"id":"2","name":"Type 2 "},
+			{"id":"4","name":"Type 3"}
+		]';
+
+		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function FamilyOccupationList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$jsonData = '[
+			{"id":"1","name":"Business"},
+			{"id":"2","name":"Agriculture"},
+			{"id":"4","name":"Employement"}
+		]';
+
+		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function CityCorporationList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$jsonData = '[
+			{
+				"id": "1",
+				"name": "Barishal"
+			},
+			{
+				"id": "2",
+				"name": "Chattogram"
+			},
+			{
+				"id": "3",
+				"name": "Dhaka"
+			},
+			{
+				"id": "4",
+				"name": "Khulna"
+			},
+			{
+				"id": "5",
+				"name": "Rajshahi"
+			},
+			{
+				"id": "6",
+				"name": "Rangpur"
+			},
+			{
+				"id": "7",
+				"name": "Mymensingh"
+			},
+			{
+				"id": "8",
+				"name": "Sylhet"
+			}
+		]';
+
+		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function WardList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$jsonData = '[
+			{
+				"id": "1",
+				"name": "Aminbazar"
+			},
+			{
+				"id": "2",
+				"name": "Ashulia"
+			},
+			{
+				"id": "3",
+				"name": "Banogram"
+			},
+			{
+				"id": "4",
+				"name": "Bhakurta"
+			},
+			{
+				"id": "5",
+				"name": "Birulia"
+			},
+			{
+				"id": "6",
+				"name": "Dhamsona"
+			},
+			{
+				"id": "7",
+				"name": "Kaundia"
+			},
+			{
+				"id": "8",
+				"name": "Pathalia"
+			},
+			{
+				"id": "9",
+				"name": "Savar"
+			},
+			{
+				"id": "10",
+				"name": "Shimulia"
+			},
+			{
+				"id": "11",
+				"name": "Tetuljhora"
+			},
+			{
+				"id": "12",
+				"name": "Yearpur"
+			}
 		]';
 
 		$resultdata = json_decode($jsonData, true);

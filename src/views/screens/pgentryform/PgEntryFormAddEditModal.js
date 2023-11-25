@@ -1,5 +1,6 @@
 import React, { forwardRef, useRef,useEffect,useState } from "react";
 import {Button}  from "../../../components/CustomControl/Button";
+import { InfoOutlined } from "@material-ui/icons";
 import {apiCall, apiOption, LoginUserInfo, language}  from "../../../actions/api";
 
 
@@ -584,8 +585,12 @@ const PgEntryFormAddEditModal = (props) => {
 
 
           <div class="contactmodalBody pt-10">
-              
-                    <label>Is the Group Led by Women</label>
+          
+                    <label>Is the Group Led by Women
+                      <span className="tooltip-icon" data-tooltip="If there are 3 female members in the group, select 'Yes'.">
+                        <InfoOutlined className="info-icon" />
+                    </span>
+                    </label>
                       <div className="checkbox-label"> 
                         <label className="radio-label">
                           <input
