@@ -28,6 +28,14 @@ switch ($task) {
 	case "deleteData":
 		$returnData = deleteData($data);
 		break;
+	
+	case "getFarmerInfo":
+		$returnData = getFarmerInfo($data);
+		break;
+	
+	case "getPGInfo":
+		$returnData = getPGInfo($data);
+		break;
 
 	default:
 		echo "{failure:true}";
@@ -221,6 +229,9 @@ function getDataSingle($data)
 
 	return $returnData;
 }
+
+
+
 
 
 
@@ -535,3 +546,66 @@ function deleteData($data)
 		return $returnData;
 	}
 }
+
+
+
+
+function getPGInfo($data)
+{
+
+	// echo "<pre>";
+	// print_r($data);
+	$PGId = trim($data->rowData->PGId);
+	// echo $PGId;
+
+	try {
+		$dbh = new Db();
+
+		$query = "SELECT *
+		FROM t_pg
+		where PGId=$PGId;";
+		$resultData = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultData
+		];
+	} catch (PDOException $e) {
+		$returnData = msg(0, 500, $e->getMessage());
+	}
+
+	return $returnData;
+}
+
+
+function getFarmerInfo($data)
+{
+
+	// echo "<pre>";
+	// print_r($data);
+	$FarmerId = trim($data->rowData->FarmerId);
+	// echo $FarmerId;
+
+	try {
+		$dbh = new Db();
+
+		$query = "SELECT *
+		FROM t_farmer
+		where FarmerId=$FarmerId;";
+		$resultData = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultData
+		];
+	} catch (PDOException $e) {
+		$returnData = msg(0, 500, $e->getMessage());
+	}
+
+	return $returnData;
+}
+

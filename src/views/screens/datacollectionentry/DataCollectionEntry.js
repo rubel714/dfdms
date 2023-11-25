@@ -16,6 +16,8 @@ import {
   language,
 } from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
+import FarmerInfoModal from "./FarmerInfoModal";
+import PGInfoModal from "./PGInfoModal";
 
 const DataCollectionEntry = (props) => {
   // console.log("props.DataTypeId: ", props.DataTypeId);
@@ -59,6 +61,9 @@ const DataCollectionEntry = (props) => {
   const [errorObjectMany, setErrorObjectMany] = useState({});
 
   const [questionsList, setQuestionsList] = useState([]);
+
+  const [showPGModal, setShowPGModal] = useState(false); //true=show modal, false=hide modal
+  const [showFarmerModal, setShowFarmerModal] = useState(false); //true=show modal, false=hide modal
 
 
 
@@ -1490,7 +1495,21 @@ const DataCollectionEntry = (props) => {
   //   });
   // };
 
-  function showFarmerDetails(p) {}
+  function showPGDetails(p) {
+    setShowPGModal(true);
+  }
+  function closePGModal(p) {
+    setShowPGModal(false);
+    
+  }
+
+  function showFarmerDetails(p) {
+    setShowFarmerModal(true);
+  }
+  function closeFarmerModal(p) {
+    setShowFarmerModal(false);
+    
+  }
 
   function saveData(p) {
     let params = {
@@ -1603,6 +1622,12 @@ const DataCollectionEntry = (props) => {
             <h4>Home ❯ Data Collection ❯ এলজিডি তথ্য (LGD Data Collection)</h4>
           )}
         </div>
+
+
+
+      {showPGModal && (<PGInfoModal currentInvoice={currentInvoice} modalCallback={closePGModal}/>)}
+      {showFarmerModal && (<FarmerInfoModal currentInvoice={currentInvoice} modalCallback={closeFarmerModal}/>)}
+
 
         {listEditPanelToggle && (
           <>
@@ -1730,10 +1755,11 @@ const DataCollectionEntry = (props) => {
 
                   <div class="formControl">
                     <label>পিজি গ্রুপ (PG Group):</label>
+                    <div className="autocompleteContainer">
                     <Autocomplete
                       autoHighlight
                       // freeSolo
-                      className="chosen_dropdown"
+                      className="chosen_dropdown specificAutocomplete"
                       id="PGId"
                       name="PGId"
                       autoComplete
@@ -1765,7 +1791,65 @@ const DataCollectionEntry = (props) => {
                         <TextField {...params} variant="standard" fullWidth />
                       )}
                     />
+                    <Button
+                        label={"Details"}
+                        class={"btnDetails"}
+                        onClick={showPGDetails}
+                      />
+                    </div>
                   </div>
+{/* 
+                  <div className="formControl">
+                        <label>ফার্মার (Farmer):</label>
+                        <div className="autocompleteContainer">
+                          <Autocomplete
+                            autoHighlight
+                            className="chosen_dropdown specificAutocomplete"
+                            id="FarmerId"
+                            name="FarmerId"
+                            autoComplete
+                            options={farmerList ? farmerList : []}
+                            getOptionLabel={(option) => option.name}
+                            value={
+                              farmerList
+                                ? farmerList[
+                                    farmerList.findIndex(
+                                      (list) =>
+                                        list.id == currentInvoice.FarmerId
+                                    )
+                                  ]
+                                : null
+                            }
+                            onChange={(event, valueobj) =>
+                              handleChangeChoosenMaster(
+                                "FarmerId",
+                                valueobj ? valueobj.id : ""
+                              )
+                            }
+                            renderOption={(option) => (
+                              <Typography className="chosen_dropdown_font">
+                                {option.name}
+                              </Typography>
+                            )}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="standard"
+                                fullWidth
+                              />
+                            )}
+                          />
+
+                          <Button
+                            label={"Details"}
+                            class={"btnDetails"}
+                            onClick={showFarmerDetails}
+                          />
+                        </div>
+                      </div> */}
+
+
+
 
                   {dataTypeId == 2 && (
                     <>
