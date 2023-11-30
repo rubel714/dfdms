@@ -48,7 +48,7 @@ function getDataList($data){
 			LEFT JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
 			LEFT JOIN t_union u ON a.`UnionId` = u.`UnionId`
 			LEFT JOIN t_designation e ON a.`DesignationId` = e.`DesignationId`
-			ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`UserName` ASC;";
+			ORDER BY a.`UserName` ASC;";
 	
 		$resultdata = $dbh->query($query);
 		
