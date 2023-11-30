@@ -561,9 +561,24 @@ function getPGInfo($data)
 	try {
 		$dbh = new Db();
 
-		$query = "SELECT *
-		FROM t_pg
-		where PGId=$PGId;";
+		$query = "SELECT a.*, b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, 
+		 e.ValueChainName, f.UnionName,
+		 CASE
+        WHEN a.GenderId = 1 THEN 'Male'
+        WHEN a.GenderId = 2 THEN 'Female'
+        WHEN a.GenderId = 3 THEN 'Male-Female Both'
+        ELSE 'Other'
+    	END AS GenderName,
+		CASE WHEN a.IsLeadByWomen = 1 THEN 'Yes' ELSE 'No' END AS IsLeadByWomenStatus,
+		CASE WHEN a.IsActive = 1 THEN 'Active' ELSE 'Inactive' END AS ActiveStatus
+
+		FROM t_pg a
+		INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
+		INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
+		INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
+		INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
+		LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
+		where a.PGId=$PGId;";
 		$resultData = $dbh->query($query);
 
 		$returnData = [
@@ -591,9 +606,55 @@ function getFarmerInfo($data)
 	try {
 		$dbh = new Db();
 
-		$query = "SELECT *
-		FROM t_farmer
-		where FarmerId=$FarmerId;";
+		$query = "SELECT a.*, CASE WHEN a.IsRegular = 1 THEN 'Regular' ELSE 'Irregular' END AS RegularStatus,
+		 CASE
+        WHEN a.Gender = 1 THEN 'Male'
+        WHEN a.Gender = 2 THEN 'Female'
+        WHEN a.Gender = 3 THEN 'Male-Female Both'
+        ELSE 'Other'
+    	END AS GenderName,
+		CASE WHEN a.DisabilityStatus = 1 THEN 'Yes' ELSE 'No' END AS isDisabilityStatus,
+		CASE WHEN a.PGRegistered = 1 THEN 'Yes' ELSE 'No' END AS PGRegistered,
+		CASE WHEN a.PGPartnershipWithOtherCompany = 1 THEN 'Yes' ELSE 'No' END AS PGPartnershipWithOtherCompany,
+		CASE WHEN a.RelationWithHeadOfHH = 1 THEN 'HimselfIf/HerselfIf' ELSE 'Others' END AS RelationWithHeadOfHH,
+		
+		CASE
+        WHEN a.TypeOfMember = 1 THEN 'Type 1'
+        WHEN a.TypeOfMember = 2 THEN 'Type 2'
+        WHEN a.TypeOfMember = 3 THEN 'Type 3'
+        ELSE 'Other'
+    	END AS TypeOfMember,
+
+		CASE
+        WHEN a.FamilyOccupation = 1 THEN 'Business'
+        WHEN a.FamilyOccupation = 2 THEN 'Agriculture'
+        WHEN a.FamilyOccupation = 3 THEN 'Employement'
+        ELSE 'Other'
+    	END AS FamilyOccupation,
+
+		CASE
+        WHEN a.HeadOfHHSex = 1 THEN 'Male'
+        WHEN a.HeadOfHHSex = 2 THEN 'Female'
+        ELSE 'Other'
+    	END AS HeadOfHHSex,
+		b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, 
+		 e.ValueChainName, f.UnionName, g.PGName, h.WardName, i.CityCorporationName, a.VillageName,
+		 CASE WHEN a.IsHeadOfTheGroup = 1 THEN 'Yes' ELSE 'No' END AS HeadOfTheGroup
+		
+		FROM t_farmer a
+		INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
+		INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
+		INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
+		INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
+		LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
+		LEFT JOIN t_pg g ON a.`PGId` = g.`PGId`
+		LEFT JOIN t_ward h ON a.`Ward` = h.`Ward`
+		LEFT JOIN t_citycorporation i ON a.`CityCorporation` = i.`CityCorporation`
+
+		
+
+
+		where a.FarmerId=$FarmerId;";
 		$resultData = $dbh->query($query);
 
 		$returnData = [

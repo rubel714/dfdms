@@ -59,13 +59,62 @@ useEffect(()=>{
             <h4>PG Information</h4>
           </div>
 
-          <div class="modalItem">
-            
             
             {/* <label>PG Name</label>
             <label>{pgInfo.PGName}</label> */}
 
-          <table>
+        <div class="pgmodalBody pt-10">
+
+            <label>Division:</label>
+            <span>{pgInfo.DivisionName}</span>
+            
+            <label>District:</label>
+            <span>{pgInfo.DistrictName}</span>
+
+            <label>Upazila:</label>
+            <span>{pgInfo.UpazilaName}</span>
+
+            <label>Union:</label>
+            <span>{pgInfo.UnionName}</span>
+            
+            <label>PG Name:</label>
+             <span> {pgInfo.PGName}</span>
+
+            <label>Group Code:</label>
+             <span> {pgInfo.PgGroupCode}</span>
+
+
+            <label>PG Bank Account Number:</label>
+             <span> {pgInfo.PgBankAccountNumber}</span>
+
+
+            <label>Bank Name:</label>
+             <span> {pgInfo.BankName}</span>
+
+            <label>Value Chain:</label>
+            <span> {pgInfo.ValueChainName}</span>
+
+            <label>Group Members Gender:</label>
+            <span> {pgInfo.GenderName}</span>
+
+            <label>Is the Group Led by Women:</label>
+            <span> {pgInfo.IsLeadByWomenStatus}</span>
+
+            <label>Status:</label>
+            <span> {pgInfo.ActiveStatus}</span>
+
+
+            <label>Address:</label>
+            <span>{pgInfo.Address}</span>
+            
+
+            
+        </div>
+        
+
+
+
+         {/*  <table>
             <tbody>
               <tr>
                 <td>PG Name:</td>
@@ -74,11 +123,10 @@ useEffect(()=>{
                 <td>{pgInfo.Address}</td>
               </tr>
             </tbody>
-          </table>
+          </table> */}
          
          
          
-          </div>
 
           
 

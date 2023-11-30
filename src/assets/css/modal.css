@@ -243,3 +243,34 @@
 .checkBoxClass {
     margin-right: 5px;
 }
+
+
+.pgmodalBody {
+    display: grid;
+    grid-template-columns: 30% 24% 20% 25%;
+    grid-row-gap: 8px;
+    row-gap: 8px;
+    align-items: baseline;
+}
+
+/* .pgmodalBody :nth-child(5) {
+    grid-column: 1;
+    grid-row: 2/ span 2;
+}
+
+.pgmodalBody :nth-child(6) {
+    grid-column: 2;
+    grid-row: 2/ span 2;
+} */
+
+.modal .pgmodalBody label {
+    font-size: .8rem;
+    font-weight: bold;
+    padding-top: 6px;
+    text-align: end;
+    padding-right: 8px;
+}
+.pgmodalBody span {
+    margin-top: 6px;
+    font-size: .8rem;
+}

@@ -59,11 +59,117 @@ useEffect(()=>{
             <h4>Farmar Information</h4>
           </div>
 
-          <div class="modalItem">
+
+          <div class="pgmodalBody pt-10">
+
+            <label>Is Regular Beneficiary:</label>
+            <span>{farmerInfo.RegularStatus}</span>
+            
+            <label>Beneficiary NID:</label>
+            <span>{farmerInfo.NID}</span>
             
             
-            {/* <label>Farmer</label>
-            <label>{farmerInfo.FarmerName}</label> */}
+            <label>Beneficiary Name:</label>
+            <span>{farmerInfo.FarmerName}</span>
+            
+            
+            <label>Mobile Number:</label>
+            <span>{farmerInfo.Phone}</span>
+            
+            <label>Father's Name:</label>
+            <span>{farmerInfo.FatherName}</span>
+            
+            
+            <label>Mother's Name:</label>
+            <span>{farmerInfo.MotherName}</span>
+            
+            
+            <label>Spouse Name:</label>
+            <span>{farmerInfo.SpouseName}</span>
+            
+            
+            <label>Gender:</label>
+            <span>{farmerInfo.GenderName}</span>
+            
+            
+            <label>Farmer's Age:</label>
+            <span>{farmerInfo.FarmersAge}</span>
+            
+            <label>Disability Status:</label>
+            <span>{farmerInfo.isDisabilityStatus}</span>
+            
+            <label>Farmers Relationship with Head of HH:</label>
+            <span>{farmerInfo.RelationWithHeadOfHH}</span>
+            
+            <label>Farmer's Head of HH Sex:</label>
+            <span>{farmerInfo.HeadOfHHSex}</span>
+            
+            <label>Do your PG/PO Registered?:</label>
+            <span>{farmerInfo.PGRegistered}</span>
+            
+            <label>Type Of Member:</label>
+            <span>{farmerInfo.TypeOfMember}</span>
+
+            <label>Do your PG make any productive partnership with any other company?:</label>
+            <span>{farmerInfo.PGPartnershipWithOtherCompany}</span>
+            
+
+            <label>PG Farmer Code:</label>
+            <span>{farmerInfo.PGFarmerCode}</span>
+            
+            <label>Primary:</label>
+            <span>{farmerInfo.FamilyOccupation}</span>
+            
+
+            <label>Division:</label>
+            <span>{farmerInfo.DivisionName}</span>
+            
+            <label>District:</label>
+            <span>{farmerInfo.DistrictName}</span>
+
+            <label>Upazila:</label>
+            <span>{farmerInfo.UpazilaName}</span>
+
+            <label>Union:</label>
+            <span>{farmerInfo.UnionName}</span>
+            
+           
+            <label>Name of Producer Group:</label>
+            <span>{farmerInfo.PGName}</span>
+            
+            <label>Ward:</label>
+            <span>{farmerInfo.WardName}</span>
+            
+            <label>City Corporation:</label>
+            <span>{farmerInfo.CityCorporationName}</span>
+            
+            <label>Village:</label>
+            <span>{farmerInfo.VillageName}</span>
+            
+            
+            <label>Address:</label>
+            <span>{farmerInfo.Address}</span>
+            
+            
+            <label>Latitute:</label>
+            <span>{farmerInfo.Latitute}</span>
+            
+            <label>Longitute:</label>
+            <span>{farmerInfo.Longitute}</span>
+            
+           
+            <label>Are You Head of The Group?:</label>
+            <span>{farmerInfo.HeadOfTheGroup}</span>
+            
+           
+
+            
+        </div>
+        
+
+          {/* <div class="modalItem">
+            
+            
 
           <table>
             <tbody>
@@ -78,7 +184,7 @@ useEffect(()=>{
          
          
          
-          </div>
+          </div> */}
 
           
 

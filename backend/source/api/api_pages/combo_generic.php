@@ -107,6 +107,9 @@ switch($task){
 	case "DisabilityStatusList":
 		$returnData = DisabilityStatusList($data);
 		break;
+	case "PgGroupListByUnion":
+		$returnData = PgGroupListByUnion($data);
+		break;
 		
 	// case "NextInvoiceNumber":
 	// 	$returnData = NextInvoiceNumber($data);
@@ -783,42 +786,12 @@ function CityCorporationList($data) {
 		$dbh = new Db();
 	
 
-		$jsonData = '[
-			{
-				"id": "1",
-				"name": "Barishal"
-			},
-			{
-				"id": "2",
-				"name": "Chattogram"
-			},
-			{
-				"id": "3",
-				"name": "Dhaka"
-			},
-			{
-				"id": "4",
-				"name": "Khulna"
-			},
-			{
-				"id": "5",
-				"name": "Rajshahi"
-			},
-			{
-				"id": "6",
-				"name": "Rangpur"
-			},
-			{
-				"id": "7",
-				"name": "Mymensingh"
-			},
-			{
-				"id": "8",
-				"name": "Sylhet"
-			}
-		]';
+		$query = "SELECT CityCorporation id, CityCorporationName name
+		FROM t_cityCorporation ORDER BY CityCorporationName;"; 
 
-		$resultdata = json_decode($jsonData, true);
+		$resultdata = $dbh->query($query);
+
+	
 
 		$returnData = [
 			"success" => 1,
@@ -838,60 +811,18 @@ function WardList($data) {
 	try{
 	
 		$dbh = new Db();
-	
 
-		$jsonData = '[
-			{
-				"id": "1",
-				"name": "Aminbazar"
-			},
-			{
-				"id": "2",
-				"name": "Ashulia"
-			},
-			{
-				"id": "3",
-				"name": "Banogram"
-			},
-			{
-				"id": "4",
-				"name": "Bhakurta"
-			},
-			{
-				"id": "5",
-				"name": "Birulia"
-			},
-			{
-				"id": "6",
-				"name": "Dhamsona"
-			},
-			{
-				"id": "7",
-				"name": "Kaundia"
-			},
-			{
-				"id": "8",
-				"name": "Pathalia"
-			},
-			{
-				"id": "9",
-				"name": "Savar"
-			},
-			{
-				"id": "10",
-				"name": "Shimulia"
-			},
-			{
-				"id": "11",
-				"name": "Tetuljhora"
-			},
-			{
-				"id": "12",
-				"name": "Yearpur"
-			}
-		]';
+		//$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+		//$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
+		//$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
+		$UnionId = trim($data->UnionId)?trim($data->UnionId):0; 
 
-		$resultdata = json_decode($jsonData, true);
+
+		$query = "SELECT Ward id, WardName `name` FROM t_ward 
+			where UnionId=$UnionId
+			ORDER BY WardName;"; 
+
+		$resultdata = $dbh->query($query);
 
 		$returnData = [
 			"success" => 1,
@@ -933,6 +864,48 @@ function DisabilityStatusList($data) {
 	
 	return $returnData;
 }
+
+
+function PgGroupListByUnion($data) {
+	try{
+
+		$DivisionId = trim($data->DivisionId);
+		$DistrictId = trim($data->DistrictId);
+		$UpazilaId = trim($data->UpazilaId);
+		$UnionId = trim($data->UnionId);
+
+
+		$dbh = new Db();
+		
+		$query = "SELECT `PGId` id,
+			`DivisionId`,
+			`DistrictId`,
+			`UpazilaId`,
+			`PGName` `name`,
+			`Address`
+			FROM t_pg  
+			WHERE DivisionId=$DivisionId 
+			AND DistrictId=$DistrictId
+			AND UpazilaId=$UpazilaId
+			AND UnionId=$UnionId
+		ORDER BY PGName;"; 
+	
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
 
 // function NextInvoiceNumber($data) {
 // 	try{
