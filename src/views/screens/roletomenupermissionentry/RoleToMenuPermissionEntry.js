@@ -366,6 +366,8 @@ const RoleToMenuPermissionEntry = (props) => {
                   columns={masterColumnList}
                   rows={dataList ? dataList : {}}
                   actioncontrol={actioncontrolmaster}
+                  ispagination={false}
+
                 />
               </div>
             </div> 

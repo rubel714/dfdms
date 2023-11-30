@@ -227,17 +227,24 @@ function deleteData($data) {
 		$id = $data->rowData->id;
 		$lan = trim($data->lan); 
 		$UserId = trim($data->UserId); 
-
+		$aQuerys = array();
 		try{
 
 			$dbh = new Db();
 			
             $d = new deleteq();
+            $d->table = 't_user_role_map';
+            $d->pks = ['UserId'];
+            $d->pk_values = [$id];
+            $d->build_query();
+            $aQuerys[] = $d;
+
+            $d = new deleteq();
             $d->table = 't_users';
             $d->pks = ['UserId'];
             $d->pk_values = [$id];
             $d->build_query();
-            $aQuerys = array($d);
+            $aQuerys[] = $d;
 
 			$res = exec_query($aQuerys, $UserId, $lan);  
 			$success=($res['msgType']=='success')?1:0;
