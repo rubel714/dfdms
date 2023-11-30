@@ -274,3 +274,30 @@
     margin-top: 6px;
     font-size: .8rem;
 }
+
+
+/* MANUFACTURER MODAL EXTENSION */
+.contactmodalBodyImage {
+    display: grid;
+    grid-template-columns: 18% 22% 17% 43%;
+    row-gap: 8px;
+}
+
+
+.contactmodalBodyImage :nth-child(5) {
+    grid-column: 1;
+    grid-row: 2/ span 2;
+}
+
+.contactmodalBodyImage :nth-child(6) {
+    grid-column: 2;
+    grid-row: 2/ span 2;
+}
+
+.modal .contactmodalBodyImage label {
+    font-size: .8rem;
+    font-weight: bold;
+    padding-top: 6px;
+    text-align: end;
+    padding-right: 8px;
+}

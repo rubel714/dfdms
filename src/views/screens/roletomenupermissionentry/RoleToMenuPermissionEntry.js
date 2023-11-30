@@ -41,6 +41,25 @@ const RoleToMenuPermissionEntry = (props) => {
   const UserInfo = LoginUserInfo();
 
 
+  /* =====Start of Excel Export Code==== */
+  const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
+
+  const PrintPDFExcelExportFunction = (reportType) => {
+    let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+
+    window.open(
+      finalUrl +
+        "?action=RoleToMenuPermissionExport" +
+        "&reportType=excel" +
+        // "&DistrictId=" + UserInfo.DistrictId +
+        "&RoleId=" + currRoleId +
+        "&TimeStamp=" +
+        Date.now()
+    );
+  };
+  /* =====End of Excel Export Code==== */
+
+
   /**Get data for table list */
   function getDataList(currRoleId) {
     let params = {
@@ -355,6 +374,7 @@ const RoleToMenuPermissionEntry = (props) => {
                 </div>
               </div>
 
+              <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
               {/* <Button label={"ADD"} class={"btnAdd"} onClick={addData} /> */}
             </div>
 

@@ -216,7 +216,7 @@ const UserRole = (props) => {
 
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
         {/* <div class="searchAdd"> */}
-        <div class="">
+        <div class="exportAdd">
           <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
           <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
         </div>

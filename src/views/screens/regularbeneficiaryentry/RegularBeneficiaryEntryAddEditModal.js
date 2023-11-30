@@ -25,6 +25,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   const [parentQuestionList, setParentQuestionList] = useState(null);
   const [currParentQuestion, setCurrParentQuestion] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(
+    require("../../../assets/farmerimage/placeholder.png")
+  );
 
   const [gender, setGender] = useState(null);
   const [currGender, setCurrGender] = useState(null);
@@ -75,12 +78,15 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       props.currentRow.DivisionId,
       props.currentRow.DistrictId,
       props.currentRow.UpazilaId,
-      props.currentRow.UnionId
+      props.currentRow.UnionId,
+      props.currentRow.Ward,
+      props.currentRow.PGId
     );
+
 
     getRoleList(props.currentRow.TypeOfFarmerId);
     getIsRegularBeneficiaryList(props.currentRow.IsRegular);
-  /*   getParentQuestion(
+    /*   getParentQuestion(
       !props.currentRow.id ? "" : props.currentRow.QuestionParentId
     ); */
 
@@ -90,8 +96,8 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     getTypeOfMemberList(props.currentRow.TypeOfMember);
     getFamilyOccupationList(props.currentRow.FamilyOccupation);
     getCityCorporationList(props.currentRow.CityCorporation);
-    getWardList(props.currentRow.Ward);
-    getPGIdList(props.currentRow.PGId);
+    /* getWardList(props.currentRow.Ward);
+    getPGIdList(props.currentRow.PGId); */
     getValuechainIdList(props.currentRow.ValuechainId);
 
     // Set the initial value of RelationWithHeadOfHH
@@ -133,6 +139,18 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     }
 
     setSelectedFile(currentRow.NidFrontPhoto);
+
+    /*     if (
+      currentRow.NidFrontPhoto !== undefined &&
+      currentRow.NidFrontPhoto !== null
+    ) {
+      setPreviewImage(
+        require("../../../assets/farmerimage/"+currentRow.NidFrontPhoto) 
+      );
+    } else {
+      setPreviewImage(require("../../../assets/farmerimage/placeholder.png"));
+    } */
+
     //getStrengthList();
     //getManufacturerList();
   }, []);
@@ -141,7 +159,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
-    selectUnionId
+    selectUnionId,
+    selectWard,
+    selectPGId
   ) {
     let params = {
       action: "DivisionList",
@@ -163,7 +183,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         selectDivisionId,
         SelectDistrictId,
         selectUpazilaId,
-        selectUnionId
+        selectUnionId,
+        selectWard,
+        selectPGId
       );
 
       /* getProductGeneric(
@@ -177,7 +199,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
-    selectUnionId
+    selectUnionId,
+    selectWard,
+    selectPGId
   ) {
     let params = {
       action: "DistrictList",
@@ -197,7 +221,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         selectDivisionId,
         SelectDistrictId,
         selectUpazilaId,
-        selectUnionId
+        selectUnionId,
+        selectWard,
+        selectPGId
       );
     });
   }
@@ -206,7 +232,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
-    selectUnionId
+    selectUnionId,
+    selectWard,
+    selectPGId
   ) {
     let params = {
       action: "UpazilaList",
@@ -227,7 +255,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         selectDivisionId,
         SelectDistrictId,
         selectUpazilaId,
-        selectUnionId
+        selectUnionId,
+        selectWard,
+        selectPGId
       );
     });
   }
@@ -236,7 +266,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
-    selectUnionId
+    selectUnionId,
+    selectWard,
+    selectPGId
   ) {
     let params = {
       action: "UnionList",
@@ -254,6 +286,25 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       setErrorObject({ ...errorObject, ["UnionId"]: null });
 
       setCurrUnionId(selectUnionId);
+
+      getWardList(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId,
+        selectUnionId,
+        selectWard,
+        selectPGId
+      );
+	  
+      getPGIdList(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId,
+        selectUnionId,
+        selectWard,
+        selectPGId
+      );
+
     });
   }
 
@@ -335,11 +386,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     });
   }
 
-
-  
-  function getRoleList(
-    selectRoleId
-  ) {
+  function getRoleList(selectRoleId) {
     let params = {
       action: "QuestionMapCategoryList",
       lan: language(),
@@ -347,15 +394,11 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setRoleList(
-        res.data.datalist
-      );
+      setRoleList(res.data.datalist);
 
       //setCurrDesignationId(selectRoleId);
-
     });
   }
-
 
   function getFamilyOccupationList(selectFamilyOccupation) {
     let params = {
@@ -390,32 +433,42 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   }
 
 
-  function getWardList(selectWard) {
+
+
+  function getWardList(selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId,
+    selectUnionId,
+    selectWard,
+    selectPGId) {
     let params = {
       action: "WardList",
       lan: language(),
       UserId: UserInfo.UserId,
+      UnionId: selectUnionId,
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setWard(
-        [{ id: "", name: "Select Ward" }].concat(res.data.datalist)
-      );
+      setWard([{ id: "", name: "Select Ward" }].concat(res.data.datalist));
 
       setCurrWard(selectWard);
     });
   }
 
-  
-
-  function getPGIdList(selectPGId) {
+  function getPGIdList( selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId,
+    selectUnionId,
+    selectWard,
+    selectPGId) {
     let params = {
-      action: "PgGroupList",
+      action: "PgGroupListByUnion",
       lan: language(),
       UserId: UserInfo.UserId,
-      DivisionId: UserInfo.DivisionId,
-      DistrictId: UserInfo.DistrictId,
-      UpazilaId: UserInfo.UpazilaId,
+      DivisionId: selectDivisionId,
+      DistrictId: SelectDistrictId,
+      UpazilaId: selectUpazilaId,
+      UnionId: selectUnionId,
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
@@ -491,17 +544,21 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
       setCurrDistrictId("");
       setCurrUpazilaId("");
-      getDistrict(value, "", "", "");
-      getUpazila(value, "", "", "");
-      getUnion(value, "", "", "");
+      getDistrict(value, "", "", "", "", "");
+      getUpazila(value, "", "", "", "", "");
+      getUnion(value, "", "", "", "", "");
+      getWardList(value, "", "", "", "", "");
+      getPGIdList(value, "", "", "", "", "");
     } else if (name === "DistrictId") {
       setCurrDistrictId(value);
-      getUpazila(currentRow.DivisionId, value, "", "");
+      getUpazila(currentRow.DivisionId, value, "", "", "", "");
     } else if (name === "UpazilaId") {
       setCurrUpazilaId(value);
-      getUnion(currentRow.DivisionId, currentRow.DistrictId, value, "");
+      getUnion(currentRow.DivisionId, currentRow.DistrictId, value, "", "", "");
     } else if (name === "UnionId") {
       setCurrUnionId(value);
+      getWardList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, "", "");
+      getPGIdList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, "", "");
     }
 
     if (name === "Gender") {
@@ -532,7 +589,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     if (name === "IsRegular") {
       setCurrIsRegularBeneficiary(value);
     }
-  /*   if (name === "QuestionParentId") {
+    /*   if (name === "QuestionParentId") {
       setCurrParentQuestion(value);
     } */
     if (name === "ValuechainId") {
@@ -597,8 +654,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     props.modalCallback("close");
   }
 
-  const [previewImage, setPreviewImage] = useState(require("../../../assets/farmerimage/placeholder.png"));
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
@@ -648,13 +703,10 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       `./src/assets/farmerimage/${timestamp}_${file.name}`
     );
 
-    // Use an API endpoint to handle image upload
     apiCall.post("upload-image", formData, apiOption()).then((res) => {
-      // Handle the response if needed
       console.log(res);
     });
 
-    // Save the filename with timestamp in your rowData
     setCurrentRow((prevData) => ({
       ...prevData,
       NidFrontPhoto: `${timestamp}_${file.name}`,
@@ -662,19 +714,10 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   };
 
   const handleChangeMany = (newValue, propertyName) => {
-    // Use a copy of the current row
     let data = { ...currentRow };
-
-    // Update the specified property with the new value
     data[propertyName] = newValue;
-
-    // Update the state with the modified data
     setCurrentRow(data);
-
-    // Handle other logic as needed
   };
-
-
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -683,32 +726,34 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       console.error("Geolocation is not supported by this browser.");
     }
   }
-  
+
   function showPosition(position) {
     setCurrentRow({
       ...currentRow,
       Latitute: position.coords.latitude,
-      Longitute: position.coords.longitude
+      Longitute: position.coords.longitude,
     });
   }
 
-
-  
   const [selectedRoles, setSelectedRoles] = useState([]);
- 
-  React.useEffect(() => {
 
-    console.log("TypeOfFarmerId===edit: ",props.currentRow.TypeOfFarmerId);
-    if (props.currentRow.TypeOfFarmerId && typeof props.currentRow.TypeOfFarmerId === 'string') {
-      const roleIds = props.currentRow.TypeOfFarmerId.split(',').map((id) => id.trim());
+  React.useEffect(() => {
+    console.log("TypeOfFarmerId===edit: ", props.currentRow.TypeOfFarmerId);
+    if (
+      props.currentRow.TypeOfFarmerId &&
+      typeof props.currentRow.TypeOfFarmerId === "string"
+    ) {
+      const roleIds = props.currentRow.TypeOfFarmerId.split(",").map((id) =>
+        id.trim()
+      );
       currentRow["multiselectPGroup"] = roleIds;
       setSelectedRoles(roleIds);
     }
   }, [props.currentRow.TypeOfFarmerId]);
- 
+
   const rolesToDisplay = RoleList || [];
 
-const handleRoleCheckboxChange = (roleId) => {
+  const handleRoleCheckboxChange = (roleId) => {
     const updatedRoles = [...selectedRoles];
     if (updatedRoles.includes(roleId)) {
       // If roleId is already selected, remove it
@@ -721,7 +766,6 @@ const handleRoleCheckboxChange = (roleId) => {
     setSelectedRoles(updatedRoles);
   };
 
-
   return (
     <>
       {/* <!-- GROUP MODAL START --> */}
@@ -731,8 +775,6 @@ const handleRoleCheckboxChange = (roleId) => {
           <div class="modalHeader">
             <h4>Add/Edit Regular Beneficiary</h4>
           </div>
-
-          
 
           <div class="contactmodalBody pt-10">
             <label>Is Regular Beneficiary</label>
@@ -762,7 +804,6 @@ const handleRoleCheckboxChange = (roleId) => {
             />
           </div>
 
-
           <div className="contactmodalBody pt-10">
             <label>NID Front Photo</label>
             <input
@@ -774,7 +815,6 @@ const handleRoleCheckboxChange = (roleId) => {
             />
 
             {previewImage && (
-              
               <div className="image-preview">
                 <img
                   //src={`./media/${currentRow.NidFrontPhoto}`}
@@ -791,10 +831,7 @@ const handleRoleCheckboxChange = (roleId) => {
             )}
           </div>
 
-          
           <div className="contactmodalBody pt-10">
- 
-
             <label>NID Back Photo</label>
             <input
               type="file"
@@ -804,8 +841,7 @@ const handleRoleCheckboxChange = (roleId) => {
               onChange={handleFileChange}
             />
 
-{previewImage && (
-              
+            {previewImage && (
               <div className="image-preview">
                 <img
                   //src={`./media/${currentRow.NidFrontPhoto}`}
@@ -821,8 +857,6 @@ const handleRoleCheckboxChange = (roleId) => {
               </div>
             )}
           </div>
-
-        
 
           <div class="contactmodalBody pt-10">
             <label>Beneficiary Name *</label>
@@ -837,7 +871,7 @@ const handleRoleCheckboxChange = (roleId) => {
               onChange={(e) => handleChange(e)}
             />
 
-<label>Mobile Number </label>
+            <label>Mobile Number </label>
             <input
               type="text"
               id="Phone"
@@ -846,16 +880,10 @@ const handleRoleCheckboxChange = (roleId) => {
               value={currentRow.Phone}
               onChange={(e) => handleChange(e)}
             />
-            
-
-            
           </div>
-       
+
           <div class="contactmodalBody pt-10 ">
-            
-
-
-          <label>Beneficiary Photo</label>
+            <label>Beneficiary Photo</label>
             <input
               type="file"
               id="BeneficiaryPhoto"
@@ -864,7 +892,6 @@ const handleRoleCheckboxChange = (roleId) => {
               onChange={handleFileChange}
             />
             {previewImage && (
-              
               <div className="image-preview">
                 <img
                   //src={`./media/${currentRow.NidFrontPhoto}`}
@@ -879,14 +906,10 @@ const handleRoleCheckboxChange = (roleId) => {
                 />
               </div>
             )}
-
-
-           
           </div>
 
-
           <div class="contactmodalBody pt-10 ">
-          <label>Father's Name </label>
+            <label>Father's Name </label>
             <input
               type="text"
               id="FatherName"
@@ -1135,7 +1158,9 @@ const handleRoleCheckboxChange = (roleId) => {
                   return <option value={item.id}>{item.name}</option>;
                 })}
             </select>
+          </div>
 
+          <div class="contactmodalBody pt-10">
             <label>Upazila *</label>
             <select
               id="UpazilaId"
@@ -1165,26 +1190,23 @@ const handleRoleCheckboxChange = (roleId) => {
             </select>
           </div>
 
-
-
           <div class="contactmodalBody pt-10">
- 
 
-            <label>City Corporation</label>
-
+          <label>Name of Producer Group</label>
             <select
-              id="CityCorporation"
-              name="CityCorporation"
-              class={errorObject.CityCorporation}
-              value={currCityCorporation}
+              id="PGId"
+              name="PGId"
+              class={errorObject.PGId}
+              value={currPGId}
               onChange={(e) => handleChange(e)}
             >
-              {cityCorporation &&
-                cityCorporation.map((item, index) => {
+              {pgList &&
+                pgList.map((item, index) => {
                   return <option value={item.id}>{item.name}</option>;
                 })}
             </select>
 
+           
 
             <label>Ward</label>
             <select
@@ -1199,14 +1221,24 @@ const handleRoleCheckboxChange = (roleId) => {
                   return <option value={item.id}>{item.name}</option>;
                 })}
             </select>
-
-
           </div>
 
-
-
-
           <div class="contactmodalBody pt-10 ">
+
+          <label>City Corporation</label>
+          <select
+            id="CityCorporation"
+            name="CityCorporation"
+            class={errorObject.CityCorporation}
+            value={currCityCorporation}
+            onChange={(e) => handleChange(e)}
+          >
+            {cityCorporation &&
+              cityCorporation.map((item, index) => {
+                return <option value={item.id}>{item.name}</option>;
+              })}
+          </select>
+
             <label>Village</label>
             <input
               type="text"
@@ -1217,7 +1249,22 @@ const handleRoleCheckboxChange = (roleId) => {
               onChange={(e) => handleChange(e)}
             />
 
-            <label>Address </label>
+          </div>
+
+          <div className="contactmodalBody pt-10">
+
+            <label>Latitute</label>
+            <input
+              type="text"
+              id="Latitute"
+              name="Latitute"
+              disabled="true"
+              placeholder="Enter Latitute"
+              value={currentRow.Latitute}
+              onChange={(e) => handleChange(e)}
+            />
+
+          <label>Address </label>
             <input
               type="text"
               id="Address"
@@ -1226,157 +1273,98 @@ const handleRoleCheckboxChange = (roleId) => {
               value={currentRow.Address}
               onChange={(e) => handleChange(e)}
             />
-          </div>
+         
 
+
+          </div>
 
           <div className="contactmodalBody pt-10">
-                        
-                        <label>Latitute</label>
-                        <input
-                          type="text"
-                          id="Latitute"
-                          name="Latitute"
-                          disabled="true"
-                          placeholder="Enter Latitute"
-                          value={currentRow.Latitute}
-                          onChange={(e) => handleChange(e)}
-                        />
+            <label>Longitute</label>
+            <div className="autocompleteContainer">
+              <input
+                type="text"
+                id="Longitute"
+                disabled="true"
+                name="Longitute"
+                placeholder="Enter Longitute"
+                value={currentRow.Longitute}
+                onChange={(e) => handleChange(e)}
+              />
 
-                        
-                      <label>Name of Producer Group</label>
-                      <select
-                        id="PGId"
-                        name="PGId"
-                        class={errorObject.PGId}
-                        value={currPGId}
-                        onChange={(e) => handleChange(e)}
-                      >
-                        {pgList &&
-                          pgList.map((item, index) => {
-                            return <option value={item.id}>{item.name}</option>;
-                          })}
-                      </select>
-                        
-                       
-
-                         
+              <Button
+                label={"Enter Location"}
+                class={"btnDetailsLatLong"}
+                onClick={getLocation}
+              />
             </div>
 
+            <label>Are You Head of The Group?</label>
+            <div className="checkbox-label">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="IsHeadOfTheGroup"
+                  name="IsHeadOfTheGroup"
+                  value={1}
+                  checked={currentRow.IsHeadOfTheGroup === 1}
+                  onChange={() => handleChangeMany(1, "IsHeadOfTheGroup")}
+                />
+                Yes
+              </label>
+
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="IsHeadOfTheGroup_false"
+                  name="IsHeadOfTheGroup"
+                  value={0}
+                  checked={currentRow.IsHeadOfTheGroup === 0}
+                  onChange={() => handleChangeMany(0, "IsHeadOfTheGroup")}
+                />
+                No
+              </label>
+            </div>
+          </div>
 
           <div className="contactmodalBody pt-10">
-                      <label>Longitute</label>
-                        <div className="autocompleteContainer">
-                        <input
-                          type="text"
-                          id="Longitute"
-                          disabled="true"
-                          name="Longitute"
-                          placeholder="Enter Longitute"
-                          value={currentRow.Longitute}
-                          onChange={(e) => handleChange(e)}
-                        />
-
-                          <Button
-                            label={"Enter Location"}
-                            class={"btnDetailsLatLong"}
-                            onClick={getLocation}
-                          />
-                        </div>
-
-
-
-
-                    <label>
-                    Are You Head of The Group?
-                    </label>
-                    <div className="checkbox-label">
-                      <label className="radio-label">
-                        <input
-                          type="radio"
-                          id="IsHeadOfTheGroup"
-                          name="IsHeadOfTheGroup"
-                          value={1}
-                          checked={currentRow.IsHeadOfTheGroup === 1}
-                          onChange={() =>
-                            handleChangeMany(1, "IsHeadOfTheGroup")
-                          }
-                        />
-                        Yes
-                      </label>
-
-                      <label className="radio-label">
-                        <input
-                          type="radio"
-                          id="IsHeadOfTheGroup_false"
-                          name="IsHeadOfTheGroup"
-                          value={0}
-                          checked={currentRow.IsHeadOfTheGroup === 0}
-                          onChange={() =>
-                            handleChangeMany(0, "IsHeadOfTheGroup")
-                          }
-                        />
-                        No
-                      </label>
-                    </div>
-
-
-
-            </div>
-
-      
-
-            <div className="contactmodalBody pt-10">
-                        
-                      <label>Value Chain</label>
-                      <select
-                        id="ValuechainId"
-                        name="ValuechainId"
-                        class={errorObject.ValuechainId}
-                        value={currValuechainId}
-                        onChange={(e) => handleChange(e)}
-                      >
-                        {valuechainList &&
-                          valuechainList.map((item, index) => {
-                            return <option value={item.id}>{item.name}</option>;
-                          })}
-                      </select>
-                        
-                       
-
-                         
-            </div>
-
-
-
-            <div class="contactmodalBody pt-10">
-              <label>Type of Farmers:</label>
-              
+            <label>Value Chain</label>
+            <select
+              id="ValuechainId"
+              name="ValuechainId"
+              class={errorObject.ValuechainId}
+              value={currValuechainId}
+              onChange={(e) => handleChange(e)}
+            >
+              {valuechainList &&
+                valuechainList.map((item, index) => {
+                  return <option value={item.id}>{item.name}</option>;
+                })}
+            </select>
           </div>
 
-            <div class="contactmodalBodyLeargeBox pt-10">
-              <label></label>
-              <div class="checkbox-group-type">
-                  {rolesToDisplay.map((role) => (
-                      <div class="checkbox-container" key={role.id}>
-                          <input
-                              type="checkbox"
-                              id={`id_${role.id}`}
-                              name="multiselectPGroup[]"
-                              value={String(role.id)}
-                              className="checkBoxClass"
-                              checked={selectedRoles.includes(String(role.id))}
-                              onChange={() => handleRoleCheckboxChange(String(role.id))}
-                          />
-                          <label className="control-label">
-                              {role.name}
-                          </label>
-                      </div>
-                  ))}
-              </div>
+          <div class="contactmodalBody pt-10">
+            <label>Type of Farmers:</label>
           </div>
 
-
-
+          <div class="contactmodalBodyLeargeBox pt-10">
+            <label></label>
+            <div class="checkbox-group-type">
+              {rolesToDisplay.map((role) => (
+                <div class="checkbox-container" key={role.id}>
+                  <input
+                    type="checkbox"
+                    id={`id_${role.id}`}
+                    name="multiselectPGroup[]"
+                    value={String(role.id)}
+                    className="checkBoxClass"
+                    checked={selectedRoles.includes(String(role.id))}
+                    onChange={() => handleRoleCheckboxChange(String(role.id))}
+                  />
+                  <label className="control-label">{role.name}</label>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/*  <div class="contactmodalBody modalItem">
                 <label> Is Mandatory?</label>
