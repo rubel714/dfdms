@@ -62,10 +62,11 @@ function getDataList($data)
 		inner join t_upazila d on a.UpazilaId=d.UpazilaId
 		inner join t_quarter e on a.QuarterId=e.QuarterId
 		inner join t_pg f on a.PGId=f.PGId
-		where a.DivisionId=$DivisionId
+		where /*a.DivisionId=$DivisionId
 		and a.DistrictId=$DistrictId
 		and a.UpazilaId=$UpazilaId
-		and a.DataTypeId=$DataTypeId
+		and */
+		a.DataTypeId=$DataTypeId
 		ORDER BY a.CreateTs DESC;";
 
 		$resultdata = $dbh->query($query);
@@ -268,7 +269,7 @@ function dataAddEdit($data)
 			$DataCollectionDate = $InvoiceMaster->DataCollectionDate;
 			$UserId = $InvoiceMaster->UserId;
 			$BPosted = $InvoiceMaster->BPosted;
-
+			$StatusId = 1;
 
 			$aQuerys = array();
 
@@ -276,8 +277,8 @@ function dataAddEdit($data)
 			if ($DataValueMasterId === "") {
 				$q = new insertq();
 				$q->table = 't_datavaluemaster';
-				$q->columns = ['DivisionId', 'DistrictId', 'UpazilaId','DataTypeId', 'PGId','FarmerId','Categories', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'UserId', 'BPosted'];
-				$q->values = [$DivisionId,$DistrictId,$UpazilaId,$DataTypeId,$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$UserId,$BPosted];
+				$q->columns = ['DivisionId', 'DistrictId', 'UpazilaId','DataTypeId', 'PGId','FarmerId','Categories', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'UserId', 'BPosted','StatusId'];
+				$q->values = [$DivisionId,$DistrictId,$UpazilaId,$DataTypeId,$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$UserId,$BPosted,$StatusId];
 				$q->pks = ['DataValueMasterId'];
 				$q->bUseInsetId = true;
 				$q->build_query();

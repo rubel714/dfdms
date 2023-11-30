@@ -10,7 +10,7 @@ import "../../../assets/css/pgdatacollection.css";
 
 const Index = (props) => {
   const { path } = useRouteMatch();
-  const menukey = "pgdatacollection"; // this is in t_menu table
+  const menukey = "farmersdatacollectionentry"; // this is in t_menu table
 
   const [RedirectLogin, setRedirectLogin] = React.useState(true);
   const [hasUserPermission, setHasUserPermission] = React.useState(false);
