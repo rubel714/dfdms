@@ -787,7 +787,7 @@ function CityCorporationList($data) {
 	
 
 		$query = "SELECT CityCorporation id, CityCorporationName name
-		FROM t_cityCorporation ORDER BY CityCorporationName;"; 
+		FROM t_citycorporation ORDER BY CityCorporationName;"; 
 
 		$resultdata = $dbh->query($query);
 

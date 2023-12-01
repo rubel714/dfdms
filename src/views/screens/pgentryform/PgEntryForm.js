@@ -28,9 +28,10 @@ const PgEntryForm = (props) => {
 
     window.open(
       finalUrl +
-        "?action=StrengthExport" +
-        "&reportType=" +
-        reportType +
+        "?action=PGDataExport" +
+        "&reportType=excel" +
+        // "&DistrictId=" + UserInfo.DistrictId +
+        // "&UpazilaId=" + UserInfo.UpazilaId +
         "&TimeStamp=" +
         Date.now()
     );
@@ -39,7 +40,7 @@ const PgEntryForm = (props) => {
 
 
   const columnList = [
-    { field: "rownumber", label: "SL", align: "center", width: "5%" },
+    { field: "rownumber", label: "SL", align: "center", width: "3%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
     {
       field: "PgGroupCode",
@@ -95,7 +96,7 @@ const PgEntryForm = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "9%",
     },
     {
       field: "DistrictName",
@@ -104,7 +105,7 @@ const PgEntryForm = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "9%",
     },
     {
       field: "UpazilaName",
@@ -113,7 +114,16 @@ const PgEntryForm = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "9%",
+    },
+    {
+      field: "UnionName",
+      label: "Union",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "7%",
     },
     {
       field: "custom",
@@ -278,22 +288,9 @@ const PgEntryForm = (props) => {
         </div>
 
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-        <div class="searchAdd">
-          {/* <input type="text" placeholder="Search Product Group"/> */}
-          <label></label>
-          {/* <button
-            onClick={() => {
-              addData();
-            }}
-            className="btnAdd"
-          >
-            ADD
-          </button> */}
-
+        <div class="exportAdd">
           <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
-
-
-
+          <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
         </div>
 
         {/* <!-- ####---THIS CLASS IS USE FOR TABLE GRID PRODUCT INFORMATION---####s --> */}

@@ -823,3 +823,12 @@ input[type=search] {
   .mt-10{
     margin-top: 10px;
   }
+
+  .exportAdd {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    /*height: 80px;*/
+    padding: 8px;
+    justify-content: flex-end;
+}

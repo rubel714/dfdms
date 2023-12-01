@@ -20,22 +20,23 @@ const UserEntry = (props) => {
   const {isLoading, data: dataList, error, ExecuteQuery} = ExecuteQueryHook(); //Fetch data
   const UserInfo = LoginUserInfo();
 
-  /* =====Start of Excel Export Code==== */
-  const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
+ /* =====Start of Excel Export Code==== */
+ const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
-  const PrintPDFExcelExportFunction = (reportType) => {
-    let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+ const PrintPDFExcelExportFunction = (reportType) => {
+   let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
 
-    window.open(
-      finalUrl +
-        "?action=StrengthExport" +
-        "&reportType=" +
-        reportType +
-        "&TimeStamp=" +
-        Date.now()
-    );
-  };
-  /* =====End of Excel Export Code==== */
+   window.open(
+     finalUrl +
+       "?action=UserDataExport" +
+       "&reportType=excel" +
+       // "&DistrictId=" + UserInfo.DistrictId +
+       // "&RoleId=" + currRoleId +
+       "&TimeStamp=" +
+       Date.now()
+   );
+ };
+ /* =====End of Excel Export Code==== */
 
 
   const columnList = [
@@ -294,9 +295,9 @@ const UserEntry = (props) => {
         </div>
 
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-        <div class="searchAdd">
+        <div class="exportAdd">
           {/* <input type="text" placeholder="Search Product Group"/> */}
-          <label></label>
+        
           {/* <button
             onClick={() => {
               addData();
@@ -307,7 +308,7 @@ const UserEntry = (props) => {
           </button> */}
 
           <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
-
+          <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
 
 
         </div>

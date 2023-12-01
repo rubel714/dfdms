@@ -32,11 +32,12 @@ function getDataList($data){
 
 		$query = "SELECT a.PGId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGName`, a.`Address`, 
 			b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, a.UnionId, a.PgGroupCode, 
-			a.PgBankAccountNumber, a.BankName, a.ValuechainId, a.IsLeadByWomen, a.GenderId, a.IsActive, e.ValueChainName
+			a.PgBankAccountNumber, a.BankName, a.ValuechainId, a.IsLeadByWomen, a.GenderId, a.IsActive, e.ValueChainName, f.UnionName
 			FROM `t_pg` a
 			INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
 			INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
 			INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
+			INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
 			LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
 			ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`PGName` ASC;";
 		

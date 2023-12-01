@@ -20,22 +20,23 @@ const QuestionsEntry = (props) => {
   const {isLoading, data: dataList, error, ExecuteQuery} = ExecuteQueryHook(); //Fetch data
   const UserInfo = LoginUserInfo();
 
-  /* =====Start of Excel Export Code==== */
-  const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
+   /* =====Start of Excel Export Code==== */
+   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
-  const PrintPDFExcelExportFunction = (reportType) => {
-    let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
-
-    window.open(
-      finalUrl +
-        "?action=StrengthExport" +
-        "&reportType=" +
-        reportType +
-        "&TimeStamp=" +
-        Date.now()
-    );
-  };
-  /* =====End of Excel Export Code==== */
+   const PrintPDFExcelExportFunction = (reportType) => {
+     let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+ 
+     window.open(
+       finalUrl +
+         "?action=QuestionDataExport" +
+         "&reportType=excel" +
+         // "&DistrictId=" + UserInfo.DistrictId +
+         // "&UpazilaId=" + UserInfo.UpazilaId +
+         "&TimeStamp=" +
+         Date.now()
+     );
+   };
+   /* =====End of Excel Export Code==== */
 
 
   const columnList = [
@@ -258,22 +259,9 @@ const QuestionsEntry = (props) => {
         </div>
 
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-        <div class="searchAdd">
-          {/* <input type="text" placeholder="Search Product Group"/> */}
-          <label></label>
-          {/* <button
-            onClick={() => {
-              addData();
-            }}
-            className="btnAdd"
-          >
-            ADD
-          </button> */}
-
+        <div class="exportAdd">
           <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
-
-
-
+          <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
         </div>
 
         {/* <!-- ####---THIS CLASS IS USE FOR TABLE GRID PRODUCT INFORMATION---####s --> */}

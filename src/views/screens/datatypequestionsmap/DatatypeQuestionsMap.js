@@ -32,22 +32,23 @@ const DatatypeQuestionsMap = (props) => {
   const [currDataTypeId, setCurrDataTypeId] = useState(0);
 
 
-  /* =====Start of Excel Export Code==== */
-  const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
+ /* =====Start of Excel Export Code==== */
+ const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
-  const PrintPDFExcelExportFunction = (reportType) => {
-    let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+ const PrintPDFExcelExportFunction = (reportType) => {
+   let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
 
-    window.open(
-      finalUrl +
-        "?action=StrengthExport" +
-        "&reportType=" +
-        reportType +
-        "&TimeStamp=" +
-        Date.now()
-    );
-  };
-  /* =====End of Excel Export Code==== */
+   window.open(
+     finalUrl +
+       "?action=DataTypeQuestionsMapExport" +
+       "&reportType=excel" +
+       // "&DistrictId=" + UserInfo.DistrictId +
+       "&DataTypeId=" + currDataTypeId +
+       "&TimeStamp=" +
+       Date.now()
+   );
+ };
+ /* =====End of Excel Export Code==== */
 
 
   const columnList = [
@@ -413,10 +414,11 @@ const DatatypeQuestionsMap = (props) => {
              </div>
            </div>
 
-
+           <div class="exportAdd">
           
              <Button label={"SELECT QUESTION"} class={"btnAdd"} onClick={addData} />
-           
+             <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
+             </div>
 
         </div>
 

@@ -56,7 +56,7 @@ useEffect(()=>{
         {/* <!-- Modal content --> */}
         <div class="modal-content">
           <div class="modalHeader">
-            <h4>Farmar Information</h4>
+            <h4>Farmer Information</h4>
           </div>
 
 

@@ -29,6 +29,30 @@ switch($task){
 		case "RoleExport":
 			RoleExport();
 			break;
+
+		case "RegularBeneficiaryExport":
+			RegularBeneficiaryExport();
+			break;
+			
+		case "UserDataExport":
+			UserDataExport();
+			break;
+
+		case "RoleToMenuPermissionExport":
+			RoleToMenuPermissionExport();
+			break;
+
+		case "DataTypeQuestionsMapExport":
+			DataTypeQuestionsMapExport();
+			break;
+
+		case "QuestionDataExport":
+			QuestionDataExport();
+			break;
+			
+		case "PGDataExport":
+			PGDataExport();
+			break;
 			
 		// case "UserExport":
 		// 	UserExport();
@@ -102,8 +126,296 @@ function RoleExport() {
 	//Report save name. Not allow any type of special character
 	$tableProperties["report_save_name"] = 'Role_Information';
 }
+ 
+ 
+
+function RegularBeneficiaryExport() {
+
+	global $sql, $tableProperties, $TEXT, $siteTitle;
+	
+	$sql = "SELECT a.*, CASE WHEN a.IsRegular = 1 THEN 'Regular' ELSE 'Irregular' END AS RegularStatus,
+			CASE
+		WHEN a.Gender = 1 THEN 'Male'
+		WHEN a.Gender = 2 THEN 'Female'
+		WHEN a.Gender = 3 THEN 'Male-Female Both'
+		ELSE 'Other'
+		END AS GenderName,
+		CASE WHEN a.DisabilityStatus = 1 THEN 'Yes' ELSE 'No' END AS isDisabilityStatus,
+		CASE WHEN a.PGRegistered = 1 THEN 'Yes' ELSE 'No' END AS PGRegistered,
+		CASE WHEN a.PGPartnershipWithOtherCompany = 1 THEN 'Yes' ELSE 'No' END AS PGPartnershipWithOtherCompany,
+		CASE WHEN a.RelationWithHeadOfHH = 1 THEN 'HimselfIf/HerselfIf' ELSE 'Others' END AS RelationWithHeadOfHH,
+		
+		CASE
+		WHEN a.TypeOfMember = 1 THEN 'Type 1'
+		WHEN a.TypeOfMember = 2 THEN 'Type 2'
+		WHEN a.TypeOfMember = 3 THEN 'Type 3'
+		ELSE 'Other'
+		END AS TypeOfMember,
+
+		CASE
+		WHEN a.FamilyOccupation = 1 THEN 'Business'
+		WHEN a.FamilyOccupation = 2 THEN 'Agriculture'
+		WHEN a.FamilyOccupation = 3 THEN 'Employement'
+		ELSE 'Other'
+		END AS FamilyOccupation,
+
+		CASE
+		WHEN a.HeadOfHHSex = 1 THEN 'Male'
+		WHEN a.HeadOfHHSex = 2 THEN 'Female'
+		ELSE 'Other'
+		END AS HeadOfHHSex,
+		b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, 
+			e.ValueChainName, f.UnionName, g.PGName, h.WardName, i.CityCorporationName, a.VillageName,
+			CASE WHEN a.IsHeadOfTheGroup = 1 THEN 'Yes' ELSE 'No' END AS HeadOfTheGroup
+		
+		FROM t_farmer a
+		INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
+		INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
+		INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
+		INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
+		LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
+		LEFT JOIN t_pg g ON a.`PGId` = g.`PGId`
+		LEFT JOIN t_ward h ON a.`Ward` = h.`Ward`
+		LEFT JOIN t_citycorporation i ON a.`CityCorporation` = i.`CityCorporation`;";
+	
+    $tableProperties["query_field"] = array('FarmerName','RegularStatus','NID','Phone','FatherName','MotherName','SpouseName','GenderName','FarmersAge','isDisabilityStatus','RelationWithHeadOfHH','HeadOfHHSex','PGRegistered','TypeOfMember','PGPartnershipWithOtherCompany','PGFarmerCode','FamilyOccupation','DivisionName','DistrictName','UpazilaName','UnionName','PGName','WardName','CityCorporationName','VillageName','Address','Latitute','Longitute','HeadOfTheGroup','ValueChainName','TypeOfFarmerId');
+    $tableProperties["table_header"] = array("Beneficiary Name","Is Regular Beneficiary","Beneficiary NID","Mobile Number","Father's Name","Mother's Name","Spouse Name","Gender","Farmer's Age","Disability Status","Farmers Relationship with Head of HH","Farmer's Head of HH Sex","Do your PG/PO Registered?","Type Of Member","Do your PG make any productive partnership with any other company?","PG Farmer Code","Primary","Division","District","Upazila","Union","Name of Producer Group","Ward","City Corporation","Village","Address","Latitute","Longitute","Are You Head of The Group?","Value Chain","Farmer Type");
+    $tableProperties["align"] = array("left","left");
+    $tableProperties["width_print_pdf"] = array("30%","70%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("30","20","30","30","30","30","30");
+    $tableProperties["precision"] = array("string","string"); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0,0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0,0); //colorcode field = 1 not color code field = 0
+	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
+    $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
+    
+	//Report header list
+	$tableProperties["header_list"][0] = $siteTitle;
+	$tableProperties["header_list"][1] = 'Regular Beneficiary List';
+	// $tableProperties["header_list"][1] = 'Heading 2';
+	
+	//Report save name. Not allow any type of special character
+	$tableProperties["report_save_name"] = 'Regular_Beneficiary_List';
+}
+ 
+ 
+
+function UserDataExport() {
+
+	global $sql, $tableProperties, $TEXT, $siteTitle;
+	
+	$sql = "SELECT a.UserId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.UnionId, a.`UserName`, 
+	a.Password,
+	h.RoleGroupName,
+	h.RoleIds,
+	a.LoginName, a.`Email`, b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, u.UnionName,
+	a.`IsActive`, case when a.IsActive=1 then 'Yes' else 'No' end IsActiveName, a.DesignationId, e.DesignationName
+		FROM `t_users` a
+		LEFT JOIN (SELECT p.`UserId`,GROUP_CONCAT(q.RoleId ORDER BY q.`RoleId` ASC SEPARATOR ', ') RoleIds, GROUP_CONCAT(q.RoleName ORDER BY q.`RoleId` ASC SEPARATOR ', ') RoleGroupName
+				 FROM t_user_role_map p
+				 INNER JOIN `t_roles` q ON p.`RoleId` = q.`RoleId`					
+				 GROUP BY p.`UserId`
+			 ) h  ON a.`UserId` = h.`UserId`
+		LEFT JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
+		LEFT JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
+		LEFT JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
+		LEFT JOIN t_union u ON a.`UnionId` = u.`UnionId`
+		LEFT JOIN t_designation e ON a.`DesignationId` = e.`DesignationId`
+		ORDER BY a.`UserName` ASC;";
+	
+    $tableProperties["query_field"] = array("UserName","LoginName","Email","DesignationName","DivisionName","DistrictName","UpazilaName","UnionName","IsActiveName","RoleGroupName");
+    $tableProperties["table_header"] = array('User Name','Login Name','Email','Designation','Division','District','Upazila','Union','IsActive','Role');
+    $tableProperties["align"] = array("left","left");
+    $tableProperties["width_print_pdf"] = array("30%","70%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("30","40","30","15","20","20","20","20","20","7","30");
+    $tableProperties["precision"] = array("string","string"); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0,0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0,0); //colorcode field = 1 not color code field = 0
+	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
+    $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
+    
+	//Report header list
+	$tableProperties["header_list"][0] = $siteTitle;
+	$tableProperties["header_list"][1] = 'User List';
+	// $tableProperties["header_list"][1] = 'Heading 2';
+	
+	//Report save name. Not allow any type of special character
+	$tableProperties["report_save_name"] = 'User_List';
+}
+ 
+
+function RoleToMenuPermissionExport() {
+
+	global $sql, $tableProperties, $TEXT, $siteTitle;
+
+	$RoleId = $_REQUEST['RoleId'];
+	
+	$sql = "SELECT a.MenuId,IF(MenuLevel='menu_level_2',CONCAT(' -', a.MenuTitle),IF(MenuLevel='menu_level_3',CONCAT(' --', a.MenuTitle),a.MenuTitle)) menuname,
+	CASE WHEN b.MenuId IS NULL THEN 'No' ELSE 'Yes' END bChecked, RoleMenuId
+	FROM `t_menu` a
+	LEFT JOIN t_role_menu_map b ON b.`MenuId` = a.`MenuId` AND b.RoleId = $RoleId
+	ORDER BY SortOrder;";
 
 
+	$sqlr = "SELECT RoleName FROM `t_roles` a WHERE a.RoleId = $RoleId ORDER BY RoleName;";
+	$db = new Db();
+	$sqlrresult = $db->query($sqlr);
+	$RoleName = $sqlrresult[0]['RoleName'];
+	
+    $tableProperties["query_field"] = array("menuname","bChecked");
+    $tableProperties["table_header"] = array('Menu Name','Access');
+    $tableProperties["align"] = array("left","left");
+    $tableProperties["width_print_pdf"] = array("70%","30%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("40","20");
+    $tableProperties["precision"] = array("string","string"); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0,0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0,0); //colorcode field = 1 not color code field = 0
+	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
+    $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
+    
+	//Report header list
+	$tableProperties["header_list"][0] = $siteTitle;
+	$tableProperties["header_list"][1] = 'Role to Menu Permission';
+	$tableProperties["header_list"][2] = 'Role: '.$RoleName;
+	// $tableProperties["header_list"][1] = 'Heading 2';
+	
+	//Report save name. Not allow any type of special character
+	$tableProperties["report_save_name"] = 'Role_to_Menu_Permission';
+}
+ 
+
+function DataTypeQuestionsMapExport() {
+
+	global $sql, $tableProperties, $TEXT, $siteTitle;
+
+	$DataTypeId = $_REQUEST['DataTypeId'];
+	
+	$sql = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName, c.QuestionCode, a.SortOrder, a.DataTypeId, a.Category
+	,0 QDataCount
+	FROM t_datatype_questions_map a
+	INNER JOIN t_datatype b ON a.DataTypeId = b.DataTypeId
+	INNER JOIN t_questions c ON a.QuestionId = c.QuestionId
+	WHERE a.DataTypeId = $DataTypeId
+	ORDER BY a.SortOrder ASC;";
+
+
+	$sqlr = "SELECT DataTypeId, DataTypeName FROM t_datatype WHERE DataTypeId = $DataTypeId ORDER BY DataTypeName;";
+	$db = new Db();
+	$sqlrresult = $db->query($sqlr);
+	$DataTypeName = $sqlrresult[0]['DataTypeName'];
+	 
+
+    $tableProperties["query_field"] = array("QuestionCode","QuestionName","DataTypeName","LabelName");
+    $tableProperties["table_header"] = array('Question Code','Question Name','Type', 'Label Name');
+    $tableProperties["align"] = array("left","left");
+    $tableProperties["width_print_pdf"] = array("20%","30%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("20","60","25","60");
+    $tableProperties["precision"] = array("string","string"); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0,0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0,0); //colorcode field = 1 not color code field = 0
+	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
+    $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
+    
+	//Report header list
+	$tableProperties["header_list"][0] = $siteTitle;
+	$tableProperties["header_list"][1] = 'Data Type Questions Map';
+	$tableProperties["header_list"][2] = 'Data Type: '.$DataTypeName;
+	// $tableProperties["header_list"][1] = 'Heading 2';
+	
+	//Report save name. Not allow any type of special character
+	$tableProperties["report_save_name"] = 'Data_Type_Questions_Map';
+}
+ 
+
+function QuestionDataExport() {
+
+	global $sql, $tableProperties, $TEXT, $siteTitle;
+	
+	$sql = "SELECT 
+	tq.`QuestionId` id,
+	tq. QuestionId,
+	tq.`QuestionCode`,
+	tq.`QuestionName`,
+	tq.`QuestionType`,
+	tq.`Settings`,
+	tq.`IsMandatory`,
+	tq.`QuestionParentId`,
+	tq.`SortOrderChild`,
+	tp.`QuestionName` AS ParentQuestionName
+	, case when tq.IsMandatory=1 then 'Yes' else 'No' end IsMandatoryName
+	, 0 AS QMapCount
+FROM `t_questions` tq
+LEFT JOIN `t_questions` tp ON tq.`QuestionParentId` = tp.`QuestionId`
+ORDER BY tq.`QuestionCode`, tq.`SortOrderChild` ;";
+	
+    $tableProperties["query_field"] = array("QuestionCode","QuestionName","QuestionType","ParentQuestionName","Settings","IsMandatoryName");
+    $tableProperties["table_header"] = array('Code','Question','Question Type','Parent Question','Settings','Is Mandatory');
+    $tableProperties["align"] = array("left","left");
+    $tableProperties["width_print_pdf"] = array("30%","70%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("20","50","20","50","15","20");
+    $tableProperties["precision"] = array("string","string"); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0,0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0,0); //colorcode field = 1 not color code field = 0
+	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
+    $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
+    
+	//Report header list
+	$tableProperties["header_list"][0] = $siteTitle;
+	$tableProperties["header_list"][1] = 'Questions';
+	// $tableProperties["header_list"][1] = 'Heading 2';
+	
+	//Report save name. Not allow any type of special character
+	$tableProperties["report_save_name"] = 'Questions';
+}
+
+
+
+
+function PGDataExport() {
+
+	global $sql, $tableProperties, $TEXT, $siteTitle;
+	// $ClientId = $_REQUEST['ClientId'];
+
+	$sql = "SELECT a.PGId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGName`, a.`Address`, 
+	b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, a.UnionId, a.PgGroupCode, 
+	a.PgBankAccountNumber, a.BankName, a.ValuechainId, a.IsLeadByWomen, a.GenderId, a.IsActive, e.ValueChainName, f.UnionName
+	,CASE
+        WHEN a.GenderId = 1 THEN 'Male'
+        WHEN a.GenderId = 2 THEN 'Female'
+        WHEN a.GenderId = 3 THEN 'Male-Female Both'
+        ELSE 'Other'
+    	END AS GenderName,
+		CASE WHEN a.IsLeadByWomen = 1 THEN 'Yes' ELSE 'No' END AS IsLeadByWomenStatus,
+		CASE WHEN a.IsActive = 1 THEN 'Active' ELSE 'Inactive' END AS ActiveStatus
+	FROM `t_pg` a
+	INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
+	INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
+	INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
+	INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
+	LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
+	ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`PGName` ASC;";
+	
+    $tableProperties["query_field"] = array("PgGroupCode","PGName","PgBankAccountNumber","BankName","ValueChainName","DivisionName","DistrictName","UpazilaName","UnionName","GenderName","IsLeadByWomenStatus","ActiveStatus","Address");
+    $tableProperties["table_header"] = array('Group Code','PG Name','Bank Account Number','Bank Name','Value Chain','Division','District','Upazila','Union','Group Members Gender','Is the Group Led by Women','Status','Address');
+    $tableProperties["align"] = array("left");
+    $tableProperties["width_print_pdf"] = array("6%","5%","15%","5%","5%","5%","5%","5%","5%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("15","30","20","15","16","12","12","12","12","12","12","12","25");
+    $tableProperties["precision"] = array("string","string","string","string","string","string","string","string","string","string","string","string"); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0,0,0,0,0,0,0,0,0,0,0,0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0,0,0,0,0,0,0,0,0,0,0,0); //colorcode field = 1 not color code field = 0
+	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
+    $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
+    
+	//Report header list
+	$tableProperties["header_list"][0] = $siteTitle;
+	$tableProperties["header_list"][1] = 'PG List';
+	// $tableProperties["header_list"][1] = 'Heading 2';
+	
+	//Report save name. Not allow any type of special character
+	$tableProperties["report_save_name"] = 'PGList';
+}
+
+ 
 
 // function UserExport() {
 
