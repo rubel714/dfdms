@@ -178,11 +178,11 @@ function RegularBeneficiaryExport() {
 		LEFT JOIN t_ward h ON a.`Ward` = h.`Ward`
 		LEFT JOIN t_citycorporation i ON a.`CityCorporation` = i.`CityCorporation`;";
 	
-    $tableProperties["query_field"] = array('RegularStatus','NID','Beneficiary Name','Phone','FatherName','MotherName','SpouseName','GenderName','FarmersAge','isDisabilityStatus','RelationWithHeadOfHH','HeadOfHHSex','PGRegistered','TypeOfMember','PGPartnershipWithOtherCompany','PGFarmerCode','FamilyOccupation','DivisionName','DistrictName','UpazilaName','UnionName','PGName','WardName','CityCorporationName','VillageName','Address','Latitute','Longitute','HeadOfTheGroup','ValueChainName');
-    $tableProperties["table_header"] = array("Is Regular Beneficiary","Beneficiary NID","FarmerName","Mobile Number","Father's Name","Mother's Name","Spouse Name","Gender","Farmer's Age","Disability Status","Farmers Relationship with Head of HH","Farmer's Head of HH Sex","Do your PG/PO Registered?","Type Of Member","Do your PG make any productive partnership with any other company?","PG Farmer Code","Primary","Division","District","Upazila","Union","Name of Producer Group","Ward","City Corporation","Village","Address","Latitute","Longitute","Are You Head of The Group?","Value Chain");
+    $tableProperties["query_field"] = array('FarmerName','RegularStatus','NID','Phone','FatherName','MotherName','SpouseName','GenderName','FarmersAge','isDisabilityStatus','RelationWithHeadOfHH','HeadOfHHSex','PGRegistered','TypeOfMember','PGPartnershipWithOtherCompany','PGFarmerCode','FamilyOccupation','DivisionName','DistrictName','UpazilaName','UnionName','PGName','WardName','CityCorporationName','VillageName','Address','Latitute','Longitute','HeadOfTheGroup','ValueChainName','TypeOfFarmerId');
+    $tableProperties["table_header"] = array("Beneficiary Name","Is Regular Beneficiary","Beneficiary NID","Mobile Number","Father's Name","Mother's Name","Spouse Name","Gender","Farmer's Age","Disability Status","Farmers Relationship with Head of HH","Farmer's Head of HH Sex","Do your PG/PO Registered?","Type Of Member","Do your PG make any productive partnership with any other company?","PG Farmer Code","Primary","Division","District","Upazila","Union","Name of Producer Group","Ward","City Corporation","Village","Address","Latitute","Longitute","Are You Head of The Group?","Value Chain","Farmer Type");
     $tableProperties["align"] = array("left","left");
     $tableProperties["width_print_pdf"] = array("30%","70%"); //when exist serial then here total 95% and 5% use for serial
-    $tableProperties["width_excel"] = array("30","40");
+    $tableProperties["width_excel"] = array("30","20","30","30","30","30","30");
     $tableProperties["precision"] = array("string","string"); //string,date,datetime,0,1,2,3,4
     $tableProperties["total"] = array(0,0); //not total=0, total=1
     $tableProperties["color_code"] = array(0,0); //colorcode field = 1 not color code field = 0
