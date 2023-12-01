@@ -673,14 +673,11 @@ function GenderList($data) {
 		$dbh = new Db();
 	
 
-		$jsonData = '[
-			{"id":"1","name":"Male"},
-			{"id":"2","name":"Female"},
-			{"id":"3","name":"Male-Female Both"},
-			{"id":"4","name":"Others"}
-		]';
+		$query = "SELECT GenderId id, GenderName name
+		FROM t_gender ORDER BY GenderName;"; 
 
-		$resultdata = json_decode($jsonData, true);
+		$resultdata = $dbh->query($query);
+
 
 		$returnData = [
 			"success" => 1,
@@ -702,13 +699,11 @@ function HeadOfHHSexList($data) {
 		$dbh = new Db();
 	
 
-		$jsonData = '[
-			{"id":"1","name":"Male"},
-			{"id":"2","name":"Female"},
-			{"id":"4","name":"Others"}
-		]';
+		$query = "SELECT GenderId id, GenderName name
+		FROM t_gender ORDER BY GenderName;"; 
 
-		$resultdata = json_decode($jsonData, true);
+		$resultdata = $dbh->query($query);
+
 
 		$returnData = [
 			"success" => 1,
