@@ -216,6 +216,27 @@ button:hover {
     min-width: 90px;
 }
 
+.btnSubmit {
+    background-color: rgb(13, 156, 109);  
+   font-size: 0.75rem;
+   height: 20px;
+   padding: 0px 4px;
+ 
+}
+.btnAccept {
+    background-color: rgb(13, 101, 156);  
+   font-size: 0.75rem;
+   height: 20px;
+   padding: 0px 4px;
+ 
+}
+.btnApprove {
+    background-color: rgb(3, 98, 41);  
+   font-size: 0.75rem;
+   height: 20px;
+   padding: 0px 4px;
+ 
+}
 .btnPost {
     background-color: rgb(120, 200, 10);
     min-width: 90px;

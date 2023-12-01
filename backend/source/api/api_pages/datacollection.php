@@ -28,6 +28,10 @@ switch ($task) {
 	case "deleteData":
 		$returnData = deleteData($data);
 		break;
+
+	case "changeReportStatus":
+		$returnData = changeReportStatus($data);
+		break;
 	
 	case "getFarmerInfo":
 		$returnData = getFarmerInfo($data);
@@ -56,6 +60,7 @@ function getDataList($data)
 		$query = "SELECT a.`DataValueMasterId` as id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGId`,a.FarmerId,a.Categories, a.`YearId`, a.`QuarterId`,
 		 a.`Remarks`, a.`DataCollectorName`, a.`DataCollectionDate`, a.`UserId`,a.BPosted
 		, concat(a.YearId,' (',e.QuarterName,')') QuarterName, b.DivisionName,c.DistrictName,d.UpazilaName,f.PGName
+		,a.StatusId
 		FROM t_datavaluemaster a
 		inner join t_division b on a.DivisionId=b.DivisionId
 		inner join t_district c on a.DistrictId=c.DistrictId
@@ -174,7 +179,7 @@ function getDataSingle($data)
 
 		/**Master Data */
 		$query = "SELECT `DataValueMasterId` as id, `DivisionId`, `DistrictId`, `UpazilaId`,DataTypeId, `PGId`,FarmerId,Categories, `YearId`, `QuarterId`,
-		 `Remarks`, `DataCollectorName`, `DataCollectionDate`, `UserId`, `BPosted`, `UpdateTs`, `CreateTs`
+		 `Remarks`, `DataCollectorName`, `DataCollectionDate`, `UserId`, `BPosted`,StatusId, `UpdateTs`, `CreateTs`
 		FROM t_datavaluemaster
 		where DataValueMasterId=$DataValueMasterId;";
 		$resultdataMaster = $dbh->query($query);
@@ -528,6 +533,74 @@ function deleteData($data)
 			$d->pk_values = [$DataValueMasterId];
 			$d->build_query();
 			$aQuerys[] = $d;
+
+
+			$res = exec_query($aQuerys, $UserId, $lan);
+			$success = ($res['msgType'] == 'success') ? 1 : 0;
+			$status = ($res['msgType'] == 'success') ? 200 : 500;
+
+			$returnData = [
+				"success" => $success,
+				"status" => $status,
+				"UserId" => $UserId,
+				"message" => $res['msg']
+			];
+		} catch (PDOException $e) {
+			$returnData = msg(0, 500, $e->getMessage());
+		}
+
+		return $returnData;
+	}
+}
+
+
+function changeReportStatus($data)
+{
+
+	if ($_SERVER["REQUEST_METHOD"] != "POST") {
+		return $returnData = msg(0, 404, 'Page Not Found!');
+	}
+	// CHECKING EMPTY FIELDS
+	elseif (!isset($data->Id) || !isset($data->StatusId)) {
+		$fields = ['fields' => ['Id','StatusId']];
+		return $returnData = msg(0, 422, 'Please Fill in all Required Fields!', $fields);
+	} else {
+
+		$DataValueMasterId = $data->Id;
+		$StatusId = $data->StatusId;
+		$lan = trim($data->lan);
+		$UserId = trim($data->UserId);
+
+		$curDateTime = date('Y-m-d H:i:s');
+		$UserFieldName = "";
+		$DateFieldName = "";
+		$BPosted = 0;
+
+		if($StatusId == 2){
+			$UserFieldName = "SubmitUserId";
+			$DateFieldName = "SubmitDate";
+		}else if($StatusId == 3){
+			$UserFieldName = "AcceptUserId";
+			$DateFieldName = "AcceptDate";
+		}else if($StatusId == 5){
+			$UserFieldName = "ApproveUserId";
+			$DateFieldName = "ApproveDate";
+			$BPosted = 1;
+		}
+		
+	
+		try {
+
+			$aQuerys = array();
+
+			$u = new updateq();
+			$u->table = 't_datavaluemaster';
+			$u->columns = ['StatusId',$UserFieldName,$DateFieldName,'BPosted'];
+			$u->values = [$StatusId,$UserId,$curDateTime,$BPosted];
+			$u->pks = ['DataValueMasterId'];
+			$u->pk_values = [$DataValueMasterId];
+			$u->build_query();
+			$aQuerys[] = $u;
 
 
 			$res = exec_query($aQuerys, $UserId, $lan);

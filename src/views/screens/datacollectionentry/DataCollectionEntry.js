@@ -65,11 +65,8 @@ const DataCollectionEntry = (props) => {
   const [showPGModal, setShowPGModal] = useState(false); //true=show modal, false=hide modal
   const [showFarmerModal, setShowFarmerModal] = useState(false); //true=show modal, false=hide modal
 
-
-
-  
   const [landTypeList, setLandTypeList] = useState([]);
-    // {
+  // {
   //   LandTypeId: 1,
   //   LandType: "Homostead",
   // },
@@ -155,7 +152,6 @@ const DataCollectionEntry = (props) => {
     DUCK: "displaynone",
     LAYER: "displaynone",
   };
-
 
   const [questionsVisibleList, setQuestionsVisibleList] = useState(qvList);
 
@@ -387,6 +383,7 @@ const DataCollectionEntry = (props) => {
   /* =====End of Excel Export Code==== */
 
   const newInvoice = () => {
+    
     console.log("dataTypeId: ", dataTypeId);
     setQuestionsVisibleList(qvList);
 
@@ -411,157 +408,19 @@ const DataCollectionEntry = (props) => {
     setManyDataList([]);
   };
 
-
-
-
-
-
-
-
-
   // function getRandomNumber(min, max) {
   //   return Math.floor(Math.random() * (max - min + 1)) + min;
   // }
 
   const addGrassTypeRow = () => {
     //console.log('deleteGrassTypeRow: ', 'deleteGrassTypeRow');
-      
-      let rows = [];
-      //let autoId=0;
 
-
-      grassTypeTableRow.forEach((row,i) => {
-        //autoId++;
-        let newRow={} ; 
-
-        newRow.DataValueItemDetailsId = row.DataValueItemDetailsId;
-        newRow.GrassId = row.GrassId;
-        newRow.LandTypeId = row.LandTypeId;
-        newRow.Cultivation = row.Cultivation;
-        newRow.Production = row.Production;
-        newRow.Consumption = row.Consumption;
-        newRow.Sales = row.Sales;
-        newRow.RowType = row.RowType;
-        // newRow.autoId = row.DataValueItemDetailsId;
-
-
-        rows.push(newRow);
-
-    }); 
-
-
-
-    let newRow={} ;
-    newRow.DataValueItemDetailsId = Date.now();
-    newRow.GrassId = "";
-    newRow.LandTypeId = "";
-    newRow.Cultivation = null;
-    newRow.Production = null;
-    newRow.Consumption = null;
-    newRow.Sales = null;
-    newRow.RowType = 'new';
-    // newRow.autoId = Date.now();
-
-
-    rows.push(newRow);
-
-    setGrassTypeTableRow(rows);   
-
-
-  };
-
-  const changeCustomTableCellExtend = (e, field, id) => {
-    console.log(e);
-    const { name, value } = e.target;
-
-    console.log("name, value, id: ", field, value, id);
-   
     let rows = [];
-   // let autoId=0;
+    //let autoId=0;
 
-    grassTypeTableRow.forEach((row,i) => {
+    grassTypeTableRow.forEach((row, i) => {
       //autoId++;
-      let newRow={} ; 
-
-      if(row.DataValueItemDetailsId == id){
-        newRow.DataValueItemDetailsId = row.DataValueItemDetailsId;
-        
-        if(field == 'GrassId'){
-          newRow.GrassId = value;
-        }else{
-          newRow.GrassId = row.GrassId;
-        }
-
-        if(field == 'LandTypeId'){
-          newRow.LandTypeId = value;
-        }else{
-          newRow.LandTypeId = row.LandTypeId;
-        }
-        
-        if(field == 'Cultivation'){
-          newRow.Cultivation = value;
-        }else{
-          newRow.Cultivation = row.Cultivation;
-        }
-
-        if(field == 'Production'){
-          newRow.Production = value;
-        }else{
-          newRow.Production = row.Production;
-        }
-
-        if(field == 'Consumption'){
-          newRow.Consumption = value;
-        }else{
-          newRow.Consumption = row.Consumption;
-        }
-
-        if(field == 'Sales'){
-          newRow.Sales = value;
-        }else{
-          newRow.Sales = row.Sales;
-        }
-
-        newRow.RowType = row.RowType;
-        // newRow.autoId = row.autoId;
-
-      }else{
-        newRow.DataValueItemDetailsId = row.DataValueItemDetailsId;
-        newRow.GrassId = row.GrassId;
-        newRow.LandTypeId = row.LandTypeId;
-        newRow.Cultivation = row.Cultivation;
-        newRow.Production = row.Production;
-        newRow.Consumption = row.Consumption;
-        newRow.Sales = row.Sales;
-  
-        newRow.RowType = row.RowType;
-        // newRow.autoId = row.autoId;
-      }
-
-
-
-      rows.push(newRow);
-
-  }); 
-
-
-
-  setGrassTypeTableRow(rows);   
-  console.log('rows: ', rows);
-
-
-  };
-
-  const deleteGrassTypeRow = (e, id) => {
-    console.log('deleteGrassTypeRow: ', 'deleteGrassTypeRow');
-   // console.log(e);
-    //const { name, value } = e.target;
-
-    console.log("id: ", id);
-    let rows = [];
-
-    grassTypeTableRow.forEach((row,i) => {
-      let newRow={} ; 
+      let newRow = {};
 
       newRow.DataValueItemDetailsId = row.DataValueItemDetailsId;
       newRow.GrassId = row.GrassId;
@@ -570,23 +429,132 @@ const DataCollectionEntry = (props) => {
       newRow.Production = row.Production;
       newRow.Consumption = row.Consumption;
       newRow.Sales = row.Sales;
-      
-      if(row.DataValueItemDetailsId == id){
-        newRow.RowType = 'delete';
-      }else{
+      newRow.RowType = row.RowType;
+      // newRow.autoId = row.DataValueItemDetailsId;
+
+      rows.push(newRow);
+    });
+
+    let newRow = {};
+    newRow.DataValueItemDetailsId = Date.now();
+    newRow.GrassId = "";
+    newRow.LandTypeId = "";
+    newRow.Cultivation = null;
+    newRow.Production = null;
+    newRow.Consumption = null;
+    newRow.Sales = null;
+    newRow.RowType = "new";
+    // newRow.autoId = Date.now();
+
+    rows.push(newRow);
+
+    setGrassTypeTableRow(rows);
+  };
+
+  const changeCustomTableCellExtend = (e, field, id) => {
+    console.log(e);
+    const { name, value } = e.target;
+
+    console.log("name, value, id: ", field, value, id);
+
+    let rows = [];
+    // let autoId=0;
+
+    grassTypeTableRow.forEach((row, i) => {
+      //autoId++;
+      let newRow = {};
+
+      if (row.DataValueItemDetailsId == id) {
+        newRow.DataValueItemDetailsId = row.DataValueItemDetailsId;
+
+        if (field == "GrassId") {
+          newRow.GrassId = value;
+        } else {
+          newRow.GrassId = row.GrassId;
+        }
+
+        if (field == "LandTypeId") {
+          newRow.LandTypeId = value;
+        } else {
+          newRow.LandTypeId = row.LandTypeId;
+        }
+
+        if (field == "Cultivation") {
+          newRow.Cultivation = value;
+        } else {
+          newRow.Cultivation = row.Cultivation;
+        }
+
+        if (field == "Production") {
+          newRow.Production = value;
+        } else {
+          newRow.Production = row.Production;
+        }
+
+        if (field == "Consumption") {
+          newRow.Consumption = value;
+        } else {
+          newRow.Consumption = row.Consumption;
+        }
+
+        if (field == "Sales") {
+          newRow.Sales = value;
+        } else {
+          newRow.Sales = row.Sales;
+        }
+
+        newRow.RowType = row.RowType;
+        // newRow.autoId = row.autoId;
+      } else {
+        newRow.DataValueItemDetailsId = row.DataValueItemDetailsId;
+        newRow.GrassId = row.GrassId;
+        newRow.LandTypeId = row.LandTypeId;
+        newRow.Cultivation = row.Cultivation;
+        newRow.Production = row.Production;
+        newRow.Consumption = row.Consumption;
+        newRow.Sales = row.Sales;
+
+        newRow.RowType = row.RowType;
+        // newRow.autoId = row.autoId;
+      }
+
+      rows.push(newRow);
+    });
+
+    setGrassTypeTableRow(rows);
+    console.log("rows: ", rows);
+  };
+
+  const deleteGrassTypeRow = (e, id) => {
+    console.log("deleteGrassTypeRow: ", "deleteGrassTypeRow");
+    // console.log(e);
+    //const { name, value } = e.target;
+
+    console.log("id: ", id);
+    let rows = [];
+
+    grassTypeTableRow.forEach((row, i) => {
+      let newRow = {};
+
+      newRow.DataValueItemDetailsId = row.DataValueItemDetailsId;
+      newRow.GrassId = row.GrassId;
+      newRow.LandTypeId = row.LandTypeId;
+      newRow.Cultivation = row.Cultivation;
+      newRow.Production = row.Production;
+      newRow.Consumption = row.Consumption;
+      newRow.Sales = row.Sales;
+
+      if (row.DataValueItemDetailsId == id) {
+        newRow.RowType = "delete";
+      } else {
         newRow.RowType = row.RowType;
       }
 
-
-
       rows.push(newRow);
+    });
 
-  }); 
-
-
-
-  setGrassTypeTableRow(rows);   
-  console.log('rows: ', rows);
+    setGrassTypeTableRow(rows);
+    console.log("rows: ", rows);
   };
 
   // Function to handle the input change
@@ -785,10 +753,8 @@ const DataCollectionEntry = (props) => {
     getPgGroupList();
     getYearList();
 
-
     getLandTypeList();
     getGrassList();
-
 
     getQuarterList();
 
@@ -890,7 +856,6 @@ const DataCollectionEntry = (props) => {
     });
   }
 
-  
   function getGrassList() {
     let params = {
       action: "GrassList",
@@ -989,7 +954,7 @@ const DataCollectionEntry = (props) => {
     {
       field: "custom",
       label: "অ্যাকশন",
-      width: "5%",
+      width: "12%",
       align: "center",
       visible: true,
       // sort: false,
@@ -999,8 +964,48 @@ const DataCollectionEntry = (props) => {
 
   /** Action from table row buttons*/
   function actioncontrolmaster(rowData) {
+    console.log("UserInfo",UserInfo);
+    console.log("StatusChangeAllow",UserInfo.StatusChangeAllow);
+    let StatusChangeAllow = UserInfo.StatusChangeAllow;
+    // let sub = StatusChangeAllow.includes("Submit");
+    // console.log('sub: ', sub);
+
+
     return (
       <>
+        {/* StatusId */}
+
+        {(rowData.StatusId === 1) && (StatusChangeAllow.includes("Submit")) && (
+          <button class={"btnSubmit"} 
+            onClick={() => {
+              changeReportStatus(rowData.id, 2);
+            }}
+          >
+            Submit
+          </button>
+        )}
+
+        {(rowData.StatusId === 2) && (StatusChangeAllow.includes("Accept")) && (
+          <button class={"btnAccept"} 
+            onClick={() => {
+              changeReportStatus(rowData.id, 3);
+            }}
+          >
+            Accept
+          </button>
+        )}
+
+        {(rowData.StatusId === 3) && (StatusChangeAllow.includes("Approve")) && (
+          <button class={"btnApprove"} 
+            onClick={() => {
+              changeReportStatus(rowData.id, 5);
+            }}
+          >
+            Approve
+          </button>
+        )}
+
+
         {rowData.BPosted === 0 && (
           <Edit
             className={"table-edit-icon"}
@@ -1037,6 +1042,8 @@ const DataCollectionEntry = (props) => {
   };
 
   const viewData = (rowData) => {
+    console.log("rowData: ", rowData);
+
     getDataSingleFromServer(rowData.id);
   };
 
@@ -1121,18 +1128,12 @@ const DataCollectionEntry = (props) => {
       console.log("dataListSingle itemsdetails: ", dataListSingle.itemsdetails);
       // console.log('dataListSingle: ', dataListSingle.items[0]);
     }
-
-
   }, [dataListSingle]);
 
-  
-
-  
   const backToList = () => {
     setListEditPanelToggle(true); // true = show list and hide add/edit panel
     getDataList(); //invoice list
     setGrassTypeTableRow([]);
-
   };
 
   const deleteData = (rowData) => {
@@ -1500,7 +1501,6 @@ const DataCollectionEntry = (props) => {
   }
   function closePGModal(p) {
     setShowPGModal(false);
-    
   }
 
   function showFarmerDetails(p) {
@@ -1508,7 +1508,6 @@ const DataCollectionEntry = (props) => {
   }
   function closeFarmerModal(p) {
     setShowFarmerModal(false);
-    
   }
 
   function saveData(p) {
@@ -1537,8 +1536,8 @@ const DataCollectionEntry = (props) => {
           msg: res.data.message,
           msgtype: res.data.success,
         });
-      
-        if(res.success){
+
+        if (res.success) {
           // console.log('currentInvoice: ', currentInvoice);
           if (currentInvoice.id === "") {
             //New
@@ -1548,7 +1547,6 @@ const DataCollectionEntry = (props) => {
             getDataSingleFromServer(currentInvoice.id);
           }
         }
-
       });
     } else {
       props.openNoticeModal({
@@ -1558,6 +1556,126 @@ const DataCollectionEntry = (props) => {
       });
     }
   }
+
+
+
+
+  function changeReportStatus(Id, StatusId) {
+
+     let params = {
+      action: "changeReportStatus",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      Id: Id,
+      StatusId: StatusId
+    };
+
+    let msg = "";
+
+    if(StatusId == 2){
+      msg = "You want to submit!";
+    }else if(StatusId == 3){
+      msg = "You want to accept!";
+    }else if(StatusId == 5){
+      msg = "You want to approve!";
+    }
+
+
+    swal({
+      title: "Are you sure?",
+      text: msg,
+      icon: "warning",
+      buttons: {
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+        cancel: {
+          text: "No",
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+      },
+      dangerMode: true,
+    }).then((allowAction) => {
+
+      if (allowAction) {
+        changeReportStatusAPICall(params);
+      }
+
+    });
+
+
+
+  }
+
+  
+  function changeReportStatusAPICall(params) {
+
+      apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+        // console.log('res: ', res);
+
+        if (res.data.success) {
+          props.openNoticeModal({
+            isOpen: true,
+            msg: res.data.message,
+            msgtype: res.data.success,
+          });
+// console.log(11111111);
+          getDataList(); //invoice list
+        }else{
+          // console.log(222222);
+          props.openNoticeModal({
+            isOpen: true,
+            msg: res.data.message,
+            msgtype: res.data.success,
+          });
+        }
+      });
+    // } else {
+    //   props.openNoticeModal({
+    //     isOpen: true,
+    //     msg: "Please enter required fields.",
+    //     msgtype: 0,
+    //   });
+    // }
+  }
+
+
+  // function acceptSingleReport() {
+  //   // console.log('p: ', p);
+  //   let params = {
+  //     action: "dataAddEdit",
+  //     lan: language(),
+  //     UserId: UserInfo.UserId,
+  //     InvoiceMaster: currentInvoice,
+  //     InvoiceItems: manyDataList,
+  //     InvoiceItemsDetails: grassTypeTableRow,
+  //   };
+  //   console.log("params: ", params);
+
+  //   // addEditAPICall(params);
+  // }
+
+  // function approveSingleReport() {
+  //   // console.log('p: ', p);
+  //   let params = {
+  //     action: "dataAddEdit",
+  //     lan: language(),
+  //     UserId: UserInfo.UserId,
+  //     InvoiceMaster: currentInvoice,
+  //     InvoiceItems: manyDataList,
+  //     InvoiceItemsDetails: grassTypeTableRow,
+  //   };
+  //   console.log("params: ", params);
+
+  //   // addEditAPICall(params);
+  // }
 
   // const tableHtml = `<table class="tg" style="table-layout: fixed;">
   //                         <thead>
@@ -1623,11 +1741,18 @@ const DataCollectionEntry = (props) => {
           )}
         </div>
 
-
-
-      {showPGModal && (<PGInfoModal currentInvoice={currentInvoice} modalCallback={closePGModal}/>)}
-      {showFarmerModal && (<FarmerInfoModal currentInvoice={currentInvoice} modalCallback={closeFarmerModal}/>)}
-
+        {showPGModal && (
+          <PGInfoModal
+            currentInvoice={currentInvoice}
+            modalCallback={closePGModal}
+          />
+        )}
+        {showFarmerModal && (
+          <FarmerInfoModal
+            currentInvoice={currentInvoice}
+            modalCallback={closeFarmerModal}
+          />
+        )}
 
         {listEditPanelToggle && (
           <>
@@ -1656,7 +1781,8 @@ const DataCollectionEntry = (props) => {
 
         {!listEditPanelToggle && (
           <>
-            {!currentInvoice.BPosted && (
+            {/* {!currentInvoice.BPosted && ( */}
+            {1 == 1 && (
               <div class="subContainer inputArea">
                 <div class="text-center">
                   <h2>{entryFormTitle}</h2>
@@ -1756,49 +1882,49 @@ const DataCollectionEntry = (props) => {
                   <div class="formControl">
                     <label>পিজি গ্রুপ (PG Group):</label>
                     <div className="autocompleteContainer">
-                    <Autocomplete
-                      autoHighlight
-                      // freeSolo
-                      className="chosen_dropdown specificAutocomplete"
-                      id="PGId"
-                      name="PGId"
-                      autoComplete
-                      class={errorObjectMaster.PGId}
-                      options={pgGroupList ? pgGroupList : []}
-                      getOptionLabel={(option) => option.name}
-                      // value={selectedSupplier}
-                      value={
-                        pgGroupList
-                          ? pgGroupList[
-                              pgGroupList.findIndex(
-                                (list) => list.id == currentInvoice.PGId
-                              )
-                            ]
-                          : null
-                      }
-                      onChange={(event, valueobj) =>
-                        handleChangeChoosenMaster(
-                          "PGId",
-                          valueobj ? valueobj.id : ""
-                        )
-                      }
-                      renderOption={(option) => (
-                        <Typography className="chosen_dropdown_font">
-                          {option.name}
-                        </Typography>
-                      )}
-                      renderInput={(params) => (
-                        <TextField {...params} variant="standard" fullWidth />
-                      )}
-                    />
-                    <Button
+                      <Autocomplete
+                        autoHighlight
+                        // freeSolo
+                        className="chosen_dropdown specificAutocomplete"
+                        id="PGId"
+                        name="PGId"
+                        autoComplete
+                        class={errorObjectMaster.PGId}
+                        options={pgGroupList ? pgGroupList : []}
+                        getOptionLabel={(option) => option.name}
+                        // value={selectedSupplier}
+                        value={
+                          pgGroupList
+                            ? pgGroupList[
+                                pgGroupList.findIndex(
+                                  (list) => list.id == currentInvoice.PGId
+                                )
+                              ]
+                            : null
+                        }
+                        onChange={(event, valueobj) =>
+                          handleChangeChoosenMaster(
+                            "PGId",
+                            valueobj ? valueobj.id : ""
+                          )
+                        }
+                        renderOption={(option) => (
+                          <Typography className="chosen_dropdown_font">
+                            {option.name}
+                          </Typography>
+                        )}
+                        renderInput={(params) => (
+                          <TextField {...params} variant="standard" fullWidth />
+                        )}
+                      />
+                      <Button
                         label={"Details"}
                         class={"btnDetails"}
                         onClick={showPGDetails}
                       />
                     </div>
                   </div>
-{/* 
+                  {/* 
                   <div className="formControl">
                         <label>ফার্মার (Farmer):</label>
                         <div className="autocompleteContainer">
@@ -1847,9 +1973,6 @@ const DataCollectionEntry = (props) => {
                           />
                         </div>
                       </div> */}
-
-
-
 
                   {dataTypeId == 2 && (
                     <>
@@ -2140,10 +2263,6 @@ const DataCollectionEntry = (props) => {
                       </div>
                     </>
                   )}
-                
-                
-
-                 
 
                   {questionsList.map((question) => {
                     // console.log("question: ", question.QuestionType);
@@ -2339,173 +2458,213 @@ const DataCollectionEntry = (props) => {
                             </div>
                           </div>
 
+                          {question.QuestionCode == "GRASS__00000" &&
+                            manyDataList[question.QuestionCode] == "true" && (
+                              <div className="formControl">
+                                <label></label>
+                                <div className="newTableDiv">
+                                  <table className="tg">
+                                    <thead>
+                                      <tr>
+                                        <td className="tg-sl" rowSpan="2">
+                                          Serial No
+                                        </td>
+                                        <td className="tg-zv4m" rowSpan="2">
+                                          Name of grass
+                                        </td>
+                                        <td className="tg-zv4m" rowSpan="2">
+                                          Type of land (1 = Homestead; 2 =
+                                          Cultivable Land; 3 = Others)
+                                        </td>
+                                        <td className="tg-nlfa" colSpan="4">
+                                          Area of land cultivated, production
+                                          sale for fodder (green grass)
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td className="tg-22sb">
+                                          Cultivation in decimal
+                                        </td>
+                                        <td className="tg-dhoh">
+                                          Production in last year (kg)
+                                        </td>
+                                        <td className="tg-22sb">
+                                          Consumption in last year (kg)
+                                        </td>
+                                        <td className="tg-dhoh">
+                                          Sales in last year (kg)
+                                        </td>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {grassTypeTableRow.map((grassRow, i) => {
+                                        return (
+                                          <>
+                                            {grassRow.RowType != "delete" && (
+                                              <tr>
+                                                <td className="tg-sl">
+                                                  {i + 1}
+                                                </td>
+                                                <td>
+                                                  <select
+                                                    onChange={(e) =>
+                                                      changeCustomTableCellExtend(
+                                                        e,
+                                                        "GrassId",
+                                                        grassRow.DataValueItemDetailsId
+                                                      )
+                                                    }
+                                                    className="fullWidthSelect"
+                                                  >
+                                                    {grassList.map((gObj) => {
+                                                      return (
+                                                        <>
+                                                          {grassRow.GrassId ==
+                                                            gObj.id && (
+                                                            <option
+                                                              selected
+                                                              value={gObj.id}
+                                                            >
+                                                              {gObj.name}
+                                                            </option>
+                                                          )}
 
+                                                          {grassRow.GrassId !=
+                                                            gObj.id && (
+                                                            <option
+                                                              value={gObj.id}
+                                                            >
+                                                              {gObj.name}
+                                                            </option>
+                                                          )}
+                                                        </>
+                                                      );
+                                                    })}
+                                                  </select>
+                                                </td>
+                                                <td>
+                                                  <select
+                                                    onChange={(e) =>
+                                                      changeCustomTableCellExtend(
+                                                        e,
+                                                        "LandTypeId",
+                                                        grassRow.DataValueItemDetailsId
+                                                      )
+                                                    }
+                                                    className="fullWidthSelect"
+                                                  >
+                                                    {landTypeList.map(
+                                                      (gObj) => {
+                                                        return (
+                                                          <>
+                                                            {grassRow.LandTypeId ==
+                                                              gObj.id && (
+                                                              <option
+                                                                selected
+                                                                value={gObj.id}
+                                                              >
+                                                                {gObj.name}
+                                                              </option>
+                                                            )}
 
-                          
-                          {(question.QuestionCode=='GRASS__00000') && (manyDataList[question.QuestionCode]=="true") && (<div className="formControl">
-                            <label></label>
-                            <div className="newTableDiv">
-                              <table className="tg">
-                                <thead>
-                                  <tr>
-                                    <td className="tg-sl" rowSpan="2">
-                                      Serial No
-                                    </td>
-                                    <td className="tg-zv4m" rowSpan="2">
-                                      Name of grass
-                                    </td>
-                                    <td className="tg-zv4m" rowSpan="2">
-                                      Type of land (1 = Homestead; 2 = Cultivable Land;
-                                      3 = Others)
-                                    </td>
-                                    <td className="tg-nlfa" colSpan="4">
-                                      Area of land cultivated, production sale for
-                                      fodder (green grass)
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="tg-22sb">Cultivation in decimal</td>
-                                    <td className="tg-dhoh">
-                                      Production in last year (kg)
-                                    </td>
-                                    <td className="tg-22sb">
-                                      Consumption in last year (kg)
-                                    </td>
-                                    <td className="tg-dhoh">Sales in last year (kg)</td>
-                                  </tr>
-                                </thead>
-                                <tbody>
-
-
-                                  {grassTypeTableRow.map((grassRow, i) => {
-                                    return (
-                                      <>
-
-
-                                      {grassRow.RowType != 'delete' && (<tr>
-                                          <td className="tg-sl">{i + 1}</td>
-                                          <td>
-                                            <select 
-                                            onChange={(e) => changeCustomTableCellExtend(e,'GrassId',grassRow.DataValueItemDetailsId)}
-
-                                            className="fullWidthSelect">
-                                              {grassList.map((gObj) => {
-                                                return (
-                                                  <>
-                                                    {grassRow.GrassId ==
-                                                      gObj.id && (
-                                                      <option
-                                                        selected
-                                                        value={gObj.id}
-                                                      >
-                                                        {gObj.name}
-                                                      </option>
+                                                            {grassRow.LandTypeId !=
+                                                              gObj.id && (
+                                                              <option
+                                                                value={gObj.id}
+                                                              >
+                                                                {gObj.name}
+                                                              </option>
+                                                            )}
+                                                          </>
+                                                        );
+                                                      }
                                                     )}
-
-                                                    {grassRow.GrassId !=
-                                                      gObj.id && (
-                                                      <option value={gObj.id}>
-                                                        {gObj.name}
-                                                      </option>
-                                                    )}
-                                                  </>
-                                                );
-                                              })}
-                                            </select>
-                                          </td>
-                                          <td>
-                                            <select 
-                                            onChange={(e) => changeCustomTableCellExtend(e,'LandTypeId',grassRow.DataValueItemDetailsId)}
-
-                                            className="fullWidthSelect">
-                                            {landTypeList.map((gObj) => {
-                                                return (
-                                                  <>
-                                                    {grassRow.LandTypeId ==
-                                                      gObj.id && (
-                                                      <option
-                                                        selected
-                                                        value={gObj.id}
-                                                      >
-                                                        {gObj.name}
-                                                      </option>
-                                                    )}
-
-                                                    {grassRow.LandTypeId !=
-                                                      gObj.id && (
-                                                      <option value={gObj.id}>
-                                                        {gObj.name}
-                                                      </option>
-                                                    )}
-                                                  </>
-                                                );
-                                              })}
-                                            </select>
-                                          </td>
-                                          <td className="tg-dhohs">
-                                            <input
-                                              type="number"
-                                              className="numberInput"
-                                              value={grassRow.Cultivation}
-                                              onChange={(e) => changeCustomTableCellExtend(e,'Cultivation',grassRow.DataValueItemDetailsId)}
-
-                                            />
-                                          </td>
-                                          <td className="tg-dhohs">
-                                            <input
-                                              type="number"
-                                              className="numberInput"
-                                              value={grassRow.Production}
-                                              onChange={(e) => changeCustomTableCellExtend(e,'Production',grassRow.DataValueItemDetailsId)}
-
-
-                                            />
-                                          </td>
-                                          <td className="tg-dhohs">
-                                            <input
-                                              type="number"
-                                              className="numberInput"
-                                              value={grassRow.Consumption}
-                                              onChange={(e) => changeCustomTableCellExtend(e,'Consumption',grassRow.DataValueItemDetailsId)}
-
-
-                                            />
-                                          </td>
-                                          <td className="tg-dhohs">
-                                            <input
-                                              type="number"
-                                              className="numberInput"
-                                              value={grassRow.Sales}
-                                              onChange={(e) => changeCustomTableCellExtend(e,'Sales',grassRow.DataValueItemDetailsId)}
-
-                                            />
-                                          </td>
-                                          <td>
-                                            <i 
-                                            className="fa fa-trash-alt"
-                                            onClick={(e) => deleteGrassTypeRow(e,grassRow.DataValueItemDetailsId)}
-                                            >
-                                            </i>
-                                          </td>
-                                        </tr>)}
-
-
-                                      </>
-                                    );
-                                  })}
-
-                                </tbody>
-                              </table>
-                            </div> 
-                            <label></label>
-                            <button className="middleButton"
-                            onClick={(e) => addGrassTypeRow(e)}
-                            >
-                              <i className="fa fa-plus" />
-                            </button>
-                          </div>
-                          )}
-
+                                                  </select>
+                                                </td>
+                                                <td className="tg-dhohs">
+                                                  <input
+                                                    type="number"
+                                                    className="numberInput"
+                                                    value={grassRow.Cultivation}
+                                                    onChange={(e) =>
+                                                      changeCustomTableCellExtend(
+                                                        e,
+                                                        "Cultivation",
+                                                        grassRow.DataValueItemDetailsId
+                                                      )
+                                                    }
+                                                  />
+                                                </td>
+                                                <td className="tg-dhohs">
+                                                  <input
+                                                    type="number"
+                                                    className="numberInput"
+                                                    value={grassRow.Production}
+                                                    onChange={(e) =>
+                                                      changeCustomTableCellExtend(
+                                                        e,
+                                                        "Production",
+                                                        grassRow.DataValueItemDetailsId
+                                                      )
+                                                    }
+                                                  />
+                                                </td>
+                                                <td className="tg-dhohs">
+                                                  <input
+                                                    type="number"
+                                                    className="numberInput"
+                                                    value={grassRow.Consumption}
+                                                    onChange={(e) =>
+                                                      changeCustomTableCellExtend(
+                                                        e,
+                                                        "Consumption",
+                                                        grassRow.DataValueItemDetailsId
+                                                      )
+                                                    }
+                                                  />
+                                                </td>
+                                                <td className="tg-dhohs">
+                                                  <input
+                                                    type="number"
+                                                    className="numberInput"
+                                                    value={grassRow.Sales}
+                                                    onChange={(e) =>
+                                                      changeCustomTableCellExtend(
+                                                        e,
+                                                        "Sales",
+                                                        grassRow.DataValueItemDetailsId
+                                                      )
+                                                    }
+                                                  />
+                                                </td>
+                                                <td>
+                                                  <i
+                                                    className="fa fa-trash-alt"
+                                                    onClick={(e) =>
+                                                      deleteGrassTypeRow(
+                                                        e,
+                                                        grassRow.DataValueItemDetailsId
+                                                      )
+                                                    }
+                                                  ></i>
+                                                </td>
+                                              </tr>
+                                            )}
+                                          </>
+                                        );
+                                      })}
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <label></label>
+                                <button
+                                  className="middleButton"
+                                  onClick={(e) => addGrassTypeRow(e)}
+                                >
+                                  <i className="fa fa-plus" />
+                                </button>
+                              </div>
+                            )}
                         </>
                       );
                     } else if (question.QuestionType === "Check") {

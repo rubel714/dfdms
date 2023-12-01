@@ -199,6 +199,9 @@ else {
 
                 $userRow["UserAllowdMenuList"] = $memuList;
                 $userRow["Password"] = "HIDDEN";
+                // getStatusChangeAllow($conn);
+                $userRow["StatusChangeAllow"] = ["Submit","Accept","Approve"];
+
                 $returnData = [
                     'success' => 1,
                     'message' => 'You have successfully logged in.',
@@ -234,3 +237,22 @@ else {
 }
 
 echo json_encode($returnData);
+
+
+
+function getStatusChangeAllow($conn){
+    $status = array();
+
+    $query = "SELECT StatusId,StatusName,RoleIds
+    FROM t_status;";
+
+    $result = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    $statusList = array();
+    foreach($result as $row){
+        $statusList[$row["StatusId"]] = $row;
+    }
+    echo "<pre>";
+    print_r($statusList);
+    
+    return $status;
+}
