@@ -602,7 +602,8 @@ function IsRegularBeneficiaryList($data) {
 		$dbh = new Db();
 	
 		$jsonData = '[
-			{"id":"1","name":"Regular"}
+			{"id":"1","name":"Regular"},
+			{"id":"2","name":"Irregular"}
 		]';
 
 		$resultdata = json_decode($jsonData, true);
