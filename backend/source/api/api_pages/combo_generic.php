@@ -726,13 +726,11 @@ function TypeOfMemberList($data) {
 		$dbh = new Db();
 	
 
-		$jsonData = '[
-			{"id":"1","name":"Type 1"},
-			{"id":"2","name":"Type 2 "},
-			{"id":"4","name":"Type 3"}
-		]';
+		$query = "SELECT TypeOfMemberId id, TypeOfMember name
+		FROM t_typeofmember ORDER BY TypeOfMember;"; 
 
-		$resultdata = json_decode($jsonData, true);
+		$resultdata = $dbh->query($query);
+
 
 		$returnData = [
 			"success" => 1,
