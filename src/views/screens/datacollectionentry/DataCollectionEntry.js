@@ -34,7 +34,9 @@ const DataCollectionEntry = (props) => {
   const [farmerList, setFarmerList] = useState(null);
   const [quarterList, setQuarterList] = useState(null);
   const [yearList, setYearList] = useState(null);
+  const [filterYearList, setFilterYearList] = useState(null);
 
+  const [currentFilter, setCurrentFilter] = useState([]); //this is for master information. It will send to sever for save
   const [currentInvoice, setCurrentInvoice] = useState([]); //this is for master information. It will send to sever for save
   const [manyDataList, setManyDataList] = useState([]); //This is for many table. It will send to sever for save
 
@@ -66,6 +68,22 @@ const DataCollectionEntry = (props) => {
   const [showFarmerModal, setShowFarmerModal] = useState(false); //true=show modal, false=hide modal
 
   const [landTypeList, setLandTypeList] = useState([]);
+
+  const [currFilterYearId, setcurrFilterYearId] = useState(currentYear);
+  const [currFilterQuarterId, setcurrFilterQuarterId] = useState(currentQuarterId);
+
+
+  const [divisionList, setDivisionList] = useState(null);
+  const [districtList, setDistrictList] = useState(null);
+  const [upazilaList, setUpazilaList] = useState(null);
+
+
+  const [currDivisionId, setCurrDivisionId] = useState(null);
+  const [currDistrictId, setCurrDistrictId] = useState(null);
+  const [currUpazilaId, setCurrUpazilaId] = useState(null);
+
+
+
   // {
   //   LandTypeId: 1,
   //   LandType: "Homostead",
@@ -403,6 +421,15 @@ const DataCollectionEntry = (props) => {
       DataCollectionDate: currentDate,
       UserId: UserInfo.UserId,
       BPosted: 0,
+    });
+
+    setCurrentFilter({
+      DivisionId: UserInfo.DivisionId,
+      DistrictId: UserInfo.DistrictId,
+      UpazilaId: UserInfo.UpazilaId,
+      YearId: currentYear,
+      QuarterId: currentQuarterId,
+ 
     });
 
     setManyDataList([]);
@@ -758,6 +785,12 @@ const DataCollectionEntry = (props) => {
 
     getQuarterList();
 
+    getDivision(
+      UserInfo.DivisionId,
+      UserInfo.DistrictId,
+      UserInfo.UpazilaId
+    );
+
     // getDataList(); //invoice list
 
     setBFirst(false);
@@ -853,6 +886,11 @@ const DataCollectionEntry = (props) => {
       setYearList(
         [{ id: "", name: "বছর নির্বাচন করুন" }].concat(res.data.datalist)
       );
+
+      setFilterYearList(
+        [{ id: "", name: "বছর নির্বাচন করুন" }].concat(res.data.datalist)
+      );
+
     });
   }
 
@@ -886,16 +924,112 @@ const DataCollectionEntry = (props) => {
     });
   }
 
+
+  function getDivision(
+    selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId
+  ) {
+    let params = {
+      action: "DivisionFilterList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setDivisionList(
+        [{ id: "", name: "All" }].concat(res.data.datalist)
+      );
+
+
+      setCurrDivisionId(selectDivisionId);
+
+      getDistrict(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId
+      );
+
+      /* getProductGeneric(
+        selectDivisionId,
+        SelectProductGenericId
+      ); */
+
+
+    });
+  }
+
+
+  
+  function getDistrict(
+    selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId
+  ) {
+    let params = {
+      action: "DistrictFilterList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DivisionId: selectDivisionId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setDistrictList(
+        [{ id: "", name: "All" }].concat(res.data.datalist)
+      );
+   
+      setCurrDistrictId(SelectDistrictId);
+      getUpazila(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId
+      );
+     
+    });
+  }
+
+
+  
+  function getUpazila(
+    selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId,
+    selectUnionId
+  ) {
+    let params = {
+      action: "UpazilaFilterList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DivisionId: selectDivisionId,
+      DistrictId: SelectDistrictId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setUpazilaList(
+        [{ id: "", name: "All" }].concat(res.data.datalist)
+      );
+  
+      setCurrUpazilaId(selectUpazilaId);
+      
+     
+    });
+  }
+
   /**Get data for table list */
   function getDataList() {
     let params = {
       action: "getDataList",
       lan: language(),
       UserId: UserInfo.UserId,
-      DivisionId: UserInfo.DivisionId,
+     /*  DivisionId: UserInfo.DivisionId,
       DistrictId: UserInfo.DistrictId,
-      UpazilaId: UserInfo.UpazilaId,
+      UpazilaId: UserInfo.UpazilaId, */
+      DivisionId: currDivisionId,
+      DistrictId: currDistrictId,
+      UpazilaId: currUpazilaId,
       DataTypeId: dataTypeId,
+      YearId: currFilterYearId,
+      QuarterId: currFilterQuarterId,
     };
     // console.log('LoginUserInfo params: ', params);
 
@@ -1338,6 +1472,70 @@ const DataCollectionEntry = (props) => {
     }
   };
 
+
+
+  const [chosenValuesYearId, setChosenValuesYear] = useState({
+    "YearId": {"id": currentYear,"name": currFilterYearId}
+  });
+
+  const handleChangeChoosenMasterYear = (name, valueobj, value) => {
+
+    let chosenValuesDataYear = { ...chosenValuesYearId};
+    chosenValuesDataYear[name] = valueobj;
+    setChosenValuesYear(chosenValuesDataYear); 
+    setcurrFilterYearId(value);
+    getDataList();
+
+  };
+
+ 
+  const handleChangeChoosenMasterQuarter = (name, value) => {
+    let data = { ...currentFilter };
+    data[name] = value;
+
+    setCurrentFilter(data);
+    setcurrFilterQuarterId(value);
+ 
+  
+  };
+
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    let data = { ...currentFilter };
+    data[name] = value;
+
+
+    setCurrentFilter(data);
+
+    //for dependancy
+    if (name === "DivisionId") {
+      setCurrDivisionId(value);
+
+      setCurrDistrictId("");
+      setCurrUpazilaId("");
+      getDistrict(value, "", "");
+      getUpazila(value, "", "");
+
+
+    } else if (name === "DistrictId") {
+      setCurrDistrictId(value);
+       getUpazila(currentFilter.DivisionId, value, "");
+    } else if (name === "UpazilaId") {
+      setCurrUpazilaId(value);
+    } 
+
+
+
+  };
+
+
+  useEffect(() => {
+    getDataList();
+  }, [currDivisionId, currDistrictId, currUpazilaId, currFilterYearId, currFilterQuarterId]);
+
+
   const handleChangeMany = (e, cType = "") => {
     console.log("cType: ", cType);
     // console.log("e: ", e);
@@ -1759,7 +1957,143 @@ const DataCollectionEntry = (props) => {
             {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
             <div class="searchAdd">
               {/* <input type="text" placeholder="Search Product Group"/> */}
-              <label></label>
+                <div class="formControl-filter-data">
+                    <label>তথ্য সংগ্রহ বছর (Year):</label>
+                    <Autocomplete
+                      autoHighlight
+                      // freeSolo
+                      className="chosen_dropdown"
+                      id="YearId"
+                      name="YearId"
+                      autoComplete
+                      //class={errorObjectMaster.YearId}
+                      options={filterYearList ? filterYearList : []}
+                      getOptionLabel={(option) => option.name}
+                      value={chosenValuesYearId['YearId']}
+                     /*  onChange={(event, valueobj) =>
+                      handleChangeChoosenMasterYear(
+                        "YearId",
+                        valueobj ? valueobj.id : ""
+                      )
+                      } */
+                      onChange={(event, valueobj) => handleChangeChoosenMasterYear('YearId', valueobj, valueobj?valueobj.id:"")}
+                      renderOption={(option) => (
+                      <Typography className="chosen_dropdown_font">
+                        {option.name}
+                      </Typography>
+                      )}
+                      renderInput={(params) => (
+                      <TextField {...params} variant="standard" fullWidth />
+                      )}
+                    />
+                </div>
+
+
+                
+
+              
+                <div class="formControl-filter-data ">
+                <label>তথ্য সংগ্রহ ত্রৈমাসিক (Quarter):</label>
+                <Autocomplete
+                  autoHighlight
+                  // freeSolo
+                  className="chosen_dropdown"
+                  id="QuarterId"
+                  name="QuarterId"
+                  autoComplete
+                  //class={errorObjectMaster.QuarterId}
+                  options={quarterList ? quarterList : []}
+                  getOptionLabel={(option) => option.name}
+                  // value={selectedSupplier}
+                  /*value={
+                  quarterList
+                    ? quarterList[
+                      quarterList.findIndex(
+                      (list) => list.id == currentInvoice.QuarterId
+                      )
+                    ]
+                    : null
+                  }*/
+
+                  value={
+                    quarterList
+                      ? quarterList[
+                          quarterList.findIndex(
+                            (list) => list.id == currentFilter.QuarterId
+                          )
+                        ]
+                      : null
+                  }
+
+                  //value={chosenValuesQuarterId['QuarterId']}
+                  
+                  //onChange={(event, valueobj) => handleChangeChoosenMasterQuarter('QuarterId', valueobj, valueobj?valueobj.id:"")}
+                  onChange={(event, valueobj) =>
+                    handleChangeChoosenMasterQuarter(
+                      "QuarterId",
+                      valueobj ? valueobj.id : ""
+                    )
+                  }
+                  renderOption={(option) => (
+                  <Typography className="chosen_dropdown_font">
+                    {option.name}
+                  </Typography>
+                  )}
+                  renderInput={(params) => (
+                  <TextField {...params} variant="standard" fullWidth />
+                  )}
+                />
+                </div>
+
+
+              <div class="formControl-filter-data-label">
+                <label>Division: </label>
+                <select
+                  className="dropdown_filter"
+                  id="DivisionId"
+                  name="DivisionId"
+                  value={currDivisionId}
+                  onChange={(e) => handleChange(e)}
+                >
+                  {divisionList &&
+                    divisionList.map((item, index) => {
+                      return <option value={item.id}>{item.name}</option>;
+                    })}
+                </select>
+              </div>
+
+              <div class="formControl-filter-data-label">
+                <label>District: </label>
+                <select
+                  className="dropdown_filter"
+                  id="DistrictId"
+                  name="DistrictId"
+                  value={currDistrictId}
+                  onChange={(e) => handleChange(e)}
+                >
+                  {districtList &&
+                    districtList.map((item, index) => {
+                      return <option value={item.id}>{item.name}</option>;
+                    })}
+                </select>
+              </div>
+
+            <div class="formControl-filter-data-label">
+                <label>Upazila: </label>
+                <select
+                  id="UpazilaId"
+                  name="UpazilaId"
+                  className="dropdown_filter"
+                  value={currUpazilaId}
+                  onChange={(e) => handleChange(e)}
+                >
+                  {upazilaList &&
+                    upazilaList.map((item, index) => {
+                      return <option value={item.id}>{item.name}</option>;
+                    })}
+                </select>
+              </div>
+
 
               {/* <Button label={"ADD"} class={"btnAdd"} onClick={addData} /> */}
               <Button label={"Enter Data"} class={"btnAdd"} onClick={addData} />

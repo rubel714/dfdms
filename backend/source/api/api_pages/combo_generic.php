@@ -111,6 +111,22 @@ switch($task){
 		$returnData = PgGroupListByUnion($data);
 		break;
 		
+	case "DivisionFilterList":
+		$returnData = DivisionFilterList($data);
+		break;
+		
+	case "DistrictFilterList":
+		$returnData = DistrictFilterList($data);
+		break;
+		
+	case "UpazilaFilterList":
+		$returnData = UpazilaFilterList($data);
+		break;
+		
+	case "UnionFilterList":
+		$returnData = UnionFilterList($data);
+		break;
+		
 	// case "NextInvoiceNumber":
 	// 	$returnData = NextInvoiceNumber($data);
 	// 	break;
@@ -884,6 +900,124 @@ function PgGroupListByUnion($data) {
 			AND UnionId=$UnionId
 		ORDER BY PGName;"; 
 	
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
+
+
+function DivisionFilterList($data) {
+	try{
+	
+		$dbh = new Db();
+		$query = "SELECT DivisionId id, DivisionName `name` FROM t_division ORDER BY DivisionName;"; 
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
+function DistrictFilterList($data) {
+	try{
+	
+		$dbh = new Db();
+
+		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+		$query = "SELECT DistrictId id, DistrictName `name` FROM t_district 
+			where (DivisionId = $DivisionId OR $DivisionId=0)
+			ORDER BY DistrictName;"; 
+
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function UpazilaFilterList($data) {
+	try{
+	
+		$dbh = new Db();
+
+		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+		$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
+
+		
+		$query = "SELECT UpazilaId id, UpazilaName `name` FROM t_upazila 
+			where (DivisionId = $DivisionId OR $DivisionId=0)
+			AND (DistrictId = $DistrictId OR $DistrictId=0)
+			ORDER BY UpazilaName;"; 
+
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
+
+function UnionFilterList($data) {
+	try{
+	
+		$dbh = new Db();
+
+		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+		$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
+		$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
+
+
+
+
+
+		$query = "SELECT UnionId id, UnionName `name` FROM t_union 
+			where (DivisionId = $DivisionId OR $DivisionId=0)
+			AND (DistrictId = $DistrictId OR $DistrictId=0)
+			AND (UpazilaId = $UpazilaId OR $UpazilaId=0)
+			ORDER BY UnionName;"; 
+
 		$resultdata = $dbh->query($query);
 
 		$returnData = [

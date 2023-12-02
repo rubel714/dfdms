@@ -49,10 +49,12 @@ switch ($task) {
 function getDataList($data)
 {
 
-	$DivisionId = trim($data->DivisionId); 
-	$DistrictId = trim($data->DistrictId); 
-	$UpazilaId = trim($data->UpazilaId); 
+	$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+	$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
+	$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
 	$DataTypeId = trim($data->DataTypeId); 
+	$YearId = trim($data->YearId); 
+	$QuarterId = trim($data->QuarterId); 
 
 	try {
 		$dbh = new Db();
@@ -67,11 +69,12 @@ function getDataList($data)
 		inner join t_upazila d on a.UpazilaId=d.UpazilaId
 		inner join t_quarter e on a.QuarterId=e.QuarterId
 		inner join t_pg f on a.PGId=f.PGId
-		where /*a.DivisionId=$DivisionId
-		and a.DistrictId=$DistrictId
-		and a.UpazilaId=$UpazilaId
-		and */
-		a.DataTypeId=$DataTypeId
+		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
+		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
+		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+		AND a.DataTypeId=$DataTypeId
+		AND a.YearId = '$YearId'
+		AND a.QuarterId = $QuarterId
 		ORDER BY a.CreateTs DESC;";
 
 		$resultdata = $dbh->query($query);
