@@ -1140,7 +1140,8 @@ const DataCollectionEntry = (props) => {
         )}
 
 
-        {rowData.BPosted === 0 && (
+        {/* {rowData.BPosted === 0 && ( */}
+        {rowData.StatusId === 1 && (
           <Edit
             className={"table-edit-icon"}
             onClick={() => {
@@ -1149,7 +1150,8 @@ const DataCollectionEntry = (props) => {
           />
         )}
 
-        {rowData.BPosted === 0 && (
+        {/* {rowData.BPosted === 0 && ( */}
+        {rowData.StatusId === 1 && (
           <DeleteOutline
             className={"table-delete-icon"}
             onClick={() => {
@@ -1158,7 +1160,7 @@ const DataCollectionEntry = (props) => {
           />
         )}
 
-        {rowData.BPosted === 1 && (
+        {rowData.StatusId != 1 && (
           <ViewList
             className={"table-view-icon"}
             onClick={() => {
@@ -3758,6 +3760,8 @@ const DataCollectionEntry = (props) => {
                       label={"সংরক্ষণ করুন (Save)"}
                       class={"btnAddCustom"}
                       onClick={saveData}
+                      disabled={currentInvoice.StatusId>1}
+
                     />
 
                     <Button
