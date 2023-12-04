@@ -83,9 +83,9 @@ const LabelEditModal = (props) => {
 
         let validateFields = [];
         if (currentRow.MapType === "Label"){
-          validateFields = ["LabelName", "Category"];
+          validateFields = ["LabelName"];
         }else{
-          validateFields = ["Category"];
+          validateFields = [];
         }
 
   
@@ -163,7 +163,7 @@ const LabelEditModal = (props) => {
                 <select
                   id="Category"
                   name="Category"
-                  class={errorObject.Category}
+                  //class={errorObject.Category}
                   value={currQuestionMapCategory}
                   onChange={(e) => handleChange(e)}
                 >
