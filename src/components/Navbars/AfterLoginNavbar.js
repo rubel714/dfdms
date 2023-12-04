@@ -112,10 +112,21 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("pgentryform")}
                         >
-                          PG Entry
+                          PG Profile
                         </a>
                       </li>
                     )}
+
+                  {menuShowPermision("regularbeneficiaryentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("regularbeneficiaryentry")}
+                        >
+                          Farmer Profile
+                        </a>
+                      </li>
+                    )} 
 
 
                   {menuShowPermision("questionsentry") === 1 && (
@@ -125,6 +136,17 @@ function AfterLoginNavbar(props) {
                           onClick={() => props.history.push("questionsentry")}
                         >
                           Question Entry
+                        </a>
+                      </li>
+                    )}
+
+                    {menuShowPermision("datatypequestionsmap") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("datatypequestionsmap")}
+                        >
+                          Data Type Questions Map
                         </a>
                       </li>
                     )}
@@ -163,27 +185,9 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
-                    {menuShowPermision("datatypequestionsmap") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("datatypequestionsmap")}
-                        >
-                          Data Type Questions Map
-                        </a>
-                      </li>
-                    )}
+                    
 
-                  {menuShowPermision("regularbeneficiaryentry") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("regularbeneficiaryentry")}
-                        >
-                          Regular Beneficiary
-                        </a>
-                      </li>
-                    )} 
+                 
                   
 
 
@@ -321,12 +325,12 @@ function AfterLoginNavbar(props) {
                 {" "}
                 {userInfo.UserName} &nabla;
                 <ul class="dropdownList">
-                  <li>
+                  {/* <li>
                     <a href="#">User Profile</a>
                   </li>
                   <li>
                     <a href="#">Change Password</a>
-                  </li>
+                  </li> */}
                   {/* <li><a href="./index.html">Log Out</a></li> */}
                   <li>
                     <a

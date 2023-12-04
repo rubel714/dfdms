@@ -484,13 +484,13 @@ const UserEntryAddEditModal = (props) => {
           </div>
 
           <div class="contactmodalBody pt-10">
-            <label>Login Name *</label>
+            <label>Login User Name *</label>
             <input
               type="text"
               id="LoginName"
               name="LoginName"
               class={errorObject.LoginName}
-              placeholder="Enter Login Name"
+              placeholder="Enter Login User Name"
               value={currentRow.LoginName}
               onChange={(e) => handleChange(e)}
             />

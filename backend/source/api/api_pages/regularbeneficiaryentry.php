@@ -29,6 +29,9 @@ function getDataList($data){
 	try{
 		$dbh = new Db();
 
+		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+		$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
+		$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
 
 		/* $query = "SELECT 
 			a.`FarmerId` id,
@@ -103,11 +106,17 @@ function getDataList($data){
 			a.`IsHeadOfTheGroup`,
 			a.`ValuechainId`,
 			a.`TypeOfFarmerId`,
-			case when a.IsRegular=1 then 'Regular' else 'No' end IsRegularBeneficiary
+			case when a.IsRegular=1 then 'Regular' else 'No' end IsRegularBeneficiary,
+			b.GenderName
 		  FROM
-		  `t_farmer` a ;";
+		  `t_farmer` a 
+		  Inner Join t_gender b ON a.Gender = b.GenderId
+		  WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
+			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
+			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+		  ;";
 		  
-	
+
 		
 		$resultdata = $dbh->query($query);
 		

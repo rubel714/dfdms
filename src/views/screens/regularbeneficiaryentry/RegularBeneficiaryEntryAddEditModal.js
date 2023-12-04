@@ -24,10 +24,13 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
   const [parentQuestionList, setParentQuestionList] = useState(null);
   const [currParentQuestion, setCurrParentQuestion] = useState(null);
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(
     require("../../../assets/farmerimage/placeholder.png")
   );
+  
+  const [uploadCompleted, setUploadCompleted] = useState(0); 
 
   const [gender, setGender] = useState(null);
   const [currGender, setCurrGender] = useState(null);
@@ -138,7 +141,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       setCurrPGPartnershipWithOtherCompany(0);
     }
 
-    setSelectedFile(currentRow.NidFrontPhoto);
+    //setSelectedFile(currentRow.NidFrontPhoto);
 
     /*     if (
       currentRow.NidFrontPhoto !== undefined &&
@@ -425,7 +428,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
       setCityCorporation(
-        [{ id: "", name: "Select City Corporation" }].concat(res.data.datalist)
+        [{ id: "", name: "Select City Corporation/ Municipality" }].concat(res.data.datalist)
       );
 
       setCurrCityCorporation(selectCityCorporation);
@@ -609,7 +612,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
   const validateForm = () => {
     // let validateFields = ["FarmerName", "DiscountAmount", "DiscountPercentage"]
-    let validateFields = ["NID", "FarmerName", "PGFarmerCode", "TypeOfMember"];
+    let validateFields = ["NID", "FarmerName", "PGFarmerCode", "TypeOfMember","DivisionId", "DistrictId", "UpazilaId", "UnionId","Address","Gender","FarmersAge"];
     let errorData = {};
     let isValid = true;
     validateFields.map((field) => {
@@ -624,6 +627,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   };
 
   function addEditAPICall() {
+
+    /* console.log("Test file upload ", selectedFile);
+    uploadImage(selectedFile); */
     if (validateForm()) {
       let params = {
         action: "dataAddEdit",
@@ -632,20 +638,40 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         rowData: currentRow,
       };
 
-      apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-        // console.log('res: ', res);
+   
+      if(uploadCompleted === 1){
 
         props.masterProps.openNoticeModal({
           isOpen: true,
-          msg: res.data.message,
-          msgtype: res.data.success,
+          msg: "Please, Wait image Uploading....",
+          msgtype: 0,
         });
 
-        // console.log('props modal: ', props);
-        if (res.data.success === 1) {
-          props.modalCallback("addedit");
-        }
-      });
+      }else{
+
+        apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+          // console.log('res: ', res);
+  
+          props.masterProps.openNoticeModal({
+            isOpen: true,
+            msg: res.data.message,
+            msgtype: res.data.success,
+          });
+  
+          // console.log('props modal: ', props);
+          if (res.data.success === 1) {
+            setUploadCompleted(0);
+            props.modalCallback("addedit");
+          }
+        });
+
+      }
+          
+
+  
+
+
+
     }
   }
 
@@ -654,40 +680,37 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     props.modalCallback("close");
   }
 
+
+
+/*   React.useEffect(() => {
+    if (props.currentRow.NidFrontPhoto) {
+      setPreviewImage(require("../../../assets/farmerimage/" + props.currentRow.NidFrontPhoto));
+    }
+  }, [props.currentRow.NidFrontPhoto]); */
+
+
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
+    setUploadCompleted(1);
+    /* const file = e.target.files[0];
+    console.log('file: ', URL.createObjectURL(file));
+   
     uploadImage(file);
-    setPreviewImage(URL.createObjectURL(file));
+    setPreviewImage(URL.createObjectURL(file)); */
+    e.preventDefault(); // Prevent default form submission behavior
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      uploadImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+    
   };
 
-  /*  const uploadImage = (file) => {
-    if (!file) {
-      console.error("No file selected");
-      return;
-    }
-  
-    const formData = new FormData();
-    const timestamp = new Date().getTime(); // Generate timestamp
-  
-    formData.append("file", file);
-   // formData.append("filename", `./media/${timestamp}_${file.name}`);
-   formData.append("filename", `./src/assets/farmerimage/${timestamp}_${file.name}`);
+ 
 
-    // Use an API endpoint to handle image upload
-    apiCall.post("upload-image", formData, apiOption()).then((res) => {
-      // Handle the response if needed
-      console.log(res);
-    });
-  
-    // Save the filename with timestamp in your rowData
-    setCurrentRow((prevData) => ({
-      ...prevData,
-      NidFrontPhoto: `${timestamp}_${file.name}`,
-    }));
-  }; */
 
-  const uploadImage = (file) => {
+
+  /* const uploadImage = (file) => {
     if (!file) {
       console.error("No file selected");
       return;
@@ -711,7 +734,43 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       ...prevData,
       NidFrontPhoto: `${timestamp}_${file.name}`,
     }));
+  }; */
+
+
+  const uploadImage = (file) => {
+    
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
+
+    const formData = new FormData();
+    let timestamp = Math.floor(new Date().getTime() / 1000); // Generate timestamp in seconds
+
+    formData.append("file", file);
+    formData.append("timestamp", timestamp); // Include timestamp as a parameter
+    formData.append(
+      "filename",
+      `./src/assets/farmerimage/${timestamp}_${file.name}`
+    );
+
+    apiCall.post("upload-image", formData, apiOption()).then((res) => {
+      console.log(res);
+      setCurrentRow((prevData) => ({
+        ...prevData,
+        NidFrontPhoto: `${timestamp}_${file.name}`,
+      }));
+
+      setUploadCompleted(0);
+
+    }).catch((error) => {
+      console.error("API call error:", error);
+     
+    });
+
   };
+
+
 
   const handleChangeMany = (newValue, propertyName) => {
     let data = { ...currentRow };
@@ -773,7 +832,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         {/* <!-- Modal content --> */}
         <div class="modal-content">
           <div class="modalHeader">
-            <h4>Add/Edit Regular Beneficiary</h4>
+            <h4>Add/Edit Farmer Profile</h4>
           </div>
 
           <div class="contactmodalBody pt-10">
@@ -781,6 +840,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             <select
               id="IsRegular"
               name="IsRegular"
+              disabled="true"
               class={errorObject.IsRegular}
               value={currisRegularBeneficiary}
               onChange={(e) => handleChange(e)}
@@ -791,7 +851,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 })}
             </select>
 
-            <label>Beneficiary NID</label>
+            <label>Beneficiary NID* </label>
             <input
               type="text"
               id="NID"
@@ -814,21 +874,15 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               onChange={handleFileChange}
             />
 
-            {previewImage && (
-              <div className="image-preview">
-                <img
-                  //src={`./media/${currentRow.NidFrontPhoto}`}
-                  src={
-                    previewImage
-                      ? previewImage
-                      : require("assets/farmerimage/" +
-                          currentRow.NidFrontPhoto)
-                  }
-                  alt="NID Front Preview"
-                  className="preview-image"
-                />
-              </div>
-            )}
+        {previewImage && (
+                <div className="image-preview">
+                  <img
+                    src={previewImage}
+                    alt="NID Front Preview"
+                    className="preview-image"
+                  />
+                </div>
+              )}
           </div>
 
           <div className="contactmodalBody pt-10">
@@ -841,21 +895,15 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               onChange={handleFileChange}
             />
 
-            {previewImage && (
-              <div className="image-preview">
-                <img
-                  //src={`./media/${currentRow.NidFrontPhoto}`}
-                  src={
-                    previewImage
-                      ? previewImage
-                      : require("assets/farmerimage/" +
-                          currentRow.NidFrontPhoto)
-                  }
-                  alt="NID Front Preview"
-                  className="preview-image"
-                />
-              </div>
-            )}
+               {previewImage && (
+                <div className="image-preview">
+                  <img
+                    src={previewImage}
+                    alt="NID Front Preview"
+                    className="preview-image"
+                  />
+                </div>
+              )} 
           </div>
 
           <div class="contactmodalBody pt-10">
@@ -891,21 +939,15 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               accept="image/*"
               onChange={handleFileChange}
             />
-            {previewImage && (
-              <div className="image-preview">
-                <img
-                  //src={`./media/${currentRow.NidFrontPhoto}`}
-                  src={
-                    previewImage
-                      ? previewImage
-                      : require("assets/farmerimage/" +
-                          currentRow.NidFrontPhoto)
-                  }
-                  alt="NID Front Preview"
-                  className="preview-image"
-                />
-              </div>
-            )}
+             {previewImage && (
+                <div className="image-preview">
+                  <img
+                    src={previewImage}
+                    alt="NID Front Preview"
+                    className="preview-image"
+                  />
+                </div>
+              )} 
           </div>
 
           <div class="contactmodalBody pt-10 ">
@@ -943,7 +985,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="contactmodalBody pt-10 ">
-            <label>Gender</label>
+            <label>Gender*</label>
             <select
               id="Gender"
               name="Gender"
@@ -957,11 +999,12 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 })}
             </select>
 
-            <label>Farmer's Age </label>
+            <label>Farmer's Age* </label>
             <input
               type="text"
               id="FarmersAge"
               name="FarmersAge"
+              class={errorObject.FarmersAge}
               placeholder="Enter Farmer's Age"
               value={currentRow.FarmersAge}
               onChange={(e) => handleChange(e)}
@@ -994,7 +1037,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                   checked={currentRow.RelationWithHeadOfHH === 1}
                   onChange={() => handleChangeMany(1, "RelationWithHeadOfHH")}
                 />
-                HimselfIf/HerselfIf
+                Himself/Herself
               </label>
 
               <label className="radio-label">
@@ -1115,7 +1158,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               onChange={(e) => handleChange(e)}
             />
 
-            <label>Primary</label>
+            <label>Primary Occupation</label>
             <select
               id="FamilyOccupation"
               name="FamilyOccupation"
@@ -1225,7 +1268,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
           <div class="contactmodalBody pt-10 ">
 
-          <label>City Corporation</label>
+          <label>City Corporation/ Municipality</label>
           <select
             id="CityCorporation"
             name="CityCorporation"
@@ -1264,11 +1307,12 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               onChange={(e) => handleChange(e)}
             />
 
-          <label>Address </label>
+          <label>Address* </label>
             <input
               type="text"
               id="Address"
               name="Address"
+              class={errorObject.Address}
               placeholder="Enter Address"
               value={currentRow.Address}
               onChange={(e) => handleChange(e)}
@@ -1292,7 +1336,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               />
 
               <Button
-                label={"Enter Location"}
+                label={"Location"}
                 class={"btnDetailsLatLong"}
                 onClick={getLocation}
               />
@@ -1342,7 +1386,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
           </div>
 
-          <div class="contactmodalBody pt-10">
+          {/* <div class="contactmodalBody pt-10">
             <label>Type of Farmers:</label>
           </div>
 
@@ -1364,7 +1408,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/*  <div class="contactmodalBody modalItem">
                 <label> Is Mandatory?</label>

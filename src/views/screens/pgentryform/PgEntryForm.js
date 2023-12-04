@@ -283,7 +283,7 @@ const PgEntryForm = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Admin ❯ PG Entry
+            Home ❯ Admin ❯ PG Profile
           </h4>
         </div>
 

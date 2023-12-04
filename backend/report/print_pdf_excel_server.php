@@ -143,7 +143,7 @@ function RegularBeneficiaryExport() {
 		CASE WHEN a.DisabilityStatus = 1 THEN 'Yes' ELSE 'No' END AS isDisabilityStatus,
 		CASE WHEN a.PGRegistered = 1 THEN 'Yes' ELSE 'No' END AS PGRegistered,
 		CASE WHEN a.PGPartnershipWithOtherCompany = 1 THEN 'Yes' ELSE 'No' END AS PGPartnershipWithOtherCompany,
-		CASE WHEN a.RelationWithHeadOfHH = 1 THEN 'HimselfIf/HerselfIf' ELSE 'Others' END AS RelationWithHeadOfHH,
+		CASE WHEN a.RelationWithHeadOfHH = 1 THEN 'Himself/Herself' ELSE 'Others' END AS RelationWithHeadOfHH,
 		
 		CASE
 		WHEN a.TypeOfMember = 1 THEN 'Type 1'
@@ -179,7 +179,7 @@ function RegularBeneficiaryExport() {
 		LEFT JOIN t_citycorporation i ON a.`CityCorporation` = i.`CityCorporation`;";
 	
     $tableProperties["query_field"] = array('FarmerName','RegularStatus','NID','Phone','FatherName','MotherName','SpouseName','GenderName','FarmersAge','isDisabilityStatus','RelationWithHeadOfHH','HeadOfHHSex','PGRegistered','TypeOfMember','PGPartnershipWithOtherCompany','PGFarmerCode','FamilyOccupation','DivisionName','DistrictName','UpazilaName','UnionName','PGName','WardName','CityCorporationName','VillageName','Address','Latitute','Longitute','HeadOfTheGroup','ValueChainName','TypeOfFarmerId');
-    $tableProperties["table_header"] = array("Beneficiary Name","Is Regular Beneficiary","Beneficiary NID","Mobile Number","Father's Name","Mother's Name","Spouse Name","Gender","Farmer's Age","Disability Status","Farmers Relationship with Head of HH","Farmer's Head of HH Sex","Do your PG/PO Registered?","Type Of Member","Do your PG make any productive partnership with any other company?","PG Farmer Code","Primary","Division","District","Upazila","Union","Name of Producer Group","Ward","City Corporation","Village","Address","Latitute","Longitute","Are You Head of The Group?","Value Chain","Farmer Type");
+    $tableProperties["table_header"] = array("Beneficiary Name","Is Regular Beneficiary","Beneficiary NID","Mobile Number","Father's Name","Mother's Name","Spouse Name","Gender","Farmer's Age","Disability Status","Farmers Relationship with Head of HH","Farmer's Head of HH Sex","Do your PG/PO Registered?","Type Of Member","Do your PG make any productive partnership with any other company?","PG Farmer Code","Primary Occupation","Division","District","Upazila","Union","Name of Producer Group","Ward","City Corporation/ Municipality","Village","Address","Latitute","Longitute","Are You Head of The Group?","Value Chain","Farmer Type");
     $tableProperties["align"] = array("left","left");
     $tableProperties["width_print_pdf"] = array("30%","70%"); //when exist serial then here total 95% and 5% use for serial
     $tableProperties["width_excel"] = array("30","20","30","30","30","30","30");
@@ -191,11 +191,11 @@ function RegularBeneficiaryExport() {
     
 	//Report header list
 	$tableProperties["header_list"][0] = $siteTitle;
-	$tableProperties["header_list"][1] = 'Regular Beneficiary List';
+	$tableProperties["header_list"][1] = 'Farmer Profile List';
 	// $tableProperties["header_list"][1] = 'Heading 2';
 	
 	//Report save name. Not allow any type of special character
-	$tableProperties["report_save_name"] = 'Regular_Beneficiary_List';
+	$tableProperties["report_save_name"] = 'Farmer_Profile_List';
 }
  
  
@@ -224,7 +224,7 @@ function UserDataExport() {
 		ORDER BY a.`UserName` ASC;";
 	
     $tableProperties["query_field"] = array("UserName","LoginName","Email","DesignationName","DivisionName","DistrictName","UpazilaName","UnionName","IsActiveName","RoleGroupName");
-    $tableProperties["table_header"] = array('User Name','Login Name','Email','Designation','Division','District','Upazila','Union','IsActive','Role');
+    $tableProperties["table_header"] = array('User Name','Login User Name','Email','Designation','Division','District','Upazila','Union','IsActive','Role');
     $tableProperties["align"] = array("left","left");
     $tableProperties["width_print_pdf"] = array("30%","70%"); //when exist serial then here total 95% and 5% use for serial
     $tableProperties["width_excel"] = array("30","40","30","15","20","20","20","20","20","7","30");

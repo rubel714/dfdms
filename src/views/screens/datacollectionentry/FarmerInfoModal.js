@@ -117,7 +117,7 @@ useEffect(()=>{
             <label>PG Farmer Code:</label>
             <span>{farmerInfo.PGFarmerCode}</span>
             
-            <label>Primary:</label>
+            <label>Primary Occupation:</label>
             <span>{farmerInfo.FamilyOccupation}</span>
             
 
@@ -140,7 +140,7 @@ useEffect(()=>{
             <label>Ward:</label>
             <span>{farmerInfo.WardName}</span>
             
-            <label>City Corporation:</label>
+            <label>City Corporation/ Municipality:</label>
             <span>{farmerInfo.CityCorporationName}</span>
             
             <label>Village:</label>

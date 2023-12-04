@@ -158,7 +158,7 @@ function LoginPage(props) {
 
 
             <div className="userLogin">
-              <label>User Name</label>
+              <label>Login User Name</label>
                 <input 
                   type="text" 
                   id="email" 

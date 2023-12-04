@@ -260,7 +260,6 @@ button:hover {
 .btnDisable {
     background-color: rgb(186 191 186);
     min-width: 90px;
-    height: 43px;
 }
 .btnDisable:hover{
     background-color: rgb(186 191 186);
@@ -874,4 +873,15 @@ input[type=search] {
     width: 200px;
     padding: 6px;
     border: 2px solid black;
+}
+
+.searchAdd2 {
+    display: grid;
+    row-gap: 8px;
+    padding-left: 10px;
+    grid-template-columns: 15% 15% 57% 13%;
+}
+
+.filter-button {
+    margin-top: 15px;
 }
