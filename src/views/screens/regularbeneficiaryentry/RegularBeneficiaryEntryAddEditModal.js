@@ -20,7 +20,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   const [isRegularBeneficiaryList, setIsRegularBeneficiaryList] =
     useState(null);
   const [currisRegularBeneficiary, setCurrIsRegularBeneficiary] =
-    useState(null);
+    useState(1);
 
   const [parentQuestionList, setParentQuestionList] = useState(null);
   const [currParentQuestion, setCurrParentQuestion] = useState(null);
@@ -492,9 +492,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
       setIsRegularBeneficiaryList(
-        [{ id: "", name: "Select Is Regular Beneficiary" }].concat(
-          res.data.datalist
-        )
+        res.data.datalist
       );
 
       setCurrIsRegularBeneficiary(selectIsRegularBeneficiary);
