@@ -210,7 +210,7 @@ function FarmerList($data) {
 		$dbh = new Db();
 		
 		$query = "SELECT `FarmerId` id,
-			concat(`FarmerName`,'-',NID,'-',Phone) `name`
+			concat(`FarmerName`,'-',NID,'-',Phone) `name`,ValuechainId
 			FROM t_farmer  
 			WHERE DivisionId=$DivisionId 
 			AND DistrictId=$DistrictId

@@ -70,19 +70,16 @@ const DataCollectionEntry = (props) => {
   const [landTypeList, setLandTypeList] = useState([]);
 
   const [currFilterYearId, setcurrFilterYearId] = useState(currentYear);
-  const [currFilterQuarterId, setcurrFilterQuarterId] = useState(currentQuarterId);
-
+  const [currFilterQuarterId, setcurrFilterQuarterId] =
+    useState(currentQuarterId);
 
   const [divisionList, setDivisionList] = useState(null);
   const [districtList, setDistrictList] = useState(null);
   const [upazilaList, setUpazilaList] = useState(null);
 
-
   const [currDivisionId, setCurrDivisionId] = useState(null);
   const [currDistrictId, setCurrDistrictId] = useState(null);
   const [currUpazilaId, setCurrUpazilaId] = useState(null);
-
-
 
   // {
   //   LandTypeId: 1,
@@ -161,14 +158,9 @@ const DataCollectionEntry = (props) => {
     GOAT: "displaynone",
     SHEEP: "displaynone",
     SCAVENGINGCHICKENLOCAL: "displaynone",
-    SONALI: "displaynone",
-    COMMERCIALBROILER: "displaynone",
     QUAIL: "displaynone",
-    TURKEY: "displaynone",
-    GUINEAFOWL: "displaynone",
     PIGEON: "displaynone",
     DUCK: "displaynone",
-    LAYER: "displaynone",
   };
 
   const [questionsVisibleList, setQuestionsVisibleList] = useState(qvList);
@@ -401,7 +393,6 @@ const DataCollectionEntry = (props) => {
   /* =====End of Excel Export Code==== */
 
   const newInvoice = () => {
-    
     console.log("dataTypeId: ", dataTypeId);
     setQuestionsVisibleList(qvList);
 
@@ -429,7 +420,6 @@ const DataCollectionEntry = (props) => {
       UpazilaId: UserInfo.UpazilaId,
       YearId: currentYear,
       QuarterId: currentQuarterId,
- 
     });
 
     setManyDataList([]);
@@ -785,11 +775,7 @@ const DataCollectionEntry = (props) => {
 
     getQuarterList();
 
-    getDivision(
-      UserInfo.DivisionId,
-      UserInfo.DistrictId,
-      UserInfo.UpazilaId
-    );
+    getDivision(UserInfo.DivisionId, UserInfo.DistrictId, UserInfo.UpazilaId);
 
     // getDataList(); //invoice list
 
@@ -890,7 +876,6 @@ const DataCollectionEntry = (props) => {
       setFilterYearList(
         [{ id: "", name: "বছর নির্বাচন করুন" }].concat(res.data.datalist)
       );
-
     });
   }
 
@@ -924,12 +909,7 @@ const DataCollectionEntry = (props) => {
     });
   }
 
-
-  function getDivision(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId
-  ) {
+  function getDivision(selectDivisionId, SelectDistrictId, selectUpazilaId) {
     let params = {
       action: "DivisionFilterList",
       lan: language(),
@@ -937,35 +917,20 @@ const DataCollectionEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDivisionList(
-        [{ id: "", name: "All" }].concat(res.data.datalist)
-      );
-
+      setDivisionList([{ id: "", name: "All" }].concat(res.data.datalist));
 
       setCurrDivisionId(selectDivisionId);
 
-      getDistrict(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId
-      );
+      getDistrict(selectDivisionId, SelectDistrictId, selectUpazilaId);
 
       /* getProductGeneric(
         selectDivisionId,
         SelectProductGenericId
       ); */
-
-
     });
   }
 
-
-  
-  function getDistrict(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId
-  ) {
+  function getDistrict(selectDivisionId, SelectDistrictId, selectUpazilaId) {
     let params = {
       action: "DistrictFilterList",
       lan: language(),
@@ -974,22 +939,13 @@ const DataCollectionEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDistrictList(
-        [{ id: "", name: "All" }].concat(res.data.datalist)
-      );
-   
+      setDistrictList([{ id: "", name: "All" }].concat(res.data.datalist));
+
       setCurrDistrictId(SelectDistrictId);
-      getUpazila(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId
-      );
-     
+      getUpazila(selectDivisionId, SelectDistrictId, selectUpazilaId);
     });
   }
 
-
-  
   function getUpazila(
     selectDivisionId,
     SelectDistrictId,
@@ -1005,13 +961,9 @@ const DataCollectionEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setUpazilaList(
-        [{ id: "", name: "All" }].concat(res.data.datalist)
-      );
-  
+      setUpazilaList([{ id: "", name: "All" }].concat(res.data.datalist));
+
       setCurrUpazilaId(selectUpazilaId);
-      
-     
     });
   }
 
@@ -1021,7 +973,7 @@ const DataCollectionEntry = (props) => {
       action: "getDataList",
       lan: language(),
       UserId: UserInfo.UserId,
-     /*  DivisionId: UserInfo.DivisionId,
+      /*  DivisionId: UserInfo.DivisionId,
       DistrictId: UserInfo.DistrictId,
       UpazilaId: UserInfo.UpazilaId, */
       DivisionId: currDivisionId,
@@ -1098,19 +1050,19 @@ const DataCollectionEntry = (props) => {
 
   /** Action from table row buttons*/
   function actioncontrolmaster(rowData) {
-    console.log("UserInfo",UserInfo);
-    console.log("StatusChangeAllow",UserInfo.StatusChangeAllow);
+    console.log("UserInfo", UserInfo);
+    console.log("StatusChangeAllow", UserInfo.StatusChangeAllow);
     let StatusChangeAllow = UserInfo.StatusChangeAllow;
     // let sub = StatusChangeAllow.includes("Submit");
     // console.log('sub: ', sub);
-
 
     return (
       <>
         {/* StatusId */}
 
-        {(rowData.StatusId === 1) && (StatusChangeAllow.includes("Submit")) && (
-          <button class={"btnSubmit"} 
+        {rowData.StatusId === 1 && StatusChangeAllow.includes("Submit") && (
+          <button
+            class={"btnSubmit"}
             onClick={() => {
               changeReportStatus(rowData.id, 2);
             }}
@@ -1119,8 +1071,9 @@ const DataCollectionEntry = (props) => {
           </button>
         )}
 
-        {(rowData.StatusId === 2) && (StatusChangeAllow.includes("Accept")) && (
-          <button class={"btnAccept"} 
+        {rowData.StatusId === 2 && StatusChangeAllow.includes("Accept") && (
+          <button
+            class={"btnAccept"}
             onClick={() => {
               changeReportStatus(rowData.id, 3);
             }}
@@ -1129,8 +1082,9 @@ const DataCollectionEntry = (props) => {
           </button>
         )}
 
-        {(rowData.StatusId === 3) && (StatusChangeAllow.includes("Approve")) && (
-          <button class={"btnApprove"} 
+        {rowData.StatusId === 3 && StatusChangeAllow.includes("Approve") && (
+          <button
+            class={"btnApprove"}
             onClick={() => {
               changeReportStatus(rowData.id, 5);
             }}
@@ -1138,7 +1092,6 @@ const DataCollectionEntry = (props) => {
             Approve
           </button>
         )}
-
 
         {/* {rowData.BPosted === 0 && ( */}
         {rowData.StatusId === 1 && (
@@ -1464,50 +1417,71 @@ const DataCollectionEntry = (props) => {
     let data = { ...currentInvoice };
     data[name] = value;
 
-    setCurrentInvoice(data);
-
     setErrorObjectMaster({ ...errorObjectMaster, [name]: null });
 
     if (name == "PGId" && dataTypeId === 2) {
       /**when change PG from combo and data collection for farmer then fillup Farmar List */
       getFarmerList(value);
     }
+
+    if (name == "FarmerId" && dataTypeId === 2) {
+      /**when change Farmer then auto select Value chain Checkbox */
+
+      console.log("farmerList: ", farmerList);
+      let fInfo = farmerList.filter((row) => {
+        if (row.id == value) {
+          return row;
+        }
+      });
+      console.log("fInfo: ", fInfo[0].ValuechainId);
+      if (fInfo[0].ValuechainId) {
+        let name = fInfo[0].ValuechainId;
+        let chkVal = true;
+
+        let qList = { ...qvList };
+        let CategoriesList = [];
+
+        if (chkVal) {
+          qList[name] = "";
+
+          CategoriesList.push(name);
+        }
+
+        data["Categories"] = CategoriesList.toString();
+        console.log("data: ", data);
+        console.log("qList after: ", qList);
+
+        setQuestionsVisibleList(qList);
+      }
+    }
+
+    setCurrentInvoice(data);
   };
 
-
-
   const [chosenValuesYearId, setChosenValuesYear] = useState({
-    "YearId": {"id": currentYear,"name": currFilterYearId}
+    YearId: { id: currentYear, name: currFilterYearId },
   });
 
   const handleChangeChoosenMasterYear = (name, valueobj, value) => {
-
-    let chosenValuesDataYear = { ...chosenValuesYearId};
+    let chosenValuesDataYear = { ...chosenValuesYearId };
     chosenValuesDataYear[name] = valueobj;
-    setChosenValuesYear(chosenValuesDataYear); 
+    setChosenValuesYear(chosenValuesDataYear);
     setcurrFilterYearId(value);
     getDataList();
-
   };
 
- 
   const handleChangeChoosenMasterQuarter = (name, value) => {
     let data = { ...currentFilter };
     data[name] = value;
 
     setCurrentFilter(data);
     setcurrFilterQuarterId(value);
- 
-  
   };
-
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     let data = { ...currentFilter };
     data[name] = value;
-
 
     setCurrentFilter(data);
 
@@ -1519,24 +1493,23 @@ const DataCollectionEntry = (props) => {
       setCurrUpazilaId("");
       getDistrict(value, "", "");
       getUpazila(value, "", "");
-
-
     } else if (name === "DistrictId") {
       setCurrDistrictId(value);
-       getUpazila(currentFilter.DivisionId, value, "");
+      getUpazila(currentFilter.DivisionId, value, "");
     } else if (name === "UpazilaId") {
       setCurrUpazilaId(value);
-    } 
-
-
-
+    }
   };
-
 
   useEffect(() => {
     getDataList();
-  }, [currDivisionId, currDistrictId, currUpazilaId, currFilterYearId, currFilterQuarterId]);
-
+  }, [
+    currDivisionId,
+    currDistrictId,
+    currUpazilaId,
+    currFilterYearId,
+    currFilterQuarterId,
+  ]);
 
   const handleChangeMany = (e, cType = "") => {
     console.log("cType: ", cType);
@@ -1757,29 +1730,24 @@ const DataCollectionEntry = (props) => {
     }
   }
 
-
-
-
   function changeReportStatus(Id, StatusId) {
-
-     let params = {
+    let params = {
       action: "changeReportStatus",
       lan: language(),
       UserId: UserInfo.UserId,
       Id: Id,
-      StatusId: StatusId
+      StatusId: StatusId,
     };
 
     let msg = "";
 
-    if(StatusId == 2){
+    if (StatusId == 2) {
       msg = "You want to submit!";
-    }else if(StatusId == 3){
+    } else if (StatusId == 3) {
       msg = "You want to accept!";
-    }else if(StatusId == 5){
+    } else if (StatusId == 5) {
       msg = "You want to approve!";
     }
-
 
     swal({
       title: "Are you sure?",
@@ -1803,40 +1771,33 @@ const DataCollectionEntry = (props) => {
       },
       dangerMode: true,
     }).then((allowAction) => {
-
       if (allowAction) {
         changeReportStatusAPICall(params);
       }
-
     });
-
-
-
   }
 
-  
   function changeReportStatusAPICall(params) {
+    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+      // console.log('res: ', res);
 
-      apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-        // console.log('res: ', res);
-
-        if (res.data.success) {
-          props.openNoticeModal({
-            isOpen: true,
-            msg: res.data.message,
-            msgtype: res.data.success,
-          });
-// console.log(11111111);
-          getDataList(); //invoice list
-        }else{
-          // console.log(222222);
-          props.openNoticeModal({
-            isOpen: true,
-            msg: res.data.message,
-            msgtype: res.data.success,
-          });
-        }
-      });
+      if (res.data.success) {
+        props.openNoticeModal({
+          isOpen: true,
+          msg: res.data.message,
+          msgtype: res.data.success,
+        });
+        // console.log(11111111);
+        getDataList(); //invoice list
+      } else {
+        // console.log(222222);
+        props.openNoticeModal({
+          isOpen: true,
+          msg: res.data.message,
+          msgtype: res.data.success,
+        });
+      }
+    });
     // } else {
     //   props.openNoticeModal({
     //     isOpen: true,
@@ -1845,7 +1806,6 @@ const DataCollectionEntry = (props) => {
     //   });
     // }
   }
-
 
   // function acceptSingleReport() {
   //   // console.log('p: ', p);
@@ -1959,42 +1919,44 @@ const DataCollectionEntry = (props) => {
             {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
             <div class="searchAdd">
               {/* <input type="text" placeholder="Search Product Group"/> */}
-                <div class="formControl-filter-data">
-                    <label>তথ্য সংগ্রহ বছর (Year):</label>
-                    <Autocomplete
-                      autoHighlight
-                      // freeSolo
-                      className="chosen_dropdown"
-                      id="YearId"
-                      name="YearId"
-                      autoComplete
-                      //class={errorObjectMaster.YearId}
-                      options={filterYearList ? filterYearList : []}
-                      getOptionLabel={(option) => option.name}
-                      value={chosenValuesYearId['YearId']}
-                     /*  onChange={(event, valueobj) =>
+              <div class="formControl-filter-data">
+                <label>তথ্য সংগ্রহ বছর (Year):</label>
+                <Autocomplete
+                  autoHighlight
+                  // freeSolo
+                  className="chosen_dropdown"
+                  id="YearId"
+                  name="YearId"
+                  autoComplete
+                  //class={errorObjectMaster.YearId}
+                  options={filterYearList ? filterYearList : []}
+                  getOptionLabel={(option) => option.name}
+                  value={chosenValuesYearId["YearId"]}
+                  /*  onChange={(event, valueobj) =>
                       handleChangeChoosenMasterYear(
                         "YearId",
                         valueobj ? valueobj.id : ""
                       )
                       } */
-                      onChange={(event, valueobj) => handleChangeChoosenMasterYear('YearId', valueobj, valueobj?valueobj.id:"")}
-                      renderOption={(option) => (
-                      <Typography className="chosen_dropdown_font">
-                        {option.name}
-                      </Typography>
-                      )}
-                      renderInput={(params) => (
-                      <TextField {...params} variant="standard" fullWidth />
-                      )}
-                    />
-                </div>
+                  onChange={(event, valueobj) =>
+                    handleChangeChoosenMasterYear(
+                      "YearId",
+                      valueobj,
+                      valueobj ? valueobj.id : ""
+                    )
+                  }
+                  renderOption={(option) => (
+                    <Typography className="chosen_dropdown_font">
+                      {option.name}
+                    </Typography>
+                  )}
+                  renderInput={(params) => (
+                    <TextField {...params} variant="standard" fullWidth />
+                  )}
+                />
+              </div>
 
-
-                
-
-              
-                <div class="formControl-filter-data ">
+              <div class="formControl-filter-data ">
                 <label>তথ্য সংগ্রহ ত্রৈমাসিক (Quarter):</label>
                 <Autocomplete
                   autoHighlight
@@ -2026,9 +1988,8 @@ const DataCollectionEntry = (props) => {
                         ]
                       : null
                   }
-
                   //value={chosenValuesQuarterId['QuarterId']}
-                  
+
                   //onChange={(event, valueobj) => handleChangeChoosenMasterQuarter('QuarterId', valueobj, valueobj?valueobj.id:"")}
                   onChange={(event, valueobj) =>
                     handleChangeChoosenMasterQuarter(
@@ -2037,16 +1998,15 @@ const DataCollectionEntry = (props) => {
                     )
                   }
                   renderOption={(option) => (
-                  <Typography className="chosen_dropdown_font">
-                    {option.name}
-                  </Typography>
+                    <Typography className="chosen_dropdown_font">
+                      {option.name}
+                    </Typography>
                   )}
                   renderInput={(params) => (
-                  <TextField {...params} variant="standard" fullWidth />
+                    <TextField {...params} variant="standard" fullWidth />
                   )}
                 />
-                </div>
-
+              </div>
 
               <div class="formControl-filter-data-label">
                 <label>Division: </label>
@@ -2080,7 +2040,7 @@ const DataCollectionEntry = (props) => {
                 </select>
               </div>
 
-            <div class="formControl-filter-data-label">
+              <div class="formControl-filter-data-label">
                 <label>Upazila: </label>
                 <select
                   id="UpazilaId"
@@ -2095,7 +2055,6 @@ const DataCollectionEntry = (props) => {
                     })}
                 </select>
               </div>
-
 
               {/* <Button label={"ADD"} class={"btnAdd"} onClick={addData} /> */}
               <Button label={"Enter Data"} class={"btnAdd"} onClick={addData} />
@@ -2428,6 +2387,19 @@ const DataCollectionEntry = (props) => {
                           <div class="checkbox-label">
                             <input
                               type="checkbox"
+                              id="BUFFALO"
+                              name="BUFFALO"
+                              checked={
+                                questionsVisibleList["BUFFALO"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>2 Buffalo</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
                               id="BEEFFATTENING"
                               name="BEEFFATTENING"
                               checked={
@@ -2436,21 +2408,9 @@ const DataCollectionEntry = (props) => {
                               }
                               onChange={(e) => changeVisibilityCheck(e)}
                             />
-                            <label>2 Beef Fattening</label>
+                            <label>3 Beef Fattening</label>
                           </div>
 
-                          <div class="checkbox-label">
-                            <input
-                              type="checkbox"
-                              id="BUFFALO"
-                              name="BUFFALO"
-                              checked={
-                                questionsVisibleList["BUFFALO"] != "displaynone"
-                              }
-                              onChange={(e) => changeVisibilityCheck(e)}
-                            />
-                            <label>3 Buffalo</label>
-                          </div>
                           <div class="checkbox-label">
                             <input
                               type="checkbox"
@@ -2488,86 +2448,7 @@ const DataCollectionEntry = (props) => {
                               }
                               onChange={(e) => changeVisibilityCheck(e)}
                             />
-                            <label>6 Scavenging Chicken Local</label>
-                          </div>
-
-                          <div class="checkbox-label">
-                            <input
-                              type="checkbox"
-                              id="SONALI"
-                              name="SONALI"
-                              checked={
-                                questionsVisibleList["SONALI"] != "displaynone"
-                              }
-                              onChange={(e) => changeVisibilityCheck(e)}
-                            />
-                            <label>7 Sonali</label>
-                          </div>
-
-                          <div class="checkbox-label">
-                            <input
-                              type="checkbox"
-                              id="COMMERCIALBROILER"
-                              name="COMMERCIALBROILER"
-                              checked={
-                                questionsVisibleList["COMMERCIALBROILER"] !=
-                                "displaynone"
-                              }
-                              onChange={(e) => changeVisibilityCheck(e)}
-                            />
-                            <label>8 Commercial Broiler</label>
-                          </div>
-                          <div class="checkbox-label">
-                            <input
-                              type="checkbox"
-                              id="QUAIL"
-                              name="QUAIL"
-                              checked={
-                                questionsVisibleList["QUAIL"] != "displaynone"
-                              }
-                              onChange={(e) => changeVisibilityCheck(e)}
-                            />
-                            <label>9 Quail</label>
-                          </div>
-
-                          <div class="checkbox-label">
-                            <input
-                              type="checkbox"
-                              id="TURKEY"
-                              name="TURKEY"
-                              checked={
-                                questionsVisibleList["TURKEY"] != "displaynone"
-                              }
-                              onChange={(e) => changeVisibilityCheck(e)}
-                            />
-                            <label>10 Turkey</label>
-                          </div>
-
-                          <div class="checkbox-label">
-                            <input
-                              type="checkbox"
-                              id="GUINEAFOWL"
-                              name="GUINEAFOWL"
-                              checked={
-                                questionsVisibleList["GUINEAFOWL"] !=
-                                "displaynone"
-                              }
-                              onChange={(e) => changeVisibilityCheck(e)}
-                            />
-                            <label>11 Guinea Fowl</label>
-                          </div>
-
-                          <div class="checkbox-label">
-                            <input
-                              type="checkbox"
-                              id="PIGEON"
-                              name="PIGEON"
-                              checked={
-                                questionsVisibleList["PIGEON"] != "displaynone"
-                              }
-                              onChange={(e) => changeVisibilityCheck(e)}
-                            />
-                            <label>12 Pigeon</label>
+                            <label>6 Scavenging Chicken</label>
                           </div>
 
                           <div class="checkbox-label">
@@ -2580,9 +2461,90 @@ const DataCollectionEntry = (props) => {
                               }
                               onChange={(e) => changeVisibilityCheck(e)}
                             />
-                            <label>13 Duck</label>
+                            <label>7 Duck</label>
                           </div>
 
+                          {/* <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="SONALI"
+                              name="SONALI"
+                              checked={
+                                questionsVisibleList["SONALI"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>7 Sonali</label>
+                          </div> */}
+
+                          {/* <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="COMMERCIALBROILER"
+                              name="COMMERCIALBROILER"
+                              checked={
+                                questionsVisibleList["COMMERCIALBROILER"] !=
+                                "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>8 Commercial Broiler</label>
+                          </div> */}
+
+                          {/* 
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="TURKEY"
+                              name="TURKEY"
+                              checked={
+                                questionsVisibleList["TURKEY"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>10 Turkey</label>
+                          </div> */}
+
+                          {/* <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="GUINEAFOWL"
+                              name="GUINEAFOWL"
+                              checked={
+                                questionsVisibleList["GUINEAFOWL"] !=
+                                "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>11 Guinea Fowl</label>
+                          </div> */}
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="QUAIL"
+                              name="QUAIL"
+                              checked={
+                                questionsVisibleList["QUAIL"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>8 Quail</label>
+                          </div>
+
+                          <div class="checkbox-label">
+                            <input
+                              type="checkbox"
+                              id="PIGEON"
+                              name="PIGEON"
+                              checked={
+                                questionsVisibleList["PIGEON"] != "displaynone"
+                              }
+                              onChange={(e) => changeVisibilityCheck(e)}
+                            />
+                            <label>9 Pigeon</label>
+                          </div>
+                          {/* 
                           <div class="checkbox-label">
                             <input
                               type="checkbox"
@@ -2594,7 +2556,7 @@ const DataCollectionEntry = (props) => {
                               onChange={(e) => changeVisibilityCheck(e)}
                             />
                             <label>14 Layer</label>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </>
@@ -3760,8 +3722,7 @@ const DataCollectionEntry = (props) => {
                       label={"সংরক্ষণ করুন (Save)"}
                       class={"btnAddCustom"}
                       onClick={saveData}
-                      disabled={currentInvoice.StatusId>1}
-
+                      disabled={currentInvoice.StatusId > 1}
                     />
 
                     <Button
