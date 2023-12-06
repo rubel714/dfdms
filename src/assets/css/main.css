@@ -492,7 +492,7 @@ input {
 }
 .MuiSvgIcon-root{
     cursor:pointer;
-    height: 0em !important;
+    /* height: 0em !important; */
 }
 
 .table-edit-icon{
@@ -617,9 +617,9 @@ input {
     /* width: calc(100% - (38px)); */
 }
 
-.MuiIconButton-root {
+/* .MuiIconButton-root {
     display: none !important;
-}
+} */
 
 .MuiInput-underline:before {
     display: none !important;
