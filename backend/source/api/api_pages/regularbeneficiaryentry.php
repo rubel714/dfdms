@@ -174,7 +174,7 @@ function dataAddEdit($data) {
 		$Address = $data->rowData->Address ? $data->rowData->Address : null;
 		$IsRegular = isset($data->rowData->IsRegular) && ($data->rowData->IsRegular !== "") ? $data->rowData->IsRegular : null;
 		$NidBackPhoto = $data->rowData->NidBackPhoto ? $data->rowData->NidBackPhoto : null;
-		$BeneficiaryPhoto = $data->rowData->BeneficiaryPhoto ? $data->rowData->SpouseNBeneficiaryPhotoame : null;
+		$BeneficiaryPhoto = $data->rowData->BeneficiaryPhoto ? $data->rowData->BeneficiaryPhoto : null;
 		$SpouseName =  $data->rowData->SpouseName ? $data->rowData->SpouseName : null;
 		$Gender = $data->rowData->Gender ? $data->rowData->Gender : null;
 		$FarmersAge = $data->rowData->FarmersAge ? $data->rowData->FarmersAge : null;

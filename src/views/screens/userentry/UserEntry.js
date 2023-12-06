@@ -64,7 +64,7 @@ const UserEntry = (props) => {
       field: "Email",
       label: "Email",
       align: "left",
-      visible: true,
+      visible: false,
       sort: true,
       width: "10%",
       filter: true,

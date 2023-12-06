@@ -16,6 +16,8 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   const [currentRow, setCurrentRow] = useState(props.currentRow);
   const [errorObject, setErrorObject] = useState({});
   const UserInfo = LoginUserInfo();
+  const baseUrl = `${window.location.protocol}//${window.location.hostname}`;
+
 
   const [isRegularBeneficiaryList, setIsRegularBeneficiaryList] =
     useState(null);
@@ -25,18 +27,25 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   const [parentQuestionList, setParentQuestionList] = useState(null);
   const [currParentQuestion, setCurrParentQuestion] = useState(null);
 
-  const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(
-    require("../../../assets/farmerimage/placeholder.png")
+    `${baseUrl}/dfdms/src/assets/farmerimage/placeholder.png`
   );
+
+  const [previewImages, setPreviewImages] = useState({
+    NidFrontPhoto: `${baseUrl}/dfdms/src/assets/farmerimage/placeholder.png`,
+    NidBackPhoto: `${baseUrl}/dfdms/src/assets/farmerimage/placeholder.png`,
+    BeneficiaryPhoto: `${baseUrl}/dfdms/src/assets/farmerimage/placeholder.png`,
+  });
   
+  
+
   const [uploadCompleted, setUploadCompleted] = useState(0); 
 
   const [gender, setGender] = useState(null);
   const [currGender, setCurrGender] = useState(null);
 
-  const [disabilityStatus, setDisabilityStatus] = useState(null);
-  const [currDisabilityStatus, setCurrDisabilityStatus] = useState(null);
+  const [disabilityStatus, setDisabilityStatus] = useState([{ id: "2", name: "No" }]);
+  const [currDisabilityStatus, setCurrDisabilityStatus] = useState(2);
   const [currRelationWithHeadOfHH, setCurrRelationWithHeadOfHH] = useState(0); // or false
   const [currPGRegistered, setCurrPGRegistered] = useState(0); // or false
   const [currIsHeadOfTheGroup, setCurrIsHeadOfTheGroup] = useState(0); // or false
@@ -57,8 +66,8 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   const [cityCorporation, setCityCorporation] = useState(null);
   const [currCityCorporation, setCurrCityCorporation] = useState(null);
 
-  const [ward, setWard] = useState(null);
-  const [currWard, setCurrWard] = useState(null);
+/*   const [ward, setWard] = useState(null);
+  const [currWard, setCurrWard] = useState(null); */
 
   const [pgList, setPGId] = useState(null);
   const [currPGId, setCurrPGId] = useState(null);
@@ -76,13 +85,14 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   const [currUnionId, setCurrUnionId] = useState(null);
   const [RoleList, setRoleList] = useState(null);
 
+
+
   React.useEffect(() => {
     getDivision(
       props.currentRow.DivisionId,
       props.currentRow.DistrictId,
       props.currentRow.UpazilaId,
       props.currentRow.UnionId,
-      props.currentRow.Ward,
       props.currentRow.PGId
     );
 
@@ -141,21 +151,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       setCurrPGPartnershipWithOtherCompany(0);
     }
 
-    //setSelectedFile(currentRow.NidFrontPhoto);
-
-    /*     if (
-      currentRow.NidFrontPhoto !== undefined &&
-      currentRow.NidFrontPhoto !== null
-    ) {
-      setPreviewImage(
-        require("../../../assets/farmerimage/"+currentRow.NidFrontPhoto) 
-      );
-    } else {
-      setPreviewImage(require("../../../assets/farmerimage/placeholder.png"));
-    } */
-
-    //getStrengthList();
-    //getManufacturerList();
   }, []);
 
   function getDivision(
@@ -163,7 +158,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
-    selectWard,
     selectPGId
   ) {
     let params = {
@@ -187,7 +181,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         SelectDistrictId,
         selectUpazilaId,
         selectUnionId,
-        selectWard,
         selectPGId
       );
 
@@ -203,7 +196,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
-    selectWard,
     selectPGId
   ) {
     let params = {
@@ -225,7 +217,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         SelectDistrictId,
         selectUpazilaId,
         selectUnionId,
-        selectWard,
         selectPGId
       );
     });
@@ -236,7 +227,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
-    selectWard,
     selectPGId
   ) {
     let params = {
@@ -259,7 +249,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         SelectDistrictId,
         selectUpazilaId,
         selectUnionId,
-        selectWard,
         selectPGId
       );
     });
@@ -270,7 +259,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
-    selectWard,
     selectPGId
   ) {
     let params = {
@@ -290,21 +278,19 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
       setCurrUnionId(selectUnionId);
 
-      getWardList(
+     /*  getWardList(
         selectDivisionId,
         SelectDistrictId,
         selectUpazilaId,
         selectUnionId,
-        selectWard,
         selectPGId
-      );
+      ); */
 	  
       getPGIdList(
         selectDivisionId,
         SelectDistrictId,
         selectUpazilaId,
         selectUnionId,
-        selectWard,
         selectPGId
       );
 
@@ -334,10 +320,11 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
       setDisabilityStatus(
-        [{ id: "", name: "Select Disability Status" }].concat(res.data.datalist)
+        /* [{ id: "", name: "Select Disability Status" }].concat(res.data.datalist) */
+        res.data.datalist
       );
 
-      setCurrDisabilityStatus(selectDisabilityStatus);
+      setCurrDisabilityStatus(selectDisabilityStatus || 2);
     });
   }
 
@@ -438,7 +425,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
 
 
-  function getWardList(selectDivisionId,
+/*   function getWardList(selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
@@ -456,13 +443,12 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
       setCurrWard(selectWard);
     });
-  }
+  } */
 
   function getPGIdList( selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
-    selectWard,
     selectPGId) {
     let params = {
       action: "PgGroupListByUnion",
@@ -545,21 +531,21 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
       setCurrDistrictId("");
       setCurrUpazilaId("");
-      getDistrict(value, "", "", "", "", "");
-      getUpazila(value, "", "", "", "", "");
-      getUnion(value, "", "", "", "", "");
-      getWardList(value, "", "", "", "", "");
-      getPGIdList(value, "", "", "", "", "");
+      getDistrict(value, "", "", "", "");
+      getUpazila(value, "", "", "", "");
+      getUnion(value, "", "", "", "");
+      /* getWardList(value, "", "", "", ""); */
+      getPGIdList(value, "", "", "", "");
     } else if (name === "DistrictId") {
       setCurrDistrictId(value);
-      getUpazila(currentRow.DivisionId, value, "", "", "", "");
+      getUpazila(currentRow.DivisionId, value, "", "", "");
     } else if (name === "UpazilaId") {
       setCurrUpazilaId(value);
-      getUnion(currentRow.DivisionId, currentRow.DistrictId, value, "", "", "");
+      getUnion(currentRow.DivisionId, currentRow.DistrictId, value, "", "");
     } else if (name === "UnionId") {
       setCurrUnionId(value);
-      getWardList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, "", "");
-      getPGIdList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, "", "");
+      /* getWardList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, ""); */
+      getPGIdList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, "");
     }
 
     if (name === "Gender") {
@@ -568,9 +554,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     if (name === "CityCorporation") {
       setCurrCityCorporation(value);
     }
-    if (name === "Ward") {
+    /* if (name === "Ward") {
       setCurrWard(value);
-    }
+    } */
     if (name === "PGId") {
       setCurrPGId(value);
     }
@@ -596,6 +582,21 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     if (name === "ValuechainId") {
       setCurrValuechainId(value);
     }
+
+    if (name == "Phone") {
+      /* let vPhoneNoNo = '';
+        const onlyNums = value.replace(/[^0-9]/g, '');
+        vPhoneNoNo = onlyNums;
+        data["Phone"] = vPhoneNoNo; */
+
+       
+          const onlyNums = value.replace(/[^0-9]/g, '');
+          const limitedValue = onlyNums.slice(0, 11);
+          data["Phone"] = limitedValue
+
+    } 
+
+
   };
 
   function handleChangeCheck(e) {
@@ -637,15 +638,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       };
 
    
-      if(uploadCompleted === 1){
-
-        props.masterProps.openNoticeModal({
-          isOpen: true,
-          msg: "Please, Wait image Uploading....",
-          msgtype: 0,
-        });
-
-      }else{
+     
 
         apiCall.post(serverpage, { params }, apiOption()).then((res) => {
           // console.log('res: ', res);
@@ -663,7 +656,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           }
         });
 
-      }
+   
           
 
   
@@ -687,55 +680,35 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   }, [props.currentRow.NidFrontPhoto]); */
 
 
-  const handleFileChange = (e) => {
+/*   const handleFileChange = (e) => {
     setUploadCompleted(1);
-    /* const file = e.target.files[0];
-    console.log('file: ', URL.createObjectURL(file));
-   
-    uploadImage(file);
-    setPreviewImage(URL.createObjectURL(file)); */
     e.preventDefault(); // Prevent default form submission behavior
     const file = e.target.files[0];
     if (file) {
-      setSelectedFile(file);
       uploadImage(file);
       setPreviewImage(URL.createObjectURL(file));
     }
     
-  };
-
- 
-
-
-
-  /* const uploadImage = (file) => {
-    if (!file) {
-      console.error("No file selected");
-      return;
-    }
-
-    const formData = new FormData();
-    let timestamp = Math.floor(new Date().getTime() / 1000); // Generate timestamp in seconds
-
-    formData.append("file", file);
-    formData.append("timestamp", timestamp); // Include timestamp as a parameter
-    formData.append(
-      "filename",
-      `./src/assets/farmerimage/${timestamp}_${file.name}`
-    );
-
-    apiCall.post("upload-image", formData, apiOption()).then((res) => {
-      console.log(res);
-    });
-
-    setCurrentRow((prevData) => ({
-      ...prevData,
-      NidFrontPhoto: `${timestamp}_${file.name}`,
-    }));
   }; */
 
+ 
+  const handleFileChange = (e, photoType) => {
+    setUploadCompleted(1);
+  
+    e.preventDefault(); // Prevent default form submission behavior
+    const file = e.target.files[0];
+  
+    if (file) {
+      uploadImage(file, photoType);
+      setPreviewImages((prevImages) => ({
+        ...prevImages,
+        [photoType]: URL.createObjectURL(file),
+      }));
+    }
+  };
 
-  const uploadImage = (file) => {
+ /*  const uploadImage = (file) => {
+    console.log('file: ', file);
     
     if (!file) {
       console.error("No file selected");
@@ -745,28 +718,55 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     const formData = new FormData();
     let timestamp = Math.floor(new Date().getTime() / 1000); // Generate timestamp in seconds
 
-    formData.append("file", file);
-    formData.append("timestamp", timestamp); // Include timestamp as a parameter
-    formData.append(
+     formData.append("file", file); 
+     formData.append("timestamp", timestamp);  // Include timestamp as a parameter
+     formData.append(
       "filename",
       `./src/assets/farmerimage/${timestamp}_${file.name}`
-    );
+    ); 
 
     apiCall.post("upload-image", formData, apiOption()).then((res) => {
-      console.log(res);
-      setCurrentRow((prevData) => ({
+      //console.log(res);
+       setCurrentRow((prevData) => ({
         ...prevData,
         NidFrontPhoto: `${timestamp}_${file.name}`,
-      }));
+      })); 
 
-      setUploadCompleted(0);
+      //setUploadCompleted(0);
 
     }).catch((error) => {
       console.error("API call error:", error);
      
     });
 
-  };
+  }; */
+
+
+const uploadImage = (file, photoType) => {
+  if (!file) {
+    console.error("No file selected");
+    return;
+  }
+
+  const formData = new FormData();
+  let timestamp = Math.floor(new Date().getTime() / 1000);
+
+  formData.append("file", file);
+  formData.append("timestamp", timestamp);
+  formData.append(
+    "filename",
+    `./src/assets/farmerimage/${timestamp}_${file.name}`
+  );
+
+  apiCall.post("upload-image", formData, apiOption()).then((res) => {
+    setCurrentRow((prevData) => ({
+      ...prevData,
+      [photoType]: `${timestamp}_${file.name}`,
+    }));
+  }).catch((error) => {
+    console.error("API call error:", error);
+  });
+};
 
 
 
@@ -869,13 +869,15 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               id="NidFrontPhoto"
               name="NidFrontPhoto"
               accept="image/*"
-              onChange={handleFileChange}
+              //onChange={handleFileChange}
+              onChange={(e) => handleFileChange(e, "NidFrontPhoto")}
             />
 
-        {previewImage && (
+            {previewImages.NidFrontPhoto && (
                 <div className="image-preview">
                   <img
-                    src={previewImage}
+                    //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidFrontPhoto}`}
+                    src={currentRow.NidFrontPhoto?`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidFrontPhoto}`:previewImage}
                     alt="NID Front Preview"
                     className="preview-image"
                   />
@@ -890,18 +892,19 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               id="NidBackPhoto"
               name="NidBackPhoto"
               accept="image/*"
-              onChange={handleFileChange}
+              onChange={(e) => handleFileChange(e, "NidBackPhoto")}
             />
 
-               {previewImage && (
+            {previewImages.NidBackPhoto && (
                 <div className="image-preview">
                   <img
-                    src={previewImage}
-                    alt="NID Front Preview"
+                    //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidBackPhoto}`}
+                    src={currentRow.NidBackPhoto?`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidBackPhoto}`:previewImage}
+                    alt="NID Back Preview"
                     className="preview-image"
                   />
                 </div>
-              )} 
+              )}
           </div>
 
           <div class="contactmodalBody pt-10">
@@ -935,17 +938,18 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               id="BeneficiaryPhoto"
               name="BeneficiaryPhoto"
               accept="image/*"
-              onChange={handleFileChange}
+              onChange={(e) => handleFileChange(e, "BeneficiaryPhoto")}
             />
-             {previewImage && (
+              {previewImages.BeneficiaryPhoto && (
                 <div className="image-preview">
                   <img
-                    src={previewImage}
-                    alt="NID Front Preview"
+                    //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.BeneficiaryPhoto}`}
+                    src={currentRow.BeneficiaryPhoto?`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.BeneficiaryPhoto}`:previewImage}
+                    alt="Beneficiary Preview"
                     className="preview-image"
                   />
                 </div>
-              )} 
+              )}
           </div>
 
           <div class="contactmodalBody pt-10 ">
@@ -1250,7 +1254,15 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
            
 
             <label>Ward</label>
-            <select
+            <input
+              type="text"
+              id="Ward"
+              name="Ward"
+              placeholder="Enter Village Name"
+              value={currentRow.Ward}
+              onChange={(e) => handleChange(e)}
+            />
+           {/*  <select
               id="Ward"
               name="Ward"
               class={errorObject.Ward}
@@ -1261,7 +1273,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 ward.map((item, index) => {
                   return <option value={item.id}>{item.name}</option>;
                 })}
-            </select>
+            </select> */}
           </div>
 
           <div class="contactmodalBody pt-10 ">
