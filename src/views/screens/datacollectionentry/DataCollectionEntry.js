@@ -2055,7 +2055,8 @@ const DataCollectionEntry = (props) => {
                     })}
                 </select>
               </div>
-
+              <Button label={"Approve"} class={"btnAdd"} onClick={addData} />
+              <Button label={"Return"} class={"btnAdd"} onClick={addData} />
               {/* <Button label={"ADD"} class={"btnAdd"} onClick={addData} /> */}
               <Button label={"Enter Data"} class={"btnAdd"} onClick={addData} />
             </div>
