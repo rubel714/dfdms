@@ -634,6 +634,9 @@ input {
     padding-right: 2px !important;
 }
 
+.MuiAutocomplete-hasPopupIcon .MuiAutocomplete-inputRoot, .MuiAutocomplete-hasClearIcon .MuiAutocomplete-inputRoot {
+    padding-right: 0px !important;
+}
 
 input[type=search] {
     width: 100%; 
