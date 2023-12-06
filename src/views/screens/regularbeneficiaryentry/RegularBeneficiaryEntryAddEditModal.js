@@ -93,6 +93,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       props.currentRow.DistrictId,
       props.currentRow.UpazilaId,
       props.currentRow.UnionId,
+      props.currentRow.ValuechainId,
       props.currentRow.PGId
     );
 
@@ -111,7 +112,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     getCityCorporationList(props.currentRow.CityCorporation);
     /* getWardList(props.currentRow.Ward);
     getPGIdList(props.currentRow.PGId); */
-    getValuechainIdList(props.currentRow.ValuechainId);
+   // getValuechainIdList(props.currentRow.ValuechainId);
 
     // Set the initial value of RelationWithHeadOfHH
     if (
@@ -158,6 +159,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
+    selectValuechainId,
     selectPGId
   ) {
     let params = {
@@ -181,6 +183,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         SelectDistrictId,
         selectUpazilaId,
         selectUnionId,
+        selectValuechainId,
         selectPGId
       );
 
@@ -196,6 +199,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
+    selectValuechainId,
     selectPGId
   ) {
     let params = {
@@ -217,6 +221,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         SelectDistrictId,
         selectUpazilaId,
         selectUnionId,
+        selectValuechainId,
         selectPGId
       );
     });
@@ -227,6 +232,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
+    selectValuechainId,
     selectPGId
   ) {
     let params = {
@@ -249,6 +255,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         SelectDistrictId,
         selectUpazilaId,
         selectUnionId,
+        selectValuechainId,
         selectPGId
       );
     });
@@ -259,6 +266,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
+    selectValuechainId,
     selectPGId
   ) {
     let params = {
@@ -286,11 +294,64 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         selectPGId
       ); */
 	  
+      /* getPGIdList(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId,
+        selectUnionId,
+        selectValuechainId,
+        selectPGId
+      ); */
+
+      getValuechainIdList(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId,
+        selectUnionId,
+        selectValuechainId,
+        selectPGId
+      );
+
       getPGIdList(
         selectDivisionId,
         SelectDistrictId,
         selectUpazilaId,
         selectUnionId,
+        selectValuechainId,
+        selectPGId
+      );
+
+
+    });
+  }
+
+
+  function getValuechainIdList( selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId,
+    selectUnionId,
+    selectValuechainId,
+    selectPGId
+    ) {
+    let params = {
+      action: "QuestionMapCategoryList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setValuechainId(
+        [{ id: "", name: "Select Value Chain" }].concat(res.data.datalist)
+      );
+
+      setCurrValuechainId(selectValuechainId);
+
+      getPGIdList(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId,
+        selectUnionId,
+        selectValuechainId,
         selectPGId
       );
 
@@ -360,21 +421,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     });
   }
 
-  function getValuechainIdList(selectValuechainId) {
-    let params = {
-      action: "QuestionMapCategoryList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
 
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setValuechainId(
-        [{ id: "", name: "Select Value Chain" }].concat(res.data.datalist)
-      );
-
-      setCurrValuechainId(selectValuechainId);
-    });
-  }
 
   function getRoleList(selectRoleId) {
     let params = {
@@ -449,6 +496,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
+    selectValuechainId,
     selectPGId) {
     let params = {
       action: "PgGroupListByUnion",
@@ -458,6 +506,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       DistrictId: SelectDistrictId,
       UpazilaId: selectUpazilaId,
       UnionId: selectUnionId,
+      ValuechainId: selectValuechainId,
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
@@ -531,22 +580,28 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
       setCurrDistrictId("");
       setCurrUpazilaId("");
-      getDistrict(value, "", "", "", "");
-      getUpazila(value, "", "", "", "");
-      getUnion(value, "", "", "", "");
+      getDistrict(value, "", "", "", "", "");
+      getUpazila(value, "", "", "", "", "");
+      getUnion(value, "", "", "", "", "");
       /* getWardList(value, "", "", "", ""); */
-      getPGIdList(value, "", "", "", "");
+      getPGIdList(value, "", "", "", "", "");
     } else if (name === "DistrictId") {
       setCurrDistrictId(value);
-      getUpazila(currentRow.DivisionId, value, "", "", "");
+      getUpazila(currentRow.DivisionId, value, "", "", "", "");
     } else if (name === "UpazilaId") {
       setCurrUpazilaId(value);
-      getUnion(currentRow.DivisionId, currentRow.DistrictId, value, "", "");
+      getUnion(currentRow.DivisionId, currentRow.DistrictId, value, "", "", "");
     } else if (name === "UnionId") {
       setCurrUnionId(value);
       /* getWardList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, ""); */
-      getPGIdList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, "");
+      getPGIdList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, currentRow.ValuechainId, "");
     }
+
+    if (name === "ValuechainId") {
+      setCurrValuechainId(value);
+      getPGIdList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, currentRow.UnionId, value, "");
+    }
+
 
     if (name === "Gender") {
       setCurrGender(value);
@@ -579,10 +634,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     /*   if (name === "QuestionParentId") {
       setCurrParentQuestion(value);
     } */
-    if (name === "ValuechainId") {
-      setCurrValuechainId(value);
-    }
-
+  
     if (name == "Phone") {
       /* let vPhoneNoNo = '';
         const onlyNums = value.replace(/[^0-9]/g, '');
@@ -1235,9 +1287,22 @@ const uploadImage = (file, photoType) => {
             </select>
           </div>
 
-          <div class="contactmodalBody pt-10">
+          <div className="contactmodalBody pt-10">
+            <label>Value Chain</label>
+            <select
+              id="ValuechainId"
+              name="ValuechainId"
+              class={errorObject.ValuechainId}
+              value={currValuechainId}
+              onChange={(e) => handleChange(e)}
+            >
+              {valuechainList &&
+                valuechainList.map((item, index) => {
+                  return <option value={item.id}>{item.name}</option>;
+                })}
+            </select>
 
-          <label>Name of Producer Group</label>
+            <label>Name of Producer Group</label>
             <select
               id="PGId"
               name="PGId"
@@ -1250,6 +1315,23 @@ const uploadImage = (file, photoType) => {
                   return <option value={item.id}>{item.name}</option>;
                 })}
             </select>
+          </div>
+
+          <div class="contactmodalBody pt-10">
+
+          {/* <label>Name of Producer Group</label>
+            <select
+              id="PGId"
+              name="PGId"
+              class={errorObject.PGId}
+              value={currPGId}
+              onChange={(e) => handleChange(e)}
+            >
+              {pgList &&
+                pgList.map((item, index) => {
+                  return <option value={item.id}>{item.name}</option>;
+                })}
+            </select> */}
 
            
 
@@ -1262,6 +1344,17 @@ const uploadImage = (file, photoType) => {
               value={currentRow.Ward}
               onChange={(e) => handleChange(e)}
             />
+
+            <label>Village</label>
+            <input
+              type="text"
+              id="VillageName"
+              name="VillageName"
+              placeholder="Enter Village Name"
+              value={currentRow.VillageName}
+              onChange={(e) => handleChange(e)}
+            />
+
            {/*  <select
               id="Ward"
               name="Ward"
@@ -1292,7 +1385,18 @@ const uploadImage = (file, photoType) => {
               })}
           </select>
 
-            <label>Village</label>
+          <label>Address* </label>
+            <input
+              type="text"
+              id="Address"
+              name="Address"
+              class={errorObject.Address}
+              placeholder="Enter Address"
+              value={currentRow.Address}
+              onChange={(e) => handleChange(e)}
+            />
+
+            {/* <label>Village</label>
             <input
               type="text"
               id="VillageName"
@@ -1300,7 +1404,7 @@ const uploadImage = (file, photoType) => {
               placeholder="Enter Village Name"
               value={currentRow.VillageName}
               onChange={(e) => handleChange(e)}
-            />
+            /> */}
 
           </div>
 
@@ -1317,42 +1421,8 @@ const uploadImage = (file, photoType) => {
               onChange={(e) => handleChange(e)}
             />
 
-          <label>Address* </label>
-            <input
-              type="text"
-              id="Address"
-              name="Address"
-              class={errorObject.Address}
-              placeholder="Enter Address"
-              value={currentRow.Address}
-              onChange={(e) => handleChange(e)}
-            />
-         
 
-
-          </div>
-
-          <div className="contactmodalBody pt-10">
-            <label>Longitute</label>
-            <div className="autocompleteContainer">
-              <input
-                type="text"
-                id="Longitute"
-                disabled="true"
-                name="Longitute"
-                placeholder="Enter Longitute"
-                value={currentRow.Longitute}
-                onChange={(e) => handleChange(e)}
-              />
-
-              <Button
-                label={"Location"}
-                class={"btnDetailsLatLong"}
-                onClick={getLocation}
-              />
-            </div>
-
-            <label>Are You Head of The Group?</label>
+<label>Are You Head of The Group?</label>
             <div className="checkbox-label">
               <label className="radio-label">
                 <input
@@ -1378,9 +1448,72 @@ const uploadImage = (file, photoType) => {
                 No
               </label>
             </div>
+
+
+          {/* <label>Address* </label>
+            <input
+              type="text"
+              id="Address"
+              name="Address"
+              class={errorObject.Address}
+              placeholder="Enter Address"
+              value={currentRow.Address}
+              onChange={(e) => handleChange(e)}
+            /> */}
+         
+
+
           </div>
 
           <div className="contactmodalBody pt-10">
+            <label>Longitute</label>
+            <div className="autocompleteContainer">
+              <input
+                type="text"
+                id="Longitute"
+                disabled="true"
+                name="Longitute"
+                placeholder="Enter Longitute"
+                value={currentRow.Longitute}
+                onChange={(e) => handleChange(e)}
+              />
+
+              <Button
+                label={"Location"}
+                class={"btnDetailsLatLong"}
+                onClick={getLocation}
+              />
+            </div>
+
+            {/* <label>Are You Head of The Group?</label>
+            <div className="checkbox-label">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="IsHeadOfTheGroup"
+                  name="IsHeadOfTheGroup"
+                  value={1}
+                  checked={currentRow.IsHeadOfTheGroup === 1}
+                  onChange={() => handleChangeMany(1, "IsHeadOfTheGroup")}
+                />
+                Yes
+              </label>
+
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="IsHeadOfTheGroup_false"
+                  name="IsHeadOfTheGroup"
+                  value={0}
+                  checked={currentRow.IsHeadOfTheGroup === 0}
+                  onChange={() => handleChangeMany(0, "IsHeadOfTheGroup")}
+                />
+                No
+              </label>
+            </div> */}
+          </div>
+
+         {/*  <div className="contactmodalBody pt-10">
             <label>Value Chain</label>
             <select
               id="ValuechainId"
@@ -1394,7 +1527,7 @@ const uploadImage = (file, photoType) => {
                   return <option value={item.id}>{item.name}</option>;
                 })}
             </select>
-          </div>
+          </div> */}
 
           {/* <div class="contactmodalBody pt-10">
             <label>Type of Farmers:</label>

@@ -883,7 +883,9 @@ function PgGroupListByUnion($data) {
 		$DistrictId = trim($data->DistrictId);
 		$UpazilaId = trim($data->UpazilaId);
 		$UnionId = trim($data->UnionId);
-
+		$ValuechainId = trim($data->ValuechainId)?trim($data->ValuechainId):''; 
+		
+		
 
 		$dbh = new Db();
 		
@@ -898,7 +900,9 @@ function PgGroupListByUnion($data) {
 			AND DistrictId=$DistrictId
 			AND UpazilaId=$UpazilaId
 			AND UnionId=$UnionId
-		ORDER BY PGName;"; 
+			AND (ValuechainId = '$ValuechainId' OR '$ValuechainId' ='')
+		ORDER BY PGName;";
+
 	
 		$resultdata = $dbh->query($query);
 
