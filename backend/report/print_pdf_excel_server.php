@@ -250,7 +250,7 @@ function RoleToMenuPermissionExport() {
 
 	$RoleId = $_REQUEST['RoleId'];
 	
-	$sql = "SELECT a.MenuId,IF(MenuLevel='menu_level_2',CONCAT(' -', a.MenuTitle),IF(MenuLevel='menu_level_3',CONCAT(' --', a.MenuTitle),a.MenuTitle)) menuname,
+	$sql = "SELECT a.MenuId,IF(MenuLevel='menu_level_2',CONCAT(' ----', a.MenuTitle),IF(MenuLevel='menu_level_3',CONCAT(' -----', a.MenuTitle),a.MenuTitle)) menuname,
 	CASE WHEN b.MenuId IS NULL THEN 'No' ELSE 'Yes' END bChecked, RoleMenuId
 	FROM `t_menu` a
 	LEFT JOIN t_role_menu_map b ON b.`MenuId` = a.`MenuId` AND b.RoleId = $RoleId
