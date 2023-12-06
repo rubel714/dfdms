@@ -165,7 +165,7 @@ function RegularBeneficiaryExport() {
 		ELSE 'Other'
 		END AS HeadOfHHSex,
 		b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, 
-			e.ValueChainName, f.UnionName, g.PGName, h.WardName, i.CityCorporationName, a.VillageName,
+			e.ValueChainName, f.UnionName, g.PGName, a.Ward AS WardName, i.CityCorporationName, a.VillageName,
 			CASE WHEN a.IsHeadOfTheGroup = 1 THEN 'Yes' ELSE 'No' END AS HeadOfTheGroup
 		
 		FROM t_farmer a
@@ -175,7 +175,6 @@ function RegularBeneficiaryExport() {
 		INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
 		LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
 		LEFT JOIN t_pg g ON a.`PGId` = g.`PGId`
-		LEFT JOIN t_ward h ON a.`Ward` = h.`Ward`
 		LEFT JOIN t_citycorporation i ON a.`CityCorporation` = i.`CityCorporation`;";
 	
     $tableProperties["query_field"] = array('FarmerName','RegularStatus','NID','Phone','FatherName','MotherName','SpouseName','GenderName','FarmersAge','isDisabilityStatus','RelationWithHeadOfHH','HeadOfHHSex','PGRegistered','TypeOfMember','PGPartnershipWithOtherCompany','PGFarmerCode','FamilyOccupation','DivisionName','DistrictName','UpazilaName','UnionName','PGName','WardName','CityCorporationName','VillageName','Address','Latitute','Longitute','HeadOfTheGroup','ValueChainName','TypeOfFarmerId');
