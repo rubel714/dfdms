@@ -107,6 +107,9 @@ switch($task){
 	case "DisabilityStatusList":
 		$returnData = DisabilityStatusList($data);
 		break;
+	case "AgencyDepartmntList":
+		$returnData = AgencyDepartmntList($data);
+		break;
 	case "PgGroupListByUnion":
 		$returnData = PgGroupListByUnion($data);
 		break;
@@ -768,13 +771,11 @@ function FamilyOccupationList($data) {
 		$dbh = new Db();
 	
 
-		$jsonData = '[
-			{"id":"1","name":"Business"},
-			{"id":"2","name":"Agriculture"},
-			{"id":"4","name":"Employement"}
-		]';
+		$query = "SELECT OccupationId id, OccupationName name
+		FROM t_occupation ORDER BY OccupationName;"; 
 
-		$resultdata = json_decode($jsonData, true);
+		$resultdata = $dbh->query($query);
+
 
 		$returnData = [
 			"success" => 1,
@@ -860,6 +861,31 @@ function DisabilityStatusList($data) {
 		]';
 
 		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
+function AgencyDepartmntList($data) {
+	try{
+	
+		$dbh = new Db();
+
+		$query = "SELECT DepartmentId id, DepartmentName `name` FROM t_department 
+			ORDER BY DepartmentName;"; 
+
+		$resultdata = $dbh->query($query);
 
 		$returnData = [
 			"success" => 1,

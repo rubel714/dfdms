@@ -702,12 +702,7 @@ function getFarmerInfo($data)
         ELSE 'Other'
     	END AS TypeOfMember,
 
-		CASE
-        WHEN a.FamilyOccupation = 1 THEN 'Business'
-        WHEN a.FamilyOccupation = 2 THEN 'Agriculture'
-        WHEN a.FamilyOccupation = 3 THEN 'Employement'
-        ELSE 'Other'
-    	END AS FamilyOccupation,
+		oc.OccupationName AS FamilyOccupation,
 
 		CASE
         WHEN a.HeadOfHHSex = 1 THEN 'Male'
@@ -726,6 +721,7 @@ function getFarmerInfo($data)
 		LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
 		LEFT JOIN t_pg g ON a.`PGId` = g.`PGId`
 		LEFT JOIN t_citycorporation i ON a.`CityCorporation` = i.`CityCorporation`
+		LEFT JOIN t_occupation oc ON a.`OccupationId` = oc.`OccupationId`
 
 		
 

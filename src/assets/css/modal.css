@@ -22,10 +22,11 @@
 /* GLOBAL SETTING FOR ALL MODAL INPUT */
 .modal input[type=text],
 .modal input[type=number],
+.modal input[type=date],
 .modal select {
-    height: 36px;
+    height: 31px;
     width: 100%;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .modal textarea {
@@ -69,6 +70,20 @@
     border-radius: 8px;
     color: var(--headerFont-color);
 }
+
+.modalHeaderWithButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 50px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    color: var(--headerFont-color);
+    justify-content: space-between;
+}
+
 
 /* STYLE FOR EACH MODAL DIV */
 .modalItem {
@@ -129,7 +144,7 @@
 .modal .contactmodalBody label {
     font-size: .8rem;
     font-weight: bold;
-    padding-top: 6px;
+    padding-top: 8px;
     text-align: end;
     padding-right: 8px;
 }

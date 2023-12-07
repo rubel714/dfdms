@@ -99,18 +99,28 @@ function getDataList($data){
 			a.`PGPartnershipWithOtherCompany`,
 			a.`TypeOfMember`,
 			a.`PGFarmerCode`,
-			a.`FamilyOccupation`,
+			a.`OccupationId`,
 			a.`VillageName`,
 			a.`Latitute`,
 			a.`Longitute`,
 			a.`IsHeadOfTheGroup`,
 			a.`ValuechainId`,
 			a.`TypeOfFarmerId`,
+			a.dob,
 			case when a.IsRegular=1 then 'Regular' else 'No' end IsRegularBeneficiary,
-			b.GenderName
+			b.GenderName, c.ValueChainName, d.PGName, a.DepartmentId, a.ifOtherSpecify, a.DateOfRegistration
+			, a.RegistrationNo, a.NameOfTheCompanyYourPgPartnerWith 
+			, a.WhenDidYouStartToOperateYourFirm
+			, a.NumberOfMonthsOfYourOperation
+			, a.AreYouRegisteredYourFirmWithDlsRadioFlag
+			, a.registrationDate
+			, a.IfRegisteredYesRegistrationNo
+			, a.FarmsPhoto
 		  FROM
 		  `t_farmer` a 
 		  Inner Join t_gender b ON a.Gender = b.GenderId
+		  LEFT JOIN t_valuechain c ON a.ValuechainId = c.ValuechainId
+		  LEFT JOIN t_pg d ON a.PGId = d.PGId
 		  WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
@@ -179,13 +189,13 @@ function dataAddEdit($data) {
 		$Gender = $data->rowData->Gender ? $data->rowData->Gender : null;
 		$FarmersAge = $data->rowData->FarmersAge ? $data->rowData->FarmersAge : null;
 		$DisabilityStatus = $data->rowData->DisabilityStatus ? $data->rowData->DisabilityStatus : null;
-		$RelationWithHeadOfHH = $data->rowData->RelationWithHeadOfHH ? $data->rowData->RelationWithHeadOfHH : 0;
+		$RelationWithHeadOfHH = $data->rowData->RelationWithHeadOfHH ? $data->rowData->RelationWithHeadOfHH : 1;
 		$HeadOfHHSex = $data->rowData->HeadOfHHSex ? $data->rowData->HeadOfHHSex : null;
 		$PGRegistered = $data->rowData->PGRegistered ? $data->rowData->PGRegistered : 0;
 		$PGPartnershipWithOtherCompany =  $data->rowData->PGPartnershipWithOtherCompany ? $data->rowData->PGPartnershipWithOtherCompany : 0;
 		$TypeOfMember = $data->rowData->TypeOfMember? $data->rowData->TypeOfMember : null;
 		$PGFarmerCode = $data->rowData->PGFarmerCode? $data->rowData->PGFarmerCode : null;
-		$FamilyOccupation =  $data->rowData->FamilyOccupation? $data->rowData->FamilyOccupation : null;
+		$OccupationId =  $data->rowData->OccupationId? $data->rowData->OccupationId : null;
 		$UnionId = $data->rowData->UnionId? $data->rowData->UnionId : null;
 		$CityCorporation = $data->rowData->CityCorporation? $data->rowData->CityCorporation : null;
 		$Ward = $data->rowData->Ward? $data->rowData->Ward : null;
@@ -198,11 +208,23 @@ function dataAddEdit($data) {
 		$multiselectPGroup = isset($data->rowData->multiselectPGroup) ? $data->rowData->multiselectPGroup : '';
 		$TypeOfFarmerIdc = implode(",", $multiselectPGroup);
 		$TypeOfFarmerId = $TypeOfFarmerIdc? $TypeOfFarmerIdc : null;
-
+	
+		$dob = $data->rowData->dob ? $data->rowData->dob : null;
+		$DepartmentId = $data->rowData->DepartmentId ? $data->rowData->DepartmentId : null;
+		$ifOtherSpecify = $data->rowData->ifOtherSpecify ? $data->rowData->ifOtherSpecify : null;
+		$DateOfRegistration = $data->rowData->DateOfRegistration ? $data->rowData->DateOfRegistration : null;
+		$RegistrationNo = $data->rowData->RegistrationNo ? $data->rowData->RegistrationNo : null;
+		$NameOfTheCompanyYourPgPartnerWith = $data->rowData->NameOfTheCompanyYourPgPartnerWith ? $data->rowData->NameOfTheCompanyYourPgPartnerWith : null;
+		$WhenDidYouStartToOperateYourFirm = $data->rowData->WhenDidYouStartToOperateYourFirm ? $data->rowData->WhenDidYouStartToOperateYourFirm : null;
+		$NumberOfMonthsOfYourOperation = $data->rowData->NumberOfMonthsOfYourOperation ? $data->rowData->NumberOfMonthsOfYourOperation : null;
+		$AreYouRegisteredYourFirmWithDlsRadioFlag = $data->rowData->AreYouRegisteredYourFirmWithDlsRadioFlag ? $data->rowData->AreYouRegisteredYourFirmWithDlsRadioFlag : 0;
+		$registrationDate = $data->rowData->registrationDate ? $data->rowData->registrationDate : null;
+		$IfRegisteredYesRegistrationNo = $data->rowData->IfRegisteredYesRegistrationNo ? $data->rowData->IfRegisteredYesRegistrationNo : null;
+		$FarmsPhoto = $data->rowData->FarmsPhoto ? $data->rowData->FarmsPhoto : null;
 
 
 		try{
-
+			
 			$dbh = new Db();
 			$aQuerys = array();
 
@@ -210,8 +232,8 @@ function dataAddEdit($data) {
 				
 				$q = new insertq();
 				$q->table = 't_farmer';
-				$q->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'UnionId', 'CityCorporation', 'Ward', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode','FamilyOccupation','VillageName','Latitute','Longitute','IsHeadOfTheGroup','ValuechainId', 'TypeOfFarmerId'];
-				$q->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $UnionId, $CityCorporation, $Ward, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode, $FamilyOccupation, $VillageName,$Latitute, $Longitute,  $IsHeadOfTheGroup, $ValuechainId, $TypeOfFarmerId];
+				$q->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'UnionId', 'CityCorporation', 'Ward', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode','OccupationId','VillageName','Latitute','Longitute','IsHeadOfTheGroup','ValuechainId', 'TypeOfFarmerId', 'dob','DepartmentId','ifOtherSpecify','DateOfRegistration','RegistrationNo','NameOfTheCompanyYourPgPartnerWith','WhenDidYouStartToOperateYourFirm','NumberOfMonthsOfYourOperation','AreYouRegisteredYourFirmWithDlsRadioFlag','registrationDate','IfRegisteredYesRegistrationNo','FarmsPhoto'];
+				$q->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $UnionId, $CityCorporation, $Ward, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode, $OccupationId, $VillageName,$Latitute, $Longitute,  $IsHeadOfTheGroup, $ValuechainId, $TypeOfFarmerId, $dob, $DepartmentId, $ifOtherSpecify, $DateOfRegistration, $RegistrationNo, $NameOfTheCompanyYourPgPartnerWith, $WhenDidYouStartToOperateYourFirm, $NumberOfMonthsOfYourOperation, $AreYouRegisteredYourFirmWithDlsRadioFlag, $registrationDate, $IfRegisteredYesRegistrationNo, $FarmsPhoto];
 				$q->pks = ['FarmerId'];
 				$q->bUseInsetId = false;
 				$q->build_query();
@@ -222,8 +244,8 @@ function dataAddEdit($data) {
 				
 				$u = new updateq();
 				$u->table = 't_farmer';
-				$u->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'UnionId', 'CityCorporation', 'Ward', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode','FamilyOccupation','VillageName','Latitute','Longitute','IsHeadOfTheGroup','ValuechainId', 'TypeOfFarmerId'];
-				$u->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $UnionId, $CityCorporation, $Ward, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode, $FamilyOccupation, $VillageName,$Latitute, $Longitute, $IsHeadOfTheGroup, $ValuechainId, $TypeOfFarmerId];
+				$u->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'UnionId', 'CityCorporation', 'Ward', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode','OccupationId','VillageName','Latitute','Longitute','IsHeadOfTheGroup','ValuechainId', 'TypeOfFarmerId', 'dob','DepartmentId','ifOtherSpecify','DateOfRegistration','RegistrationNo','NameOfTheCompanyYourPgPartnerWith','WhenDidYouStartToOperateYourFirm','NumberOfMonthsOfYourOperation','AreYouRegisteredYourFirmWithDlsRadioFlag','registrationDate','IfRegisteredYesRegistrationNo','FarmsPhoto'];
+				$u->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $UnionId, $CityCorporation, $Ward, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode, $OccupationId, $VillageName,$Latitute, $Longitute, $IsHeadOfTheGroup, $ValuechainId, $TypeOfFarmerId, $dob, $DepartmentId, $ifOtherSpecify, $DateOfRegistration, $RegistrationNo, $NameOfTheCompanyYourPgPartnerWith, $WhenDidYouStartToOperateYourFirm, $NumberOfMonthsOfYourOperation, $AreYouRegisteredYourFirmWithDlsRadioFlag, $registrationDate, $IfRegisteredYesRegistrationNo, $FarmsPhoto];
 				$u->pks = ['FarmerId'];
 				$u->pk_values = [$FarmerId];
 				$u->build_query();
