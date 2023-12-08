@@ -3729,7 +3729,7 @@ const DataCollectionEntry = (props) => {
                   </div>
 
 
-              <div class="formControl-filter-data">
+              <div class="formControl">
                 <label>Enumerator Designation:*</label>
                 <Autocomplete
                   autoHighlight
