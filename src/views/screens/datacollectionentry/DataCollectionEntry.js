@@ -1725,16 +1725,17 @@ const DataCollectionEntry = (props) => {
     let validMany = validateFormMany();
     if (validMaster && validMany) {
       apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-        // console.log('res: ', res);
+        console.log('res: ', res);
 
         props.openNoticeModal({
           isOpen: true,
           msg: res.data.message,
           msgtype: res.data.success,
         });
+        // console.log('res.success: ', res.success);
 
-        if (res.success) {
-          // console.log('currentInvoice: ', currentInvoice);
+        if (res.data.success) {
+          console.log('currentInvoice: ', currentInvoice);
           if (currentInvoice.id === "") {
             //New
             getDataSingleFromServer(res.data.id);
@@ -2078,8 +2079,9 @@ const DataCollectionEntry = (props) => {
                     })}
                 </select>
               </div>
-             {/*  <Button label={"Approve"} class={"btnAdd"} onClick={addData} />
-              <Button label={"Return"} class={"btnAdd"} onClick={addData} />*/}
+              <Button label={"Submit"} class={"btnAdd"} onClick={addData} />
+              <Button label={"Approve"} class={"btnAdd"} onClick={addData} />
+              <Button label={"Return"} class={"btnAdd"} onClick={addData} />
               {/* <Button label={"ADD"} class={"btnAdd"} onClick={addData} /> */}
               <Button label={"Enter Data"} class={"btnAdd"} onClick={addData} />
             </div>

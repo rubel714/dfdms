@@ -182,7 +182,7 @@ function getDataSingle($data)
 
 		/**Master Data */
 		$query = "SELECT `DataValueMasterId` as id, `DivisionId`, `DistrictId`, `UpazilaId`,DataTypeId, `PGId`,FarmerId,Categories, `YearId`, `QuarterId`,
-		 `Remarks`, `DataCollectorName`, `DataCollectionDate`, `UserId`, `BPosted`,StatusId, `UpdateTs`, `CreateTs`,a.DesignationId,a.PhoneNumber
+		 `Remarks`, `DataCollectorName`, `DataCollectionDate`, `UserId`, `BPosted`,StatusId, `UpdateTs`, `CreateTs`,DesignationId,PhoneNumber
 		FROM t_datavaluemaster
 		where DataValueMasterId=$DataValueMasterId;";
 		$resultdataMaster = $dbh->query($query);
