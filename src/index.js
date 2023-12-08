@@ -30,6 +30,10 @@ import QuestionsEntry from "views/screens/questionsentry/index.js";
 import RegularBeneficiaryEntry from "views/screens/regularbeneficiaryentry/index.js";
 import UserEntry from "views/screens/userentry/index.js";
 import DatatypeQuestionsMap from "views/screens/datatypequestionsmap/index.js";
+import MembersByPg from "views/screens/membersbypg/index.js";
+import GenderWisePGMembers from "views/screens/genderwisepgmembers/index.js";
+import ValueChainWisePGDistribution from "views/screens/valuechainwisepgdistribution/index.js";
+import ValueChainWisePGMemberDistribution from "views/screens/valuechainwisepgmemberdistribution/index.js";
 
 import UserContextProvider from "./context/user-info-context";
 
@@ -74,7 +78,7 @@ ReactDOM.render(
             path="/datatypequestionsmap"
             render={(props) => <DatatypeQuestionsMap {...props} />}
           />
-
+    
           <Route
             path="/pgdatacollection"
             render={(props) => <PGDataCollection {...props} />}
@@ -111,6 +115,22 @@ ReactDOM.render(
           <Route
             path="/regularbeneficiaryentry"
             render={(props) => <RegularBeneficiaryEntry {...props} />}
+          />
+          <Route
+            path="/membersbypg"
+            render={(props) => <MembersByPg {...props} />}
+          />
+          <Route
+            path="/genderwisepgmembers"
+            render={(props) => <GenderWisePGMembers {...props} />}
+          />
+          <Route
+            path="/valuechainwisepgdistribution"
+            render={(props) => <ValueChainWisePGDistribution {...props} />}
+          />
+          <Route
+            path="/valuechainwisepgmemberdistribution"
+            render={(props) => <ValueChainWisePGMemberDistribution {...props} />}
           />
 
           <Route path="/" render={(props) => <Index {...props} />} />

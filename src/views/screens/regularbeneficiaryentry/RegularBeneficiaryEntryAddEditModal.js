@@ -28,14 +28,15 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   const [currParentQuestion, setCurrParentQuestion] = useState(null);
 
   const [previewImage, setPreviewImage] = useState(
-    `${baseUrl}/dfdms/src/assets/farmerimage/placeholder.png`
+    `${baseUrl}/src/assets/farmerimage/placeholder.png`
   );
 
   const [previewImages, setPreviewImages] = useState({
-    NidFrontPhoto: `${baseUrl}/dfdms/src/assets/farmerimage/placeholder.png`,
-    NidBackPhoto: `${baseUrl}/dfdms/src/assets/farmerimage/placeholder.png`,
-    BeneficiaryPhoto: `${baseUrl}/dfdms/src/assets/farmerimage/placeholder.png`,
-    FarmsPhoto: `${baseUrl}/dfdms/src/assets/farmerimage/placeholder.png`,
+    //NidFrontPhoto: `${baseUrl}/dfdms/src/assets/farmerimage/placeholder.png`,
+    NidFrontPhoto: `${baseUrl}/src/assets/farmerimage/placeholder.png`,
+    NidBackPhoto: `${baseUrl}/src/assets/farmerimage/placeholder.png`,
+    BeneficiaryPhoto: `${baseUrl}/src/assets/farmerimage/placeholder.png`,
+    FarmsPhoto: `${baseUrl}/src/assets/farmerimage/placeholder.png`,
   });
   
   
@@ -1060,7 +1061,7 @@ const uploadImage = (file, photoType) => {
                 <div className="image-preview">
                   <img
                     //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidFrontPhoto}`}
-                    src={currentRow.NidFrontPhoto?`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidFrontPhoto}`:previewImage}
+                    src={currentRow.NidFrontPhoto?`${baseUrl}/src/assets/farmerimage/${currentRow.NidFrontPhoto}`:previewImage}
                     alt="NID Front Preview"
                     className="preview-image"
                   />
@@ -1082,7 +1083,7 @@ const uploadImage = (file, photoType) => {
                 <div className="image-preview">
                   <img
                     //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidBackPhoto}`}
-                    src={currentRow.NidBackPhoto?`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidBackPhoto}`:previewImage}
+                    src={currentRow.NidBackPhoto?`${baseUrl}/src/assets/farmerimage/${currentRow.NidBackPhoto}`:previewImage}
                     alt="NID Back Preview"
                     className="preview-image"
                   />
@@ -1127,7 +1128,7 @@ const uploadImage = (file, photoType) => {
                 <div className="image-preview">
                   <img
                     //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.BeneficiaryPhoto}`}
-                    src={currentRow.BeneficiaryPhoto?`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.BeneficiaryPhoto}`:previewImage}
+                    src={currentRow.BeneficiaryPhoto?`${baseUrl}/src/assets/farmerimage/${currentRow.BeneficiaryPhoto}`:previewImage}
                     alt="Beneficiary Preview"
                     className="preview-image"
                   />
@@ -1881,7 +1882,7 @@ const uploadImage = (file, photoType) => {
                 <div className="image-preview">
                   <img
                     //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.FarmsPhoto}`}
-                    src={currentRow.FarmsPhoto?`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.FarmsPhoto}`:previewImage}
+                    src={currentRow.FarmsPhoto?`${baseUrl}/src/assets/farmerimage/${currentRow.FarmsPhoto}`:previewImage}
                     alt="Farm's Photo"
                     className="preview-image"
                   />

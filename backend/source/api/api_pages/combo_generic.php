@@ -925,7 +925,7 @@ function PgGroupListByUnion($data) {
 			WHERE DivisionId=$DivisionId 
 			AND DistrictId=$DistrictId
 			AND UpazilaId=$UpazilaId
-			AND UnionId=$UnionId
+			/* AND UnionId=$UnionId */
 			AND (ValuechainId = '$ValuechainId' OR '$ValuechainId' ='')
 		ORDER BY PGName;";
 

@@ -64,13 +64,43 @@ function AfterLoginNavbar(props) {
                   {" "}
                   Reports
                   <ul class="dropdownList">
-                    {menuShowPermision("report1") === 1 && (
+                    {menuShowPermision("membersbypg") === 1 && (
                       <li>
                         <a
                           href="javascript:void(0)"
-                          onClick={() => props.history.push("report1")}
+                          onClick={() => props.history.push("membersbypg")}
                         >
-                          Report 1
+                          Members by PG
+                        </a>
+                      </li>
+                    )}
+                    {menuShowPermision("genderwisepgmembers") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("genderwisepgmembers")}
+                        >
+                          Gender wise PG Members
+                        </a>
+                      </li>
+                    )}
+                    {menuShowPermision("valuechainwisepgdistribution") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("valuechainwisepgdistribution")}
+                        >
+                          Value Chain wise PG Distribution
+                        </a>
+                      </li>
+                    )}
+                    {menuShowPermision("valuechainwisepgmemberdistribution") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("valuechainwisepgmemberdistribution")}
+                        >
+                          Value Chain wise PG Member Distribution
                         </a>
                       </li>
                     )}
