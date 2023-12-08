@@ -1445,7 +1445,7 @@ const uploadImage = (file, photoType) => {
                   type="text"
                   id="NameOfTheCompanyYourPgPartnerWith"
                   name="NameOfTheCompanyYourPgPartnerWith"
-                  placeholder="Enter if Others, Specify"
+                  placeholder="Enter Name of The Company Your Pg Partner With"
                   class={errorObject.NameOfTheCompanyYourPgPartnerWith}
                   value={currentRow.NameOfTheCompanyYourPgPartnerWith}
                   onChange={(e) => handleChange(e)}
