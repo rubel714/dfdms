@@ -888,4 +888,5 @@ input[type=search] {
 
 .filter-button {
     margin-top: 15px;
+    text-align: right;
 }

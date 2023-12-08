@@ -386,8 +386,12 @@ const RegularBeneficiaryEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDivisionList(
+      /* setDivisionList(
         [{ id: "", name: "All" }].concat(res.data.datalist)
+      ); */
+
+      setDivisionList(
+        res.data.datalist
       );
 
 
