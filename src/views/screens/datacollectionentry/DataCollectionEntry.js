@@ -35,6 +35,7 @@ const DataCollectionEntry = (props) => {
   const [quarterList, setQuarterList] = useState(null);
   const [yearList, setYearList] = useState(null);
   const [filterYearList, setFilterYearList] = useState(null);
+  const [DesignationList, setDesignationList] = useState(null);
 
   const [currentFilter, setCurrentFilter] = useState([]); //this is for master information. It will send to sever for save
   const [currentInvoice, setCurrentInvoice] = useState([]); //this is for master information. It will send to sever for save
@@ -409,6 +410,8 @@ const DataCollectionEntry = (props) => {
       Categories: "",
       Remarks: "",
       DataCollectorName: "",
+      DesignationId: "",
+      PhoneNumber: "",
       DataCollectionDate: currentDate,
       UserId: UserInfo.UserId,
       BPosted: 0,
@@ -769,6 +772,7 @@ const DataCollectionEntry = (props) => {
     getQuestionList();
     getPgGroupList();
     getYearList();
+    getDesignation();
 
     getLandTypeList();
     getGrassList();
@@ -876,6 +880,23 @@ const DataCollectionEntry = (props) => {
       setFilterYearList(
         [{ id: "", name: "বছর নির্বাচন করুন" }].concat(res.data.datalist)
       );
+    });
+  }
+
+  
+  function getDesignation() {
+    let params = {
+      action: "DesignationList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setDesignationList(
+        [{ id: "", name: "Select Designation" }].concat(res.data.datalist)
+      );
+
+      // setCurrDesignationId(selectDesignationId);
     });
   }
 
@@ -1593,6 +1614,8 @@ const DataCollectionEntry = (props) => {
       "PGId",
       "DataCollectorName",
       "DataCollectionDate",
+      "DesignationId",
+      "PhoneNumber",
     ];
     let errorData = {};
     let isValid = true;
@@ -2055,8 +2078,8 @@ const DataCollectionEntry = (props) => {
                     })}
                 </select>
               </div>
-              <Button label={"Approve"} class={"btnAdd"} onClick={addData} />
-              <Button label={"Return"} class={"btnAdd"} onClick={addData} />
+             {/*  <Button label={"Approve"} class={"btnAdd"} onClick={addData} />
+              <Button label={"Return"} class={"btnAdd"} onClick={addData} />*/}
               {/* <Button label={"ADD"} class={"btnAdd"} onClick={addData} /> */}
               <Button label={"Enter Data"} class={"btnAdd"} onClick={addData} />
             </div>
@@ -3675,22 +3698,24 @@ const DataCollectionEntry = (props) => {
                     />
                   </div> */}
 
+                
                   <div class="formControl bordertop">
-                    <label> মন্তব্য (Remarks):</label>
+                    <label>
+                    Date of Interview*:
+                    </label>
 
-                    <textarea
-                      type="text"
-                      id="Remarks"
-                      name="Remarks"
-                      value={currentInvoice.Remarks}
+                    <input
+                      type="date"
+                      id="DataCollectionDate"
+                      name="DataCollectionDate"
+                      class={errorObjectMaster.DataCollectionDate}
+                      value={currentInvoice.DataCollectionDate}
                       onChange={(e) => handleChangeMaster(e)}
-                      rows={4}
                     />
                   </div>
-
                   <div class="formControl">
                     <label>
-                      তথ্য সংগ্রহকারীর নাম: (Name of data collector)*:
+                    Name of Enumerator*:
                     </label>
 
                     <input
@@ -3703,20 +3728,84 @@ const DataCollectionEntry = (props) => {
                     />
                   </div>
 
-                  <div class="formControl">
+
+              <div class="formControl-filter-data">
+                <label>Enumerator Designation:*</label>
+                <Autocomplete
+                  autoHighlight
+                  // freeSolo
+                  className="chosen_dropdown"
+                  id="DesignationId"
+                  name="DesignationId"
+                  autoComplete
+                  options={DesignationList ? DesignationList : []}
+                  getOptionLabel={(option) => option.name}
+                  // value={chosenValuesYearId["DesignationId"]}
+                  // onChange={(event, valueobj) =>
+                  //   handleChangeChoosenMasterYear(
+                  //     "DesignationId",
+                  //     valueobj,
+                  //     valueobj ? valueobj.id : ""
+                  //   )
+                  // }
+                  value= {DesignationList
+                      ? DesignationList[
+                        DesignationList.findIndex(
+                            (list) => list.id == currentInvoice.DesignationId
+                          )
+                        ]
+                      : null
+                  }
+                  onChange={(event, valueobj) =>
+                    handleChangeChoosenMaster(
+                      "DesignationId",
+                      valueobj ? valueobj.id : ""
+                    )
+                  }
+                  renderOption={(option) => (
+                    <Typography className="chosen_dropdown_font">
+                      {option.name}
+                    </Typography>
+                  )}
+                  renderInput={(params) => (
+                    <TextField {...params} variant="standard" fullWidth />
+                  )}
+                />
+              </div>
+
+
+              <div class="formControl">
                     <label>
-                      তথ্য সংগ্রহের তারিখঃ (Date of data collection)*:
+                    Cell No. of Enumerator*:
                     </label>
 
                     <input
-                      type="date"
-                      id="DataCollectionDate"
-                      name="DataCollectionDate"
-                      class={errorObjectMaster.DataCollectionDate}
-                      value={currentInvoice.DataCollectionDate}
+                      type="text"
+                      id="PhoneNumber"
+                      name="PhoneNumber"
+                      class={errorObjectMaster.PhoneNumber}
+                      value={currentInvoice.PhoneNumber}
                       onChange={(e) => handleChangeMaster(e)}
                     />
                   </div>
+
+              <div class="formControl ">
+                    <label>Enumerator Comment:</label>
+
+                    <textarea
+                      type="text"
+                      id="Remarks"
+                      name="Remarks"
+                      value={currentInvoice.Remarks}
+                      onChange={(e) => handleChangeMaster(e)}
+                      rows={4}
+                    />
+                  </div>
+
+
+                  
+
+               
 
                   <div class="btnAddForm">
                     <Button

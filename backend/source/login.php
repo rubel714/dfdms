@@ -199,7 +199,7 @@ else {
 
                 $userRow["UserAllowdMenuList"] = $memuList;
                 $userRow["Password"] = "HIDDEN";
-                // getStatusChangeAllow($conn);
+                // getStatusChangeAllow($conn, $userRow["RoleId"]);
                 $userRow["StatusChangeAllow"] = ["Submit","Accept","Approve"];
 
                 $returnData = [
@@ -240,12 +240,10 @@ echo json_encode($returnData);
 
 
 
-function getStatusChangeAllow($conn){
+function getStatusChangeAllow($conn, $RoleList){
     $status = array();
 
-    $query = "SELECT StatusId,StatusName,RoleIds
-    FROM t_status;";
-
+    $query = "SELECT StatusId,StatusName,RoleIds FROM t_status;";
     $result = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
     $statusList = array();
     foreach($result as $row){

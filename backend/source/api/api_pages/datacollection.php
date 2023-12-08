@@ -62,7 +62,7 @@ function getDataList($data)
 		$query = "SELECT a.`DataValueMasterId` as id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGId`,a.FarmerId,a.Categories, a.`YearId`, a.`QuarterId`,
 		 a.`Remarks`, a.`DataCollectorName`, a.`DataCollectionDate`, a.`UserId`,a.BPosted
 		, concat(a.YearId,' (',e.QuarterName,')') QuarterName, b.DivisionName,c.DistrictName,d.UpazilaName,f.PGName
-		,a.StatusId
+		,a.StatusId,a.DesignationId,a.PhoneNumber
 		FROM t_datavaluemaster a
 		inner join t_division b on a.DivisionId=b.DivisionId
 		inner join t_district c on a.DistrictId=c.DistrictId
@@ -182,7 +182,7 @@ function getDataSingle($data)
 
 		/**Master Data */
 		$query = "SELECT `DataValueMasterId` as id, `DivisionId`, `DistrictId`, `UpazilaId`,DataTypeId, `PGId`,FarmerId,Categories, `YearId`, `QuarterId`,
-		 `Remarks`, `DataCollectorName`, `DataCollectionDate`, `UserId`, `BPosted`,StatusId, `UpdateTs`, `CreateTs`
+		 `Remarks`, `DataCollectorName`, `DataCollectionDate`, `UserId`, `BPosted`,StatusId, `UpdateTs`, `CreateTs`,a.DesignationId,a.PhoneNumber
 		FROM t_datavaluemaster
 		where DataValueMasterId=$DataValueMasterId;";
 		$resultdataMaster = $dbh->query($query);
@@ -269,10 +269,12 @@ function dataAddEdit($data)
 			$DataTypeId = $InvoiceMaster->DataTypeId;
 			$PGId = $InvoiceMaster->PGId;
 			$FarmerId = isset($InvoiceMaster->FarmerId) && ($InvoiceMaster->FarmerId !== "") ? $InvoiceMaster->FarmerId : NULL;
+			$DesignationId = isset($InvoiceMaster->DesignationId) && ($InvoiceMaster->DesignationId !== "") ? $InvoiceMaster->DesignationId : NULL;
 			$Categories = isset($InvoiceMaster->Categories) && ($InvoiceMaster->Categories !== "") ? $InvoiceMaster->Categories : NULL;
 			$YearId = $InvoiceMaster->YearId;
 			$QuarterId = $InvoiceMaster->QuarterId;
 			$Remarks = isset($InvoiceMaster->Remarks) && ($InvoiceMaster->Remarks !== "") ? $InvoiceMaster->Remarks : NULL;
+			$PhoneNumber = isset($InvoiceMaster->PhoneNumber) && ($InvoiceMaster->PhoneNumber !== "") ? $InvoiceMaster->PhoneNumber : NULL;
 			$DataCollectorName = $InvoiceMaster->DataCollectorName;
 			$DataCollectionDate = $InvoiceMaster->DataCollectionDate;
 			$UserId = $InvoiceMaster->UserId;
@@ -285,8 +287,9 @@ function dataAddEdit($data)
 			if ($DataValueMasterId === "") {
 				$q = new insertq();
 				$q->table = 't_datavaluemaster';
-				$q->columns = ['DivisionId', 'DistrictId', 'UpazilaId','DataTypeId', 'PGId','FarmerId','Categories', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'UserId', 'BPosted','StatusId'];
-				$q->values = [$DivisionId,$DistrictId,$UpazilaId,$DataTypeId,$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$UserId,$BPosted,$StatusId];
+			
+				$q->columns = ['DivisionId', 'DistrictId', 'UpazilaId','DataTypeId', 'PGId','FarmerId','Categories', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'UserId', 'BPosted','StatusId','DesignationId','PhoneNumber'];
+				$q->values = [$DivisionId,$DistrictId,$UpazilaId,$DataTypeId,$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$UserId,$BPosted,$StatusId,$DesignationId,$PhoneNumber];
 				$q->pks = ['DataValueMasterId'];
 				$q->bUseInsetId = true;
 				$q->build_query();
@@ -294,8 +297,8 @@ function dataAddEdit($data)
 			} else {
 				$u = new updateq();
 				$u->table = 't_datavaluemaster';
-				$u->columns = ['PGId','FarmerId','Categories', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'BPosted'];
-				$u->values = [$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$BPosted];
+				$u->columns = ['PGId','FarmerId','Categories', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'BPosted','DesignationId','PhoneNumber'];
+				$u->values = [$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$BPosted,$DesignationId,$PhoneNumber];
 				$u->pks = ['DataValueMasterId'];
 				$u->pk_values = [$DataValueMasterId];
 				$u->build_query();
