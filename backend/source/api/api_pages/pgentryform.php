@@ -28,6 +28,9 @@ function getDataList($data){
 
 	try{
 		$dbh = new Db();
+		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+		$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
+		$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
 
 
 		$query = "SELECT a.PGId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGName`, a.`Address`, 
@@ -39,6 +42,9 @@ function getDataList($data){
 			INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
 			INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
 			LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
+			WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
+			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
+			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
 			ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`PGName` ASC;";
 		
 		$resultdata = $dbh->query($query);

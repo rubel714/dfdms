@@ -157,7 +157,16 @@ function RegularBeneficiaryExport() {
 		END AS HeadOfHHSex,
 		b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, 
 			e.ValueChainName, f.UnionName, g.PGName, a.Ward AS WardName, i.CityCorporationName, a.VillageName,
-			CASE WHEN a.IsHeadOfTheGroup = 1 THEN 'Yes' ELSE 'No' END AS HeadOfTheGroup
+			CASE WHEN a.IsHeadOfTheGroup = 1 THEN 'Yes' ELSE 'No' END AS HeadOfTheGroup,
+
+			a.DepartmentId, a.ifOtherSpecify, a.DateOfRegistration
+			, a.RegistrationNo, a.NameOfTheCompanyYourPgPartnerWith 
+			, a.WhenDidYouStartToOperateYourFirm
+			, a.NumberOfMonthsOfYourOperation
+			, a.AreYouRegisteredYourFirmWithDlsRadioFlag
+			, a.registrationDate
+			, a.IfRegisteredYesRegistrationNo
+			, a.FarmsPhoto
 		
 		FROM t_farmer a
 		INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
@@ -170,8 +179,8 @@ function RegularBeneficiaryExport() {
 		LEFT JOIN t_typeofmember gh ON a.`TypeOfMember` = gh.`TypeOfMemberId`
 		LEFT JOIN t_citycorporation i ON a.`CityCorporation` = i.`CityCorporation`;";
 	
-    $tableProperties["query_field"] = array('FarmerName','RegularStatus','NID','Phone','FatherName','MotherName','SpouseName','GenderName','FarmersAge','isDisabilityStatus','RelationWithHeadOfHH','HeadOfHHSex','PGRegistered','TypeOfMember','PGPartnershipWithOtherCompany','PGFarmerCode','FamilyOccupation','DivisionName','DistrictName','UpazilaName','UnionName','PGName','WardName','CityCorporationName','VillageName','Address','Latitute','Longitute','HeadOfTheGroup','ValueChainName','TypeOfFarmerId');
-    $tableProperties["table_header"] = array("Beneficiary Name","Is Regular Beneficiary","Beneficiary NID","Mobile Number","Father's Name","Mother's Name","Spouse Name","Gender","Farmer's Age","Disability Status","Farmers Relationship with Head of HH","Farmer's Head of HH Sex","Do your PG/PO Registered?","Type Of Member","Do your PG make any productive partnership with any other company?","PG Farmer Code","Primary Occupation","Division","District","Upazila","Union","Name of Producer Group","Ward","City Corporation/ Municipality","Village","Address","Latitute","Longitute","Are You Head of The Group?","Value Chain","Farmer Type");
+    $tableProperties["query_field"] = array('FarmerName','RegularStatus','NID','Phone','FatherName','MotherName','SpouseName','GenderName','FarmersAge','isDisabilityStatus','RelationWithHeadOfHH','ifOtherSpecify','HeadOfHHSex','PGRegistered','TypeOfMember','PGPartnershipWithOtherCompany','PGFarmerCode','FamilyOccupation','DivisionName','DistrictName','UpazilaName','UnionName','PGName','WardName','CityCorporationName','VillageName','Address','Latitute','Longitute','HeadOfTheGroup','ValueChainName','TypeOfFarmerId');
+    $tableProperties["table_header"] = array("Beneficiary Name","Is Regular Beneficiary","Beneficiary NID","Mobile Number","Father's Name","Mother's Name","Spouse Name","Gender","Farmer's Age","Disability Status","Farmers Relationship with Head of HH","If others, specify","Farmer's Head of HH Sex","Do your PG/PO Registered?","Type Of Member","Do your PG make any productive partnership with any other company?","PG Farmer Code","Primary Occupation","Division","District","Upazila","Union","Name of Producer Group","Ward","City Corporation/ Municipality","Village","Address","Latitute","Longitute","Are You Head of The Group?","Value Chain","Farmer Type");
     $tableProperties["align"] = array("left","left");
     $tableProperties["width_print_pdf"] = array("30%","70%"); //when exist serial then here total 95% and 5% use for serial
     $tableProperties["width_excel"] = array("30","20","30","30","30","30","30");

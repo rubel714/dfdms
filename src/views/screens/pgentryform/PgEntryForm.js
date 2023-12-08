@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef } from "react";
+import React, { forwardRef, useRef,  useEffect } from "react";
 import swal from "sweetalert";
 import { DeleteOutline, Edit } from "@material-ui/icons";
 import {Button}  from "../../../components/CustomControl/Button";
@@ -20,6 +20,16 @@ const PgEntryForm = (props) => {
   const {isLoading, data: dataList, error, ExecuteQuery} = ExecuteQueryHook(); //Fetch data
   const UserInfo = LoginUserInfo();
 
+  const [currentFilter, setCurrentFilter] = useState([]); 
+  const [divisionList, setDivisionList] = useState(null);
+  const [districtList, setDistrictList] = useState(null);
+  const [upazilaList, setUpazilaList] = useState(null);
+
+
+  const [currDivisionId, setCurrDivisionId] = useState(null);
+  const [currDistrictId, setCurrDistrictId] = useState(null);
+  const [currUpazilaId, setCurrUpazilaId] = useState(null);
+
   /* =====Start of Excel Export Code==== */
   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
@@ -30,8 +40,9 @@ const PgEntryForm = (props) => {
       finalUrl +
         "?action=PGDataExport" +
         "&reportType=excel" +
-        // "&DistrictId=" + UserInfo.DistrictId +
-        // "&UpazilaId=" + UserInfo.UpazilaId +
+        "&DistrictId=" + UserInfo.currDivisionId +
+        "&UpazilaId=" + UserInfo.currDistrictId +
+        "&currUpazilaId=" + UserInfo.currUpazilaId +
         "&TimeStamp=" +
         Date.now()
     );
@@ -139,7 +150,14 @@ const PgEntryForm = (props) => {
   
   if (bFirst) {
     /**First time call for datalist */
-    getDataList();
+
+    getDivision(
+      UserInfo.DivisionId,
+      UserInfo.DistrictId,
+      UserInfo.UpazilaId
+    );
+
+    //getDataList();
     setBFirst(false);
   }
 
@@ -151,6 +169,9 @@ const PgEntryForm = (props) => {
       action: "getDataList",
       lan: language(),
       UserId: UserInfo.UserId,
+      DivisionId: currDivisionId,
+      DistrictId: currDistrictId,
+      UpazilaId: currUpazilaId,
     };
     // console.log('LoginUserInfo params: ', params);
 
@@ -277,6 +298,134 @@ const PgEntryForm = (props) => {
 
 
 
+  
+  
+  function getDivision(
+    selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId
+  ) {
+    let params = {
+      action: "DivisionFilterList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setDivisionList(
+        [{ id: "", name: "All" }].concat(res.data.datalist)
+      );
+
+
+      setCurrDivisionId(selectDivisionId);
+
+      getDistrict(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId
+      );
+
+      /* getProductGeneric(
+        selectDivisionId,
+        SelectProductGenericId
+      ); */
+
+
+    });
+  }
+
+
+  
+  function getDistrict(
+    selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId
+  ) {
+    let params = {
+      action: "DistrictFilterList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DivisionId: selectDivisionId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setDistrictList(
+        [{ id: "", name: "All" }].concat(res.data.datalist)
+      );
+   
+      setCurrDistrictId(SelectDistrictId);
+      getUpazila(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId
+      );
+     
+    });
+  }
+
+
+  
+  function getUpazila(
+    selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId
+  ) {
+    let params = {
+      action: "UpazilaFilterList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DivisionId: selectDivisionId,
+      DistrictId: SelectDistrictId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setUpazilaList(
+        [{ id: "", name: "All" }].concat(res.data.datalist)
+      );
+  
+      setCurrUpazilaId(selectUpazilaId);
+      
+     
+    });
+  }
+
+
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    let data = { ...currentFilter };
+    data[name] = value;
+
+
+    setCurrentFilter(data);
+
+    //for dependancy
+    if (name === "DivisionId") {
+      setCurrDivisionId(value);
+
+      setCurrDistrictId("");
+      setCurrUpazilaId("");
+      getDistrict(value, "", "");
+      getUpazila(value, "", "");
+
+
+    } else if (name === "DistrictId") {
+      setCurrDistrictId(value);
+       getUpazila(currentFilter.DivisionId, value, "");
+    } else if (name === "UpazilaId") {
+      setCurrUpazilaId(value);
+    } 
+
+
+
+  };
+
+
+  useEffect(() => {
+    getDataList();
+  }, [currDivisionId, currDistrictId, currUpazilaId]);
+
+
   return (
     <>
       <div class="bodyContainer">
@@ -288,10 +437,62 @@ const PgEntryForm = (props) => {
         </div>
 
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-        <div class="exportAdd">
-          <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
-          <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
-        </div>
+        <div class="searchAdd2">
+          <div class="formControl-filter-data-label">
+              <label for="DivisionId">Division: </label>
+              <select
+                  class="dropdown_filter"
+                  id="DivisionId"
+                  name="DivisionId"
+                  value={currDivisionId}
+                  onChange={(e) => handleChange(e)}
+              >
+                  {divisionList &&
+                      divisionList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                      })}
+              </select>
+          </div>
+
+          <div class="formControl-filter-data-label">
+              <label for="DistrictId">District: </label>
+              <select
+                  class="dropdown_filter"
+                  id="DistrictId"
+                  name="DistrictId"
+                  value={currDistrictId}
+                  onChange={(e) => handleChange(e)}
+              >
+                  {districtList &&
+                      districtList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                      })}
+              </select>
+          </div>
+
+          <div class="formControl-filter-data-label">
+              <label for="UpazilaId">Upazila: </label>
+              <select
+                  id="UpazilaId"
+                  name="UpazilaId"
+                  class="dropdown_filter"
+                  value={currUpazilaId}
+                  onChange={(e) => handleChange(e)}
+              >
+                  {upazilaList &&
+                      upazilaList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                      })}
+              </select>
+          </div>
+
+          
+          <div class="filter-button">
+              <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
+              <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
+          </div>
+      
+      </div>
 
         {/* <!-- ####---THIS CLASS IS USE FOR TABLE GRID PRODUCT INFORMATION---####s --> */}
         <div class="subContainer">
