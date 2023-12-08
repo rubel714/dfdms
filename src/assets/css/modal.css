@@ -316,3 +316,7 @@
     text-align: end;
     padding-right: 8px;
 }
+
+.modal .modalItemCondition input[type=text] {
+    width: 30%;
+}

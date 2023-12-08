@@ -138,6 +138,7 @@ function RegularBeneficiaryExport() {
 		WHEN a.Gender = 1 THEN 'Male'
 		WHEN a.Gender = 2 THEN 'Female'
 		WHEN a.Gender = 3 THEN 'Male-Female Both'
+		WHEN a.Gender = 5 THEN 'Transgender'
 		ELSE 'Other'
 		END AS GenderName,
 		CASE WHEN a.DisabilityStatus = 1 THEN 'Yes' ELSE 'No' END AS isDisabilityStatus,
@@ -145,13 +146,7 @@ function RegularBeneficiaryExport() {
 		CASE WHEN a.PGPartnershipWithOtherCompany = 1 THEN 'Yes' ELSE 'No' END AS PGPartnershipWithOtherCompany,
 		CASE WHEN a.RelationWithHeadOfHH = 1 THEN 'Himself/Herself' ELSE 'Others' END AS RelationWithHeadOfHH,
 		
-		CASE
-		WHEN a.TypeOfMember = 1 THEN 'Type 1'
-		WHEN a.TypeOfMember = 2 THEN 'Type 2'
-		WHEN a.TypeOfMember = 3 THEN 'Type 3'
-		ELSE 'Other'
-		END AS TypeOfMember,
-
+		gh.TypeOfMember AS TypeOfMember,
 		oc.OccupationName AS FamilyOccupation,
 
 		CASE
@@ -172,6 +167,7 @@ function RegularBeneficiaryExport() {
 		LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
 		LEFT JOIN t_occupation oc ON a.`OccupationId` = oc.`OccupationId`
 		LEFT JOIN t_pg g ON a.`PGId` = g.`PGId`
+		LEFT JOIN t_typeofmember gh ON a.`TypeOfMember` = gh.`TypeOfMemberId`
 		LEFT JOIN t_citycorporation i ON a.`CityCorporation` = i.`CityCorporation`;";
 	
     $tableProperties["query_field"] = array('FarmerName','RegularStatus','NID','Phone','FatherName','MotherName','SpouseName','GenderName','FarmersAge','isDisabilityStatus','RelationWithHeadOfHH','HeadOfHHSex','PGRegistered','TypeOfMember','PGPartnershipWithOtherCompany','PGFarmerCode','FamilyOccupation','DivisionName','DistrictName','UpazilaName','UnionName','PGName','WardName','CityCorporationName','VillageName','Address','Latitute','Longitute','HeadOfTheGroup','ValueChainName','TypeOfFarmerId');

@@ -41,8 +41,9 @@ const RegularBeneficiaryEntry = (props) => {
        finalUrl +
          "?action=RegularBeneficiaryExport" +
          "&reportType=excel" +
-         // "&DistrictId=" + UserInfo.DistrictId +
-         // "&UpazilaId=" + UserInfo.UpazilaId +
+         "&DistrictId=" + UserInfo.currDivisionId +
+         "&UpazilaId=" + UserInfo.currDistrictId +
+         "&currUpazilaId=" + UserInfo.currUpazilaId +
          "&TimeStamp=" +
          Date.now()
      );

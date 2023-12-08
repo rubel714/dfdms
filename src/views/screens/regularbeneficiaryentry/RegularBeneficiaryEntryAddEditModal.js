@@ -1270,8 +1270,19 @@ const uploadImage = (file, photoType) => {
                 ))}
               </div>
 
-            {(currentRow.RelationWithHeadOfHH === 2) && (
+           
+
+
+          </div>
+
+         
+            
+          {(currentRow.RelationWithHeadOfHH === 2) && (
                <>
+            <div class="modalItem modalItemCondition">
+
+               
+              
                 <label>If others, specify* </label>
                 <input
                   type="text"
@@ -1282,12 +1293,14 @@ const uploadImage = (file, photoType) => {
                   value={currentRow.ifOtherSpecify}
                   onChange={(e) => handleChange(e)}
                 />
+                   </div>
                 </>
+              
               )}
 
 
 
-          </div>
+         
 
           <div class="contactmodalBody pt-10 ">
             <label>Farmer's Head of HH Sex</label>
