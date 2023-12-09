@@ -104,6 +104,16 @@ function AfterLoginNavbar(props) {
                         </a>
                       </li>
                     )}
+                    {menuShowPermision("pgandpgmembersinformation") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("pgandpgmembersinformation")}
+                        >
+                          Division, District, Upazila wise PG and PG members information
+                        </a>
+                      </li>
+                    )}
 
                     {menuShowPermision("report2") === 1 && (
                       <li>
@@ -125,7 +135,7 @@ function AfterLoginNavbar(props) {
                   Admin
                   <ul class="dropdownList">
 
-                  {menuShowPermision("datatype") === 1 && (
+                  {/* {menuShowPermision("datatype") === 1 && (
                       <li>
                         <a
                           href="javascript:void(0)"
@@ -134,30 +144,7 @@ function AfterLoginNavbar(props) {
                           Data Form Type
                         </a>
                       </li>
-                    )}
-
-                  {menuShowPermision("pgentryform") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("pgentryform")}
-                        >
-                          PG Profile
-                        </a>
-                      </li>
-                    )}
-
-                  {menuShowPermision("regularbeneficiaryentry") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("regularbeneficiaryentry")}
-                        >
-                          Farmer Profile
-                        </a>
-                      </li>
-                    )} 
-
+                    )} */}
 
                   {menuShowPermision("questionsentry") === 1 && (
                       <li>
@@ -181,14 +168,51 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+                    <li class ="bordertopmenu"> </li>
+                  {menuShowPermision("pgentryform") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("pgentryform")}
+                        >
+                          PG Profile
+                        </a>
+                      </li>
+                    )}
 
+                  {menuShowPermision("regularbeneficiaryentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("regularbeneficiaryentry")}
+                        >
+                          Farmer Profile
+                        </a>
+                      </li>
+                    )} 
+
+
+                    <li class ="bordertopmenu"> </li>
+                    
                     {menuShowPermision("userrole") === 1 && (
+                     
                       <li>
                         <a
                           href="javascript:void(0)"
                           onClick={() => props.history.push("userrole")}
                         >
                           User Role
+                        </a>
+                      </li>
+                    )}
+
+                    {menuShowPermision("userentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("userentry")}
+                        >
+                          User Entry
                         </a>
                       </li>
                     )}
@@ -204,16 +228,7 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
-                    {menuShowPermision("userentry") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("userentry")}
-                        >
-                          User Entry
-                        </a>
-                      </li>
-                    )}
+                   
 
                     
 
@@ -235,7 +250,16 @@ function AfterLoginNavbar(props) {
                   <ul class="dropdownList">
 
 
-               
+                  {menuShowPermision("farmersdatacollectionentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("farmersdatacollectionentry")}
+                        >
+                          Farmers Data Collection Entry
+                        </a>
+                      </li>
+                    )}
 
 
                   {menuShowPermision("pgdatacollectionentry") === 1 && (
@@ -249,18 +273,7 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
-                  {menuShowPermision("farmersdatacollectionentry") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("farmersdatacollectionentry")}
-                        >
-                          Farmers Data Collection Entry
-                        </a>
-                      </li>
-                    )}
-
-
+                  
                   {menuShowPermision("lgddatacollectionentry") === 1 && (
                       <li>
                         <a

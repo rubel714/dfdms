@@ -656,6 +656,9 @@ input[type=search] {
 .bordertop {
      border-top: 1px solid #757373;
 }
+.bordertopmenu {
+     border-top: 1px solid #fafafa;
+}
 .fontbold{
     font-weight: bold;
 }
@@ -896,4 +899,12 @@ input[type=search] {
 .filter-button {
     margin-top: 15px;
     text-align: right;
+}
+
+.alignRightText{
+    text-align: right;
+}
+
+.tdWidthc{
+    width: 38px;
 }

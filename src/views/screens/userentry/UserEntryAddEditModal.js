@@ -430,37 +430,43 @@ const UserEntryAddEditModal = (props) => {
                 })}
             </select>
 
-            <label>Upazila</label>
-            <select
-              id="UpazilaId"
-              name="UpazilaId"
-              class={errorObject.UpazilaId}
-              value={currUpazilaId}
-              onChange={(e) => handleChange(e)}
-            >
-              {upazilaList &&
-                upazilaList.map((item, index) => {
-                  return <option value={item.id}>{item.name}</option>;
-                })}
-            </select>
-
-            <label>Union </label>
-            <select
-              id="UnionId"
-              name="UnionId"
-              class={errorObject.UnionId}
-              value={currUnionId}
-              onChange={(e) => handleChange(e)}
-            >
-              {unionList &&
-                unionList.map((item, index) => {
-                  return <option value={item.id}>{item.name}</option>;
-                })}
-            </select>
+           
           </div>
 
           <div class="contactmodalBody pt-10">
-            <label>User Name *</label>
+
+            <label>Upazila</label>
+              <select
+                id="UpazilaId"
+                name="UpazilaId"
+                class={errorObject.UpazilaId}
+                value={currUpazilaId}
+                onChange={(e) => handleChange(e)}
+              >
+                {upazilaList &&
+                  upazilaList.map((item, index) => {
+                    return <option value={item.id}>{item.name}</option>;
+                  })}
+              </select>
+
+              <label>Union </label>
+              <select
+                id="UnionId"
+                name="UnionId"
+                class={errorObject.UnionId}
+                value={currUnionId}
+                onChange={(e) => handleChange(e)}
+              >
+                {unionList &&
+                  unionList.map((item, index) => {
+                    return <option value={item.id}>{item.name}</option>;
+                  })}
+              </select>
+
+          </div>
+
+          <div class="contactmodalBody pt-10">
+            <label>Name *</label>
             <input
               type="text"
               id="UserName"

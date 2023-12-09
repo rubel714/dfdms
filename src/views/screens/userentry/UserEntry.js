@@ -44,7 +44,7 @@ const UserEntry = (props) => {
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
     {
       field: "UserName",
-      label: "Login User Name",
+      label: "Name",
       align: "left",
       visible: true,
       width: "12%",
