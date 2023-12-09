@@ -883,7 +883,6 @@ const DataCollectionEntry = (props) => {
     });
   }
 
-  
   function getDesignation() {
     let params = {
       action: "DesignationList",
@@ -1040,6 +1039,15 @@ const DataCollectionEntry = (props) => {
       filter: true,
     },
     {
+      field: "ValueChainName",
+      label: "ভেলু চেইন",
+      align: "left",
+      width: "10%",
+      visible: true,
+      sort: true,
+      filter: true,
+    },
+    {
       field: "UpazilaName",
       label: "উপজেলা",
       width: "15%",
@@ -1052,6 +1060,15 @@ const DataCollectionEntry = (props) => {
       field: "DataCollectorName",
       label: "তথ্য সংগ্রহকারীর নাম",
       width: "15%",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+    },
+    {
+      field: "CurrentStatus",
+      label: "স্টেটাস",
+      width: "10%",
       align: "left",
       visible: true,
       sort: true,
@@ -1081,11 +1098,11 @@ const DataCollectionEntry = (props) => {
       <>
         {/* StatusId */}
 
-        {rowData.StatusId === 1 && StatusChangeAllow.includes("Submit") && (
+        {(rowData.StatusId === 1) && (UserInfo.id==rowData.UserId) && StatusChangeAllow.includes("Submit") && (
           <button
             class={"btnSubmit"}
             onClick={() => {
-              changeReportStatus(rowData.id, 2);
+              changeReportStatus(rowData.id, 2, "Next");
             }}
           >
             Submit
@@ -1093,29 +1110,51 @@ const DataCollectionEntry = (props) => {
         )}
 
         {rowData.StatusId === 2 && StatusChangeAllow.includes("Accept") && (
-          <button
-            class={"btnAccept"}
-            onClick={() => {
-              changeReportStatus(rowData.id, 3);
-            }}
-          >
-            Accept
-          </button>
+          <>
+            <button
+              class={"btnAccept"}
+              onClick={() => {
+                changeReportStatus(rowData.id, 3, "Next");
+              }}
+            >
+              Accept
+            </button>
+
+            <button
+              class={"btnReturn"}
+              onClick={() => {
+                changeReportStatus(rowData.id, 1, "Return");
+              }}
+            >
+              Return
+            </button>
+          </>
         )}
 
         {rowData.StatusId === 3 && StatusChangeAllow.includes("Approve") && (
-          <button
-            class={"btnApprove"}
-            onClick={() => {
-              changeReportStatus(rowData.id, 5);
-            }}
-          >
-            Approve
-          </button>
+          <>
+            <button
+              class={"btnApprove"}
+              onClick={() => {
+                changeReportStatus(rowData.id, 5, "Next");
+              }}
+            >
+              Approve
+            </button>
+
+            <button
+              class={"btnReturn"}
+              onClick={() => {
+                changeReportStatus(rowData.id, 2, "Return");
+              }}
+            >
+              Return
+            </button>
+          </>
         )}
 
         {/* {rowData.BPosted === 0 && ( */}
-        {rowData.StatusId === 1 && (
+        {(rowData.StatusId === 1) && (UserInfo.id==rowData.UserId) && (
           <Edit
             className={"table-edit-icon"}
             onClick={() => {
@@ -1125,7 +1164,7 @@ const DataCollectionEntry = (props) => {
         )}
 
         {/* {rowData.BPosted === 0 && ( */}
-        {rowData.StatusId === 1 && (
+        {(rowData.StatusId === 1) && (UserInfo.id==rowData.UserId) && (
           <DeleteOutline
             className={"table-delete-icon"}
             onClick={() => {
@@ -1134,7 +1173,7 @@ const DataCollectionEntry = (props) => {
           />
         )}
 
-        {rowData.StatusId != 1 && (
+        {((rowData.StatusId != 1) || (UserInfo.id !=rowData.UserId)) && (
           <ViewList
             className={"table-view-icon"}
             onClick={() => {
@@ -1725,7 +1764,7 @@ const DataCollectionEntry = (props) => {
     let validMany = validateFormMany();
     if (validMaster && validMany) {
       apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-        console.log('res: ', res);
+        console.log("res: ", res);
 
         props.openNoticeModal({
           isOpen: true,
@@ -1735,7 +1774,7 @@ const DataCollectionEntry = (props) => {
         // console.log('res.success: ', res.success);
 
         if (res.data.success) {
-          console.log('currentInvoice: ', currentInvoice);
+          console.log("currentInvoice: ", currentInvoice);
           if (currentInvoice.id === "") {
             //New
             getDataSingleFromServer(res.data.id);
@@ -1754,23 +1793,29 @@ const DataCollectionEntry = (props) => {
     }
   }
 
-  function changeReportStatus(Id, StatusId) {
+  function changeReportStatus(Id, StatusId, StatusNextPrev) {
     let params = {
       action: "changeReportStatus",
       lan: language(),
       UserId: UserInfo.UserId,
       Id: Id,
       StatusId: StatusId,
+      StatusNextPrev: StatusNextPrev,
+      ReturnComments: StatusId,
     };
 
     let msg = "";
 
-    if (StatusId == 2) {
-      msg = "You want to submit!";
-    } else if (StatusId == 3) {
-      msg = "You want to accept!";
-    } else if (StatusId == 5) {
-      msg = "You want to approve!";
+    if (StatusNextPrev == "Next") {
+      if (StatusId == 2) {
+        msg = "You want to submit!";
+      } else if (StatusId == 3) {
+        msg = "You want to accept!";
+      } else if (StatusId == 5) {
+        msg = "You want to approve!";
+      }
+    } else {
+      msg = "You want to return!";
     }
 
     swal({
@@ -1830,79 +1875,109 @@ const DataCollectionEntry = (props) => {
     //   });
     // }
   }
+  
 
-  // function acceptSingleReport() {
-  //   // console.log('p: ', p);
-  //   let params = {
-  //     action: "dataAddEdit",
-  //     lan: language(),
-  //     UserId: UserInfo.UserId,
-  //     InvoiceMaster: currentInvoice,
-  //     InvoiceItems: manyDataList,
-  //     InvoiceItemsDetails: grassTypeTableRow,
-  //   };
-  //   console.log("params: ", params);
 
-  //   // addEditAPICall(params);
-  // }
+  function submitAllReports() {
+    changeReportStatusAll(2, "Next");
+  }
+  function acceptAllReports() {
+    changeReportStatusAll(3, "Next");
+  }
+  function approveAllReports() {
+    changeReportStatusAll(5, "Next");
+  }
 
-  // function approveSingleReport() {
-  //   // console.log('p: ', p);
-  //   let params = {
-  //     action: "dataAddEdit",
-  //     lan: language(),
-  //     UserId: UserInfo.UserId,
-  //     InvoiceMaster: currentInvoice,
-  //     InvoiceItems: manyDataList,
-  //     InvoiceItemsDetails: grassTypeTableRow,
-  //   };
-  //   console.log("params: ", params);
+  function changeReportStatusAll(StatusId, StatusNextPrev) {
 
-  //   // addEditAPICall(params);
-  // }
+    let params = {
+      action: "changeReportStatusAll",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      // Id: Id,
+      StatusId: StatusId,
+      StatusNextPrev: StatusNextPrev,
+      ReturnComments: StatusId,
+      DivisionId: currDivisionId,
+      DistrictId: currDistrictId,
+      UpazilaId: currUpazilaId,
+      DataTypeId: dataTypeId,
+      YearId: currFilterYearId,
+      QuarterId: currFilterQuarterId,
+    };
 
-  // const tableHtml = `<table class="tg" style="table-layout: fixed;">
-  //                         <thead>
-  //                           <tr>
-  //                             <td class="tg-zv4m" rowspan="2">Serial No</td>
-  //                             <td style="width: 120px; max-width: 120px;" class="tg-zv4m" rowspan="2">Name of grass</td>
-  //                             <td style="width: 120px; max-width: 120px;" class="tg-zv4m" rowspan="2">Type of land (1 = Homestead; 2 = Cultivable Land; 3 = Others)</td>
-  //                             <td class="tg-nlfa" colspan="4">Area of land cultivated, production sale for fodder (green grass)</td>
+    let msg = "";
 
-  //                             </tr>
-  //                           <tr>
-  //                             <td style="width: 90px; max-width: 90px;" class="tg-22sb">Cultivation in decimal</td>
-  //                             <td style="width: 90px; max-width: 90px;" class="tg-dhoh">Production in last year (kg)</td>
-  //                             <td style="width: 90px; max-width: 90px;" class="tg-22sb">Consumption in last year (kg)</td>
-  //                             <td style="width: 90px; max-width: 90px;" class="tg-dhoh">Sales in last year (kg)</td>
-  //                           </tr>
-  //                         </thead>
-  //                         <tbody>
-  //                           <tr>
-  //                             <td>1</td>
-  //                             <td >
-  //                               <select class="fullWidthSelect">
-  //                                 <option value="option1">Option 1</option>
-  //                                 <option value="option2">Option 2</option>
-  //                               </select>
-  //                             </td>
-  //                             <td >
-  //                               <select class="fullWidthSelect">
-  //                                 <option value="optionA">Option A</option>
-  //                                 <option value="optionB">Option B</option>
-  //                               </select>
-  //                             </td>
-  //                             <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
-  //                             <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
-  //                             <td class="tg-dhohs"><input type="number" class="numberInput" /></td>
-  //                             <td class="tg-dhohs"><input type="number" class="numberInput"  /></td>
+    if (StatusNextPrev == "Next") {
+      if (StatusId == 2) {
+        msg = "You want to submit your all pending reports!";
+      } else if (StatusId == 3) {
+        msg = "You want to accept all pending reports!";
+      } else if (StatusId == 5) {
+        msg = "You want to approve all pending reports!";
+      }
+    } else {
+      msg = "You want to return all reports!";
+    }
 
-  //                             <td>
-  //                               <i class="fa fa-trash-alt" style="color: red;" onclick="deleteData(rowData)"></i>
-  //                           </td>
-  //                           </tr>
-  //                         </tbody>
-  //                       </table>`;
+    swal({
+      title: "Are you sure?",
+      text: msg,
+      icon: "warning",
+      buttons: {
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+        cancel: {
+          text: "No",
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+      },
+      dangerMode: true,
+    }).then((allowAction) => {
+      if (allowAction) {
+        changeReportStatusAllAPICall(params);
+      }
+    });
+  }
+
+  function changeReportStatusAllAPICall(params) {
+    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+      // console.log('res: ', res);
+
+      if (res.data.success) {
+        props.openNoticeModal({
+          isOpen: true,
+          msg: res.data.message,
+          msgtype: res.data.success,
+        });
+        // console.log(11111111);
+        getDataList(); //invoice list
+      } else {
+        // console.log(222222);
+        props.openNoticeModal({
+          isOpen: true,
+          msg: res.data.message,
+          msgtype: res.data.success,
+        });
+      }
+    });
+    // } else {
+    //   props.openNoticeModal({
+    //     isOpen: true,
+    //     msg: "Please enter required fields.",
+    //     msgtype: 0,
+    //   });
+    // }
+  }
+
 
   return (
     <>
@@ -2079,10 +2154,18 @@ const DataCollectionEntry = (props) => {
                     })}
                 </select>
               </div>
-              <Button label={"Submit"} class={"btnAdd"} onClick={addData} />
-              <Button label={"Approve"} class={"btnAdd"} onClick={addData} />
-              <Button label={"Return"} class={"btnAdd"} onClick={addData} />
-              {/* <Button label={"ADD"} class={"btnAdd"} onClick={addData} /> */}
+
+              {/* console.log("StatusChangeAllow", UserInfo.StatusChangeAllow);
+    let StatusChangeAllow = UserInfo.StatusChangeAllow;
+    // let sub = StatusChangeAllow.includes("Submit");
+    // console.log('sub: ', sub);
+    {rowData.StatusId === 1 && StatusChangeAllow.includes("Submit") && ( */}
+
+              {UserInfo.StatusChangeAllow.includes("Submit") && (<Button label={"Submit All"} class={"btnPrint"} onClick={submitAllReports} />)}
+              {UserInfo.StatusChangeAllow.includes("Accept") && (<Button label={"Accept All"} class={"btnPrint"} onClick={acceptAllReports} />)}
+              {UserInfo.StatusChangeAllow.includes("Approve") && (<Button label={"Approve All"} class={"btnClose"} onClick={approveAllReports} />)}
+
+
               <Button label={"Enter Data"} class={"btnAdd"} onClick={addData} />
             </div>
 
@@ -3700,11 +3783,8 @@ const DataCollectionEntry = (props) => {
                     />
                   </div> */}
 
-                
                   <div class="formControl bordertop">
-                    <label>
-                    Date of Interview*:
-                    </label>
+                    <label>Date of Interview*:</label>
 
                     <input
                       type="date"
@@ -3716,9 +3796,7 @@ const DataCollectionEntry = (props) => {
                     />
                   </div>
                   <div class="formControl">
-                    <label>
-                    Name of Enumerator*:
-                    </label>
+                    <label>Name of Enumerator*:</label>
 
                     <input
                       type="text"
@@ -3730,56 +3808,54 @@ const DataCollectionEntry = (props) => {
                     />
                   </div>
 
+                  <div class="formControl">
+                    <label>Enumerator Designation:*</label>
+                    <Autocomplete
+                      autoHighlight
+                      // freeSolo
+                      className="chosen_dropdown"
+                      id="DesignationId"
+                      name="DesignationId"
+                      autoComplete
+                      options={DesignationList ? DesignationList : []}
+                      getOptionLabel={(option) => option.name}
+                      // value={chosenValuesYearId["DesignationId"]}
+                      // onChange={(event, valueobj) =>
+                      //   handleChangeChoosenMasterYear(
+                      //     "DesignationId",
+                      //     valueobj,
+                      //     valueobj ? valueobj.id : ""
+                      //   )
+                      // }
+                      value={
+                        DesignationList
+                          ? DesignationList[
+                              DesignationList.findIndex(
+                                (list) =>
+                                  list.id == currentInvoice.DesignationId
+                              )
+                            ]
+                          : null
+                      }
+                      onChange={(event, valueobj) =>
+                        handleChangeChoosenMaster(
+                          "DesignationId",
+                          valueobj ? valueobj.id : ""
+                        )
+                      }
+                      renderOption={(option) => (
+                        <Typography className="chosen_dropdown_font">
+                          {option.name}
+                        </Typography>
+                      )}
+                      renderInput={(params) => (
+                        <TextField {...params} variant="standard" fullWidth />
+                      )}
+                    />
+                  </div>
 
-              <div class="formControl">
-                <label>Enumerator Designation:*</label>
-                <Autocomplete
-                  autoHighlight
-                  // freeSolo
-                  className="chosen_dropdown"
-                  id="DesignationId"
-                  name="DesignationId"
-                  autoComplete
-                  options={DesignationList ? DesignationList : []}
-                  getOptionLabel={(option) => option.name}
-                  // value={chosenValuesYearId["DesignationId"]}
-                  // onChange={(event, valueobj) =>
-                  //   handleChangeChoosenMasterYear(
-                  //     "DesignationId",
-                  //     valueobj,
-                  //     valueobj ? valueobj.id : ""
-                  //   )
-                  // }
-                  value= {DesignationList
-                      ? DesignationList[
-                        DesignationList.findIndex(
-                            (list) => list.id == currentInvoice.DesignationId
-                          )
-                        ]
-                      : null
-                  }
-                  onChange={(event, valueobj) =>
-                    handleChangeChoosenMaster(
-                      "DesignationId",
-                      valueobj ? valueobj.id : ""
-                    )
-                  }
-                  renderOption={(option) => (
-                    <Typography className="chosen_dropdown_font">
-                      {option.name}
-                    </Typography>
-                  )}
-                  renderInput={(params) => (
-                    <TextField {...params} variant="standard" fullWidth />
-                  )}
-                />
-              </div>
-
-
-              <div class="formControl">
-                    <label>
-                    Cell No. of Enumerator*:
-                    </label>
+                  <div class="formControl">
+                    <label>Cell No. of Enumerator*:</label>
 
                     <input
                       type="text"
@@ -3791,7 +3867,7 @@ const DataCollectionEntry = (props) => {
                     />
                   </div>
 
-              <div class="formControl ">
+                  <div class="formControl ">
                     <label>Enumerator Comment:</label>
 
                     <textarea
@@ -3804,18 +3880,17 @@ const DataCollectionEntry = (props) => {
                     />
                   </div>
 
-
-                  
-
-               
-
                   <div class="btnAddForm">
                     <Button
                       label={"সংরক্ষণ করুন (Save)"}
                       class={"btnAddCustom"}
                       onClick={saveData}
-                      disabled={currentInvoice.StatusId > 1}
+                      disabled={(currentInvoice.StatusId > 1) || (UserInfo.id!=currentInvoice.UserId)}
                     />
+
+
+
+
 
                     <Button
                       label={"ফেরত যান (Back To List)"}

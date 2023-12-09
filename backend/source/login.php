@@ -199,8 +199,8 @@ else {
 
                 $userRow["UserAllowdMenuList"] = $memuList;
                 $userRow["Password"] = "HIDDEN";
-                // getStatusChangeAllow($conn, $userRow["RoleId"]);
-                $userRow["StatusChangeAllow"] = ["Submit","Accept","Approve"];
+                $userRow["StatusChangeAllow"] = getStatusChangeAllow($conn, $userRow["RoleId"]);
+                // $userRow["StatusChangeAllow"] = ["Submit","Accept","Approve"];
 
                 $returnData = [
                     'success' => 1,
@@ -241,7 +241,15 @@ echo json_encode($returnData);
 
 
 function getStatusChangeAllow($conn, $RoleList){
-    $status = array();
+    // $status = array();
+
+    
+    // getStatusChangeAllow($conn, $userRow["RoleId"]);
+    // $userRow["StatusChangeAllow"] = ["Submit","Accept","Approve"];
+    $StatusChangeAllow = array();
+
+    // echo "<pre>";
+    // print_r($RoleList);
 
     $query = "SELECT StatusId,StatusName,RoleIds FROM t_status;";
     $result = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
@@ -249,8 +257,27 @@ function getStatusChangeAllow($conn, $RoleList){
     foreach($result as $row){
         $statusList[$row["StatusId"]] = $row;
     }
-    echo "<pre>";
-    print_r($statusList);
+
+    $submitArr = explode(",",$statusList[2]["RoleIds"]);
+    if(count(array_intersect($RoleList,$submitArr))>0){
+        $StatusChangeAllow[] = "Submit";
+    }
+
+    $acceptArr = explode(",",$statusList[3]["RoleIds"]);
+    if(count(array_intersect($RoleList,$acceptArr))>0){
+        $StatusChangeAllow[] = "Accept";
+    }
+    // print_r($acceptArr);
+
     
-    return $status;
+    $publishArr = explode(",",$statusList[5]["RoleIds"]);
+    if(count(array_intersect($RoleList,$publishArr))>0){
+        $StatusChangeAllow[] = "Approve";
+    }
+
+   // print_r(explode(",",$statusList[2]["RoleIds"]));
+
+//    print_r($StatusChangeAllow);
+    
+    return $StatusChangeAllow;
 }

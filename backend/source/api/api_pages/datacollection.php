@@ -32,7 +32,9 @@ switch ($task) {
 	case "changeReportStatus":
 		$returnData = changeReportStatus($data);
 		break;
-	
+	case "changeReportStatusAll":
+		$returnData = changeReportStatusAll($data);
+		break;
 	case "getFarmerInfo":
 		$returnData = getFarmerInfo($data);
 		break;
@@ -62,13 +64,19 @@ function getDataList($data)
 		$query = "SELECT a.`DataValueMasterId` as id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGId`,a.FarmerId,a.Categories, a.`YearId`, a.`QuarterId`,
 		 a.`Remarks`, a.`DataCollectorName`, a.`DataCollectionDate`, a.`UserId`,a.BPosted
 		, concat(a.YearId,' (',e.QuarterName,')') QuarterName, b.DivisionName,c.DistrictName,d.UpazilaName,f.PGName
-		,a.StatusId,a.DesignationId,a.PhoneNumber
+		,a.StatusId,a.DesignationId,a.PhoneNumber,
+		case when a.StatusId=1 then 'Waiting for Submit'
+			 when a.StatusId=2 then 'Waiting for Accept'
+			 when a.StatusId=3 then 'Waiting for Approve'
+			 when a.StatusId=5 then 'Approved'
+			 else '' end CurrentStatus,g.ValueChainName
 		FROM t_datavaluemaster a
 		inner join t_division b on a.DivisionId=b.DivisionId
 		inner join t_district c on a.DistrictId=c.DistrictId
 		inner join t_upazila d on a.UpazilaId=d.UpazilaId
 		inner join t_quarter e on a.QuarterId=e.QuarterId
 		inner join t_pg f on a.PGId=f.PGId
+		inner join t_valuechain g on f.ValuechainId=g.ValuechainId
 		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
@@ -574,39 +582,72 @@ function changeReportStatus($data)
 
 		$DataValueMasterId = $data->Id;
 		$StatusId = $data->StatusId;
+		$StatusNextPrev = $data->StatusNextPrev;
+		$ReturnComments = $data->ReturnComments;
 		$lan = trim($data->lan);
 		$UserId = trim($data->UserId);
 
 		$curDateTime = date('Y-m-d H:i:s');
 		$UserFieldName = "";
 		$DateFieldName = "";
+		$ReturnCommentsFieldName = "";
 		$BPosted = 0;
 
-		if($StatusId == 2){
-			$UserFieldName = "SubmitUserId";
-			$DateFieldName = "SubmitDate";
-		}else if($StatusId == 3){
-			$UserFieldName = "AcceptUserId";
-			$DateFieldName = "AcceptDate";
-		}else if($StatusId == 5){
-			$UserFieldName = "ApproveUserId";
-			$DateFieldName = "ApproveDate";
-			$BPosted = 1;
-		}
+
+	
 		
 	
 		try {
 
 			$aQuerys = array();
 
-			$u = new updateq();
-			$u->table = 't_datavaluemaster';
-			$u->columns = ['StatusId',$UserFieldName,$DateFieldName,'BPosted'];
-			$u->values = [$StatusId,$UserId,$curDateTime,$BPosted];
-			$u->pks = ['DataValueMasterId'];
-			$u->pk_values = [$DataValueMasterId];
-			$u->build_query();
-			$aQuerys[] = $u;
+
+			if($StatusNextPrev=="Next"){
+				if($StatusId == 2){
+					$UserFieldName = "SubmitUserId";
+					$DateFieldName = "SubmitDate";
+				}else if($StatusId == 3){
+					$UserFieldName = "AcceptUserId";
+					$DateFieldName = "AcceptDate";
+				}else if($StatusId == 5){
+					$UserFieldName = "ApproveUserId";
+					$DateFieldName = "ApproveDate";
+					$BPosted = 1;
+				}
+
+				$u = new updateq();
+				$u->table = 't_datavaluemaster';
+				$u->columns = ['StatusId',$UserFieldName,$DateFieldName,'BPosted'];
+				$u->values = [$StatusId,$UserId,$curDateTime,$BPosted];
+				$u->pks = ['DataValueMasterId'];
+				$u->pk_values = [$DataValueMasterId];
+				$u->build_query();
+				$aQuerys[] = $u;
+
+			}else{
+				if($StatusId == 1){
+					$UserFieldName = "SubmitUserId";
+					$DateFieldName = "SubmitDate";
+					$ReturnCommentsFieldName = "AcceptReturnComments";
+
+				}else if($StatusId == 2){
+					$UserFieldName = "AcceptUserId";
+					$DateFieldName = "AcceptDate";
+					$ReturnCommentsFieldName = "ApproveReturnComments";
+				}
+
+				$u = new updateq();
+				$u->table = 't_datavaluemaster';
+				$u->columns = ['StatusId',$UserFieldName,$DateFieldName,$ReturnCommentsFieldName,'BPosted'];
+				$u->values = [$StatusId,NULL,NULL,$ReturnComments,$BPosted];
+				$u->pks = ['DataValueMasterId'];
+				$u->pk_values = [$DataValueMasterId];
+				$u->build_query();
+				$aQuerys[] = $u;
+			}
+
+
+			
 
 
 			$res = exec_query($aQuerys, $UserId, $lan);
@@ -619,6 +660,169 @@ function changeReportStatus($data)
 				"UserId" => $UserId,
 				"message" => $res['msg']
 			];
+		} catch (PDOException $e) {
+			$returnData = msg(0, 500, $e->getMessage());
+		}
+
+		return $returnData;
+	}
+}
+
+
+
+function changeReportStatusAll($data)
+{
+
+	if ($_SERVER["REQUEST_METHOD"] != "POST") {
+		return $returnData = msg(0, 404, 'Page Not Found!');
+	}
+	// CHECKING EMPTY FIELDS
+	elseif ( !isset($data->StatusId)) {
+		$fields = ['fields' => ['StatusId']];
+		return $returnData = msg(0, 422, 'Please Fill in all Required Fields!', $fields);
+	} else {
+
+		$dbh = new Db();
+		// $DataValueMasterId = $data->Id;
+		$StatusId = $data->StatusId;
+		$StatusNextPrev = $data->StatusNextPrev;
+		$ReturnComments = $data->ReturnComments;
+		$lan = trim($data->lan);
+		$UserId = trim($data->UserId);
+		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+		$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
+		$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
+		$DataTypeId = trim($data->DataTypeId); 
+		$YearId = trim($data->YearId); 
+		$QuarterId = trim($data->QuarterId); 
+
+		$curDateTime = date('Y-m-d H:i:s');
+		$UserFieldName = "";
+		$DateFieldName = "";
+		$ReturnCommentsFieldName = "";
+		$BPosted = 0;
+
+		
+	
+		try {
+
+			$aQuerys = array();
+
+
+			if($StatusNextPrev=="Next"){
+				if($StatusId == 2){
+					/**Submit all reports */
+					$UserFieldName = "SubmitUserId";
+					$DateFieldName = "SubmitDate";
+					
+					/**Only my reports will be submit all UserId=$UserId */
+					$sql = "select DataValueMasterId from t_datavaluemaster 
+					where UserId=$UserId 
+					and StatusId=1
+					and YearId=$YearId
+					and QuarterId=$QuarterId
+					and (DivisionId=$DivisionId OR $DivisionId=0)
+					and (DistrictId=$DistrictId OR $DistrictId=0)
+					and (UpazilaId=$UpazilaId OR $UpazilaId=0)
+					and DataTypeId=$DataTypeId;";
+
+				}else if($StatusId == 3){
+					/**Accept all reports */
+					$UserFieldName = "AcceptUserId";
+					$DateFieldName = "AcceptDate";
+
+					$sql = "select DataValueMasterId from t_datavaluemaster 
+					where StatusId=2
+					and YearId=$YearId
+					and QuarterId=$QuarterId
+					and (DivisionId=$DivisionId OR $DivisionId=0)
+					and (DistrictId=$DistrictId OR $DistrictId=0)
+					and (UpazilaId=$UpazilaId OR $UpazilaId=0)
+					and DataTypeId=$DataTypeId;";
+
+				}else if($StatusId == 5){
+					/**Approve all reports */
+
+					$UserFieldName = "ApproveUserId";
+					$DateFieldName = "ApproveDate";
+					$BPosted = 1;
+
+					$sql = "select DataValueMasterId from t_datavaluemaster 
+					where StatusId=3
+					and YearId=$YearId
+					and QuarterId=$QuarterId
+					and (DivisionId=$DivisionId OR $DivisionId=0)
+					and (DistrictId=$DistrictId OR $DistrictId=0)
+					and (UpazilaId=$UpazilaId OR $UpazilaId=0)
+					and DataTypeId=$DataTypeId;";
+					
+				}
+
+				$rData = $dbh->query($sql);
+				foreach($rData as $r){
+		
+					$DataValueMasterId = $r["DataValueMasterId"];
+
+					$u = new updateq();
+					$u->table = 't_datavaluemaster';
+					$u->columns = ['StatusId',$UserFieldName,$DateFieldName,'BPosted'];
+					$u->values = [$StatusId,$UserId,$curDateTime,$BPosted];
+					$u->pks = ['DataValueMasterId'];
+					$u->pk_values = [$DataValueMasterId];
+					$u->build_query();
+					$aQuerys[] = $u;
+				}
+
+				
+
+			}else{
+				/**Not implement yet all return */
+
+
+				// if($StatusId == 1){
+				// 	$UserFieldName = "SubmitUserId";
+				// 	$DateFieldName = "SubmitDate";
+				// 	$ReturnCommentsFieldName = "AcceptReturnComments";
+
+				// }else if($StatusId == 2){
+				// 	$UserFieldName = "AcceptUserId";
+				// 	$DateFieldName = "AcceptDate";
+				// 	$ReturnCommentsFieldName = "ApproveReturnComments";
+				// }
+
+				// $u = new updateq();
+				// $u->table = 't_datavaluemaster';
+				// $u->columns = ['StatusId',$UserFieldName,$DateFieldName,$ReturnCommentsFieldName,'BPosted'];
+				// $u->values = [$StatusId,NULL,NULL,$ReturnComments,$BPosted];
+				// $u->pks = ['DataValueMasterId'];
+				// $u->pk_values = [$DataValueMasterId];
+				// $u->build_query();
+				// $aQuerys[] = $u;
+			}
+
+
+			if(count($aQuerys)==0){
+				$returnData = [
+					"success" => 0,
+					"status" => 500,
+					"UserId" => $UserId,
+					"message" => "You have no reports"
+				];
+			}else{
+				$res = exec_query($aQuerys, $UserId, $lan);
+				$success = ($res['msgType'] == 'success') ? 1 : 0;
+				$status = ($res['msgType'] == 'success') ? 200 : 500;
+	
+				$returnData = [
+					"success" => $success,
+					"status" => $status,
+					"UserId" => $UserId,
+					"message" => $res['msg']
+				];
+			}
+
+
+	
 		} catch (PDOException $e) {
 			$returnData = msg(0, 500, $e->getMessage());
 		}

@@ -238,6 +238,13 @@ button:hover {
    padding: 0px 4px;
  
 }
+.btnReturn {
+    background-color: rgb(236, 55, 94);  
+   font-size: 0.75rem;
+   height: 20px;
+   padding: 0px 4px;
+ 
+}
 .btnPost {
     background-color: rgb(120, 200, 10);
     min-width: 90px;
