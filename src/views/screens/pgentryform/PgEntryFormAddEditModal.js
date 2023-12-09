@@ -28,7 +28,8 @@ const PgEntryFormAddEditModal = (props) => {
   const [currGender, setCurrGender] = useState(null);
   const [currIsLeadByWomen, setCurrIsLeadByWomen] = useState(0); // or false
   const [currIsActive, setCurrIsActive] = useState(0); // or false
-
+  const [bank, setBank] = useState(null);
+  const [currBank, setCurrBank] = useState(null);
 
 
 
@@ -46,6 +47,9 @@ const PgEntryFormAddEditModal = (props) => {
 
     getGenderList(
       props.currentRow.GenderId
+    );
+    getBankList(
+      props.currentRow.BankId
     );
 
   // Set the initial value of IsLeadByWomen
@@ -102,6 +106,25 @@ const PgEntryFormAddEditModal = (props) => {
       );
 
       setCurrGender(selectGender);
+
+    });
+  }
+   
+  function getBankList(
+    selectBank
+  ) {
+    let params = {
+      action: "BankList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setBank(
+        [{ id: "", name: "Select Bank" }].concat(res.data.datalist)
+      );
+
+      setCurrBank(selectBank);
 
     });
   }
@@ -292,6 +315,10 @@ const PgEntryFormAddEditModal = (props) => {
       setCurrGender(value);
 
     } 
+    if (name === "BankId") {
+      setCurrBank(value);
+
+    } 
 
 
   };
@@ -320,8 +347,9 @@ const PgEntryFormAddEditModal = (props) => {
       "Address",
       "PgGroupCode",
       "PgBankAccountNumber",
-      "BankName",
       "ValuechainId",
+      "BankId",
+      "DateofPgInformation",
     ]
     let errorData = {}
     let isValid = true
@@ -530,7 +558,7 @@ const PgEntryFormAddEditModal = (props) => {
                 />
            
 
-              <label>Bank Name *</label>
+              {/* <label>Bank Name *</label>
                 <input
                   type="text"
                   id="BankName"
@@ -539,8 +567,21 @@ const PgEntryFormAddEditModal = (props) => {
                   placeholder="Enter Bank Name"
                   value={currentRow.BankName}
                   onChange={(e) => handleChange(e)}
-                />
+                /> */}
            
+               <label>Bank *</label>
+                <select
+                  id="BankId"
+                  name="BankId"
+                  class={errorObject.BankId}
+                  value={currBank}
+                  onChange={(e) => handleChange(e)}
+                >
+                  {bank &&
+                    bank.map((item, index) => {
+                      return <option value={item.id}>{item.name}</option>;
+                    })}
+                </select>
 
             
 
@@ -659,6 +700,19 @@ const PgEntryFormAddEditModal = (props) => {
                       onChange={(e) => handleChange(e)}
                     >
               </textarea>
+
+
+                <label>Date of PG Information* </label>
+                  <input
+                  type="date"
+                  id="DateofPgInformation"
+                  name="DateofPgInformation"
+                  class={errorObject.DateofPgInformation}
+                  placeholder="Select Date of PG Information"
+                  value={currentRow.DateofPgInformation}
+                  onChange={(e) => handleChange(e)}
+                />
+
           </div>
 
 

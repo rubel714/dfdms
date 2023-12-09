@@ -40,9 +40,24 @@ const RegularBeneficiaryEntry = (props) => {
        finalUrl +
          "?action=RegularBeneficiaryExport" +
          "&reportType=excel" +
-         "&DistrictId=" + UserInfo.currDivisionId +
-         "&UpazilaId=" + UserInfo.currDistrictId +
-         "&currUpazilaId=" + UserInfo.currUpazilaId +
+         "&DivisionId=" + currDivisionId +
+         "&DistrictId=" + currDistrictId +
+         "&UpazilaId=" + currUpazilaId +
+         "&TimeStamp=" +
+         Date.now()
+     );
+   };
+
+   const PrintPDFExcelExportFunctionAll = (reportType) => {
+     let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+ 
+     window.open(
+       finalUrl +
+         "?action=RegularBeneficiaryExport" +
+         "&reportType=excel" +
+         "&DivisionId=" + 0 +
+         "&DistrictId=" + 0 +
+         "&UpazilaId=" + 0 +
          "&TimeStamp=" +
          Date.now()
      );
@@ -514,7 +529,7 @@ const RegularBeneficiaryEntry = (props) => {
         </div>
 
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-        <div class="searchAdd2">
+        <div class="searchAdd3">
           <div class="formControl-filter-data-label">
               <label for="DivisionId">Division: </label>
               <select
@@ -567,6 +582,7 @@ const RegularBeneficiaryEntry = (props) => {
           <div class="filter-button">
               <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
               <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
+              <Button label={"All Data Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunctionAll} />
           </div>
       
       </div>

@@ -35,13 +35,15 @@ function getDataList($data){
 
 		$query = "SELECT a.PGId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGName`, a.`Address`, 
 			b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, a.UnionId, a.PgGroupCode, 
-			a.PgBankAccountNumber, a.BankName, a.ValuechainId, a.IsLeadByWomen, a.GenderId, a.IsActive, e.ValueChainName, f.UnionName
+			a.PgBankAccountNumber, y.BankName, a.ValuechainId, a.IsLeadByWomen, a.GenderId, a.IsActive, e.ValueChainName, f.UnionName
+			, a.DateofPgInformation, a.BankId
 			FROM `t_pg` a
 			INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
 			INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
 			INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
 			INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
 			LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
+			LEFT JOIN t_bank y ON a.`BankId` = y.`BankId`
 			WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
@@ -84,11 +86,13 @@ function dataAddEdit($data) {
 		$UnionId = $data->rowData->UnionId;
 		$PgGroupCode = $data->rowData->PgGroupCode;
 		$PgBankAccountNumber = $data->rowData->PgBankAccountNumber;
-		$BankName = $data->rowData->BankName;
+		$BankName = "NA";
 		$ValuechainId = $data->rowData->ValuechainId;
 		$IsLeadByWomen = isset($data->rowData->IsLeadByWomen) ? $data->rowData->IsLeadByWomen : 0;
 		$GenderId = isset($data->rowData->GenderId) ? $data->rowData->GenderId : 0;
 		$IsActive = isset($data->rowData->IsActive) ? $data->rowData->IsActive : 0;
+		$BankId = isset($data->rowData->BankId) ? $data->rowData->BankId : '';
+		$DateofPgInformation = isset($data->rowData->DateofPgInformation) ? $data->rowData->DateofPgInformation : '';
 		
 		
 
@@ -100,8 +104,8 @@ function dataAddEdit($data) {
 			if($PGId == ""){
 				$q = new insertq();
 				$q->table = 't_pg';
-				$q->columns = ['PGName','DivisionId','DistrictId','UpazilaId','Address', 'UnionId','PgGroupCode', 'PgBankAccountNumber','BankName', 'ValuechainId', 'IsLeadByWomen', 'GenderId', 'IsActive'];
-				$q->values = [$PGName,$DivisionId,$DistrictId,$UpazilaId,$Address, $UnionId, $PgGroupCode, $PgBankAccountNumber, $BankName, $ValuechainId, $IsLeadByWomen, $GenderId, $IsActive];
+				$q->columns = ['PGName','DivisionId','DistrictId','UpazilaId','Address', 'UnionId','PgGroupCode', 'PgBankAccountNumber','BankName', 'ValuechainId', 'IsLeadByWomen', 'GenderId', 'IsActive','BankId','DateofPgInformation'];
+				$q->values = [$PGName,$DivisionId,$DistrictId,$UpazilaId,$Address, $UnionId, $PgGroupCode, $PgBankAccountNumber, $BankName, $ValuechainId, $IsLeadByWomen, $GenderId, $IsActive, $BankId, $DateofPgInformation];
 				$q->pks = ['PGId'];
 				$q->bUseInsetId = false;
 				$q->build_query();
@@ -109,8 +113,8 @@ function dataAddEdit($data) {
 			}else{
 				$u = new updateq();
 				$u->table = 't_pg';
-				$u->columns = ['PGName','DivisionId','DistrictId','UpazilaId','Address','UnionId','PgGroupCode', 'PgBankAccountNumber', 'BankName', 'ValuechainId', 'IsLeadByWomen', 'GenderId', 'IsActive'];
-				$u->values = [$PGName,$DivisionId,$DistrictId,$UpazilaId,$Address, $UnionId, $PgGroupCode, $PgBankAccountNumber, $BankName, $ValuechainId, $IsLeadByWomen, $GenderId, $IsActive];
+				$u->columns = ['PGName','DivisionId','DistrictId','UpazilaId','Address','UnionId','PgGroupCode', 'PgBankAccountNumber', 'BankName', 'ValuechainId', 'IsLeadByWomen', 'GenderId', 'IsActive','BankId','DateofPgInformation'];
+				$u->values = [$PGName,$DivisionId,$DistrictId,$UpazilaId,$Address, $UnionId, $PgGroupCode, $PgBankAccountNumber, $BankName, $ValuechainId, $IsLeadByWomen, $GenderId, $IsActive, $BankId, $DateofPgInformation];
 				$u->pks = ['PGId'];
 				$u->pk_values = [$PGId];
 				$u->build_query();

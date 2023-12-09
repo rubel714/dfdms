@@ -84,6 +84,11 @@ switch($task){
 	case "GenderList":
 		$returnData = GenderList($data);
 		break;
+
+	case "BankList":
+		$returnData = BankList($data);
+		break;
+
 	case "HeadOfHHSexList":
 		$returnData = HeadOfHHSexList($data);
 		break;
@@ -695,6 +700,32 @@ function GenderList($data) {
 
 		$query = "SELECT GenderId id, GenderName name
 		FROM t_gender ORDER BY GenderName;"; 
+
+		$resultdata = $dbh->query($query);
+
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function BankList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$query = "SELECT BankId id, BankName name
+		FROM t_bank ORDER BY BankName;"; 
 
 		$resultdata = $dbh->query($query);
 

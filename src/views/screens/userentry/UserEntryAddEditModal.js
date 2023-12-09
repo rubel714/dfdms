@@ -551,7 +551,7 @@ const UserEntryAddEditModal = (props) => {
               id="DateofJoining"
               name="DateofJoining"
               class={errorObject.DateofJoining}
-              placeholder="Select Date of Registration"
+              placeholder="Select Date of Joining"
               value={currentRow.DateofJoining}
               onChange={(e) => handleChange(e)}
             />

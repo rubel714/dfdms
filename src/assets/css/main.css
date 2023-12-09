@@ -895,6 +895,13 @@ input[type=search] {
     padding-left: 10px;
     grid-template-columns: 15% 15% 57% 13%;
 }
+.searchAdd3 {
+    display: grid;
+    grid-row-gap: 8px;
+    row-gap: 8px;
+    padding-left: 10px;
+    grid-template-columns: 15% 15% 38% 31%;
+}
 
 .filter-button {
     margin-top: 15px;

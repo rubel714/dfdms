@@ -132,15 +132,14 @@ function RoleExport() {
 function RegularBeneficiaryExport() {
 
 	global $sql, $tableProperties, $TEXT, $siteTitle;
+
+	$DivisionId = $_REQUEST['DivisionId']?$_REQUEST['DivisionId']:0; 
+	$DistrictId = $_REQUEST['DistrictId']?$_REQUEST['DistrictId']:0; 
+	$UpazilaId =  $_REQUEST['UpazilaId']?$_REQUEST['UpazilaId']:0; 
+
 	
 	$sql = "SELECT a.*, CASE WHEN a.IsRegular = 1 THEN 'Regular' ELSE 'Irregular' END AS RegularStatus,
-			CASE
-		WHEN a.Gender = 1 THEN 'Male'
-		WHEN a.Gender = 2 THEN 'Female'
-		WHEN a.Gender = 3 THEN 'Male-Female Both'
-		WHEN a.Gender = 5 THEN 'Transgender'
-		ELSE 'Other'
-		END AS GenderName,
+			gn.GenderName,
 		CASE WHEN a.DisabilityStatus = 1 THEN 'Yes' ELSE 'No' END AS isDisabilityStatus,
 		CASE WHEN a.PGRegistered = 1 THEN 'Yes' ELSE 'No' END AS PGRegistered,
 		CASE WHEN a.PGPartnershipWithOtherCompany = 1 THEN 'Yes' ELSE 'No' END AS PGPartnershipWithOtherCompany,
@@ -148,13 +147,7 @@ function RegularBeneficiaryExport() {
 		
 		gh.TypeOfMember AS TypeOfMember,
 		oc.OccupationName AS FamilyOccupation,
-
-		CASE
-		WHEN a.HeadOfHHSex = 1 THEN 'Male'
-		WHEN a.HeadOfHHSex = 2 THEN 'Female'
-		WHEN a.HeadOfHHSex = 5 THEN 'Transgender'
-		ELSE 'Other'
-		END AS HeadOfHHSex,
+		ghh.GenderName AS HeadOfHHSex,
 		b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, 
 			e.ValueChainName, f.UnionName, g.PGName, a.Ward AS WardName, i.CityCorporationName, a.VillageName,
 			CASE WHEN a.IsHeadOfTheGroup = 1 THEN 'Yes' ELSE 'No' END AS HeadOfTheGroup,
@@ -167,17 +160,48 @@ function RegularBeneficiaryExport() {
 			, a.registrationDate
 			, a.IfRegisteredYesRegistrationNo
 			, a.FarmsPhoto
-		
+			
 		FROM t_farmer a
 		INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
 		INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
 		INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
-		INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
+		LEFT JOIN t_union f ON a.`UnionId` = f.`UnionId`
 		LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
 		LEFT JOIN t_occupation oc ON a.`OccupationId` = oc.`OccupationId`
 		LEFT JOIN t_pg g ON a.`PGId` = g.`PGId`
 		LEFT JOIN t_typeofmember gh ON a.`TypeOfMember` = gh.`TypeOfMemberId`
-		LEFT JOIN t_citycorporation i ON a.`CityCorporation` = i.`CityCorporation`;";
+		LEFT JOIN t_citycorporation i ON a.`CityCorporation` = i.`CityCorporation`
+		Inner Join t_gender gn ON a.Gender = gn.GenderId
+		LEFT JOIN t_gender ghh ON a.HeadOfHHSex = ghh.GenderId
+		
+		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
+		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
+		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+		LIMIT 99999
+		;";
+
+
+		$db = new Db();
+		$sqlrresultHeader = $db->query($sql);
+
+
+		if($DivisionId == 0){
+			$DivisionName = "Division: All, ";
+		}else{
+			$DivisionName =  "Division: ".$sqlrresultHeader[0]['DivisionName'];
+		}
+
+		if($DistrictId == 0){
+			$DistrictName = ", District: All, ";
+		}else{
+			$DistrictName = ", District: ". $sqlrresultHeader[0]['DistrictName'];
+		}
+		if($UpazilaId == 0){
+			$UpazilaName = ", Upazila: All";
+		}else{
+			$UpazilaName = ", Upazila: ". $sqlrresultHeader[0]['UpazilaName'];
+		}
+
 	
     $tableProperties["query_field"] = array('FarmerName','RegularStatus','NID','Phone','FatherName','MotherName','SpouseName','GenderName','FarmersAge','isDisabilityStatus','RelationWithHeadOfHH','ifOtherSpecify','HeadOfHHSex','PGRegistered','TypeOfMember','PGPartnershipWithOtherCompany','PGFarmerCode','FamilyOccupation','DivisionName','DistrictName','UpazilaName','UnionName','PGName','WardName','CityCorporationName','VillageName','Address','Latitute','Longitute','HeadOfTheGroup','ValueChainName','TypeOfFarmerId');
     $tableProperties["table_header"] = array("Beneficiary Name","Is Regular Beneficiary","Beneficiary NID","Mobile Number","Father's Name","Mother's Name","Spouse Name","Gender","Farmer's Age","Disability Status","Farmers Relationship with Head of HH","If others, specify","Farmer's Head of HH Sex","Do your PG/PO Registered?","Type Of Member","Do your PG make any productive partnership with any other company?","PG Farmer Code","Primary Occupation","Division","District","Upazila","Union","Name of Producer Group","Ward","City Corporation/ Municipality","Village","Address","Latitute","Longitute","Are You Head of The Group?","Value Chain","Farmer Type");
@@ -193,6 +217,7 @@ function RegularBeneficiaryExport() {
 	//Report header list
 	$tableProperties["header_list"][0] = $siteTitle;
 	$tableProperties["header_list"][1] = 'Farmer Profile List';
+	$tableProperties["header_list"][2] = $DivisionName. $DistrictName. $UpazilaName;
 	// $tableProperties["header_list"][1] = 'Heading 2';
 	
 	//Report save name. Not allow any type of special character
@@ -376,17 +401,15 @@ ORDER BY tq.`QuestionCode`, tq.`SortOrderChild` ;";
 function PGDataExport() {
 
 	global $sql, $tableProperties, $TEXT, $siteTitle;
-	// $ClientId = $_REQUEST['ClientId'];
+
+	$DivisionId = $_REQUEST['DivisionId']?$_REQUEST['DivisionId']:0; 
+	$DistrictId = $_REQUEST['DistrictId']?$_REQUEST['DistrictId']:0; 
+	$UpazilaId =  $_REQUEST['UpazilaId']?$_REQUEST['UpazilaId']:0; 
 
 	$sql = "SELECT a.PGId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGName`, a.`Address`, 
 	b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, a.UnionId, a.PgGroupCode, 
-	a.PgBankAccountNumber, a.BankName, a.ValuechainId, a.IsLeadByWomen, a.GenderId, a.IsActive, e.ValueChainName, f.UnionName
-	,CASE
-        WHEN a.GenderId = 1 THEN 'Male'
-        WHEN a.GenderId = 2 THEN 'Female'
-        WHEN a.GenderId = 3 THEN 'Male-Female Both'
-        ELSE 'Other'
-    	END AS GenderName,
+	a.PgBankAccountNumber, y.BankName, a.ValuechainId, a.IsLeadByWomen, a.GenderId, a.IsActive, e.ValueChainName, f.UnionName
+	,g.GenderName, a.DateofPgInformation,
 		CASE WHEN a.IsLeadByWomen = 1 THEN 'Yes' ELSE 'No' END AS IsLeadByWomenStatus,
 		CASE WHEN a.IsActive = 1 THEN 'Active' ELSE 'Inactive' END AS ActiveStatus
 	FROM `t_pg` a
@@ -395,10 +418,39 @@ function PGDataExport() {
 	INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
 	INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
 	LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
+	LEFT JOIN t_bank y ON a.`BankId` = y.`BankId`
+	LEFT JOIN t_gender g ON a.`GenderId` = g.`GenderId`
+	WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
+	AND (a.DistrictId = $DistrictId OR $DistrictId=0)
+	AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
 	ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`PGName` ASC;";
+
+$db = new Db();
+$sqlrresultHeader = $db->query($sql);
+
+
+if($DivisionId == 0){
+	$DivisionName = "Division: All, ";
+}else{
+	$DivisionName =  "Division: ".$sqlrresultHeader[0]['DivisionName'];
+}
+
+if($DistrictId == 0){
+	$DistrictName = ", District: All, ";
+}else{
+	$DistrictName = ", District: ". $sqlrresultHeader[0]['DistrictName'];
+}
+if($UpazilaId == 0){
+	$UpazilaName = ", Upazila: All";
+}else{
+	$UpazilaName = ", Upazila: ". $sqlrresultHeader[0]['UpazilaName'];
+}
+
+
+
 	
-    $tableProperties["query_field"] = array("PgGroupCode","PGName","PgBankAccountNumber","BankName","ValueChainName","DivisionName","DistrictName","UpazilaName","UnionName","GenderName","IsLeadByWomenStatus","ActiveStatus","Address");
-    $tableProperties["table_header"] = array('Group Code','PG Name','Bank Account Number','Bank Name','Value Chain','Division','District','Upazila','Union','Group Members Gender','Is the Group Led by Women','Status','Address');
+    $tableProperties["query_field"] = array("PgGroupCode","PGName","PgBankAccountNumber","BankName","ValueChainName","DivisionName","DistrictName","UpazilaName","UnionName","GenderName","IsLeadByWomenStatus","ActiveStatus","Address","DateofPgInformation");
+    $tableProperties["table_header"] = array('Group Code','PG Name','Bank Account Number','Bank Name','Value Chain','Division','District','Upazila','Union','Group Members Gender','Is the Group Led by Women','Status','Address','Date of Pg Information');
     $tableProperties["align"] = array("left");
     $tableProperties["width_print_pdf"] = array("6%","5%","15%","5%","5%","5%","5%","5%","5%"); //when exist serial then here total 95% and 5% use for serial
     $tableProperties["width_excel"] = array("15","30","20","15","16","12","12","12","12","12","12","12","25");
@@ -411,6 +463,7 @@ function PGDataExport() {
 	//Report header list
 	$tableProperties["header_list"][0] = $siteTitle;
 	$tableProperties["header_list"][1] = 'PG List';
+	$tableProperties["header_list"][2] = $DivisionName. $DistrictName. $UpazilaName;
 	// $tableProperties["header_list"][1] = 'Heading 2';
 	
 	//Report save name. Not allow any type of special character

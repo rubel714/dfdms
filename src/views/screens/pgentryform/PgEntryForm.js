@@ -36,13 +36,15 @@ const PgEntryForm = (props) => {
   const PrintPDFExcelExportFunction = (reportType) => {
     let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
 
+
+    
     window.open(
       finalUrl +
         "?action=PGDataExport" +
         "&reportType=excel" +
-        "&DistrictId=" + UserInfo.currDivisionId +
-        "&UpazilaId=" + UserInfo.currDistrictId +
-        "&currUpazilaId=" + UserInfo.currUpazilaId +
+        "&DivisionId=" + currDivisionId +
+        "&DistrictId=" + currDistrictId +
+        "&UpazilaId=" + currUpazilaId +
         "&TimeStamp=" +
         Date.now()
     );
@@ -218,6 +220,8 @@ const PgEntryForm = (props) => {
             IsLeadByWomen: 0,
             GenderId: "",
             IsActive: 0,
+            BankId: "",
+            DateofPgInformation: "",
           });
     openModal();
   };
