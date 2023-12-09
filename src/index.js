@@ -34,6 +34,7 @@ import MembersByPg from "views/screens/membersbypg/index.js";
 import GenderWisePGMembers from "views/screens/genderwisepgmembers/index.js";
 import ValueChainWisePGDistribution from "views/screens/valuechainwisepgdistribution/index.js";
 import ValueChainWisePGMemberDistribution from "views/screens/valuechainwisepgmemberdistribution/index.js";
+import PGandPGmembersInformation from "views/screens/pgandpgmembersinformation/index.js";
 
 import UserContextProvider from "./context/user-info-context";
 
@@ -131,6 +132,10 @@ ReactDOM.render(
           <Route
             path="/valuechainwisepgmemberdistribution"
             render={(props) => <ValueChainWisePGMemberDistribution {...props} />}
+          />
+          <Route
+            path="/pgandpgmembersinformation"
+            render={(props) => <PGandPGmembersInformation {...props} />}
           />
 
           <Route path="/" render={(props) => <Index {...props} />} />

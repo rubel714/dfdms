@@ -10,8 +10,8 @@ import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 /* import PgEntryFormAddEditModal from "./PgEntryFormAddEditModal";
  */
 
-const GenderWisePGMembers = (props) => {
-  const serverpage = "genderwisepgmembers"; // this is .php server page
+const PGandPGmembersInformation = (props) => {
+  const serverpage = "pgandpgmembersinformation"; // this is .php server page
 
   const { useState } = React;
   const [bFirst, setBFirst] = useState(true);
@@ -50,14 +50,14 @@ const GenderWisePGMembers = (props) => {
   };
   /* =====End of Excel Export Code==== */
 
-
+/* 
   const columnList = [
     { field: "rownumber", label: "SL", visible:false, align: "center", width: "3%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
    
     {
-      field: "FirstCol",
-      label: "Gender",
+      field: "Division",
+      label: "Division 11111",
       align: "left",
       visible: true,
       sort: true,
@@ -156,17 +156,9 @@ const GenderWisePGMembers = (props) => {
       filter: true,
       width: "7%"
     },
-    {
-      field: "percentofSex",
-      label: "% of Sex",
-      align: "right",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "7%"
-    },
+ 
    
-  ];
+  ]; */
 
   
   if (bFirst) {
@@ -255,7 +247,7 @@ const GenderWisePGMembers = (props) => {
   function modalCallback(response) {
     //response = close, addedit
     // console.log('response: ', response);
-    getDataList();
+    //getDataList();
     setShowModal(false); //true=modal show, false=modal hide
 
   }
@@ -380,6 +372,7 @@ const GenderWisePGMembers = (props) => {
   useEffect(() => {
     getDataList();
   }, [currDivisionId, currDistrictId, currUpazilaId]);
+ 
 
 
   return (
@@ -388,7 +381,7 @@ const GenderWisePGMembers = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Admin ❯ Gender wise PG Members
+            Home ❯ Admin ❯ Division, District, Upazila wise PG and PG members information
           </h4>
         </div>
 
@@ -403,11 +396,136 @@ const GenderWisePGMembers = (props) => {
         {/* <!-- ####---THIS CLASS IS USE FOR TABLE GRID PRODUCT INFORMATION---####s --> */}
         <div class="subContainer">
           <div className="App">
-            <CustomTable
+          <div class="subContainer">
+          <table class="tableGlobal">
+                <thead>
+                  <tr>
+                    <th rowspan="2">Division</th>
+                    <th rowspan="2">District</th>
+                    <th rowspan="2">Upazila</th>
+                    <th className="text-center" colspan="2">Dairy</th>
+                    <th className="text-center" colspan="2">Buffalo</th>
+                    <th className="text-center" colspan="2">Beef Fattening</th>
+                    <th className="text-center" colspan="2">Goat</th>
+                    <th className="text-center" colspan="2">Sheep</th>
+                    <th className="text-center" colspan="2">Scavenging Chickens</th>
+                    <th className="text-center" colspan="2">Duck</th>
+                    <th className="text-center" colspan="2">Quail</th>
+                    <th className="text-center" colspan="2">Pigeon</th>
+                    <th rowspan="2">Total PG</th>
+                    <th rowspan="2">Total PG Members</th>
+                  </tr>
+                  <tr>
+                    <th>PG</th>
+                    <th>PG Members</th>
+                    <th>PG</th>
+                    <th>PG Members</th>
+                    <th>PG</th>
+                    <th>PG Members</th>
+                    <th>PG</th>
+                    <th>PG Members</th>
+                    <th>PG</th>
+                    <th>PG Members</th>
+                    <th>PG</th>
+                    <th>PG Members</th>
+                    <th>PG</th>
+                    <th>PG Members</th>
+                    <th>PG</th>
+                    <th>PG Members</th>
+                    <th>PG</th>
+                    <th>PG Members</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                 {dataList.map((row, index) => (
+                      <tr key={index}>
+                        <td className="tg-zv4m">{row.Division}</td>
+                        <td className="tg-zv4m">{row.District}</td>
+                        <td className="tg-zv4m">{row.Upazila}</td>
+                        <td className="alignRightText tdWidthc">{row.DairyPG}</td>
+                        <td className="alignRightText">{row.DairyPGMembers}</td>
+                        <td className="alignRightText tdWidthc">{row.BuffaloPG}</td>
+                        <td className="alignRightText">{row.BuffaloPGMembers}</td>
+                        <td className="alignRightText tdWidthc">{row.BeefFatteningPG}</td>
+                        <td className="alignRightText">{row.BeefFatteningPGMembers}</td>
+                        <td className="alignRightText tdWidthc">{row.GoatPG}</td>
+                        <td className="alignRightText">{row.GoatPGMembers}</td>
+                        <td className="alignRightText tdWidthc">{row.SheepPG}</td>
+                        <td className="alignRightText">{row.SheepPGMembers}</td>
+                        <td className="alignRightText tdWidthc">{row.ScavengingChickensPG}</td>
+                        <td className="alignRightText">{row.ScavengingChickensPGMembers}</td>
+                        <td className="alignRightText tdWidthc">{row.DuckPG}</td>
+                        <td className="alignRightText">{row.DuckPGMembers}</td>
+                        <td className="alignRightText tdWidthc">{row.QuailPG}</td>
+                        <td className="alignRightText">{row.QuailPGMembers}</td>
+                        <td className="alignRightText tdWidthc">{row.PigeonPG}</td>
+                        <td className="alignRightText">{row.PigeonPGMembers}</td>
+                        <td className="alignRightText">{row.TotalPG}</td>
+                        <td className="alignRightText">{row.TotalPGMembers}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+
+                {/* <tbody>
+                  <tr>
+                    <td>Barishal</td>
+                    <td>Barishal</td>
+                    <td>Agailjhara</td>
+                    <td>7</td>
+                    <td>218</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>1</td>
+                    <td>31</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td>Babugonj</td>
+                    <td>5</td>
+                    <td>200</td>
+                    <td> </td>
+                    <td> </td>
+                    <td>1</td>
+                    <td>29</td>
+                    <td>1</td>
+                    <td>30</td>
+                    <td> </td>
+                    <td> </td>
+                    <td>1</td>
+                    <td>38</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody> */}
+              </table>
+
+
+              </div>
+            {/* <CustomTable
               columns={columnList}
               rows={dataList?dataList:{}}
                actioncontrol={actioncontrol}
-            />
+            /> */}
+
+         
           </div>
         </div>
       </div>
@@ -421,4 +539,4 @@ const GenderWisePGMembers = (props) => {
   );
 };
 
-export default GenderWisePGMembers;
+export default PGandPGmembersInformation;
