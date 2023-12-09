@@ -7,25 +7,24 @@ const ExecuteQueryHook = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
-  const ExecuteQuery = useCallback(async (page, params) => {
-    setIsLoading(true);
-    setError(null);
+  const ExecuteQuery = useCallback(async (page, params) => {    
     try {
       if (params !== null) {
-
+        setIsLoading(true);
+        setError(null);
         apiCall
           .post(page, { params }, apiOption())
           .then((res) => {
             setData(res.data.datalist);
+            setIsLoading(false);
           })
           .catch((error) => {
             setError(error);
           });
       }
     } catch (err) {
-      setError(err.message || "Something went wrong!");
-    }
-    setIsLoading(false);
+      setError(err.message || "Something went wrong!");    }
+    
   }, []);
 
   return { isLoading, data, error, ExecuteQuery };

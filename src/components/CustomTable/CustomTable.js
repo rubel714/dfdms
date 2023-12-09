@@ -1,17 +1,22 @@
 import React, { useState, useMemo } from "react";
 import { sortRows, filterRows, paginateRows } from "./helpers";
 import { Pagination } from "./Pagination";
+import SpinnerInTable from "components/Spinner/SpinnerInTable";
 
 function CustomTable({
   columns,
   rows,
   actioncontrol,
+  isLoading,
   ispagination = true,
   paginationsize = 15,
   params = {},
   handleRowClick,
   selectedRows = [], // Provide a default value to avoid undefined
 }) {
+
+  
+  // console.log('isLoading: ', isLoading);
 
   // const columns2 = [
   //   { field: 'rownumber', label: 'SL' ,align:'center',width:'5%'},
@@ -191,84 +196,91 @@ function CustomTable({
             </tr>
           </thead>
           <tbody>
-            {calculatedRows.length > 0 &&
+            
+            {isLoading && <SpinnerInTable colsLength={columns.length} />}
+
+            {!isLoading &&
+              calculatedRows.length > 0 &&
               calculatedRows.map((row, rowsl) => {
-
                 // Assuming this part is inside your map function
-                  {
-                    if (handleRowClick) {
-                      return (
-                        <tr
-                          key={row.id}
-                          className={selectedRows.includes(row) ? 'selected-row' : ''}
-                          onClick={() => {
-                            handleRowClick(row);
-                          }}
-                        >
-                          {columns.map((column, i) => {
-                            if (columns[i].visible) {
-                              if (column.field === "custom") {
-                                return (
-                                  <td
-                                    key={column.field}
-                                    style={{ textAlign: columns[i].align }}
-                                  >
-                                    {actioncontrol(row)}
-                                  </td>
-                                );
-                              }
+                {
+                  if (handleRowClick) {
+                    return (
+                      <tr
+                        key={row.id}
+                        className={
+                          selectedRows.includes(row) ? "selected-row" : ""
+                        }
+                        onClick={() => {
+                          handleRowClick(row);
+                        }}
+                      >
+                        {columns.map((column, i) => {
+                          if (columns[i].visible) {
+                            if (column.field === "custom") {
                               return (
                                 <td
                                   key={column.field}
                                   style={{ textAlign: columns[i].align }}
                                 >
-                                  {column.field === "rownumber"
-                                    ? (activePage - 1) * rowsPerPage + (rowsl + 1)
-                                    : (column.type === "number"
-                                        ? new Intl.NumberFormat('hi-IN').format(row[column.field])
-                                        : row[column.field])}
+                                  {actioncontrol(row)}
                                 </td>
                               );
                             }
-                          })}
-                        </tr>
-                      );
-                    } else {
-                      // Render a basic row without the onClick handler
-                      return (
-                        <tr key={row.id}>
-                          {columns.map((column, i) => {
-                            if (columns[i].visible) {
-                              if (column.field === "custom") {
-                                return (
-                                  <td
-                                    key={column.field}
-                                    style={{ textAlign: columns[i].align }}
-                                  >
-                                    {actioncontrol(row)}
-                                  </td>
-                                );
-                              }
+                            return (
+                              <td
+                                key={column.field}
+                                style={{ textAlign: columns[i].align }}
+                              >
+                                {column.field === "rownumber"
+                                  ? (activePage - 1) * rowsPerPage + (rowsl + 1)
+                                  : column.type === "number"
+                                  ? new Intl.NumberFormat("hi-IN").format(
+                                      row[column.field]
+                                    )
+                                  : row[column.field]}
+                              </td>
+                            );
+                          }
+                        })}
+                      </tr>
+                    );
+                  } else {
+                    // Render a basic row without the onClick handler
+                    return (
+                      <tr key={row.id}>
+                        {columns.map((column, i) => {
+                          if (columns[i].visible) {
+                            if (column.field === "custom") {
                               return (
                                 <td
                                   key={column.field}
                                   style={{ textAlign: columns[i].align }}
                                 >
-                                  {column.field === "rownumber"
-                                    ? (activePage - 1) * rowsPerPage + (rowsl + 1)
-                                    : (column.type === "number"
-                                        ? new Intl.NumberFormat('hi-IN').format(row[column.field])
-                                        : row[column.field])}
+                                  {actioncontrol(row)}
                                 </td>
                               );
                             }
-                          })}
-                        </tr>
-                      );
-                    }
+                            return (
+                              <td
+                                key={column.field}
+                                style={{ textAlign: columns[i].align }}
+                              >
+                                {column.field === "rownumber"
+                                  ? (activePage - 1) * rowsPerPage + (rowsl + 1)
+                                  : column.type === "number"
+                                  ? new Intl.NumberFormat("hi-IN").format(
+                                      row[column.field]
+                                    )
+                                  : row[column.field]}
+                              </td>
+                            );
+                          }
+                        })}
+                      </tr>
+                    );
                   }
-
-
+                }
 
                 /* return (
                     <tr key={row.id}>
