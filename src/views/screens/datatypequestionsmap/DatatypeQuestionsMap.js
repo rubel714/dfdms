@@ -430,6 +430,7 @@ const DatatypeQuestionsMap = (props) => {
               rows={dataList?dataList:{}}
               actioncontrol={actioncontrol}
               ispagination={false}
+              isLoading={isLoading}
             />
           </div>
         </div>

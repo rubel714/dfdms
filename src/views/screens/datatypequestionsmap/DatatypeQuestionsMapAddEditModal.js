@@ -207,6 +207,7 @@ const DatatypeQuestionsMapAddEditModal = (props) => {
                 // actioncontrol={actioncontrol}
                 handleRowClick={handleRowClick}
                 selectedRows={selectedRows}
+                isLoading={isLoading}
               />
 
 

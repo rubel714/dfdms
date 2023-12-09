@@ -26,9 +26,9 @@ const PgEntryForm = (props) => {
   const [upazilaList, setUpazilaList] = useState(null);
 
 
-  const [currDivisionId, setCurrDivisionId] = useState(null);
-  const [currDistrictId, setCurrDistrictId] = useState(null);
-  const [currUpazilaId, setCurrUpazilaId] = useState(null);
+  const [currDivisionId, setCurrDivisionId] = useState(UserInfo.DivisionId);
+  const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
+  const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
 
   /* =====Start of Excel Export Code==== */
   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
@@ -317,7 +317,7 @@ const PgEntryForm = (props) => {
       );
 
 
-      setCurrDivisionId(selectDivisionId);
+      //setCurrDivisionId(selectDivisionId);
 
       getDistrict(
         selectDivisionId,
@@ -501,6 +501,7 @@ const PgEntryForm = (props) => {
               columns={columnList}
               rows={dataList?dataList:{}}
               actioncontrol={actioncontrol}
+              isLoading={isLoading}
             />
           </div>
         </div>

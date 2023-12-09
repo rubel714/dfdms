@@ -216,6 +216,7 @@ const DataType = (props) => {
               columns={columnList}
               rows={dataList?dataList:{}}
               actioncontrol={actioncontrol}
+              isLoading={isLoading}
             />
           </div>
         </div>

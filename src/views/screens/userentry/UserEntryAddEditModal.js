@@ -251,7 +251,7 @@ const UserEntryAddEditModal = (props) => {
     // let validateFields = ["UserName", "DiscountAmount", "DiscountPercentage"]
     let validateFields = [];
     if (currentRow["id"]) {
-      validateFields = ["UserName", "LoginName", "Email", "DesignationId"];
+      validateFields = ["UserName", "LoginName", "Email", "DesignationId", "DateofJoining"];
     } else {
       validateFields = [
         "UserName",
@@ -259,6 +259,7 @@ const UserEntryAddEditModal = (props) => {
         "Password",
         "Email",
         "DesignationId",
+        "DateofJoining",
       ];
     }
 
@@ -359,8 +360,9 @@ const UserEntryAddEditModal = (props) => {
   }
 
   const [selectedRoles, setSelectedRoles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState(null);
 
-  React.useEffect(() => {
+ /*  React.useEffect(() => {
     if (
       props.currentRow.RoleIds &&
       typeof props.currentRow.RoleIds === "string"
@@ -371,7 +373,21 @@ const UserEntryAddEditModal = (props) => {
       currentRow["multiselectPGroup"] = roleIds;
       setSelectedRoles(roleIds);
     }
+  }, [props.currentRow.RoleIds]); */
+
+  React.useEffect(() => {
+    if (
+      props.currentRow.RoleIds &&
+      typeof props.currentRow.RoleIds === "string"
+    ) {
+      const roleIds = props.currentRow.RoleIds.split(",").map((id) =>
+        id.trim()
+      );
+      currentRow["multiselectPGroup"] = roleIds;
+      setSelectedRole(roleIds[0]); // Set the first role as selected
+    }
   }, [props.currentRow.RoleIds]);
+
 
   const rolesToDisplay = RoleList || [];
 
@@ -388,8 +404,11 @@ const UserEntryAddEditModal = (props) => {
     setSelectedRoles(updatedRoles);
   };
 
-  console.log("RoleList:", RoleList);
-  console.log("selectedRoles:", selectedRoles);
+  const handleRoleRadioChange = (roleId) => {
+    currentRow["multiselectPGroup"] = [roleId];
+    setSelectedRole(roleId);
+  };
+
 
   return (
     <>
@@ -526,14 +545,18 @@ const UserEntryAddEditModal = (props) => {
                 })}
             </select>
 
-            <label> IsActive?</label>
-            <input
-              id="IsActive"
-              name="IsActive"
-              type="checkbox"
-              checked={currentRow.IsActive}
-              onChange={handleChangeCheck}
+            <label>Date of Joining* </label>
+              <input
+              type="date"
+              id="DateofJoining"
+              name="DateofJoining"
+              class={errorObject.DateofJoining}
+              placeholder="Select Date of Registration"
+              value={currentRow.DateofJoining}
+              onChange={(e) => handleChange(e)}
             />
+
+           
           </div>
 
           <div class="contactmodalBody pt-10">
@@ -546,6 +569,16 @@ const UserEntryAddEditModal = (props) => {
               value={currentRow.Email}
               onChange={(e) => handleChange(e)}
             ></input>
+
+            <label> IsActive?</label>
+            <input
+              id="IsActive"
+              name="IsActive"
+              type="checkbox"
+              checked={currentRow.IsActive}
+              onChange={handleChangeCheck}
+            />
+
           </div>
 
           <div class="contactmodalBody pt-10">
@@ -555,7 +588,23 @@ const UserEntryAddEditModal = (props) => {
           <div class="contactmodalBodyLeargeBox pt-10">
             <label></label>
             <div class="checkbox-group-type">
-              {rolesToDisplay.map((role) => (
+
+                {rolesToDisplay.map((role) => (
+                <div class="radio-container" key={role.id}>
+                  <input
+                    type="radio"
+                    id={`id_${role.id}`}
+                    name="multiselectPGroup"
+                    value={String(role.id)}
+                    className="radioClass"
+                    checked={selectedRole === String(role.id)}
+                    onChange={() => handleRoleRadioChange(String(role.id))}
+                  />
+                  <label className="control-label">{role.role}</label>
+                </div>
+              ))}
+
+              {/* {rolesToDisplay.map((role) => (
                 <div class="checkbox-container" key={role.id}>
                   <input
                     type="checkbox"
@@ -568,7 +617,7 @@ const UserEntryAddEditModal = (props) => {
                   />
                   <label className="control-label">{role.role}</label>
                 </div>
-              ))}
+              ))} */}
             </div>
           </div>
 

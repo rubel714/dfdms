@@ -271,6 +271,7 @@ const QuestionsEntry = (props) => {
               columns={columnList}
               rows={dataList?dataList:{}}
               actioncontrol={actioncontrol}
+              isLoading={isLoading}
               // paginationsize={20}
             />
           </div>

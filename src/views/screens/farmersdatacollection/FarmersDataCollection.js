@@ -1089,6 +1089,7 @@ const FarmersDataCollection = (props) => {
                   columns={masterColumnList}
                   rows={dataList ? dataList : {}}
                   actioncontrol={actioncontrolmaster}
+                  isLoading={isLoading}
                 />
               </div>
             </div> 

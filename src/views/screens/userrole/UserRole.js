@@ -228,6 +228,7 @@ const UserRole = (props) => {
               columns={columnList}
               rows={dataList?dataList:{}}
               actioncontrol={actioncontrol}
+              isLoading={isLoading}
             />
           </div>
         </div>

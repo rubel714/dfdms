@@ -115,6 +115,15 @@ const UserEntry = (props) => {
       width: "7%",
     },
     {
+      field: "DateofJoining",
+      label: "Date of Joining",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "7%",
+    },
+    {
       field: "IsActiveName",
       label: "IsActive",
       align: "left",
@@ -203,7 +212,9 @@ const UserEntry = (props) => {
             confirmPassword: "",
             IsActive: false,
             multiselectPGroup: "",
-            RoleIds: [],
+            //RoleIds: [],
+            RoleIds: "",
+            DateofJoining: "",
           });
     openModal();
   };
@@ -320,6 +331,7 @@ const UserEntry = (props) => {
               columns={columnList}
               rows={dataList?dataList:{}}
               actioncontrol={actioncontrol}
+              isLoading={isLoading}
             />
           </div>
         </div>

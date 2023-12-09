@@ -25,10 +25,9 @@ const RegularBeneficiaryEntry = (props) => {
   const [districtList, setDistrictList] = useState(null);
   const [upazilaList, setUpazilaList] = useState(null);
 
-
-  const [currDivisionId, setCurrDivisionId] = useState(null);
-  const [currDistrictId, setCurrDistrictId] = useState(null);
-  const [currUpazilaId, setCurrUpazilaId] = useState(null);
+  const [currDivisionId, setCurrDivisionId] = useState(UserInfo.DivisionId);
+  const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
+  const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
 
 
    /* =====Start of Excel Export Code==== */
@@ -395,7 +394,7 @@ const RegularBeneficiaryEntry = (props) => {
       );
 
 
-      setCurrDivisionId(selectDivisionId);
+      //setCurrDivisionId(selectDivisionId);
 
       getDistrict(
         selectDivisionId,
@@ -581,6 +580,7 @@ const RegularBeneficiaryEntry = (props) => {
               columns={columnList}
               rows={dataList?dataList:{}}
               actioncontrol={actioncontrol}
+              isLoading={isLoading}
             />
           </div>
         </div>

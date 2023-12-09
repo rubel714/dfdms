@@ -588,6 +588,7 @@ const PGDataCollection = (props) => {
                   rows={dataList ? dataList : {}}
                   actioncontrol={actioncontrolmaster}
                   ispagination={false}
+                  isLoading={isLoading}
                 />
               </div>
             </div>

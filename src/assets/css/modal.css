@@ -320,3 +320,30 @@
 .modal .modalItemCondition input[type=text] {
     width: 30%;
 }
+
+
+/* Style for radio container */
+.radio-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    margin-left: 5px;
+  }
+  
+  /* Style for radio input */
+  .radio-container input {
+    margin-right: 8px; 
+  }
+  
+  /* Style for radio label */
+  .radio-container label {
+    font-size: 0.9rem;
+    color: #121212;
+    cursor: pointer;
+  }
+  
+  /* Style for checked radio input */
+  .radio-container input:checked + label {
+    color: #007bff;
+    font-weight: bold; 
+  }

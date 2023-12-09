@@ -4,6 +4,7 @@ import { DeleteOutline, Edit } from "@material-ui/icons";
 import {Button}  from "../../../components/CustomControl/Button";
 
 import CustomTable from "components/CustomTable/CustomTable";
+import SpinnerInTable from "components/Spinner/SpinnerInTable";
 import { apiCall, apiOption , LoginUserInfo, language} from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
@@ -27,9 +28,9 @@ const PGandPGmembersInformation = (props) => {
   const [upazilaList, setUpazilaList] = useState(null);
 
 
-  const [currDivisionId, setCurrDivisionId] = useState(null);
-  const [currDistrictId, setCurrDistrictId] = useState(null);
-  const [currUpazilaId, setCurrUpazilaId] = useState(null);
+  const [currDivisionId, setCurrDivisionId] = useState(UserInfo.DivisionId);
+  const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
+  const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
 
   /* =====Start of Excel Export Code==== */
   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
@@ -270,7 +271,7 @@ const PGandPGmembersInformation = (props) => {
       );
 
 
-      setCurrDivisionId(selectDivisionId);
+     // setCurrDivisionId(selectDivisionId);
 
       getDistrict(
         selectDivisionId,
@@ -438,7 +439,9 @@ const PGandPGmembersInformation = (props) => {
                 </thead>
 
                 <tbody>
-                 {dataList.map((row, index) => (
+                {isLoading && <SpinnerInTable colsLength={23} />}
+                {!isLoading && (
+                 dataList.map((row, index) => (
                       <tr key={index}>
                         <td className="tg-zv4m">{row.Division}</td>
                         <td className="tg-zv4m">{row.District}</td>
@@ -464,7 +467,8 @@ const PGandPGmembersInformation = (props) => {
                         <td className="alignRightText">{row.TotalPG}</td>
                         <td className="alignRightText">{row.TotalPGMembers}</td>
                       </tr>
-                    ))}
+                    ))
+                    )}
                   </tbody>
 
                 {/* <tbody>
