@@ -57,6 +57,9 @@ const DataCollectionEntry = (props) => {
   }
   // console.log('curMonthId: ', parseInt(curMonthId));
 
+  const UserInfo = LoginUserInfo();
+  console.log('UserInfo: ', UserInfo);
+
   const [currentQuarterId, setcurrentQuarterId] = useState(defaultMonthId);
   const [dataTypeId, setDataTypeId] = useState(props.DataTypeId);
 
@@ -78,9 +81,9 @@ const DataCollectionEntry = (props) => {
   const [districtList, setDistrictList] = useState(null);
   const [upazilaList, setUpazilaList] = useState(null);
 
-  const [currDivisionId, setCurrDivisionId] = useState(null);
-  const [currDistrictId, setCurrDistrictId] = useState(null);
-  const [currUpazilaId, setCurrUpazilaId] = useState(null);
+  const [currDivisionId, setCurrDivisionId] = useState(UserInfo.DivisionId);
+  const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
+  const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
 
   // {
   //   LandTypeId: 1,
@@ -374,8 +377,7 @@ const DataCollectionEntry = (props) => {
     ExecuteQuery: ExecuteQuerySingle,
   } = ExecuteQueryHook(); //Fetch data for single
 
-  const UserInfo = LoginUserInfo();
-  console.log('UserInfo: ', UserInfo);
+
 
   /* =====Start of Excel Export Code==== */
   // const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
@@ -940,7 +942,7 @@ const DataCollectionEntry = (props) => {
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
       setDivisionList([{ id: "", name: "All" }].concat(res.data.datalist));
 
-      setCurrDivisionId(selectDivisionId);
+      //setCurrDivisionId(selectDivisionId);
 
       getDistrict(selectDivisionId, SelectDistrictId, selectUpazilaId);
 
