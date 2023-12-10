@@ -177,7 +177,6 @@ function RegularBeneficiaryExport() {
 		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
-		LIMIT 99999
 		;";
 
 
