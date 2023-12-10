@@ -58,7 +58,7 @@ const DataCollectionEntry = (props) => {
   // console.log('curMonthId: ', parseInt(curMonthId));
 
   const UserInfo = LoginUserInfo();
-  console.log('UserInfo: ', UserInfo);
+  console.log("UserInfo: ", UserInfo);
 
   const [currentQuarterId, setcurrentQuarterId] = useState(defaultMonthId);
   const [dataTypeId, setDataTypeId] = useState(props.DataTypeId);
@@ -70,6 +70,8 @@ const DataCollectionEntry = (props) => {
 
   const [showPGModal, setShowPGModal] = useState(false); //true=show modal, false=hide modal
   const [showFarmerModal, setShowFarmerModal] = useState(false); //true=show modal, false=hide modal
+  const [showReturnCommentsModal, setShowReturnCommentsModal] = useState(false); //true=show modal, false=hide modal
+  const [returnCommentsObj, setReturnCommentsObj] = useState({id:0,statusid:0,nextprev:'',comments:''}); //true=show modal, false=hide modal
 
   const [landTypeList, setLandTypeList] = useState([]);
 
@@ -377,8 +379,6 @@ const DataCollectionEntry = (props) => {
     ExecuteQuery: ExecuteQuerySingle,
   } = ExecuteQueryHook(); //Fetch data for single
 
-
-
   /* =====Start of Excel Export Code==== */
   // const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
@@ -412,9 +412,9 @@ const DataCollectionEntry = (props) => {
       FarmerId: "",
       Categories: "",
       Remarks: "",
-      DataCollectorName: "",
-      DesignationId: "",
-      PhoneNumber: "",
+      DataCollectorName: UserInfo.UserName,
+      DesignationId: UserInfo.DesignationId,
+      PhoneNumber: UserInfo.Phone,
       DataCollectionDate: currentDate,
       UserId: UserInfo.UserId,
       BPosted: 0,
@@ -579,6 +579,23 @@ const DataCollectionEntry = (props) => {
     setGrassTypeTableRow(rows);
     console.log("rows: ", rows);
   };
+
+
+  
+  const changeComments = (e) => {
+    // console.log(e);
+    const { name, value } = e.target;
+
+    let cData = {...returnCommentsObj};
+    console.log('cData: ', cData);
+    cData["comments"] = value;
+    console.log(' name, value: ',  name, value);
+  
+    setReturnCommentsObj(cData);
+    // console.log("rows: ", rows);
+  };
+
+
 
   // Function to handle the input change
   // window.changeCustomTableCell = (value) => {
@@ -1110,16 +1127,18 @@ const DataCollectionEntry = (props) => {
       <>
         {/* StatusId */}
 
-        {(rowData.StatusId === 1) && (UserInfo.UserId==rowData.UserId) && StatusChangeAllow.includes("Submit") && (
-          <button
-            class={"btnSubmit"}
-            onClick={() => {
-              changeReportStatus(rowData.id, 2, "Next");
-            }}
-          >
-            Submit
-          </button>
-        )}
+        {rowData.StatusId === 1 &&
+          UserInfo.UserId == rowData.UserId &&
+          StatusChangeAllow.includes("Submit") && (
+            <button
+              class={"btnSubmit"}
+              onClick={() => {
+                changeReportStatus(rowData.id, 2, "Next");
+              }}
+            >
+              Submit
+            </button>
+          )}
 
         {rowData.StatusId === 2 && StatusChangeAllow.includes("Accept") && (
           <>
@@ -1135,7 +1154,8 @@ const DataCollectionEntry = (props) => {
             <button
               class={"btnReturn"}
               onClick={() => {
-                changeReportStatus(rowData.id, 1, "Return");
+                showRetCommentsModal(rowData.id, 1, "Return");
+                // changeReportStatus(rowData.id, 1, "Return");
               }}
             >
               Return
@@ -1157,7 +1177,9 @@ const DataCollectionEntry = (props) => {
             <button
               class={"btnReturn"}
               onClick={() => {
-                changeReportStatus(rowData.id, 2, "Return");
+                showRetCommentsModal(rowData.id, 2, "Return");
+
+                // changeReportStatus(rowData.id, 2, "Return");
               }}
             >
               Return
@@ -1166,7 +1188,7 @@ const DataCollectionEntry = (props) => {
         )}
 
         {/* {rowData.BPosted === 0 && ( */}
-        {(rowData.StatusId === 1) && (UserInfo.UserId==rowData.UserId) && (
+        {rowData.StatusId === 1 && UserInfo.UserId == rowData.UserId && (
           <Edit
             className={"table-edit-icon"}
             onClick={() => {
@@ -1176,7 +1198,7 @@ const DataCollectionEntry = (props) => {
         )}
 
         {/* {rowData.BPosted === 0 && ( */}
-        {(rowData.StatusId === 1) && (UserInfo.UserId==rowData.UserId) && (
+        {rowData.StatusId === 1 && UserInfo.UserId == rowData.UserId && (
           <DeleteOutline
             className={"table-delete-icon"}
             onClick={() => {
@@ -1185,7 +1207,7 @@ const DataCollectionEntry = (props) => {
           />
         )}
 
-        {((rowData.StatusId != 1) || (UserInfo.UserId !=rowData.UserId)) && (
+        {(rowData.StatusId != 1 || UserInfo.UserId != rowData.UserId) && (
           <ViewList
             className={"table-view-icon"}
             onClick={() => {
@@ -1757,6 +1779,40 @@ const DataCollectionEntry = (props) => {
     setShowFarmerModal(false);
   }
 
+  function showRetCommentsModal(id, statusid, nextprev) {
+    // rowData.id, 1, "Return"
+
+    let cData = {...returnCommentsObj};
+    cData["id"] = id;
+    cData["statusid"] = statusid;
+    cData["nextprev"] = nextprev;
+    cData["comments"] = "";
+    setReturnCommentsObj(cData);
+
+
+    setShowReturnCommentsModal(true);
+  }
+
+  function commentsAndReturnSave() {
+    console.log('returnCommentsObj: ', returnCommentsObj);
+    
+
+    if(returnCommentsObj.comments != ""){
+      changeReportStatus(returnCommentsObj.id, returnCommentsObj.statusid, returnCommentsObj.nextprev);
+      
+    }else{
+      props.openNoticeModal({
+        isOpen: true,
+        msg: "Please enter return comments.",
+        msgtype: 0,
+      });
+    }
+  }
+
+  function closeRetCommentsModal(p) {
+    setShowReturnCommentsModal(false);
+  }
+
   function saveData(p) {
     let params = {
       action: "dataAddEdit",
@@ -1805,6 +1861,11 @@ const DataCollectionEntry = (props) => {
     }
   }
 
+  
+
+
+
+
   function changeReportStatus(Id, StatusId, StatusNextPrev) {
     let params = {
       action: "changeReportStatus",
@@ -1813,7 +1874,7 @@ const DataCollectionEntry = (props) => {
       Id: Id,
       StatusId: StatusId,
       StatusNextPrev: StatusNextPrev,
-      ReturnComments: StatusId,
+      ReturnComments: returnCommentsObj.comments,
     };
 
     let msg = "";
@@ -1854,6 +1915,9 @@ const DataCollectionEntry = (props) => {
     }).then((allowAction) => {
       if (allowAction) {
         changeReportStatusAPICall(params);
+        closeRetCommentsModal("");
+      }else{
+
       }
     });
   }
@@ -1887,8 +1951,6 @@ const DataCollectionEntry = (props) => {
     //   });
     // }
   }
-  
-
 
   function submitAllReports() {
     changeReportStatusAll(2, "Next");
@@ -1901,7 +1963,6 @@ const DataCollectionEntry = (props) => {
   }
 
   function changeReportStatusAll(StatusId, StatusNextPrev) {
-
     let params = {
       action: "changeReportStatusAll",
       lan: language(),
@@ -1990,7 +2051,6 @@ const DataCollectionEntry = (props) => {
     // }
   }
 
-
   return (
     <>
       <div class="bodyContainer">
@@ -2023,6 +2083,52 @@ const DataCollectionEntry = (props) => {
             currentInvoice={currentInvoice}
             modalCallback={closeFarmerModal}
           />
+        )}
+
+        {showReturnCommentsModal && (
+          <>
+            {/* <!-- GROUP MODAL START --> */}
+            <div id="groupModal" class="modal">
+              {/* <!-- Modal content --> */}
+              <div class="modal-content">
+                <div class="modalHeader">
+                  <h4>Enter Comments</h4>
+                </div>
+
+                <div class="pgmodalBody pt-10">
+                  <label>Comments:</label>
+                  <input
+                      type="text"
+                      id={"ReturnComments"}
+                      name={"ReturnComments"}
+                      value={returnCommentsObj.comments || ''}
+                      onChange={(e) =>
+                        changeComments(e)
+                      }
+                    />
+
+                </div>
+
+
+
+                <div class="modalItem">
+                  <Button
+                    label={"Return"}
+                    class={"btnSave"}
+                    onClick={commentsAndReturnSave}
+                  />
+                </div>
+
+                <div class="modalItem">
+                  <Button
+                    label={"Close"}
+                    class={"btnClose"}
+                    onClick={closeRetCommentsModal}
+                  />
+                </div>
+              </div>
+            </div>
+          </>
         )}
 
         {listEditPanelToggle && (
@@ -2173,13 +2279,35 @@ const DataCollectionEntry = (props) => {
     // console.log('sub: ', sub);
     {rowData.StatusId === 1 && StatusChangeAllow.includes("Submit") && ( */}
 
-              {UserInfo.StatusChangeAllow.includes("Submit") && (<Button label={"Submit All"} class={"btnPrint"} onClick={submitAllReports} />)}
-              {UserInfo.StatusChangeAllow.includes("Accept") && (<Button label={"Accept All"} class={"btnPrint"} onClick={acceptAllReports} />)}
-              {UserInfo.StatusChangeAllow.includes("Approve") && (<Button label={"Approve All"} class={"btnClose"} onClick={approveAllReports} />)}
+              {UserInfo.StatusChangeAllow.includes("Submit") && (
+                <Button
+                  label={"Submit All"}
+                  class={"btnPrint"}
+                  onClick={submitAllReports}
+                />
+              )}
+              {UserInfo.StatusChangeAllow.includes("Accept") && (
+                <Button
+                  label={"Accept All"}
+                  class={"btnPrint"}
+                  onClick={acceptAllReports}
+                />
+              )}
+              {UserInfo.StatusChangeAllow.includes("Approve") && (
+                <Button
+                  label={"Approve All"}
+                  class={"btnClose"}
+                  onClick={approveAllReports}
+                />
+              )}
 
-
-
-              {(UserInfo.StatusChangeAllow.includes("Submit")) && (<Button label={"Enter Data"} class={"btnAdd"} onClick={addData} />)}
+              {UserInfo.StatusChangeAllow.includes("Submit") && (
+                <Button
+                  label={"Enter Data"}
+                  class={"btnAdd"}
+                  onClick={addData}
+                />
+              )}
             </div>
 
             {/* <!-- ####---Master invoice list---####s --> */}
@@ -3899,13 +4027,9 @@ const DataCollectionEntry = (props) => {
                       label={"সংরক্ষণ করুন (Save)"}
                       class={"btnAddCustom"}
                       onClick={saveData}
-                      disabled={(currentInvoice.StatusId > 1)}
+                      disabled={currentInvoice.StatusId > 1}
                       //  disabled={(currentInvoice.StatusId > 1) || (UserInfo.UserId != currentInvoice.UserId && currentInvoice.id != "")}
                     />
-
-
-
-
 
                     <Button
                       label={"ফেরত যান (Back To List)"}

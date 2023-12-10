@@ -93,7 +93,7 @@ else {
         // $UserId = 33333333333333;
         
         $sql = "SELECT a.`UserId`,a.`UserName`,a.`LoginName`,a.`Email`,a.`Password`,
-        a.`DesignationId`,a.`IsActive`,a.PhotoUrl,a.DivisionId,b.DivisionName,a.DistrictId,c.DistrictName,a.UpazilaId,d.UpazilaName
+        a.`DesignationId`,a.`IsActive`,a.PhotoUrl,a.DivisionId,b.DivisionName,a.DistrictId,c.DistrictName,a.UpazilaId,d.UpazilaName,a.Phone
             FROM `t_users` a
             left join t_division b on a.DivisionId=b.DivisionId
             left join t_district c on a.DistrictId=c.DistrictId
