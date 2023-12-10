@@ -375,6 +375,7 @@ const DataCollectionEntry = (props) => {
   } = ExecuteQueryHook(); //Fetch data for single
 
   const UserInfo = LoginUserInfo();
+  console.log('UserInfo: ', UserInfo);
 
   /* =====Start of Excel Export Code==== */
   // const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
@@ -1042,7 +1043,7 @@ const DataCollectionEntry = (props) => {
       field: "ValueChainName",
       label: "ভেলু চেইন",
       align: "left",
-      width: "10%",
+      width: "8%",
       visible: true,
       sort: true,
       filter: true,
@@ -1050,7 +1051,7 @@ const DataCollectionEntry = (props) => {
     {
       field: "UpazilaName",
       label: "উপজেলা",
-      width: "15%",
+      width: "10%",
       align: "left",
       visible: true,
       sort: true,
@@ -1059,7 +1060,16 @@ const DataCollectionEntry = (props) => {
     {
       field: "DataCollectorName",
       label: "তথ্য সংগ্রহকারীর নাম",
-      width: "15%",
+      width: "12%",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+    },
+    {
+      field: "UserName",
+      label: "ডাটা এন্ট্রি",
+      width: "8%",
       align: "left",
       visible: true,
       sort: true,
@@ -1078,7 +1088,7 @@ const DataCollectionEntry = (props) => {
     {
       field: "custom",
       label: "অ্যাকশন",
-      width: "12%",
+      width: "11%",
       align: "center",
       visible: true,
       // sort: false,
@@ -1098,7 +1108,7 @@ const DataCollectionEntry = (props) => {
       <>
         {/* StatusId */}
 
-        {(rowData.StatusId === 1) && (UserInfo.id==rowData.UserId) && StatusChangeAllow.includes("Submit") && (
+        {(rowData.StatusId === 1) && (UserInfo.UserId==rowData.UserId) && StatusChangeAllow.includes("Submit") && (
           <button
             class={"btnSubmit"}
             onClick={() => {
@@ -1154,7 +1164,7 @@ const DataCollectionEntry = (props) => {
         )}
 
         {/* {rowData.BPosted === 0 && ( */}
-        {(rowData.StatusId === 1) && (UserInfo.id==rowData.UserId) && (
+        {(rowData.StatusId === 1) && (UserInfo.UserId==rowData.UserId) && (
           <Edit
             className={"table-edit-icon"}
             onClick={() => {
@@ -1164,7 +1174,7 @@ const DataCollectionEntry = (props) => {
         )}
 
         {/* {rowData.BPosted === 0 && ( */}
-        {(rowData.StatusId === 1) && (UserInfo.id==rowData.UserId) && (
+        {(rowData.StatusId === 1) && (UserInfo.UserId==rowData.UserId) && (
           <DeleteOutline
             className={"table-delete-icon"}
             onClick={() => {
@@ -1173,7 +1183,7 @@ const DataCollectionEntry = (props) => {
           />
         )}
 
-        {((rowData.StatusId != 1) || (UserInfo.id !=rowData.UserId)) && (
+        {((rowData.StatusId != 1) || (UserInfo.UserId !=rowData.UserId)) && (
           <ViewList
             className={"table-view-icon"}
             onClick={() => {
@@ -2166,7 +2176,8 @@ const DataCollectionEntry = (props) => {
               {UserInfo.StatusChangeAllow.includes("Approve") && (<Button label={"Approve All"} class={"btnClose"} onClick={approveAllReports} />)}
 
 
-              <Button label={"Enter Data"} class={"btnAdd"} onClick={addData} />
+
+              {(UserInfo.StatusChangeAllow.includes("Submit")) && (<Button label={"Enter Data"} class={"btnAdd"} onClick={addData} />)}
             </div>
 
             {/* <!-- ####---Master invoice list---####s --> */}
@@ -3885,7 +3896,8 @@ const DataCollectionEntry = (props) => {
                       label={"সংরক্ষণ করুন (Save)"}
                       class={"btnAddCustom"}
                       onClick={saveData}
-                      disabled={(currentInvoice.StatusId > 1) || (UserInfo.id!=currentInvoice.UserId)}
+                      disabled={(currentInvoice.StatusId > 1)}
+                      //  disabled={(currentInvoice.StatusId > 1) || (UserInfo.UserId != currentInvoice.UserId && currentInvoice.id != "")}
                     />
 
 
