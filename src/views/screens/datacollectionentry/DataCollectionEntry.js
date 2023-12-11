@@ -37,6 +37,9 @@ const DataCollectionEntry = (props) => {
   const [filterYearList, setFilterYearList] = useState(null);
   const [DesignationList, setDesignationList] = useState(null);
 
+  const [valuechainList, setValuechainId] = useState(null);
+  const [currValuechainId, setCurrValuechainId] = useState(null);
+
   const [currentFilter, setCurrentFilter] = useState([]); //this is for master information. It will send to sever for save
   const [currentInvoice, setCurrentInvoice] = useState([]); //this is for master information. It will send to sever for save
   const [manyDataList, setManyDataList] = useState([]); //This is for many table. It will send to sever for save
@@ -408,6 +411,7 @@ const DataCollectionEntry = (props) => {
       YearId: currentYear,
       QuarterId: currentQuarterId,
       DataTypeId: dataTypeId,
+      ValuechainId: "",
       PGId: "",
       FarmerId: "",
       Categories: "",
@@ -790,9 +794,10 @@ const DataCollectionEntry = (props) => {
     newInvoice();
 
     getQuestionList();
-    getPgGroupList();
+    //getPgGroupList();
     getYearList();
     getDesignation();
+    getValuechainIdList(currValuechainId);
 
     getLandTypeList();
     getGrassList();
@@ -831,14 +836,36 @@ const DataCollectionEntry = (props) => {
     });
   }
 
-  function getPgGroupList() {
+
+  function getValuechainIdList(selectValuechainId) {
     let params = {
-      action: "PgGroupList",
+      action: "QuestionMapCategoryList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setValuechainId(
+        [{ id: "", name: "Select Value Chain" }].concat(res.data.datalist)
+      );
+
+      setCurrValuechainId(null);
+
+      getPgGroupList(selectValuechainId);
+
+    });
+  }
+  
+  function getPgGroupList(selectValuechainId) {
+    let params = {
+      /* action: "PgGroupList", */
+      action: "PgGroupListByValueChain",
       lan: language(),
       UserId: UserInfo.UserId,
       DivisionId: UserInfo.DivisionId,
       DistrictId: UserInfo.DistrictId,
       UpazilaId: UserInfo.UpazilaId,
+      ValuechainId: selectValuechainId,
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
@@ -1593,6 +1620,12 @@ const DataCollectionEntry = (props) => {
     } else if (name === "UpazilaId") {
       setCurrUpazilaId(value);
     }
+
+    if (name === "ValuechainId") {
+      setCurrValuechainId(value);
+      getPgGroupList(value);
+    }
+
   };
 
   useEffect(() => {
@@ -1684,6 +1717,7 @@ const DataCollectionEntry = (props) => {
     let validateFields = [
       "YearId",
       "QuarterId",
+      "ValuechainId",
       "PGId",
       "DataCollectorName",
       "DataCollectionDate",
@@ -2090,12 +2124,12 @@ const DataCollectionEntry = (props) => {
             {/* <!-- GROUP MODAL START --> */}
             <div id="groupModal" class="modal">
               {/* <!-- Modal content --> */}
-              <div class="modal-content">
+              <div class="modal-content-sm">
                 <div class="modalHeader">
                   <h4>Enter Comments</h4>
                 </div>
 
-                <div class="pgmodalBody pt-10">
+                <div class="pgmodalBody-sm pt-10">
                   <label>Comments:</label>
                   <input
                       type="text"
@@ -2109,22 +2143,17 @@ const DataCollectionEntry = (props) => {
 
                 </div>
 
-
-
-                <div class="modalItem">
-                  <Button
-                    label={"Return"}
-                    class={"btnSave"}
-                    onClick={commentsAndReturnSave}
-                  />
-                </div>
-
-                <div class="modalItem">
-                  <Button
-                    label={"Close"}
-                    class={"btnClose"}
-                    onClick={closeRetCommentsModal}
-                  />
+                <div class="modalItem-sm modalItem">
+                      <Button
+                        label={"Close"}
+                        class={"btnClose"}
+                        onClick={closeRetCommentsModal}
+                      />
+                      <Button
+                        label={"Return"}
+                        class={"btnSave"}
+                        onClick={commentsAndReturnSave}
+                      />
                 </div>
               </div>
             </div>
@@ -2423,6 +2452,23 @@ const DataCollectionEntry = (props) => {
                         <TextField {...params} variant="standard" fullWidth />
                       )}
                     />
+                  </div>
+
+
+                  <div class="formControl">
+                      <label>Value Chain</label>
+                      <select
+                        id="ValuechainId"
+                        name="ValuechainId"
+                        class={errorObjectMaster.ValuechainId}
+                        value={currValuechainId}
+                        onChange={(e) => handleChange(e)}
+                      >
+                        {valuechainList &&
+                          valuechainList.map((item, index) => {
+                            return <option value={item.id}>{item.name}</option>;
+                          })}
+                      </select>
                   </div>
 
                   <div class="formControl">

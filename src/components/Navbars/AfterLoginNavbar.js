@@ -3,6 +3,7 @@ import { apiCall, apiOption, LoginUserInfo, language } from "../../actions/api";
 
 function AfterLoginNavbar(props) {
   const [userInfo, setUserInfo] = React.useState(LoginUserInfo());
+  const baseUrl = process.env.REACT_APP_FRONT_URL;
 
   function menuShowPermision(pMenuKey) {
     let isShow = 0;
@@ -393,7 +394,8 @@ function AfterLoginNavbar(props) {
               </li>
             </ul>
             <img
-              src={require("assets/img/user/" + userInfo.PhotoUrl)}
+              /* src={require("assets/img/user/" + userInfo.PhotoUrl)} */
+              src={baseUrl+"src/assets/img/user/"+userInfo.PhotoUrl}
               alt="User"
             />
           </div>

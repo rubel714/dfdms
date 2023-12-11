@@ -702,13 +702,13 @@ const PgEntryFormAddEditModal = (props) => {
               </textarea>
 
 
-                <label>Date of PG Information* </label>
+                <label>Date of PG Formation* </label>
                   <input
                   type="date"
                   id="DateofPgInformation"
                   name="DateofPgInformation"
                   class={errorObject.DateofPgInformation}
-                  placeholder="Select Date of PG Information"
+                  placeholder="Select Date of PG Formation"
                   value={currentRow.DateofPgInformation}
                   onChange={(e) => handleChange(e)}
                 />
