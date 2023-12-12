@@ -119,6 +119,10 @@ switch($task){
 		$returnData = PgGroupListByUnion($data);
 		break;
 		
+	case "PgGroupListByValueChain":
+		$returnData = PgGroupListByValueChain($data);
+		break;
+		
 	case "DivisionFilterList":
 		$returnData = DivisionFilterList($data);
 		break;
@@ -961,6 +965,51 @@ function PgGroupListByUnion($data) {
 		ORDER BY PGName;";
 
 	
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
+
+
+function PgGroupListByValueChain($data) {
+	try{
+
+		$DivisionId = trim($data->DivisionId);
+		$DistrictId = trim($data->DistrictId);
+		$UpazilaId = trim($data->UpazilaId);
+		$UnionId = trim($data->UnionId);
+		$ValuechainId = trim($data->ValuechainId)?trim($data->ValuechainId):""; 
+		
+		
+
+		$dbh = new Db();
+		
+		$query = "SELECT `PGId` id,
+			`DivisionId`,
+			`DistrictId`,
+			`UpazilaId`,
+			`PGName` `name`,
+			`Address`
+			FROM t_pg  
+			WHERE DivisionId=$DivisionId 
+			AND DistrictId=$DistrictId
+			AND UpazilaId=$UpazilaId
+			AND ValuechainId = '$ValuechainId'
+		ORDER BY PGName;";
+
 		$resultdata = $dbh->query($query);
 
 		$returnData = [

@@ -28,7 +28,21 @@ const UserEntryAddEditModal = (props) => {
   const [RoleList, setRoleList] = useState(null);
   const [currDesignationId, setCurrDesignationId] = useState(null);
 
-  console.log("RoleIds-----", props.currentRow.RoleIds);
+  const baseUrl = process.env.REACT_APP_FRONT_URL;
+
+  console.log("baseUrl",process.env.REACT_APP_FRONT_URL);
+
+  const [previewImage, setPreviewImage] = useState(
+    `${baseUrl}src/assets/img/user/placeholder.png`
+  );
+
+  const [previewImages, setPreviewImages] = useState({
+    PhotoUrl: `${baseUrl}src/assets/img/user/placeholder.png`,
+  });
+  
+
+
+ /*  console.log("RoleIds-----", props.currentRow.RoleIds); */
 
   React.useEffect(() => {
     getDivision(
@@ -233,6 +247,13 @@ const UserEntryAddEditModal = (props) => {
     } else if (name === "DesignationId") {
       setCurrDesignationId(value);
     }
+
+    if (name == "Phone") {
+      const onlyNums = value.replace(/[^0-9]/g, '');
+      const limitedValue = onlyNums.slice(0, 11);
+      data["Phone"] = limitedValue;
+    } 
+
   };
 
   function handleChangeCheck(e) {
@@ -410,6 +431,54 @@ const UserEntryAddEditModal = (props) => {
   };
 
 
+  
+  const handleFileChange = (e, photoType) => {
+  
+    e.preventDefault(); // Prevent default form submission behavior
+    const file = e.target.files[0];
+  
+    if (file) {
+      uploadImage(file, photoType);
+      setPreviewImages((prevImages) => ({
+        ...prevImages,
+        [photoType]: URL.createObjectURL(file),
+      }));
+    }
+  };
+
+
+  
+const uploadImage = (file, photoType) => {
+  if (!file) {
+    console.error("No file selected");
+    return;
+  }
+
+  const formData = new FormData();
+  let timestamp = Math.floor(new Date().getTime() / 1000);
+
+  formData.append("baseUrl", baseUrl);
+  formData.append("formName", "userProfile");
+  formData.append("file", file);
+  formData.append("timestamp", timestamp);
+  formData.append(
+    "filename",
+    `./src/assets/img/user/${timestamp}_${file.name}`
+  );
+
+  apiCall.post("upload-image", formData, apiOption()).then((res) => {
+    setCurrentRow((prevData) => ({
+      ...prevData,
+      [photoType]: `${timestamp}_${file.name}`,
+    }));
+  }).catch((error) => {
+    console.error("API call error:", error);
+  });
+};
+
+
+
+
   return (
     <>
       {/* <!-- GROUP MODAL START --> */}
@@ -579,6 +648,53 @@ const UserEntryAddEditModal = (props) => {
               onChange={handleChangeCheck}
             />
 
+          </div>
+
+          <div class="contactmodalBody pt-10">
+
+          <label>Mobile Number </label>
+            <input
+              type="text"
+              id="Phone"
+              name="Phone"
+              placeholder="Enter Mobile Number"
+              value={currentRow.Phone}
+              onChange={(e) => handleChange(e)}
+            />
+            
+            <label>Address</label>
+            <textarea 
+                  id="Address"
+                  name="Address"
+                  class={errorObject.Address}
+                  value={currentRow.Address}
+                  onChange={(e) => handleChange(e)}
+                >
+              </textarea>
+
+            
+          </div>
+
+          <div className="contactmodalBody pt-10">
+            <label>Photo</label>
+            <input
+              type="file"
+              id="PhotoUrl"
+              name="PhotoUrl"
+              accept="image/*"
+              //onChange={handleFileChange}
+              onChange={(e) => handleFileChange(e, "PhotoUrl")}
+            />
+            
+            {previewImages.PhotoUrl && (
+                <div className="image-preview">
+                  <img
+                    src={currentRow.PhotoUrl?`${baseUrl}src/assets/img/user/${currentRow.PhotoUrl}`:previewImage}
+                    alt="Photo"
+                    className="preview-image"
+                  />
+                </div>
+              )}
           </div>
 
           <div class="contactmodalBody pt-10">

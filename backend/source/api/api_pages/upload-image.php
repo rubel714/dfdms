@@ -8,7 +8,13 @@ ini_set('display_errors', 1);
 
  if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["file"])) {
     //$targetDir = "./../../../media/";
-    $targetDir = "./../../../src/assets/farmerimage/";
+
+	if (($_POST["formName"]) == "userProfile"){
+		$targetDir = "./../../../src/assets/img/user/";
+	}else{
+		$targetDir = "./../../../src/assets/farmerimage/";
+	}
+    
 
 	$timestamp = $_POST["timestamp"];
 

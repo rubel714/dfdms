@@ -215,6 +215,9 @@ const UserEntry = (props) => {
             //RoleIds: [],
             RoleIds: "",
             DateofJoining: "",
+            Phone: "",
+            Address: "",
+            PhotoUrl: "",
           });
     openModal();
   };
