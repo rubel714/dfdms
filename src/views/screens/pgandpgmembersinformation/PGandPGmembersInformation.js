@@ -213,46 +213,7 @@ const PGandPGmembersInformation = (props) => {
       </>
     );
   } 
-
-  const addData = () => {
-
-    setCurrentRow({
-            id: "",
-            PGName: "",
-            DivisionId: "",
-            DistrictId: "",
-            UpazilaId: "",
-            Address: "",
-            UnionId: "",
-            PgGroupCode: "",
-            PgBankAccountNumber: "",
-            BankName: "",
-            ValuechainId: "",
-            IsLeadByWomen: 0,
-            GenderId: "",
-            IsActive: 0,
-          });
-    openModal();
-  };
-
-  const editData = (rowData) => {
-    setCurrentRow(rowData);
-    openModal();
-  };
-
-  
-  function openModal() {
-    setShowModal(true); //true=modal show, false=modal hide
-  }
-
-  function modalCallback(response) {
-    //response = close, addedit
-    // console.log('response: ', response);
-    //getDataList();
-    setShowModal(false); //true=modal show, false=modal hide
-
-  }
-
+ 
 
   function getDivision(
     selectDivisionId,
@@ -382,17 +343,65 @@ const PGandPGmembersInformation = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Admin ❯ Division, District, Upazila wise PG and PG members information
+            Home ❯ Reports ❯ Division, District, Upazila wise PG and PG members information
           </h4>
         </div>
+   {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
+   <div class="searchAdd2">
+          <div class="formControl-filter-data-label">
+              <label for="DivisionId">Division: </label>
+              <select
+                  class="dropdown_filter"
+                  id="DivisionId"
+                  name="DivisionId"
+                  value={currDivisionId}
+                  onChange={(e) => handleChange(e)}
+              >
+                  {divisionList &&
+                      divisionList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                      })}
+              </select>
+          </div>
 
-        {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-      
+          <div class="formControl-filter-data-label">
+              <label for="DistrictId">District: </label>
+              <select
+                  class="dropdown_filter"
+                  id="DistrictId"
+                  name="DistrictId"
+                  value={currDistrictId}
+                  onChange={(e) => handleChange(e)}
+              >
+                  {districtList &&
+                      districtList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                      })}
+              </select>
+          </div>
+
+          <div class="formControl-filter-data-label">
+              <label for="UpazilaId">Upazila: </label>
+              <select
+                  id="UpazilaId"
+                  name="UpazilaId"
+                  class="dropdown_filter"
+                  value={currUpazilaId}
+                  onChange={(e) => handleChange(e)}
+              >
+                  {upazilaList &&
+                      upazilaList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                      })}
+              </select>
+          </div>
+
           
-          <div class="exportAdd">
+          <div class="filter-button">
               <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} /> 
           </div>
       
+      </div>
 
         {/* <!-- ####---THIS CLASS IS USE FOR TABLE GRID PRODUCT INFORMATION---####s --> */}
         <div class="subContainer">
@@ -443,29 +452,29 @@ const PGandPGmembersInformation = (props) => {
                 {!isLoading && (
                  dataList.map((row, index) => (
                       <tr key={index}>
-                        <td className="tg-zv4m">{row.Division}</td>
-                        <td className="tg-zv4m">{row.District}</td>
-                        <td className="tg-zv4m">{row.Upazila}</td>
+                        <td className="tg-zv4m">{row.DivisionName}</td>
+                        <td className="tg-zv4m">{row.DistrictName}</td>
+                        <td className="tg-zv4m">{row.UpazilaName}</td>
                         <td className="alignRightText tdWidthc">{row.DairyPG}</td>
-                        <td className="alignRightText">{row.DairyPGMembers}</td>
+                        <td className="alignRightText">{row.DairyFarmer}</td>
                         <td className="alignRightText tdWidthc">{row.BuffaloPG}</td>
-                        <td className="alignRightText">{row.BuffaloPGMembers}</td>
+                        <td className="alignRightText">{row.BuffaloFarmer}</td>
                         <td className="alignRightText tdWidthc">{row.BeefFatteningPG}</td>
-                        <td className="alignRightText">{row.BeefFatteningPGMembers}</td>
+                        <td className="alignRightText">{row.BeefFatteningFarmer}</td>
                         <td className="alignRightText tdWidthc">{row.GoatPG}</td>
-                        <td className="alignRightText">{row.GoatPGMembers}</td>
+                        <td className="alignRightText">{row.GoatFarmer}</td>
                         <td className="alignRightText tdWidthc">{row.SheepPG}</td>
-                        <td className="alignRightText">{row.SheepPGMembers}</td>
+                        <td className="alignRightText">{row.SheepFarmer}</td>
                         <td className="alignRightText tdWidthc">{row.ScavengingChickensPG}</td>
-                        <td className="alignRightText">{row.ScavengingChickensPGMembers}</td>
+                        <td className="alignRightText">{row.ScavengingChickensFarmer}</td>
                         <td className="alignRightText tdWidthc">{row.DuckPG}</td>
-                        <td className="alignRightText">{row.DuckPGMembers}</td>
+                        <td className="alignRightText">{row.DuckFarmer}</td>
                         <td className="alignRightText tdWidthc">{row.QuailPG}</td>
-                        <td className="alignRightText">{row.QuailPGMembers}</td>
+                        <td className="alignRightText">{row.QuailFarmer}</td>
                         <td className="alignRightText tdWidthc">{row.PigeonPG}</td>
-                        <td className="alignRightText">{row.PigeonPGMembers}</td>
-                        <td className="alignRightText">{row.TotalPG}</td>
-                        <td className="alignRightText">{row.TotalPGMembers}</td>
+                        <td className="alignRightText">{row.PigeonFarmer}</td>
+                        <td className="alignRightText">{row.RowTotalPG}</td>
+                        <td className="alignRightText">{row.RowTotalFarmer}</td>
                       </tr>
                     ))
                     )}
@@ -534,10 +543,6 @@ const PGandPGmembersInformation = (props) => {
         </div>
       </div>
       {/* <!-- BODY CONTAINER END --> */}
-
-
-     {/*  {showModal && (<PgEntryFormAddEditModal masterProps={props} currentRow={currentRow} modalCallback={modalCallback}/>)}
- */}
 
     </>
   );

@@ -56,7 +56,7 @@ const ValueChainWisePGMemberDistribution = (props) => {
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
    
     {
-      field: "Division",
+      field: "DivisionName",
       label: "Division",
       align: "left",
       visible: true,
@@ -156,15 +156,15 @@ const ValueChainWisePGMemberDistribution = (props) => {
       filter: true,
       width: "7%"
     },
-    /* {
-      field: "percentofSex",
-      label: "% of Sex",
+    {
+      field: "Percentage",
+      label: "% of Division",
       align: "right",
       visible: true,
       sort: true,
       filter: true,
       width: "7%"
-    }, */
+    },
    
   ];
 
@@ -172,13 +172,13 @@ const ValueChainWisePGMemberDistribution = (props) => {
   if (bFirst) {
     /**First time call for datalist */
 
-    getDivision(
-      UserInfo.DivisionId,
-      UserInfo.DistrictId,
-      UserInfo.UpazilaId
-    );
+    // getDivision(
+    //   UserInfo.DivisionId,
+    //   UserInfo.DistrictId,
+    //   UserInfo.UpazilaId
+    // );
 
-    //getDataList();
+    getDataList();
     setBFirst(false);
   }
 
@@ -220,166 +220,125 @@ const ValueChainWisePGMemberDistribution = (props) => {
       </>
     );
   } 
+ 
 
-  const addData = () => {
+  // function getDivision(
+  //   selectDivisionId,
+  //   SelectDistrictId,
+  //   selectUpazilaId
+  // ) {
+  //   let params = {
+  //     action: "DivisionFilterList",
+  //     lan: language(),
+  //     UserId: UserInfo.UserId,
+  //   };
 
-    setCurrentRow({
-            id: "",
-            PGName: "",
-            DivisionId: "",
-            DistrictId: "",
-            UpazilaId: "",
-            Address: "",
-            UnionId: "",
-            PgGroupCode: "",
-            PgBankAccountNumber: "",
-            BankName: "",
-            ValuechainId: "",
-            IsLeadByWomen: 0,
-            GenderId: "",
-            IsActive: 0,
-          });
-    openModal();
-  };
-
-  const editData = (rowData) => {
-    setCurrentRow(rowData);
-    openModal();
-  };
-
-  
-  function openModal() {
-    setShowModal(true); //true=modal show, false=modal hide
-  }
-
-  function modalCallback(response) {
-    //response = close, addedit
-    // console.log('response: ', response);
-    getDataList();
-    setShowModal(false); //true=modal show, false=modal hide
-
-  }
+  //   apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+  //     setDivisionList(
+  //       [{ id: "", name: "All" }].concat(res.data.datalist)
+  //     );
 
 
-  function getDivision(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId
-  ) {
-    let params = {
-      action: "DivisionFilterList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDivisionList(
-        [{ id: "", name: "All" }].concat(res.data.datalist)
-      );
+  //     getDistrict(
+  //       selectDivisionId,
+  //       SelectDistrictId,
+  //       selectUpazilaId
+  //     );
 
 
-      //setCurrDivisionId(selectDivisionId);
-
-      getDistrict(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId
-      );
-
-
-    });
-  }
+  //   });
+  // }
 
 
   
-  function getDistrict(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId
-  ) {
-    let params = {
-      action: "DistrictFilterList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-      DivisionId: selectDivisionId,
-    };
+  // function getDistrict(
+  //   selectDivisionId,
+  //   SelectDistrictId,
+  //   selectUpazilaId
+  // ) {
+  //   let params = {
+  //     action: "DistrictFilterList",
+  //     lan: language(),
+  //     UserId: UserInfo.UserId,
+  //     DivisionId: selectDivisionId,
+  //   };
 
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDistrictList(
-        [{ id: "", name: "All" }].concat(res.data.datalist)
-      );
+  //   apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+  //     setDistrictList(
+  //       [{ id: "", name: "All" }].concat(res.data.datalist)
+  //     );
    
-      setCurrDistrictId(SelectDistrictId);
-      getUpazila(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId
-      );
+  //     setCurrDistrictId(SelectDistrictId);
+  //     getUpazila(
+  //       selectDivisionId,
+  //       SelectDistrictId,
+  //       selectUpazilaId
+  //     );
      
-    });
-  }
+  //   });
+  // }
 
 
   
-  function getUpazila(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId
-  ) {
-    let params = {
-      action: "UpazilaFilterList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-      DivisionId: selectDivisionId,
-      DistrictId: SelectDistrictId,
-    };
+  // function getUpazila(
+  //   selectDivisionId,
+  //   SelectDistrictId,
+  //   selectUpazilaId
+  // ) {
+  //   let params = {
+  //     action: "UpazilaFilterList",
+  //     lan: language(),
+  //     UserId: UserInfo.UserId,
+  //     DivisionId: selectDivisionId,
+  //     DistrictId: SelectDistrictId,
+  //   };
 
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setUpazilaList(
-        [{ id: "", name: "All" }].concat(res.data.datalist)
-      );
+  //   apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+  //     setUpazilaList(
+  //       [{ id: "", name: "All" }].concat(res.data.datalist)
+  //     );
   
-      setCurrUpazilaId(selectUpazilaId);
+  //     setCurrUpazilaId(selectUpazilaId);
       
      
-    });
-  }
+  //   });
+  // }
 
 
   
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    let data = { ...currentFilter };
-    data[name] = value;
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   let data = { ...currentFilter };
+  //   data[name] = value;
 
 
-    setCurrentFilter(data);
+  //   setCurrentFilter(data);
 
-    //for dependancy
-    if (name === "DivisionId") {
-      setCurrDivisionId(value);
+  //   //for dependancy
+  //   if (name === "DivisionId") {
+  //     setCurrDivisionId(value);
 
-      setCurrDistrictId("");
-      setCurrUpazilaId("");
-      getDistrict(value, "", "");
-      getUpazila(value, "", "");
-
-
-    } else if (name === "DistrictId") {
-      setCurrDistrictId(value);
-       getUpazila(currentFilter.DivisionId, value, "");
-    } else if (name === "UpazilaId") {
-      setCurrUpazilaId(value);
-    } 
+  //     setCurrDistrictId("");
+  //     setCurrUpazilaId("");
+  //     getDistrict(value, "", "");
+  //     getUpazila(value, "", "");
 
 
+  //   } else if (name === "DistrictId") {
+  //     setCurrDistrictId(value);
+  //      getUpazila(currentFilter.DivisionId, value, "");
+  //   } else if (name === "UpazilaId") {
+  //     setCurrUpazilaId(value);
+  //   } 
 
-  };
 
 
-  useEffect(() => {
-    getDataList();
-  }, [currDivisionId, currDistrictId, currUpazilaId]);
+  // };
+
+
+  // useEffect(() => {
+  //   getDataList();
+  // }, [currDivisionId, currDistrictId, currUpazilaId]);
 
 
   return (
@@ -388,7 +347,7 @@ const ValueChainWisePGMemberDistribution = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Admin ❯ Value Chain wise PG Member Distribution
+            Home ❯ Reports ❯ Value Chain wise PG Member Distribution
           </h4>
         </div>
 

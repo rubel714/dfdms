@@ -1,69 +1,114 @@
 <?php
 
 $task = '';
-if(isset($data->action)) {
+if (isset($data->action)) {
 	$task = trim($data->action);
 }
 
-switch($task){
-	
+switch ($task) {
+
 	case "getDataList":
 		$returnData = getDataList($data);
-	break;
+		break;
 
-	default :
+	default:
 		echo "{failure:true}";
 		break;
 }
 
-function getDataList($data){
+function getDataList($data)
+{
 
-	try{
+	try {
 		$dbh = new Db();
-		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
-		$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
-		$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
+		$DivisionId = trim($data->DivisionId) ? trim($data->DivisionId) : 0;
+		$DistrictId = trim($data->DistrictId) ? trim($data->DistrictId) : 0;
+		$UpazilaId = trim($data->UpazilaId) ? trim($data->UpazilaId) : 0;
+
+		$query = "SELECT g.GenderName
+		,SUM(CASE WHEN f.`ValueChain`='DAIRY' THEN 1 ELSE 0 END) Dairy
+		,SUM(CASE WHEN f.`ValueChain`='BUFFALO' THEN 1 ELSE 0 END) Buffalo
+		,SUM(CASE WHEN f.`ValueChain`='BEEFFATTENING' THEN 1 ELSE 0 END) BeefFattening
+		,SUM(CASE WHEN f.`ValueChain`='GOAT' THEN 1 ELSE 0 END) Goat
+		,SUM(CASE WHEN f.`ValueChain`='SHEEP' THEN 1 ELSE 0 END) Sheep
+		,SUM(CASE WHEN f.`ValueChain`='SCAVENGINGCHICKENLOCAL' THEN 1 ELSE 0 END) ScavengingChickens
+		,SUM(CASE WHEN f.`ValueChain`='DUCK' THEN 1 ELSE 0 END) Duck
+		,SUM(CASE WHEN f.`ValueChain`='QUAIL' THEN 1 ELSE 0 END) Quail
+		,SUM(CASE WHEN f.`ValueChain`='PIGEON' THEN 1 ELSE 0 END) Pigeon
+		,COUNT(f.`FarmerId`) AS GrandTotal
+		FROM `t_farmer` f
+		INNER JOIN `t_gender` g ON f.`Gender` = g.GenderId
+		WHERE (f.DivisionId = $DivisionId OR $DivisionId=0)
+		AND (f.DistrictId = $DistrictId OR $DistrictId=0)
+		AND (f.UpazilaId = $UpazilaId OR $UpazilaId=0)
+		GROUP BY g.GenderName;";
+		$resultdata = $dbh->query($query);
+
+		$TotalDairy = 0;
+		$TotalBuffalo = 0;
+		$TotalBeefFattening = 0;
+		$TotalGoat = 0;
+		$TotalSheep = 0;
+		$TotalScavengingChickens = 0;
+		$TotalDuck = 0;
+		$TotalQuail = 0;
+		$TotalPigeon = 0;
+		$TotalGrandTotal = 0;
+
+		$dataList = array();
+		foreach ($resultdata as $key => $row) {
+			$dataList[] = $row;
+
+			/**Calculate column total */
+			$TotalDairy += $row["Dairy"];
+			$TotalBuffalo += $row["Buffalo"];
+			$TotalBeefFattening += $row["BeefFattening"];
+			$TotalGoat += $row["Goat"];
+			$TotalSheep += $row["Sheep"];
+			$TotalScavengingChickens += $row["ScavengingChickens"];
+			$TotalDuck += $row["Duck"];
+			$TotalQuail += $row["Quail"];
+			$TotalPigeon += $row["Pigeon"];
+			$TotalGrandTotal += $row["GrandTotal"];
+		}
 
 
-		/* $query = "SELECT a.PGId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGName`, a.`Address`, 
-			b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, a.UnionId, a.PgGroupCode, 
-			a.PgBankAccountNumber, a.BankName, a.ValuechainId, a.IsLeadByWomen, a.GenderId, a.IsActive, e.ValueChainName, f.UnionName,
-			100 AS NoOfMembers
-			FROM `t_pg` a
-			INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
-			INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
-			INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
-			INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
-			LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
-			WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
-			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
-			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
-			ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`PGName` ASC;";
-			
-		
-		$resultdata = $dbh->query($query); */
+		/**For Total row */
+		if (count($dataList) > 0) {
+			$row = array();
+			$row["GenderName"] = "Grand Total";
+			$row["Dairy"] = $TotalDairy;
+			$row["Buffalo"] = $TotalBuffalo;
+			$row["BeefFattening"] = $TotalBeefFattening;
+			$row["Goat"] = $TotalGoat;
+			$row["Sheep"] = $TotalSheep;
+			$row["ScavengingChickens"] = $TotalScavengingChickens;
+			$row["Duck"] = $TotalDuck;
+			$row["Quail"] = $TotalQuail;
+			$row["Pigeon"] = $TotalPigeon;
+			$row["GrandTotal"] = $TotalGrandTotal;
+			$row["Percentage"] = 0;
+			$dataList[] = $row;
+		}
 
-		$jsonData = '[
-			{"id":1,"FirstCol":"Female","Dairy":47790,"Buffalo":502,"BeefFattening":8905,"Goat":12941,"Sheep":2645,"ScavengingChickens":24739,"Duck":6041,"Quail":48,"Pigeon":249,"GrandTotal":103860,"percentofSex":"57.70%"},
-			{"id":2,"FirstCol":"Male","Dairy":60020,"Buffalo":3223,"BeefFattening":12708,"Goat":"","Sheep":"","ScavengingChickens":"","Duck":"","Quail":75,"Pigeon":324,"GrandTotal":76026,"percentofSex":"42.29%"},
-			{"id":3,"FirstCol":"Transgender","Dairy":"","Buffalo":"","BeefFattening":"","Goat":"","Sheep":"","ScavengingChickens":15,"Duck":"","Quail":"","Pigeon":"","GrandTotal":15,"percentofSex":"0.01%"},
-			{"id":4,"FirstCol":"Grand Total","Dairy":107810,"Buffalo":3725,"BeefFattening":21613,"Goat":12941,"Sheep":2645,"ScavengingChickens":24754,"Duck":6041,"Quail":48,"Pigeon":324,"GrandTotal":179901,"percentofSex":"100.00%"}
-		  ]';  
-		  $resultdata = json_decode($jsonData, true);
+
+
+
+		/**Calculate Percentage */
+		foreach ($dataList as $key => $row) {
+			$row["Percentage"] = number_format(($row["GrandTotal"]*100)/$TotalGrandTotal,1);
+			$dataList[$key] = $row;
+		}
 
 		$returnData = [
 			"success" => 1,
 			"status" => 200,
 			"message" => "",
-			"datalist" => $resultdata
+			"datalist" =>  $dataList
 		];
-
-	}catch(PDOException $e){
-		$returnData = msg(0,500,$e->getMessage());
+	} catch (PDOException $e) {
+		$returnData = msg(0, 500, $e->getMessage());
 	}
-	
+
 	return $returnData;
 }
-
-
-?>

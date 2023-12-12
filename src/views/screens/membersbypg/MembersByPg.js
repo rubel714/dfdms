@@ -172,47 +172,8 @@ const MembersByPg = (props) => {
       </>
     );
   } 
-
-  const addData = () => {
-
-    setCurrentRow({
-            id: "",
-            PGName: "",
-            DivisionId: "",
-            DistrictId: "",
-            UpazilaId: "",
-            Address: "",
-            UnionId: "",
-            PgGroupCode: "",
-            PgBankAccountNumber: "",
-            BankName: "",
-            ValuechainId: "",
-            IsLeadByWomen: 0,
-            GenderId: "",
-            IsActive: 0,
-          });
-    openModal();
-  };
-
-  const editData = (rowData) => {
-    setCurrentRow(rowData);
-    openModal();
-  };
-
-  
-  function openModal() {
-    setShowModal(true); //true=modal show, false=modal hide
-  }
-
-  function modalCallback(response) {
-    //response = close, addedit
-    // console.log('response: ', response);
-    getDataList();
-    setShowModal(false); //true=modal show, false=modal hide
-
-  }
-
-
+ 
+ 
   function getDivision(
     selectDivisionId,
     SelectDistrictId,
@@ -340,7 +301,7 @@ const MembersByPg = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Admin ❯ Members by PG
+            Home ❯ Reports ❯ Members by PG
           </h4>
         </div>
 
@@ -414,10 +375,6 @@ const MembersByPg = (props) => {
         </div>
       </div>
       {/* <!-- BODY CONTAINER END --> */}
-
-
-     {/*  {showModal && (<PgEntryFormAddEditModal masterProps={props} currentRow={currentRow} modalCallback={modalCallback}/>)}
- */}
 
     </>
   );

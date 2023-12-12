@@ -56,7 +56,7 @@ const GenderWisePGMembers = (props) => {
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
    
     {
-      field: "FirstCol",
+      field: "GenderName",
       label: "Gender",
       align: "left",
       visible: true,
@@ -157,8 +157,8 @@ const GenderWisePGMembers = (props) => {
       width: "7%"
     },
     {
-      field: "percentofSex",
-      label: "% of Sex",
+      field: "Percentage",
+      label: "% of Gender",
       align: "right",
       visible: true,
       sort: true,
@@ -220,46 +220,6 @@ const GenderWisePGMembers = (props) => {
       </>
     );
   } 
-
-  const addData = () => {
-
-    setCurrentRow({
-            id: "",
-            PGName: "",
-            DivisionId: "",
-            DistrictId: "",
-            UpazilaId: "",
-            Address: "",
-            UnionId: "",
-            PgGroupCode: "",
-            PgBankAccountNumber: "",
-            BankName: "",
-            ValuechainId: "",
-            IsLeadByWomen: 0,
-            GenderId: "",
-            IsActive: 0,
-          });
-    openModal();
-  };
-
-  const editData = (rowData) => {
-    setCurrentRow(rowData);
-    openModal();
-  };
-
-  
-  function openModal() {
-    setShowModal(true); //true=modal show, false=modal hide
-  }
-
-  function modalCallback(response) {
-    //response = close, addedit
-    // console.log('response: ', response);
-    getDataList();
-    setShowModal(false); //true=modal show, false=modal hide
-
-  }
-
 
   function getDivision(
     selectDivisionId,
@@ -388,17 +348,66 @@ const GenderWisePGMembers = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Admin ❯ Gender wise PG Members
+            Home ❯ Reports ❯ Gender wise PG Members
           </h4>
         </div>
 
-        {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-      
+    {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
+    <div class="searchAdd2">
+          <div class="formControl-filter-data-label">
+              <label for="DivisionId">Division: </label>
+              <select
+                  class="dropdown_filter"
+                  id="DivisionId"
+                  name="DivisionId"
+                  value={currDivisionId}
+                  onChange={(e) => handleChange(e)}
+              >
+                  {divisionList &&
+                      divisionList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                      })}
+              </select>
+          </div>
+
+          <div class="formControl-filter-data-label">
+              <label for="DistrictId">District: </label>
+              <select
+                  class="dropdown_filter"
+                  id="DistrictId"
+                  name="DistrictId"
+                  value={currDistrictId}
+                  onChange={(e) => handleChange(e)}
+              >
+                  {districtList &&
+                      districtList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                      })}
+              </select>
+          </div>
+
+          <div class="formControl-filter-data-label">
+              <label for="UpazilaId">Upazila: </label>
+              <select
+                  id="UpazilaId"
+                  name="UpazilaId"
+                  class="dropdown_filter"
+                  value={currUpazilaId}
+                  onChange={(e) => handleChange(e)}
+              >
+                  {upazilaList &&
+                      upazilaList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                      })}
+              </select>
+          </div>
+
           
-          <div class="exportAdd">
+          <div class="filter-button">
               <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} /> 
           </div>
       
+      </div>
 
         {/* <!-- ####---THIS CLASS IS USE FOR TABLE GRID PRODUCT INFORMATION---####s --> */}
         <div class="subContainer">
@@ -412,11 +421,7 @@ const GenderWisePGMembers = (props) => {
           </div>
         </div>
       </div>
-      {/* <!-- BODY CONTAINER END --> */}
 
-
-     {/*  {showModal && (<PgEntryFormAddEditModal masterProps={props} currentRow={currentRow} modalCallback={modalCallback}/>)}
- */}
 
     </>
   );

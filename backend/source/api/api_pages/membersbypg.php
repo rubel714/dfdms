@@ -25,20 +25,18 @@ function getDataList($data){
 		$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
 
 
-		$query = "SELECT a.PGId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGName`, a.`Address`, 
-			b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, a.UnionId, a.PgGroupCode, 
-			a.PgBankAccountNumber, a.BankName, a.ValuechainId, a.IsLeadByWomen, a.GenderId, a.IsActive, e.ValueChainName, f.UnionName,
-			100 AS NoOfMembers
-			FROM `t_pg` a
-			INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
-			INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
-			INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
-			INNER JOIN t_union f ON a.`UnionId` = f.`UnionId`
-			LEFT JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
-			WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
-			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
-			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
-			ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`PGName` ASC;";
+		$query = "SELECT a.PGId AS id, b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, e.ValueChainName, a.`PGName`, 
+		COUNT(f.`FarmerId`) AS NoOfMembers
+		FROM `t_pg` a
+		INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
+		INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
+		INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
+		INNER JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
+		INNER JOIN `t_farmer` f ON a.`PGId` = f.PGId
+		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
+		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
+		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+		GROUP BY b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, e.ValueChainName,a.`PGName`;";
 			
 		
 		$resultdata = $dbh->query($query);

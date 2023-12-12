@@ -56,7 +56,7 @@ const ValueChainWisePGDistribution = (props) => {
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
    
     {
-      field: "Division",
+      field: "DivisionName",
       label: "Division",
       align: "left",
       visible: true,
@@ -72,6 +72,7 @@ const ValueChainWisePGDistribution = (props) => {
       sort: true,
       filter: true,
       width: "7%",
+      // type:"number"
     },
     {
       field: "Buffalo",
@@ -156,15 +157,15 @@ const ValueChainWisePGDistribution = (props) => {
       filter: true,
       width: "7%"
     },
-    /* {
-      field: "percentofSex",
-      label: "% of Sex",
+   {
+      field: "Percentage",
+      label: "% of Division",
       align: "right",
       visible: true,
       sort: true,
       filter: true,
       width: "7%"
-    }, */
+    },
    
   ];
 
@@ -220,46 +221,7 @@ const ValueChainWisePGDistribution = (props) => {
       </>
     );
   } 
-
-  const addData = () => {
-
-    setCurrentRow({
-            id: "",
-            PGName: "",
-            DivisionId: "",
-            DistrictId: "",
-            UpazilaId: "",
-            Address: "",
-            UnionId: "",
-            PgGroupCode: "",
-            PgBankAccountNumber: "",
-            BankName: "",
-            ValuechainId: "",
-            IsLeadByWomen: 0,
-            GenderId: "",
-            IsActive: 0,
-          });
-    openModal();
-  };
-
-  const editData = (rowData) => {
-    setCurrentRow(rowData);
-    openModal();
-  };
-
-  
-  function openModal() {
-    setShowModal(true); //true=modal show, false=modal hide
-  }
-
-  function modalCallback(response) {
-    //response = close, addedit
-    // console.log('response: ', response);
-    getDataList();
-    setShowModal(false); //true=modal show, false=modal hide
-
-  }
-
+ 
 
   function getDivision(
     selectDivisionId,
@@ -388,7 +350,7 @@ const ValueChainWisePGDistribution = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Admin ❯ Value Chain wise PG Distribution
+            Home ❯ Reports ❯ Value Chain wise PG Distribution
           </h4>
         </div>
 
@@ -414,9 +376,6 @@ const ValueChainWisePGDistribution = (props) => {
       </div>
       {/* <!-- BODY CONTAINER END --> */}
 
-
-     {/*  {showModal && (<PgEntryFormAddEditModal masterProps={props} currentRow={currentRow} modalCallback={modalCallback}/>)}
- */}
 
     </>
   );
