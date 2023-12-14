@@ -403,6 +403,13 @@ tr:nth-child(odd) {
     justify-content: space-between;
 }
 
+@media only screen and (max-width: 767px) {
+    /* Adjust styles for screens with a maximum width of 767px (typical for mobile devices) */
+    .loginContainer {
+        width: 100%;
+    }
+}
+
 .loginHeader {
     background-color: var(--primary-color);
     border-radius: 8px 8px 0px 0px;

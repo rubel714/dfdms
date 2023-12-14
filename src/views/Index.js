@@ -25,17 +25,23 @@ function Index(props) {
 
   return (
     <>
-      {Service.default.authToken() != null ? (
-        <AfterLoginNavbar {...props} />
-      ) : (
-        <BeforeLoginNavbar {...props} />
-      )}
-      <div className="wrapper">
-        <IndexHeader {...props} />
-        <div className="main">
-          <HomePage {...props}  />
+    <div className="backgroundImg" style={{
+            backgroundImage: "url(" + require("assets/img/background_img.jpg") + ")",
+          }}>
+
+   
+        {Service.default.authToken() != null ? (
+          <AfterLoginNavbar {...props} />
+        ) : (
+          <BeforeLoginNavbar {...props} />
+        )}
+        <div className="wrapper" >
+          <IndexHeader {...props} />
+          <div className="main">
+            <HomePage {...props}  />
+          </div>
+          <DarkFooter  {...props}  />
         </div>
-        <DarkFooter  {...props}  />
       </div>
     </>
   );
