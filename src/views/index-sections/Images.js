@@ -9,9 +9,9 @@ function Images() {
   return (
     <>
       <div className="mt-10">
-        <p>
+        {/* <p>
         An information system called Digital Field Data Monitoring System (DFDMS)- is developed in order to monitor the farmers and producer groups in the field. This application will be used from whole Bangladesh (up to Union level).
-        </p>
+        </p> */}
         {/* <Container>
           <Row>
             <Col md="5">
