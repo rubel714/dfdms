@@ -915,3 +915,113 @@ input[type=search] {
 .tdWidthc{
     width: 38px;
 }
+
+
+
+
+
+
+
+.MuiCardContent-root {
+    padding: 10px !important;
+  }
+
+.sw_card .MuiCardContent-root .MuiBox-root {
+    padding: 10px 0px !important;
+  }
+
+  .sw_card .MuiGrid-spacing-xs-3 > .MuiGrid-item {
+    padding: 5px 12px !important;
+  }
+  .sw_card .MuiGrid-spacing-xs-3 {
+    margin-top: 10px !important;
+  }
+  .sw_card .MuiCardHeader-root {
+    border-bottom: 1px solid #dedede;
+    padding: 10px 14px !important;
+  }
+  .sw_card .MuiCardHeader-root .MuiCardHeader-title {
+    font-size: 15px !important;
+  }
+
+.stat-cell {
+    overflow: hidden;
+    padding: 8px;
+    position: relative;
+    background: #a1a194;
+    width: 100%;
+    color: #fff;
+  }
+  .stat-cell .bg-icon {
+    bottom: 0;
+    font-size: 70px;
+    height: 82px;
+    line-height: 100px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    width: 120px;
+    color: rgba(0, 0, 0, 0.08);
+  }
+  .text-xlg {
+    font-size: 1.5em;
+  }
+  .text-bg {
+    font-size: 17px;
+  }
+
+  .margin0auto{
+    margin: 0 auto !important;
+  
+  }
+  
+  .stat-cell-color-a {
+    background: #208bb8;
+  }
+  .stat-cell-color-b {
+    background: #8f5992;
+  }
+  .stat-cell-color-c {
+    background: #667d2c;
+  }
+  .stat-cell-color-d {
+    background: #029bb0;
+  }
+  .stat-cell-color-e {
+    background: #1eab82;
+  }
+
+.dashboardCard {
+    margin-top:7px;
+    margin-bottom:7px;
+    display: grid;
+    grid-template-columns: 50% 50% 57% 13%;
+}
+
+.margin-left10 {
+    margin-left: 10px;
+}
+
+
+.iconPositionRight {
+    z-index: 2;
+    position: absolute;
+    right: 3px;
+    top: 6px;
+  }
+  
+  a.HyColor:hover, a.HyColor:focus {
+      color: #000704;
+  }
+  
+  .iconPositionRight2 {
+      
+      position: absolute;
+      right: 64px;
+      top: 0px;
+  }
+  
+  .backgroundImg {
+    min-height: 700px;
+    background-repeat: no-repeat;
+  }

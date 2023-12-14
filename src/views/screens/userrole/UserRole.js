@@ -143,7 +143,7 @@ const UserRole = (props) => {
   function modalCallback(response) {
     //response = close, addedit
     // console.log('response: ', response);
-    getDataList();
+    /* getDataList(); */
     setShowModal(false); //true=modal show, false=modal hide
 
   }

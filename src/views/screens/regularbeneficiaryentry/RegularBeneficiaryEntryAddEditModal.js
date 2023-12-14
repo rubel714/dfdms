@@ -1847,7 +1847,7 @@ const uploadImage = (file, photoType) => {
               type="date"
               id="registrationDate"
               name="registrationDate"
-              disabled={currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 1}
+              disabled={currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 0}
               class={errorObject.registrationDate}
               placeholder="Select Registration Date"
               value={currentRow.registrationDate}
@@ -1859,7 +1859,7 @@ const uploadImage = (file, photoType) => {
               type="text"
               id="IfRegisteredYesRegistrationNo"
               name="IfRegisteredYesRegistrationNo"
-              disabled={currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 1}
+              disabled={currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 0}
               class={errorObject.IfRegisteredYesRegistrationNo}
               placeholder="Enter Registration No."
               value={currentRow.IfRegisteredYesRegistrationNo}
