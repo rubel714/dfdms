@@ -85,7 +85,7 @@ function LoginPage(props) {
 
             setLoading(false);
 
-            window.location.href = "/home";
+            window.location.href = res.user_data.DefaultRedirect;
             // window.location.href = process.env.REACT_APP_BASE_NAME + `/check-permission`;
           } else if (res.success == 0) {
             setLoading(false);
