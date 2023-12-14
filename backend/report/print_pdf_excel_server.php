@@ -34,6 +34,10 @@ switch($task){
 			RegularBeneficiaryExport();
 			break;
 			
+		case "MembersbyPGataExport":
+			MembersbyPGataExport();
+			break;
+			
 		case "UserDataExport":
 			UserDataExport();
 			break;
@@ -221,6 +225,74 @@ function RegularBeneficiaryExport() {
 	
 	//Report save name. Not allow any type of special character
 	$tableProperties["report_save_name"] = 'Farmer_Profile_List';
+}
+ 
+ 
+
+function MembersbyPGataExport() {
+
+	global $sql, $tableProperties, $TEXT, $siteTitle;
+
+	$DivisionId = $_REQUEST['DivisionId']?$_REQUEST['DivisionId']:0; 
+	$DistrictId = $_REQUEST['DistrictId']?$_REQUEST['DistrictId']:0; 
+	$UpazilaId =  $_REQUEST['UpazilaId']?$_REQUEST['UpazilaId']:0; 
+
+	
+	$sql = "SELECT a.PGId AS id, b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, e.ValueChainName, a.`PGName`, 
+	COUNT(f.`FarmerId`) AS NoOfMembers
+	FROM `t_pg` a
+	INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
+	INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
+	INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
+	INNER JOIN t_valuechain e ON a.`ValuechainId` = e.`ValuechainId`
+	INNER JOIN `t_farmer` f ON a.`PGId` = f.PGId
+	WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
+	AND (a.DistrictId = $DistrictId OR $DistrictId=0)
+	AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+	GROUP BY b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, e.ValueChainName,a.`PGName`;";
+
+
+		$db = new Db();
+		$sqlrresultHeader = $db->query($sql);
+
+
+		if($DivisionId == 0){
+			$DivisionName = "Division: All, ";
+		}else{
+			$DivisionName =  "Division: ".$sqlrresultHeader[0]['DivisionName'];
+		}
+
+		if($DistrictId == 0){
+			$DistrictName = ", District: All, ";
+		}else{
+			$DistrictName = ", District: ". $sqlrresultHeader[0]['DistrictName'];
+		}
+		if($UpazilaId == 0){
+			$UpazilaName = ", Upazila: All";
+		}else{
+			$UpazilaName = ", Upazila: ". $sqlrresultHeader[0]['UpazilaName'];
+		}
+
+	
+    $tableProperties["query_field"] = array('DivisionName','DistrictName','UpazilaName','ValueChainName','PGName','NoOfMembers');
+    $tableProperties["table_header"] = array("Division","District","Upazila","Value Chain","Name of PG","No. of Members");
+    $tableProperties["align"] = array("left","left");
+    $tableProperties["width_print_pdf"] = array("30%","70%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("30","20","30","30","30","30","30");
+    $tableProperties["precision"] = array("string","string"); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0,0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0,0); //colorcode field = 1 not color code field = 0
+	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
+    $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
+    
+	//Report header list
+	$tableProperties["header_list"][0] = $siteTitle;
+	$tableProperties["header_list"][1] = 'Members by PG	List';
+	$tableProperties["header_list"][2] = $DivisionName. $DistrictName. $UpazilaName;
+	// $tableProperties["header_list"][1] = 'Heading 2';
+	
+	//Report save name. Not allow any type of special character
+	$tableProperties["report_save_name"] = 'Members_by_PG_List';
 }
  
  

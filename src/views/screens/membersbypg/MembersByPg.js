@@ -41,9 +41,9 @@ const MembersByPg = (props) => {
       finalUrl +
         "?action=MembersbyPGataExport" +
         "&reportType=excel" +
-        "&DistrictId=" + UserInfo.currDivisionId +
-        "&UpazilaId=" + UserInfo.currDistrictId +
-        "&currUpazilaId=" + UserInfo.currUpazilaId +
+        "&DivisionId=" + currDivisionId +
+        "&DistrictId=" + currDistrictId +
+        "&UpazilaId=" + currUpazilaId +
         "&TimeStamp=" +
         Date.now()
     );
