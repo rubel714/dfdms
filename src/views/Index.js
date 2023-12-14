@@ -25,9 +25,9 @@ function Index(props) {
 
   return (
     <>
-    <div className="backgroundImg" style={{
+    {/* <div className="backgroundImg" style={{
             backgroundImage: "url(" + require("assets/img/background_img.jpg") + ")",
-          }}>
+          }}> */}
 
    
         {Service.default.authToken() != null ? (
@@ -42,7 +42,7 @@ function Index(props) {
           </div>
           <DarkFooter  {...props}  />
         </div>
-      </div>
+     {/*  </div> */}
     </>
   );
 }

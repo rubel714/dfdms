@@ -48,9 +48,9 @@ function IndexHeader() {
      <div className="page-header">
         <div
           className="page-header-image"
-          style={{
+          /* style={{
             backgroundImage: "url(" + require("assets/img/background_img.jpg") + ")",
-          }}
+          }} */
           ref={pageHeader}
         ></div>
         <Container>
