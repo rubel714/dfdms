@@ -150,29 +150,47 @@ const DashboardPage = (props) => {
     credits: {
       enabled: false,
     },
-    tooltip: {
-      //    valueSuffix: " %",
-    },
+    // tooltip: {
+    //   //    valueSuffix: " %",
+    // },
     plotOptions: {
       pie: {
         showInLegend: true,
+
         dataLabels: {
-          enabled: false,
-          crop: true,
-          formatter: function () {
-            return this.y; // + "%"
-          },
-        },
+					enabled: true
+					,style: {
+						textShadow: false,
+						textOutline: false 
+					}
+					,format: "{point.name}: <b>{point.y:,.0f} ({point.percentage:.2f} %)"
+					// format: '{point.name}: <b>{point.y:.2f} ({point.percentage:.1f} %)'
+				},
+				showInLegend: true,
+				tooltip: {
+					pointFormat: "{series.name}: <b>{point.y:,.0f} ({point.percentage:.2f}%)",
+					shared:true
+				}
+
+        // dataLabels: {
+        //   enabled: true,
+        //   // crop: true,
+        //   // format: "{point.name}: <b>{point.y:,.1f} ({point.percentage:.1f} %)"
+        //   // formatter: function () {
+        //   //   return "{point.name}: <b>{point.y:,.1f} ({point.percentage:.1f} %)";
+        //   // },
+        // },
       },
     },
     series: [
       {
         name: "Gender",
-        data: dataListGenderwisePGMember.map(({ name, y, count, color }) => ({
-          name: `${name} - ${y.toFixed(2)}% (${count})`,
-          y,
-          color,
-        })),
+        data:dataListGenderwisePGMember
+        // data: dataListGenderwisePGMember.map(({ name, y, count, color }) => ({
+        //   name: `${name} - ${y.toFixed(2)}% (${count})`,
+        //   y,
+        //   color,
+        // })),
       },
     ],
   };
