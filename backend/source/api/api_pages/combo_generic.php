@@ -12,7 +12,9 @@ switch($task){
 	case "DataTypeList":
 		$returnData = DataTypeList($data);
 		break;
-	
+	case "SurveyList":
+		$returnData = SurveyList($data);
+		break;
 	case "PgGroupList":
 		$returnData = PgGroupList($data);
 		break;
@@ -155,6 +157,32 @@ function DataTypeList($data) {
 
 		$dbh = new Db();
 		$query = "SELECT DataTypeId id, DataTypeName `name` FROM t_datatype  ORDER BY id ASC;"; 
+		$resultdata = $dbh->query($query);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+ 
+function SurveyList($data) {
+	try{
+
+		$DataTypeId = trim($data->DataTypeId);
+		$dbh = new Db();
+		$query = "SELECT SurveyId id, SurveyTitle `name`,CurrentSurvey 
+		FROM t_survey 
+		where DataTypeId = $DataTypeId
+		ORDER BY id ASC;"; 
 		$resultdata = $dbh->query($query);
 
 		$returnData = [

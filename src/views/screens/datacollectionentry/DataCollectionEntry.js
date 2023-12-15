@@ -32,13 +32,14 @@ const DataCollectionEntry = (props) => {
   const [listEditPanelToggle, setListEditPanelToggle] = useState(true); //when true then show list, when false then show add/edit
   const [pgGroupList, setPgGroupList] = useState(null);
   const [farmerList, setFarmerList] = useState(null);
+  const [surveyList, setSurveyList] = useState(null);
   const [quarterList, setQuarterList] = useState(null);
   const [yearList, setYearList] = useState(null);
   const [filterYearList, setFilterYearList] = useState(null);
   const [DesignationList, setDesignationList] = useState(null);
 
-  const [valuechainList, setValuechainId] = useState(null);
-  const [currValuechainId, setCurrValuechainId] = useState(null);
+  const [valuechainList, setValuechainList] = useState(null);
+  // const [currValuechainId, setCurrValuechainId] = useState(null);
 
   const [currentFilter, setCurrentFilter] = useState([]); //this is for master information. It will send to sever for save
   const [currentInvoice, setCurrentInvoice] = useState([]); //this is for master information. It will send to sever for save
@@ -74,7 +75,12 @@ const DataCollectionEntry = (props) => {
   const [showPGModal, setShowPGModal] = useState(false); //true=show modal, false=hide modal
   const [showFarmerModal, setShowFarmerModal] = useState(false); //true=show modal, false=hide modal
   const [showReturnCommentsModal, setShowReturnCommentsModal] = useState(false); //true=show modal, false=hide modal
-  const [returnCommentsObj, setReturnCommentsObj] = useState({id:0,statusid:0,nextprev:'',comments:''}); //true=show modal, false=hide modal
+  const [returnCommentsObj, setReturnCommentsObj] = useState({
+    id: 0,
+    statusid: 0,
+    nextprev: "",
+    comments: "",
+  }); //true=show modal, false=hide modal
 
   const [landTypeList, setLandTypeList] = useState([]);
 
@@ -402,6 +408,20 @@ const DataCollectionEntry = (props) => {
   const newInvoice = () => {
     console.log("dataTypeId: ", dataTypeId);
     setQuestionsVisibleList(qvList);
+    let currentSurveyId = 0;
+    if (surveyList) {
+      let currentSurveyRow = surveyList.filter((obj) => {
+        if (obj.CurrentSurvey == 1) {
+          return obj;
+        }
+      });
+      console.log('currentSurvey Row: ', currentSurveyRow);
+
+      if (currentSurveyRow.length > 0) {
+        currentSurveyId = currentSurveyRow[0].id;
+      }
+      console.log("aa currentSurvey Id: ", currentSurveyId);
+    }
 
     setCurrentInvoice({
       id: "",
@@ -411,6 +431,7 @@ const DataCollectionEntry = (props) => {
       YearId: currentYear,
       QuarterId: currentQuarterId,
       DataTypeId: dataTypeId,
+      SurveyId: currentSurveyId,
       ValuechainId: "",
       PGId: "",
       FarmerId: "",
@@ -584,22 +605,18 @@ const DataCollectionEntry = (props) => {
     console.log("rows: ", rows);
   };
 
-
-  
   const changeComments = (e) => {
     // console.log(e);
     const { name, value } = e.target;
 
-    let cData = {...returnCommentsObj};
-    console.log('cData: ', cData);
+    let cData = { ...returnCommentsObj };
+    console.log("cData: ", cData);
     cData["comments"] = value;
-    console.log(' name, value: ',  name, value);
-  
+    console.log(" name, value: ", name, value);
+
     setReturnCommentsObj(cData);
     // console.log("rows: ", rows);
   };
-
-
 
   // Function to handle the input change
   // window.changeCustomTableCell = (value) => {
@@ -795,9 +812,10 @@ const DataCollectionEntry = (props) => {
 
     getQuestionList();
     //getPgGroupList();
+    getSurveyList();
     getYearList();
     getDesignation();
-    getValuechainIdList(currValuechainId);
+    getValuechainIdList();
 
     getLandTypeList();
     getGrassList();
@@ -836,8 +854,7 @@ const DataCollectionEntry = (props) => {
     });
   }
 
-
-  function getValuechainIdList(selectValuechainId) {
+  function getValuechainIdList() {
     let params = {
       action: "QuestionMapCategoryList",
       lan: language(),
@@ -845,17 +862,18 @@ const DataCollectionEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setValuechainId(
+      console.log('res: ', res);
+      setValuechainList(
         [{ id: "", name: "Select Value Chain" }].concat(res.data.datalist)
       );
 
-      setCurrValuechainId(null);
+      // setCurrValuechainId(null);
 
-      getPgGroupList(selectValuechainId);
-
+      // getPgGroupList(selectValuechainId);
+      // getPgGroupList("");
     });
   }
-  
+
   function getPgGroupList(selectValuechainId) {
     let params = {
       /* action: "PgGroupList", */
@@ -893,6 +911,21 @@ const DataCollectionEntry = (props) => {
 
       setFarmerList(
         [{ id: "", name: "ফার্মার নির্বাচন করুন" }].concat(res.data.datalist)
+      );
+    });
+  }
+
+  function getSurveyList() {
+    let params = {
+      action: "SurveyList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DataTypeId: dataTypeId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setSurveyList(
+        [{ id: "", name: "Select Survey" }].concat(res.data.datalist)
       );
     });
   }
@@ -1056,12 +1089,21 @@ const DataCollectionEntry = (props) => {
   }
 
   const masterColumnList = [
-    { field: "rownumber", label: "সিরিয়াল", align: "center", width: "5%" },
+    { field: "rownumber", label: "সিরিয়াল", align: "center", width: "4%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
     {
       field: "QuarterName",
       label: "তথ্য সংগ্রহ বছর-ত্রৈমাসিক",
-      width: "13%",
+      width: "8%",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+    },
+    {
+      field: "SurveyTitle",
+      label: "সার্ভে নাম",
+      // width: "13%",
       align: "left",
       visible: true,
       sort: true,
@@ -1070,7 +1112,7 @@ const DataCollectionEntry = (props) => {
     {
       field: "DataCollectionDate",
       label: "তথ্য সংগ্রহের তারিখ",
-      width: "10%",
+      width: "7%",
       align: "left",
       visible: true,
       sort: true,
@@ -1080,7 +1122,7 @@ const DataCollectionEntry = (props) => {
       field: "PGName",
       label: "পিজি গ্রুপ",
       align: "left",
-      // width: "30%",
+      width: "11%",
       visible: true,
       sort: true,
       filter: true,
@@ -1089,7 +1131,7 @@ const DataCollectionEntry = (props) => {
       field: "ValueChainName",
       label: "ভেলু চেইন",
       align: "left",
-      width: "8%",
+      width: "6%",
       visible: true,
       sort: true,
       filter: true,
@@ -1106,7 +1148,7 @@ const DataCollectionEntry = (props) => {
     {
       field: "DataCollectorName",
       label: "তথ্য সংগ্রহকারীর নাম",
-      width: "12%",
+      width: "10%",
       align: "left",
       visible: true,
       sort: true,
@@ -1124,7 +1166,7 @@ const DataCollectionEntry = (props) => {
     {
       field: "CurrentStatus",
       label: "স্টেটাস",
-      width: "10%",
+      width: "8%",
       align: "left",
       visible: true,
       sort: true,
@@ -1323,7 +1365,10 @@ const DataCollectionEntry = (props) => {
       setQuestionsVisibleList(qvListTmp);
       console.log("qvListTmp: ", qvListTmp);
 
+      // getFarmerList(dataListSingle.master[0].PGId);
+      getPgGroupList(dataListSingle.master[0].ValuechainId);
       getFarmerList(dataListSingle.master[0].PGId);
+
       setCurrentInvoice(dataListSingle.master[0]);
     }
 
@@ -1407,6 +1452,10 @@ const DataCollectionEntry = (props) => {
     // const [currentInvoice, setCurrentInvoice] = useState([]); //this is for master information. It will send to sever for save
 
     setErrorObjectMaster({ ...errorObjectMaster, [name]: null });
+
+
+
+
   };
   const divStyle = {
     color: "blue",
@@ -1540,8 +1589,17 @@ const DataCollectionEntry = (props) => {
 
     setErrorObjectMaster({ ...errorObjectMaster, [name]: null });
 
+
+    if (name === "ValuechainId") {
+      data["PGId"] = "";
+      data["FarmerId"] = "";
+
+      getPgGroupList(value);
+    }
+
     if (name == "PGId" && dataTypeId === 2) {
       /**when change PG from combo and data collection for farmer then fillup Farmar List */
+      data["FarmerId"] = "";
       getFarmerList(value);
     }
 
@@ -1621,11 +1679,7 @@ const DataCollectionEntry = (props) => {
       setCurrUpazilaId(value);
     }
 
-    if (name === "ValuechainId") {
-      setCurrValuechainId(value);
-      getPgGroupList(value);
-    }
-
+ 
   };
 
   useEffect(() => {
@@ -1715,6 +1769,7 @@ const DataCollectionEntry = (props) => {
 
   const validateFormMaster = () => {
     let validateFields = [
+      "SurveyId",
       "YearId",
       "QuarterId",
       "ValuechainId",
@@ -1816,25 +1871,26 @@ const DataCollectionEntry = (props) => {
   function showRetCommentsModal(id, statusid, nextprev) {
     // rowData.id, 1, "Return"
 
-    let cData = {...returnCommentsObj};
+    let cData = { ...returnCommentsObj };
     cData["id"] = id;
     cData["statusid"] = statusid;
     cData["nextprev"] = nextprev;
     cData["comments"] = "";
     setReturnCommentsObj(cData);
 
-
     setShowReturnCommentsModal(true);
   }
 
   function commentsAndReturnSave() {
-    console.log('returnCommentsObj: ', returnCommentsObj);
-    
+    console.log("returnCommentsObj: ", returnCommentsObj);
 
-    if(returnCommentsObj.comments != ""){
-      changeReportStatus(returnCommentsObj.id, returnCommentsObj.statusid, returnCommentsObj.nextprev);
-      
-    }else{
+    if (returnCommentsObj.comments != "") {
+      changeReportStatus(
+        returnCommentsObj.id,
+        returnCommentsObj.statusid,
+        returnCommentsObj.nextprev
+      );
+    } else {
       props.openNoticeModal({
         isOpen: true,
         msg: "Please enter return comments.",
@@ -1895,11 +1951,6 @@ const DataCollectionEntry = (props) => {
     }
   }
 
-  
-
-
-
-
   function changeReportStatus(Id, StatusId, StatusNextPrev) {
     let params = {
       action: "changeReportStatus",
@@ -1950,8 +2001,7 @@ const DataCollectionEntry = (props) => {
       if (allowAction) {
         changeReportStatusAPICall(params);
         closeRetCommentsModal("");
-      }else{
-
+      } else {
       }
     });
   }
@@ -2132,28 +2182,25 @@ const DataCollectionEntry = (props) => {
                 <div class="pgmodalBody-sm pt-10">
                   <label>Comments:</label>
                   <input
-                      type="text"
-                      id={"ReturnComments"}
-                      name={"ReturnComments"}
-                      value={returnCommentsObj.comments || ''}
-                      onChange={(e) =>
-                        changeComments(e)
-                      }
-                    />
-
+                    type="text"
+                    id={"ReturnComments"}
+                    name={"ReturnComments"}
+                    value={returnCommentsObj.comments || ""}
+                    onChange={(e) => changeComments(e)}
+                  />
                 </div>
 
                 <div class="modalItem-sm modalItem">
-                      <Button
-                        label={"Close"}
-                        class={"btnClose"}
-                        onClick={closeRetCommentsModal}
-                      />
-                      <Button
-                        label={"Return"}
-                        class={"btnSave"}
-                        onClick={commentsAndReturnSave}
-                      />
+                  <Button
+                    label={"Close"}
+                    class={"btnClose"}
+                    onClick={closeRetCommentsModal}
+                  />
+                  <Button
+                    label={"Return"}
+                    class={"btnSave"}
+                    onClick={commentsAndReturnSave}
+                  />
                 </div>
               </div>
             </div>
@@ -2377,6 +2424,46 @@ const DataCollectionEntry = (props) => {
                   </div>
 
                   <div class="formControl">
+                    <label>সার্ভে নাম (Survey Title):</label>
+                    <Autocomplete
+                      autoHighlight
+                      // freeSolo
+                      className="chosen_dropdown"
+                      id="SurveyId"
+                      name="SurveyId"
+                      autoComplete
+                      disabled = {true}
+                      class={errorObjectMaster.SurveyId}
+                      options={surveyList ? surveyList : []}
+                      getOptionLabel={(option) => option.name}
+                      // value={selectedSupplier}
+                      value={
+                        surveyList
+                          ? surveyList[
+                              surveyList.findIndex(
+                                (list) => list.id == currentInvoice.SurveyId
+                              )
+                            ]
+                          : null
+                      }
+                      onChange={(event, valueobj) =>
+                        handleChangeChoosenMaster(
+                          "SurveyId",
+                          valueobj ? valueobj.id : ""
+                        )
+                      }
+                      renderOption={(option) => (
+                        <Typography className="chosen_dropdown_font">
+                          {option.name}
+                        </Typography>
+                      )}
+                      renderInput={(params) => (
+                        <TextField {...params} variant="standard" fullWidth />
+                      )}
+                    />
+                  </div>
+
+                  <div class="formControl">
                     <label>তথ্য সংগ্রহ বছর (Year):</label>
                     <Autocomplete
                       autoHighlight
@@ -2453,22 +2540,60 @@ const DataCollectionEntry = (props) => {
                       )}
                     />
                   </div>
-
+{/* 
+                  <div class="formControl">
+                    <label>ভেলু চেইন️ (Value Chain):</label>
+                    <select
+                      id="ValuechainId"
+                      name="ValuechainId"
+                      class={errorObjectMaster.ValuechainId}
+                      value={currValuechainId}
+                      onChange={(e) => handleChangeMaster(e)}
+                    >
+                      {valuechainList &&
+                        valuechainList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                        })}
+                    </select>
+                  </div> */}
 
                   <div class="formControl">
-                      <label>Value Chain</label>
-                      <select
-                        id="ValuechainId"
-                        name="ValuechainId"
-                        class={errorObjectMaster.ValuechainId}
-                        value={currValuechainId}
-                        onChange={(e) => handleChange(e)}
-                      >
-                        {valuechainList &&
-                          valuechainList.map((item, index) => {
-                            return <option value={item.id}>{item.name}</option>;
-                          })}
-                      </select>
+                  <label>ভেলু চেইন️ (Value Chain):</label>
+                    <Autocomplete
+                      autoHighlight
+                      // freeSolo
+                      className="chosen_dropdown"
+                      id="ValuechainId"
+                      name="ValuechainId"
+                      autoComplete
+                      class={errorObjectMaster.ValuechainId}
+                      options={valuechainList ? valuechainList : []}
+                      getOptionLabel={(option) => option.name}
+                      // value={selectedSupplier}
+                      value={
+                        valuechainList
+                          ? valuechainList[
+                            valuechainList.findIndex(
+                                (list) => list.id == currentInvoice.ValuechainId
+                              )
+                            ]
+                          : null
+                      }
+                      onChange={(event, valueobj) =>
+                        handleChangeChoosenMaster(
+                          "ValuechainId",
+                          valueobj ? valueobj.id : ""
+                        )
+                      }
+                      renderOption={(option) => (
+                        <Typography className="chosen_dropdown_font">
+                          {option.name}
+                        </Typography>
+                      )}
+                      renderInput={(params) => (
+                        <TextField {...params} variant="standard" fullWidth />
+                      )}
+                    />
                   </div>
 
                   <div class="formControl">

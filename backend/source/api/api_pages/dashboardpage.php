@@ -49,7 +49,7 @@ function getDataList($data){
 			$TotalPGMember = $row["TotalFarmer"];
 		}
 
-		$TotalPG = 5500;
+		// $TotalPG = 5500;
 		$dataList = array("TotalPGMember"=>$TotalPGMember,"TotalPG"=>$TotalPG,"CurrentDate"=>$CurrentDate);
 		
 

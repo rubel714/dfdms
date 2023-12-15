@@ -69,15 +69,16 @@ function getDataList($data)
 			 when a.StatusId=2 then 'Waiting for Accept'
 			 when a.StatusId=3 then 'Waiting for Approve'
 			 when a.StatusId=5 then 'Approved'
-			 else '' end CurrentStatus,g.ValueChainName,h.UserName
+			 else '' end CurrentStatus,g.ValueChainName,h.UserName,i.SurveyTitle
 		FROM t_datavaluemaster a
 		inner join t_division b on a.DivisionId=b.DivisionId
 		inner join t_district c on a.DistrictId=c.DistrictId
 		inner join t_upazila d on a.UpazilaId=d.UpazilaId
 		inner join t_quarter e on a.QuarterId=e.QuarterId
 		inner join t_pg f on a.PGId=f.PGId
-		inner join t_valuechain g on f.ValuechainId=g.ValuechainId
+		inner join t_valuechain g on a.ValuechainId=g.ValuechainId
 		inner join t_users h on a.UserId=h.UserId
+		inner join t_survey i on a.SurveyId=i.SurveyId
 		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
@@ -191,7 +192,7 @@ function getDataSingle($data)
 
 		/**Master Data */
 		$query = "SELECT `DataValueMasterId` as id, `DivisionId`, `DistrictId`, `UpazilaId`,DataTypeId, `PGId`,FarmerId,Categories, `YearId`, `QuarterId`,
-		 `Remarks`, `DataCollectorName`, `DataCollectionDate`, `UserId`, `BPosted`,StatusId, `UpdateTs`, `CreateTs`,DesignationId,PhoneNumber
+		 `Remarks`, `DataCollectorName`, `DataCollectionDate`, `UserId`, `BPosted`,StatusId, `UpdateTs`, `CreateTs`,DesignationId,PhoneNumber,SurveyId,ValuechainId
 		FROM t_datavaluemaster
 		where DataValueMasterId=$DataValueMasterId;";
 		$resultdataMaster = $dbh->query($query);
@@ -275,6 +276,8 @@ function dataAddEdit($data)
 			$DivisionId = $InvoiceMaster->DivisionId;
 			$DistrictId = $InvoiceMaster->DistrictId;
 			$UpazilaId = $InvoiceMaster->UpazilaId;
+			$SurveyId = $InvoiceMaster->SurveyId;
+			$ValuechainId = $InvoiceMaster->ValuechainId;
 			$DataTypeId = $InvoiceMaster->DataTypeId;
 			$PGId = $InvoiceMaster->PGId;
 			$FarmerId = isset($InvoiceMaster->FarmerId) && ($InvoiceMaster->FarmerId !== "") ? $InvoiceMaster->FarmerId : NULL;
@@ -297,8 +300,8 @@ function dataAddEdit($data)
 				$q = new insertq();
 				$q->table = 't_datavaluemaster';
 			
-				$q->columns = ['DivisionId', 'DistrictId', 'UpazilaId','DataTypeId', 'PGId','FarmerId','Categories', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'UserId', 'BPosted','StatusId','DesignationId','PhoneNumber'];
-				$q->values = [$DivisionId,$DistrictId,$UpazilaId,$DataTypeId,$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$UserId,$BPosted,$StatusId,$DesignationId,$PhoneNumber];
+				$q->columns = ['DivisionId', 'DistrictId', 'UpazilaId','DataTypeId','SurveyId','ValuechainId', 'PGId','FarmerId','Categories', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'UserId', 'BPosted','StatusId','DesignationId','PhoneNumber'];
+				$q->values = [$DivisionId,$DistrictId,$UpazilaId,$DataTypeId,$SurveyId,$ValuechainId,$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$UserId,$BPosted,$StatusId,$DesignationId,$PhoneNumber];
 				$q->pks = ['DataValueMasterId'];
 				$q->bUseInsetId = true;
 				$q->build_query();
@@ -306,8 +309,8 @@ function dataAddEdit($data)
 			} else {
 				$u = new updateq();
 				$u->table = 't_datavaluemaster';
-				$u->columns = ['PGId','FarmerId','Categories', 'YearId', 'QuarterId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'BPosted','DesignationId','PhoneNumber'];
-				$u->values = [$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$Remarks,$DataCollectorName,$DataCollectionDate,$BPosted,$DesignationId,$PhoneNumber];
+				$u->columns = ['ValuechainId','PGId','FarmerId','Categories', 'YearId', 'QuarterId','SurveyId','Remarks', 'DataCollectorName', 'DataCollectionDate', 'BPosted','DesignationId','PhoneNumber'];
+				$u->values = [$ValuechainId,$PGId,$FarmerId,$Categories,$YearId,$QuarterId,$SurveyId,$Remarks,$DataCollectorName,$DataCollectionDate,$BPosted,$DesignationId,$PhoneNumber];
 				$u->pks = ['DataValueMasterId'];
 				$u->pk_values = [$DataValueMasterId];
 				$u->build_query();
