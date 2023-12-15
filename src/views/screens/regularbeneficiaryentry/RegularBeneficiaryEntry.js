@@ -582,7 +582,7 @@ const RegularBeneficiaryEntry = (props) => {
           <div class="filter-button">
               <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
               <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
-              <Button label={"All Data Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunctionAll} />
+              {/* <Button label={"All Data Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunctionAll} /> */}
           </div>
       
       </div>

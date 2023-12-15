@@ -329,15 +329,18 @@ function AfterLoginNavbar(props) {
 
           {/* <!-- ICON BAR --> */}
           <div class="menuIconBar">
-            <a href="./pgdatacollectionentry">
-              <img src={require("assets/ico/pgdatacollectionentry.png")} alt="Customer" />
-            </a>
-            <a href="./farmersdatacollectionentry">
-              <img src={require("assets/ico/farmersdatacollectionentry.png")} alt="Receive" />
-            </a>
-            <a href="./lgddatacollectionentry">
-              <img src={require("assets/ico/lgddatacollectionentry.png")} alt="Sales" />
-            </a>
+          <a href="./farmersdatacollectionentry" title="Farmers Data Collection Entry">
+            <img src={require("assets/ico/farmersdatacollectionentry.png")} alt="Receive" />
+          </a>
+
+          <a href="./pgdatacollectionentry" title="PG Data Collection Entry">
+            <img src={require("assets/ico/pgdatacollectionentry.png")} alt="Customer" />
+          </a>
+
+          <a href="./lgddatacollectionentry" title="LGD Data Collection Entry">
+            <img src={require("assets/ico/lgddatacollectionentry.png")} alt="Sales" />
+          </a>
+
            {/*  <a href="./receive.html">
               <img src={require("assets/ico/return.png")} alt="Return" />
             </a>
