@@ -282,6 +282,9 @@ const DatatypeQuestionsMap = (props) => {
     //response = close, addedit
     // console.log('response: ', response);
     /* getDataList(currDataTypeId); */
+    if(response !=='close'){
+      getDataList(currDataTypeId);
+    }
     setShowModal(false); //true=modal show, false=modal hide
     setshowModalLabel(false); //true=modal show, false=modal hide
 

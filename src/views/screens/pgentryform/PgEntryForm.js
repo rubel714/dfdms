@@ -243,6 +243,10 @@ const PgEntryForm = (props) => {
     //response = close, addedit
     // console.log('response: ', response);
     /* getDataList(); */
+    if(response !=='close'){
+      getDataList();
+    }
+    
     setShowModal(false); //true=modal show, false=modal hide
 
   }

@@ -36,6 +36,8 @@ import ValueChainWisePGDistribution from "views/screens/valuechainwisepgdistribu
 import ValueChainWisePGMemberDistribution from "views/screens/valuechainwisepgmemberdistribution/index.js";
 import PGandPGmembersInformation from "views/screens/pgandpgmembersinformation/index.js";
 import DashboardPage from "views/screens/DashboardPage";
+import SurveyTitleEntry from "views/screens/surveytitleentry/index.js";
+
 
 import UserContextProvider from "./context/user-info-context";
 
@@ -142,6 +144,11 @@ ReactDOM.render(
           <Route
             path="/dashboard"
             render={(props) => <DashboardPage {...props} />}
+          />
+
+          <Route
+            path="/surveytitleentry"
+            render={(props) => <SurveyTitleEntry {...props} />}
           />
 
           <Route path="/" render={(props) => <Index {...props} />} />
