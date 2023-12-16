@@ -35,15 +35,23 @@ const GenderWisePGMembers = (props) => {
   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
   const PrintPDFExcelExportFunction = (reportType) => {
-    let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+    let finalUrl = EXCEL_EXPORT_URL + "report/gender_wise_pg_members_excel.php";
+
+    let DivisionName=divisionList[divisionList.findIndex(divisionList_List => divisionList_List.id == currDivisionId)].name;
+    let DistrictName=districtList[districtList.findIndex(districtList_List => districtList_List.id == currDistrictId)].name;
+    let UpazilaName=upazilaList[upazilaList.findIndex(upazilaList_List => upazilaList_List.id == currUpazilaId)].name;
+   
 
     window.open(
       finalUrl +
         "?action=MembersbyPGataExport" +
         "&reportType=excel" +
-        "&DistrictId=" + UserInfo.currDivisionId +
-        "&UpazilaId=" + UserInfo.currDistrictId +
-        "&currUpazilaId=" + UserInfo.currUpazilaId +
+        "&DivisionId=" + currDivisionId +
+        "&DistrictId=" + currDistrictId +
+        "&UpazilaId=" + currUpazilaId +
+        "&DivisionName=" + DivisionName +
+        "&DistrictName=" + DistrictName +
+        "&UpazilaName=" + UpazilaName +
         "&TimeStamp=" +
         Date.now()
     );
