@@ -28,7 +28,7 @@ const SurveyTitleEntry = (props) => {
  
      window.open(
        finalUrl +
-         "?action=QuestionDataExport" +
+         "?action=SurveyTitleDataExport" +
          "&reportType=excel" +
          // "&DistrictId=" + UserInfo.DistrictId +
          // "&UpazilaId=" + UserInfo.UpazilaId +

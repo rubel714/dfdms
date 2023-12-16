@@ -41,7 +41,7 @@ function getDataList($data)
 		, b.`DataTypeName`
 	FROM `t_survey` tq
 	INNER JOIN `t_datatype` b ON tq.`DataTypeId`= b.DataTypeId
-	ORDER BY tq.SurveyTitle;";
+	ORDER BY b.`DataTypeName`, tq.SurveyTitle;";
 
 		$resultdata = $dbh->query($query);
 
