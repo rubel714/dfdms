@@ -231,7 +231,31 @@ function AfterLoginNavbar(props) {
 
                    
 
+
+                  <li class ="bordertopmenu"> </li>
                     
+                    {menuShowPermision("surveytitleentry") === 1 && (
+                     
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("surveytitleentry")}
+                        >
+                          Survey Title Entry
+                        </a>
+                      </li>
+                    )}
+                    {menuShowPermision("unionentry") === 1 && (
+                     
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("unionentry")}
+                        >
+                          Union Entry
+                        </a>
+                      </li>
+                    )}
 
                  
                   

@@ -7,11 +7,10 @@ import CustomTable from "components/CustomTable/CustomTable";
 import { apiCall, apiOption , LoginUserInfo, language} from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
-/* import PgEntryFormAddEditModal from "./PgEntryFormAddEditModal";
- */
+import UnionEntryAddEditModal from "./UnionEntryAddEditModal";
 
-const GenderWisePGMembers = (props) => {
-  const serverpage = "genderwisepgmembers"; // this is .php server page
+const UnionEntry = (props) => {
+  const serverpage = "unionentry"; // this is .php server page
 
   const { useState } = React;
   const [bFirst, setBFirst] = useState(true);
@@ -35,23 +34,17 @@ const GenderWisePGMembers = (props) => {
   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
   const PrintPDFExcelExportFunction = (reportType) => {
-    let finalUrl = EXCEL_EXPORT_URL + "report/gender_wise_pg_members_excel.php";
+    let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
 
-    let DivisionName=divisionList[divisionList.findIndex(divisionList_List => divisionList_List.id == currDivisionId)].name;
-    let DistrictName=districtList[districtList.findIndex(districtList_List => districtList_List.id == currDistrictId)].name;
-    let UpazilaName=upazilaList[upazilaList.findIndex(upazilaList_List => upazilaList_List.id == currUpazilaId)].name;
-   
 
+    
     window.open(
       finalUrl +
-        "?action=MembersbyPGataExport" +
+        "?action=UnionExport" +
         "&reportType=excel" +
         "&DivisionId=" + currDivisionId +
         "&DistrictId=" + currDistrictId +
         "&UpazilaId=" + currUpazilaId +
-        "&DivisionName=" + DivisionName +
-        "&DistrictName=" + DistrictName +
-        "&UpazilaName=" + UpazilaName +
         "&TimeStamp=" +
         Date.now()
     );
@@ -60,120 +53,53 @@ const GenderWisePGMembers = (props) => {
 
 
   const columnList = [
-    { field: "rownumber", label: "SL", visible:false, align: "center", width: "3%" },
+    { field: "rownumber", label: "SL", align: "center", width: "3%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
    
     {
-      field: "GenderName",
-      label: "Gender",
+      field: "DivisionName",
+      label: "Division",
       align: "left",
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "20%",
     },
     {
-      field: "Dairy",
-      label: "Dairy",
-      align: "right",
+      field: "DistrictName",
+      label: "District",
+      align: "left",
       visible: true,
       sort: true,
       filter: true,
+      width: "20%",
+    },
+    {
+      field: "UpazilaName",
+      label: "Upazila",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "20%",
+    },
+    {
+      field: "UnionName",
+      label: "Union Name",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+    },
+    {
+      field: "custom",
+      label: "Action",
       width: "7%",
-    },
-    {
-      field: "Buffalo",
-      label: "Buffalo",
-      align: "right",
+      align: "center",
       visible: true,
-      sort: true,
-      filter: true,
-      width: "7%",
+      sort: false,
+      filter: false,
     },
- 
-    {
-      field: "BeefFattening",
-      label: "Beef Fattening",
-      align: "right",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "7%"
-    },
-
-    {
-      field: "Goat",
-      label: "Goat",
-      align: "right",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "7%"
-    },
-    {
-      field: "Sheep",
-      label: "Sheep",
-      align: "right",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "7%"
-    },
-    {
-      field: "ScavengingChickens",
-      label: "Scavenging Chickens",
-      align: "right",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "7%"
-    },
-    {
-      field: "Duck",
-      label: "Duck",
-      align: "right",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "7%"
-    },
-    {
-      field: "Quail",
-      label: "Quail",
-      align: "right",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "7%"
-    },
-    {
-      field: "Pigeon",
-      label: "Pigeon",
-      align: "right",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "7%"
-    },
-    {
-      field: "GrandTotal",
-      label: "Grand Total",
-      align: "right",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "7%"
-    },
-    {
-      field: "Percentage",
-      label: "% of Gender",
-      align: "right",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "7%"
-    },
-   
   ];
 
   
@@ -208,27 +134,122 @@ const GenderWisePGMembers = (props) => {
   }
 
   /** Action from table row buttons*/
-   function actioncontrol(rowData) {
+  function actioncontrol(rowData) {
     return (
       <>
-      
-        {/* <Edit
+        <Edit
           className={"table-edit-icon"}
           onClick={() => {
             editData(rowData);
           }}
-        /> */}
+        />
 
-        {/* <DeleteOutline
+        <DeleteOutline
           className={"table-delete-icon"}
           onClick={() => {
             deleteData(rowData);
           }}
-        /> */}
+        />
       </>
     );
-  } 
+  }
 
+  const addData = () => {
+    // console.log("rowData: ", rowData);
+    // console.log("dataList: ", dataList);
+
+    setCurrentRow({
+            id: "",
+            UnionName: "",
+            DivisionId: "",
+            DistrictId: "",
+            UpazilaId: "",
+          });
+    openModal();
+  };
+
+  const editData = (rowData) => {
+    // console.log("rowData: ", rowData);
+    // console.log("dataList: ", dataList);
+
+    setCurrentRow(rowData);
+    openModal();
+  };
+
+  
+  function openModal() {
+    setShowModal(true); //true=modal show, false=modal hide
+  }
+
+  function modalCallback(response) {
+    //response = close, addedit
+    // console.log('response: ', response);
+    /* getDataList(); */
+    if(response !=='close'){
+      getDataList();
+    }
+    
+    setShowModal(false); //true=modal show, false=modal hide
+
+  }
+
+  const deleteData = (rowData) => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this data!",
+      icon: "warning",
+      buttons: {
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+        cancel: {
+          text: "No",
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+      },
+      dangerMode: true,
+    }).then((allowAction) => {
+      if (allowAction) {
+        deleteApi(rowData);
+      }
+    });
+  };
+
+  function deleteApi(rowData) {
+
+        
+ 
+    let params = {
+      action: "deleteData",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      rowData: rowData,
+    };
+
+    // apiCall.post("productgroup", { params }, apiOption()).then((res) => {
+    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+      console.log('res: ', res);
+      props.openNoticeModal({
+        isOpen: true,
+        msg: res.data.message,
+        msgtype: res.data.success,
+      });
+      getDataList();
+    });
+
+  }
+
+
+
+  
+  
   function getDivision(
     selectDivisionId,
     SelectDistrictId,
@@ -253,6 +274,11 @@ const GenderWisePGMembers = (props) => {
         SelectDistrictId,
         selectUpazilaId
       );
+
+      /* getProductGeneric(
+        selectDivisionId,
+        SelectProductGenericId
+      ); */
 
 
     });
@@ -356,12 +382,12 @@ const GenderWisePGMembers = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Reports ❯ Gender wise PG Members
+            Home ❯ Admin ❯ Union Entry
           </h4>
         </div>
 
-    {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-    <div class="searchAdd2">
+        {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
+        <div class="searchAdd2">
           <div class="formControl-filter-data-label">
               <label for="DivisionId">Division: </label>
               <select
@@ -412,7 +438,8 @@ const GenderWisePGMembers = (props) => {
 
           
           <div class="filter-button">
-              <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} /> 
+              <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
+              <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
           </div>
       
       </div>
@@ -423,16 +450,20 @@ const GenderWisePGMembers = (props) => {
             <CustomTable
               columns={columnList}
               rows={dataList?dataList:{}}
-               actioncontrol={actioncontrol}
-               isLoading={isLoading}
+              actioncontrol={actioncontrol}
+              isLoading={isLoading}
             />
           </div>
         </div>
       </div>
+      {/* <!-- BODY CONTAINER END --> */}
+
+
+      {showModal && (<UnionEntryAddEditModal masterProps={props} currentRow={currentRow} modalCallback={modalCallback}/>)}
 
 
     </>
   );
 };
 
-export default GenderWisePGMembers;
+export default UnionEntry;

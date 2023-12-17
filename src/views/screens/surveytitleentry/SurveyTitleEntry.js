@@ -7,10 +7,10 @@ import CustomTable from "components/CustomTable/CustomTable";
 import { apiCall, apiOption , LoginUserInfo, language} from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
-import QuestionsEntryAddEditModal from "./QuestionsEntryAddEditModal";
+import SurveyTitleEntryAddEditModal from "./SurveyTitleEntryAddEditModal";
 
-const QuestionsEntry = (props) => {
-  const serverpage = "questionsentry"; // this is .php server page
+const SurveyTitleEntry = (props) => {
+  const serverpage = "surveytitleentry"; // this is .php server page
 
   const { useState } = React;
   const [bFirst, setBFirst] = useState(true);
@@ -28,7 +28,7 @@ const QuestionsEntry = (props) => {
  
      window.open(
        finalUrl +
-         "?action=QuestionDataExport" +
+         "?action=SurveyTitleDataExport" +
          "&reportType=excel" +
          // "&DistrictId=" + UserInfo.DistrictId +
          // "&UpazilaId=" + UserInfo.UpazilaId +
@@ -41,38 +41,10 @@ const QuestionsEntry = (props) => {
 
   const columnList = [
     { field: "rownumber", label: "SL", align: "center", width: "3%" },
-    // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
-    {
-      field: "QuestionCode",
-      label: "Code",
-      align: "left",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "1%",
-    },
    
     {
-      field: "QuestionName",
-      label: "Question",
-      align: "left",
-      visible: true,
-      sort: true,
-      filter: true,
-    },
-
-    {
-      field: "QuestionType",
-      label: "Question Type",
-      align: "left",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "7%",
-    },
-    {
-      field: "ParentQuestionName",
-      label: "Parent Question",
+      field: "DataTypeName",
+      label: "Data Type",
       align: "left",
       visible: true,
       sort: true,
@@ -80,22 +52,21 @@ const QuestionsEntry = (props) => {
       width: "30%",
     },
     {
-      field: "Settings",
-      label: "Settings",
+      field: "SurveyTitle",
+      label: "Survey Title",
       align: "left",
       visible: true,
       sort: true,
       filter: true,
-      width: "2%",
     },
     {
-      field: "IsMandatoryName",
-      label: "Is Mandatory",
+      field: "CurrentSurveyStatus",
+      label: "Current Survey",
       align: "center",
       visible: true,
       sort: true,
       filter: true,
-      width: "1%",
+      width: "10%",
     },
     {
       field: "custom",
@@ -142,12 +113,12 @@ const QuestionsEntry = (props) => {
           }}
         />
 
-       {(rowData.QMapCount==0) && (<DeleteOutline
+      <DeleteOutline
           className={"table-delete-icon"}
           onClick={() => {
             deleteData(rowData);
           }}
-        />)}
+        />
 
 
       </>
@@ -160,13 +131,9 @@ const QuestionsEntry = (props) => {
 
     setCurrentRow({
             id: "",
-            QuestionCode: "",
-            QuestionName: "",
-            QuestionType: "",
-            QuestionParentId: "",
-            QuestionId: "",
-            Settings: "",
-            IsMandatory: false,
+            SurveyTitle: "",
+            DataTypeId: "",
+            CurrentSurvey: false,
 
           });
     openModal();
@@ -188,10 +155,10 @@ const QuestionsEntry = (props) => {
   function modalCallback(response) {
     //response = close, addedit
     // console.log('response: ', response);
-    /* getDataList(); */
     if(response !=='close'){
       getDataList();
     }
+
     setShowModal(false); //true=modal show, false=modal hide
 
   }
@@ -257,7 +224,7 @@ const QuestionsEntry = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Admin ❯ Questions Entry
+            Home ❯ Admin ❯ Survey Title Entry
           </h4>
         </div>
 
@@ -283,11 +250,11 @@ const QuestionsEntry = (props) => {
       {/* <!-- BODY CONTAINER END --> */}
 
 
-      {showModal && (<QuestionsEntryAddEditModal masterProps={props} currentRow={currentRow} modalCallback={modalCallback}/>)}
+      {showModal && (<SurveyTitleEntryAddEditModal masterProps={props} currentRow={currentRow} modalCallback={modalCallback}/>)}
 
 
     </>
   );
 };
 
-export default QuestionsEntry;
+export default SurveyTitleEntry;
