@@ -317,10 +317,18 @@
 /* MANUFACTURER MODAL EXTENSION */
 .contactmodalBodyImage {
     display: grid;
-    grid-template-columns: 18% 22% 17% 43%;
+    grid-template-columns: 18% 29% 8% 84%;
+    row-gap: 8px;
+}
+.contactmodalBodyImage2nd {
+    display: grid;
+    grid-template-columns: 18% 36% 3% 6%;
     row-gap: 8px;
 }
 
+.modal .contactmodalBodyImage2nd input[type="text"] {
+	width: 99%;
+}
 
 .contactmodalBodyImage :nth-child(5) {
     grid-column: 1;

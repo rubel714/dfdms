@@ -218,6 +218,7 @@ const UserEntry = (props) => {
             Phone: "",
             Address: "",
             PhotoUrl: "",
+            Remarks: "",
           });
     openModal();
   };

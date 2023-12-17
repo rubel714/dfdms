@@ -315,7 +315,7 @@ function UserDataExport() {
 	h.RoleIds,
 	a.LoginName, a.`Email`, b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, u.UnionName,
 	a.`IsActive`, case when a.IsActive=1 then 'Yes' else 'No' end IsActiveName, a.DesignationId, e.DesignationName
-	,a.DateofJoining
+	,a.DateofJoining, a.Remarks
 		FROM `t_users` a
 		LEFT JOIN (SELECT p.`UserId`,GROUP_CONCAT(q.RoleId ORDER BY q.`RoleId` ASC SEPARATOR ', ') RoleIds, GROUP_CONCAT(q.RoleName ORDER BY q.`RoleId` ASC SEPARATOR ', ') RoleGroupName
 				 FROM t_user_role_map p
@@ -329,8 +329,8 @@ function UserDataExport() {
 		LEFT JOIN t_designation e ON a.`DesignationId` = e.`DesignationId`
 		ORDER BY a.`UserName` ASC;";
 	
-    $tableProperties["query_field"] = array("UserName","LoginName","Email","DesignationName","DivisionName","DistrictName","UpazilaName","UnionName","DateofJoining","IsActiveName","RoleGroupName");
-    $tableProperties["table_header"] = array('Name','Login User Name','Email','Designation','Division','District','Upazila','Union','Date of Joining','IsActive','Role');
+    $tableProperties["query_field"] = array("UserName","LoginName","Email","DesignationName","DivisionName","DistrictName","UpazilaName","UnionName","DateofJoining","IsActiveName","RoleGroupName","Remarks");
+    $tableProperties["table_header"] = array('Name','Login User Name','Email','Designation','Division','District','Upazila','Union','Date of Joining','IsActive','Role','Remarks');
     $tableProperties["align"] = array("left","left");
     $tableProperties["width_print_pdf"] = array("30%","70%"); //when exist serial then here total 95% and 5% use for serial
     $tableProperties["width_excel"] = array("30","40","30","15","20","20","20","20","20","7","30");

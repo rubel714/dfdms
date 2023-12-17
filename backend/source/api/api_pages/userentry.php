@@ -37,7 +37,7 @@ function getDataList($data){
 		h.RoleIds,
 		a.LoginName, a.`Email`, b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, u.UnionName,
 		a.`IsActive`, case when a.IsActive=1 then 'Yes' else 'No' end IsActiveName, a.DesignationId, e.DesignationName, a.DateofJoining
-		, a.Phone, a.Address, a.PhotoUrl
+		, a.Phone, a.Address, a.PhotoUrl, a.Remarks
 			FROM `t_users` a
 			LEFT JOIN (SELECT p.`UserId`,GROUP_CONCAT(q.RoleId ORDER BY q.`RoleId` ASC SEPARATOR ', ') RoleIds, GROUP_CONCAT(q.RoleName ORDER BY q.`RoleId` ASC SEPARATOR ', ') RoleGroupName
 					 FROM t_user_role_map p
@@ -100,6 +100,7 @@ function dataAddEdit($data) {
 
 		$Phone = $data->rowData->Phone? $data->rowData->Phone : null;
 		$Address = $data->rowData->Address? $data->rowData->Address : null;
+		$Remarks = $data->rowData->Remarks? $data->rowData->Remarks : null;
 		$PhotoUrl = $data->rowData->PhotoUrl;
 
 		$msgType = 'Please, Assign Roles';		
@@ -126,8 +127,8 @@ function dataAddEdit($data) {
 			if($id == ""){
 				$q = new insertq();
 				$q->table = 't_users';
-				$q->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','UnionId','Email','IsActive','DesignationId','PhotoUrl', 'DateofJoining','Phone','Address'];
-				$q->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$UnionId, $Email,$IsActive,$DesignationId,$PhotoUrl, $DateofJoining, $Phone, $Address];
+				$q->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','UnionId','Email','IsActive','DesignationId','PhotoUrl', 'DateofJoining','Phone','Address','Remarks'];
+				$q->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$UnionId, $Email,$IsActive,$DesignationId,$PhotoUrl, $DateofJoining, $Phone, $Address, $Remarks];
 				$q->pks = ['UserId'];
 				$q->bUseInsetId = true;
 				$q->build_query();
@@ -156,12 +157,12 @@ function dataAddEdit($data) {
 				$u->table = 't_users';
 
 					if($Cpassword != ''){
-						$u->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','UnionId','Email','IsActive','DesignationId', 'DateofJoining','Phone','Address','PhotoUrl'];
-						$u->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$UnionId, $Email,$IsActive,$DesignationId, $DateofJoining, $Phone, $Address, $PhotoUrl];
+						$u->columns = ['UserName','LoginName','Password','DivisionId','DistrictId','UpazilaId','UnionId','Email','IsActive','DesignationId', 'DateofJoining','Phone','Address','PhotoUrl', 'Remarks'];
+						$u->values = [$UserName,$LoginName,$Password,$DivisionId,$DistrictId,$UpazilaId,$UnionId, $Email,$IsActive,$DesignationId, $DateofJoining, $Phone, $Address, $PhotoUrl, $Remarks];
 						
 					}else{
-						$u->columns = ['UserName','LoginName','DivisionId','DistrictId','UpazilaId','UnionId','Email','IsActive','DesignationId','DateofJoining','Phone','Address','PhotoUrl'];
-						$u->values = [$UserName,$LoginName,$DivisionId,$DistrictId,$UpazilaId,$UnionId, $Email,$IsActive,$DesignationId, $DateofJoining, $Phone, $Address, $PhotoUrl];
+						$u->columns = ['UserName','LoginName','DivisionId','DistrictId','UpazilaId','UnionId','Email','IsActive','DesignationId','DateofJoining','Phone','Address','PhotoUrl', 'Remarks'];
+						$u->values = [$UserName,$LoginName,$DivisionId,$DistrictId,$UpazilaId,$UnionId, $Email,$IsActive,$DesignationId, $DateofJoining, $Phone, $Address, $PhotoUrl, $Remarks];
 				
 					}
 

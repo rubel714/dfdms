@@ -675,7 +675,7 @@ const uploadImage = (file, photoType) => {
             
           </div>
 
-          <div className="contactmodalBody pt-10">
+          <div className="contactmodalBodyImage pt-10">
             <label>Photo</label>
             <input
               type="file"
@@ -695,6 +695,18 @@ const uploadImage = (file, photoType) => {
                   />
                 </div>
               )}
+
+                <div class="contactmodalBodyImage2nd pt-10">
+                        <label>Remarks</label>
+                          <input
+                            type="text"
+                            id="Remarks"
+                            name="Remarks"
+                            placeholder="Enter Remarks"
+                            value={currentRow.Remarks}
+                            onChange={(e) => handleChange(e)}
+                          />
+                    </div>
           </div>
 
           <div class="contactmodalBody pt-10">
