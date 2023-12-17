@@ -2,8 +2,11 @@ import React from "react";
 // import { makeStyles } from "@material-ui/core/styles";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 import AfterLoginNavbar from "components/Navbars/AfterLoginNavbar";
-import Notification from "../../../services/Notification"; 
-import {checkLogin, checkUserPermission} from "../../../services/CheckUserAccess";
+import Notification from "../../../services/Notification";
+import {
+  checkLogin,
+  checkUserPermission,
+} from "../../../services/CheckUserAccess";
 import DarkFooter from "../../../components/Footers/DarkFooter.js";
 import DataCollectionEntry from "./DataCollectionEntry";
 import "../../../assets/css/pgdatacollection.css";
@@ -15,8 +18,8 @@ const Index = (props) => {
   const [RedirectLogin, setRedirectLogin] = React.useState(true);
   const [hasUserPermission, setHasUserPermission] = React.useState(false);
 
-  if(RedirectLogin){
-    setHasUserPermission(checkUserPermission(menukey));// To check user has permission in this page
+  if (RedirectLogin) {
+    setHasUserPermission(checkUserPermission(menukey)); // To check user has permission in this page
     checkLogin();
     setRedirectLogin(false);
   }
@@ -32,38 +35,40 @@ const Index = (props) => {
     setMsgObj(obj);
   };
 
-  const closeNoticeModal = (event, reason) => { 
-      if (reason === 'clickaway') {
-        return;
-      } 
+  const closeNoticeModal = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
     setMsgObj({ isOpen: false });
   };
 
   return (
     hasUserPermission && (
-    <div>
-      <AfterLoginNavbar {...props} />
+      <div>
+        <AfterLoginNavbar {...props} />
 
-      <div >
-
-        <Switch>
-          <Route
-            path={`${path}/`}
-            render={(props) => (
-              <DataCollectionEntry {...props} openNoticeModal={openNoticeModal} DataTypeId={3} />
-            )}
-          ></Route>
-        </Switch>
-        <Notification
-          closeNoticeModal={closeNoticeModal}
-          msgObj={msgObj}
-          {...props}
-        ></Notification>
-
+        <div>
+          <Switch>
+            <Route
+              path={`${path}/`}
+              render={(props) => (
+                <DataCollectionEntry
+                  {...props}
+                  openNoticeModal={openNoticeModal}
+                  DataTypeId={3}
+                />
+              )}
+            ></Route>
+          </Switch>
+          <Notification
+            closeNoticeModal={closeNoticeModal}
+            msgObj={msgObj}
+            {...props}
+          ></Notification>
+        </div>
+        <DarkFooter {...props} />
       </div>
-      <DarkFooter  {...props}  />
-
-    </div>)
+    )
   );
 };
 
