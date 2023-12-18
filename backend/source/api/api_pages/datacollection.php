@@ -69,7 +69,7 @@ function getDataList($data)
 			 when a.StatusId=2 then 'Waiting for Accept'
 			 when a.StatusId=3 then 'Waiting for Approve'
 			 when a.StatusId=5 then 'Approved'
-			 else '' end CurrentStatus,g.ValueChainName,h.UserName,i.SurveyTitle
+			 else '' end CurrentStatus,g.ValueChainName,h.UserName,i.SurveyTitle,a.SurveyId
 		FROM t_datavaluemaster a
 		inner join t_division b on a.DivisionId=b.DivisionId
 		inner join t_district c on a.DistrictId=c.DistrictId
@@ -107,15 +107,9 @@ function getQuestionList($data)
 {
 
 	$DataTypeId = trim($data->DataTypeId);
+	$SurveyId = trim($data->SurveyId);
 	try {
 		$dbh = new Db();
-
-		// $query = "SELECT a.`QuestionId`, a.`QuestionCode`, a.`QuestionName`, a.`QuestionType`, 
-		// a.`IsMandatory`, a.`QuestionParentId`, b.`SortOrder`, a.SortOrderChild
-		// FROM t_questions a
-		// inner join t_datatype_questions_map b on a.QuestionId=b.QuestionId
-		// where b.DataTypeId=$DataTypeId
-		// ORDER BY b.SortOrder ASC, a.SortOrderChild ASC;";
 
 		$query = "SELECT a.`QuestionId`, a.`QuestionCode`, 
 		CASE WHEN a.`QuestionType`='Label' THEN b.`LabelName` ELSE a.`QuestionName` END QuestionName, a.`QuestionType`, 
@@ -123,16 +117,17 @@ function getQuestionList($data)
 		FROM t_questions a
 		INNER JOIN t_datatype_questions_map b ON a.QuestionId=b.QuestionId
 		WHERE b.DataTypeId = $DataTypeId
+		AND b.SurveyId=$SurveyId
 
 		UNION ALL
 
 		SELECT child.`QuestionId`, child.`QuestionCode`, child.`QuestionName`, child.`QuestionType`, 
 		child.`IsMandatory`, child.`QuestionParentId`, 
-		(SELECT s.SortOrder FROM t_datatype_questions_map s WHERE s.QuestionId=child.QuestionParentId) `SortOrder`, 
+		(SELECT s.SortOrder FROM t_datatype_questions_map s WHERE s.QuestionId=child.QuestionParentId AND s.SurveyId=$SurveyId) `SortOrder`, 
 		child.SortOrderChild,child.Settings,m.Category
 		FROM t_questions AS child
 		INNER JOIN t_datatype_questions_map AS m ON child.QuestionParentId=m.QuestionId
-		WHERE child.QuestionParentId != 0 AND m.DataTypeId = $DataTypeId
+		WHERE child.QuestionParentId != 0 AND m.DataTypeId = $DataTypeId AND m.SurveyId=$SurveyId
 
 		ORDER BY SortOrder ASC, SortOrderChild ASC;";
 

@@ -66,6 +66,7 @@ const DataCollectionEntry = (props) => {
 
   const [currentQuarterId, setcurrentQuarterId] = useState(defaultMonthId);
   const [dataTypeId, setDataTypeId] = useState(props.DataTypeId);
+  // const [SurveyId, setSurveyId] = useState(0);
 
   const [errorObjectMaster, setErrorObjectMaster] = useState({});
   const [errorObjectMany, setErrorObjectMany] = useState({});
@@ -415,13 +416,14 @@ const DataCollectionEntry = (props) => {
           return obj;
         }
       });
-      console.log('currentSurvey Row: ', currentSurveyRow);
+      console.log("currentSurvey Row: ", currentSurveyRow);
 
       if (currentSurveyRow.length > 0) {
         currentSurveyId = currentSurveyRow[0].id;
       }
       console.log("aa currentSurvey Id: ", currentSurveyId);
     }
+    getQuestionList(currentSurveyId, 0);
 
     setCurrentInvoice({
       id: "",
@@ -637,167 +639,6 @@ const DataCollectionEntry = (props) => {
       setEntryFormSubTitle(
         "ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data Collection and Storage)"
       );
-
-      //   const [landTypeList, setLandTypeList] = useState([
-      //     {
-      //       LandTypeId: 1,
-      //       LandType: "Homostead"
-      //     },
-      //     {
-      //       LandTypeId: 2,
-      //       LandType: "Cultivable Land"
-      //     },
-      //     {
-      //       LandTypeId: 3,
-      //       LandType: "Others"
-      //     },
-      // ]);
-
-      // const [grassList, setGrassList] = useState([
-
-      //   let dlist = [
-      //     {
-      //       DataValueItemDetailsId: 1,
-      //       DataValueItemId: 237,
-      //       GrassId: 1,
-      //       LandTypeId: 3,
-      //       Cultivation: 100,
-      //       Production: 50,
-      //       Consumption: 20,
-      //       Sales: 30
-      //     },
-      //     {
-      //       DataValueItemDetailsId: 2,
-      //       DataValueItemId: 237,
-      //       GrassId: 1,
-      //       LandTypeId: 2,
-      //       Cultivation: 300,
-      //       Production: 40,
-      //       Consumption: 60,
-      //       Sales: 10
-      //     },
-      //     {
-      //       DataValueItemDetailsId: 3,
-      //       DataValueItemId: 237,
-      //       GrassId: 2,
-      //       LandTypeId: 2,
-      //       Cultivation: 300,
-      //       Production: 40,
-      //       Consumption: 60,
-      //       Sales: 25
-      //     }
-      // ];
-
-      // let grassTypeTableHTML = "";
-
-      // dlist.forEach((obj,i)=>{
-      //   grassTypeTableHTML += '<tr>'+
-      //                           '<td>'+ (i+1) +'</td>'+
-      //                           '<td >'+
-      //                             '<select id="GrassId'+ getRandomNumber(1,500) +'" class="fullWidthSelect" onchange="changeCustomTableCell(this)">'+
-
-      //                             grassList.map((row,i)=>{
-      //                               let s = "";
-      //                               if(obj.GrassId == row.GrassId){
-      //                                 s = "selected";
-      //                               }
-      //                               return '<option '+s+' value='+row.GrassId+'>'+row.GrassName+'</option>';
-      //                             })+
-
-      //                               // '<option value="1">Dema</option>'+
-      //                               // '<option value="2">Gama</option>'+
-      //                               // '<option selected value="3">Jambu</option>'+
-      //                               // '<option value="4">Job</option>'+
-      //                               // '<option value="5">Napier</option>'+
-
-      //                             '</select>'+
-      //                           '</td>'+
-      //                           '<td >'+
-      //                             '<select id="LandType'+ getRandomNumber(1,500) +'" class="fullWidthSelect" onchange="changeCustomTableCell(this)">'+
-      //                             landTypeList.map((row,i)=>{
-      //                               let s = "";
-      //                               if(obj.LandTypeId == row.LandTypeId){
-      //                                 s = "selected";
-      //                               }
-      //                                 return '<option '+s+' value='+row.LandTypeId+'>'+row.LandType+'</option>';
-      //                               })+
-      //                               // '<option value="1">Homostead</option>'+
-      //                               // '<option value="2">Cultivable Land</option>'+
-      //                               // '<option value="3">Others</option>'+
-      //                             '</select>'+
-      //                           '</td>'+
-      //                           '<td class="tg-dhohs"><input type="number" id="Cultivation'+ getRandomNumber(1,500) +'" class="numberInput" value="'+obj.Cultivation+'" onchange="changeCustomTableCell(this)" /></td>'+
-      //                           '<td class="tg-dhohs"><input type="number" id="Production'+ getRandomNumber(1,500) +'" class="numberInput" value="'+obj.Production+'" onchange="changeCustomTableCell(this)" /></td>'+
-      //                           '<td class="tg-dhohs"><input type="number" id="Consumption'+ getRandomNumber(1,500) +'" class="numberInput" value="'+obj.Consumption+'" onchange="changeCustomTableCell(this)" /></td>'+
-      //                           '<td class="tg-dhohs"><input type="number" id="Sales'+ getRandomNumber(1,500) +'" class="numberInput" value="'+obj.Sales+'" onchange="changeCustomTableCell(this)" /></td>'+
-      //                           // onchange={() => changeCustomTableCell(3)}
-      //                           //onChange={(e) => changeVisibilityCheck(e)}
-
-      //                           '<td>'+
-      //                             '<i class="fa fa-trash-alt" style="color: red;" onclick="deleteGrassTypeRow('+obj.DataValueItemDetailsId+')"></i>'+
-      //                         '</td>'+
-      //                         '</tr>';
-
-      // });
-
-      // setGrassTypeTableRow(grassTypeTableHTML);
-
-      // setGrassTypeTableRow(
-      //   '<tr>'+
-      //     '<td>1</td>'+
-      //     '<td >'+
-      //       '<select class="fullWidthSelect">'+
-      //         '<option value="1">Dema</option>'+
-      //         '<option value="2">Gama</option>'+
-      //         '<option value="3">Jambu</option>'+
-      //         '<option value="4">Job</option>'+
-      //         '<option value="5">Napier</option>'+
-      //       '</select>'+
-      //     '</td>'+
-      //     '<td >'+
-      //       '<select class="fullWidthSelect">'+
-      //         '<option value="1">Homostead</option>'+
-      //         '<option value="2">Cultivable Land</option>'+
-      //         '<option value="3">Others</option>'+
-      //       '</select>'+
-      //     '</td>'+
-      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
-      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
-      //     '<td class="tg-dhohs"><input type="number" class="numberInput" /></td>'+
-      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
-
-      //     '<td>'+
-      //       '<i class="fa fa-trash-alt" style="color: red;" onclick="deleteData(rowData)"></i>'+
-      //   '</td>'+
-      //   '</tr>'+
-
-      //   '<tr>'+
-      //     '<td>1</td>'+
-      //     '<td >'+
-      //       '<select class="fullWidthSelect">'+
-      //         '<option value="1">Dema</option>'+
-      //         '<option value="2">Gama</option>'+
-      //         '<option value="3">Jambu</option>'+
-      //         '<option value="4">Job</option>'+
-      //         '<option value="5">Napier</option>'+
-      //       '</select>'+
-      //     '</td>'+
-      //     '<td >'+
-      //       '<select class="fullWidthSelect">'+
-      //       '<option value="1">Homostead</option>'+
-      //       '<option value="2">Cultivable Land</option>'+
-      //       '<option value="3">Others</option>'+
-      //       '</select>'+
-      //     '</td>'+
-      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
-      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
-      //     '<td class="tg-dhohs"><input type="number" class="numberInput" /></td>'+
-      //     '<td class="tg-dhohs"><input type="number" class="numberInput"  /></td>'+
-
-      //     '<td>'+
-      //       '<i class="fa fa-trash-alt" style="color: red;" onclick="deleteData(rowData)"></i>'+
-      //   '</td>'+
-      //   '</tr>');
     } else if (dataTypeId === 3) {
       setEntryFormTitle(
         "গ্ৰুপের তথ্য সংগ্রহ ফরম (Large Group Discussion Data)"
@@ -810,7 +651,7 @@ const DataCollectionEntry = (props) => {
     /**First time call for datalist */
     newInvoice();
 
-    getQuestionList();
+    // getQuestionList();
     //getPgGroupList();
     getSurveyList();
     getYearList();
@@ -824,7 +665,7 @@ const DataCollectionEntry = (props) => {
 
     getDivision(UserInfo.DivisionId, UserInfo.DistrictId, UserInfo.UpazilaId);
 
-    // getDataList(); //invoice list
+    getDataList(); //invoice list
 
     setBFirst(false);
   }
@@ -834,14 +675,19 @@ const DataCollectionEntry = (props) => {
     setListEditPanelToggle(false); // false = hide list and show add/edit panel
   }
 
-  function getQuestionList() {
+  // getQuestionList(rowData.SurveyId, rowData.id);
+  // getDataSingleFromServer(rowData.id);
+  function getQuestionList(SurveyId, DataValueMasterId) {
     console.log("getQuestionList dataTypeId: ", dataTypeId);
+    console.log("getQuestionList SurveyId: ", SurveyId);
+    console.log("getQuestionList DataValueMasterId: ", DataValueMasterId);
 
     let params = {
       action: "getQuestionList",
       lan: language(),
       UserId: UserInfo.UserId,
       DataTypeId: dataTypeId,
+      SurveyId: SurveyId,
     };
 
     apiCall.post(serverpage, { params }, apiOption()).then((res) => {
@@ -850,7 +696,10 @@ const DataCollectionEntry = (props) => {
       setQuestionsList(res.data.datalist); /**set question list */
       console.log("getQuestionList: ", res.data.datalist);
 
-      getDataList(); //invoice list
+      // getDataList(); //invoice list
+      if (DataValueMasterId > 0) {
+        getDataSingleFromServer(DataValueMasterId);
+      }
     });
   }
 
@@ -862,7 +711,7 @@ const DataCollectionEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      console.log('res: ', res);
+      console.log("res: ", res);
       setValuechainList(
         [{ id: "", name: "Select Value Chain" }].concat(res.data.datalist)
       );
@@ -1290,13 +1139,14 @@ const DataCollectionEntry = (props) => {
 
   const editData = (rowData) => {
     console.log("rowData: ", rowData);
-    getDataSingleFromServer(rowData.id);
+    getQuestionList(rowData.SurveyId, rowData.id);
+    // getDataSingleFromServer(rowData.id);
   };
 
   const viewData = (rowData) => {
     console.log("rowData: ", rowData);
-
-    getDataSingleFromServer(rowData.id);
+    getQuestionList(rowData.SurveyId, rowData.id);
+    // getDataSingleFromServer(rowData.id);
   };
 
   const getDataSingleFromServer = (id) => {
@@ -1317,39 +1167,6 @@ const DataCollectionEntry = (props) => {
 
     if (dataListSingle.master) {
       console.log("dataListSingle master: ", dataListSingle.master[0]);
-
-      // let master = dataListSingle.master[0];
-      // console.log("master: ", master);
-      // console.log("master MQ4: ", master.MQ4);
-      // if (master.MQ4 === null) {
-      //   console.log(11111);
-      // } else {
-      //   console.log(2222);
-
-      //   let MQ4List = master.MQ4.split(",");
-      //   MQ4List.forEach((element) => {
-      //     console.log("element: ", element);
-      //   });
-      // }
-
-      // Categories
-      // let qvList = {
-      //   DAIRY: "displaynone",
-      //   BEEFFATTENING: "displaynone",
-      //   BUFFALO: "displaynone",
-      //   GOAT: "displaynone",
-      //   SHEEP: "displaynone",
-      //   SCAVENGINGCHICKENLOCAL: "displaynone",
-      //   SONALI: "displaynone",
-      //   COMMERCIALBROILER: "displaynone",
-      //   QUAIL: "displaynone",
-      //   TURKEY: "displaynone",
-      //   GUINEAFOWL: "displaynone",
-      //   PIGEON: "displaynone",
-      //   DUCK: "displaynone",
-      //   LAYER: "displaynone",
-      // };
-      // const [questionsVisibleList, setQuestionsVisibleList] = useState(qvList);
 
       //DataTypeId
       let qvListFromMaster = dataListSingle.master[0].Categories;
@@ -1452,10 +1269,6 @@ const DataCollectionEntry = (props) => {
     // const [currentInvoice, setCurrentInvoice] = useState([]); //this is for master information. It will send to sever for save
 
     setErrorObjectMaster({ ...errorObjectMaster, [name]: null });
-
-
-
-
   };
   const divStyle = {
     color: "blue",
@@ -1589,7 +1402,6 @@ const DataCollectionEntry = (props) => {
 
     setErrorObjectMaster({ ...errorObjectMaster, [name]: null });
 
-
     if (name === "ValuechainId") {
       data["PGId"] = "";
       data["FarmerId"] = "";
@@ -1678,8 +1490,6 @@ const DataCollectionEntry = (props) => {
     } else if (name === "UpazilaId") {
       setCurrUpazilaId(value);
     }
-
- 
   };
 
   useEffect(() => {
@@ -2432,7 +2242,7 @@ const DataCollectionEntry = (props) => {
                       id="SurveyId"
                       name="SurveyId"
                       autoComplete
-                      disabled = {true}
+                      disabled={true}
                       class={errorObjectMaster.SurveyId}
                       options={surveyList ? surveyList : []}
                       getOptionLabel={(option) => option.name}
@@ -2540,7 +2350,7 @@ const DataCollectionEntry = (props) => {
                       )}
                     />
                   </div>
-{/* 
+                  {/* 
                   <div class="formControl">
                     <label>ভেলু চেইন️ (Value Chain):</label>
                     <select
@@ -2558,7 +2368,7 @@ const DataCollectionEntry = (props) => {
                   </div> */}
 
                   <div class="formControl">
-                  <label>ভেলু চেইন️ (Value Chain):</label>
+                    <label>ভেলু চেইন️ (Value Chain):</label>
                     <Autocomplete
                       autoHighlight
                       // freeSolo
@@ -2573,7 +2383,7 @@ const DataCollectionEntry = (props) => {
                       value={
                         valuechainList
                           ? valuechainList[
-                            valuechainList.findIndex(
+                              valuechainList.findIndex(
                                 (list) => list.id == currentInvoice.ValuechainId
                               )
                             ]

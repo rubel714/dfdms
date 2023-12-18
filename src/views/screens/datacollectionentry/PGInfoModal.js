@@ -1,27 +1,28 @@
-import React, { forwardRef, useRef,useEffect,useState } from "react";
-import {Button}  from "../../../components/CustomControl/Button";
-import {apiCall, apiOption, LoginUserInfo, language}  from "../../../actions/api";
+import React, { forwardRef, useRef, useEffect, useState } from "react";
+import { Button } from "../../../components/CustomControl/Button";
+import {
+  apiCall,
+  apiOption,
+  LoginUserInfo,
+  language,
+} from "../../../actions/api";
 
-
-const PGInfoModal = (props) => { 
-  console.log('props modal: ', props);
-  const serverpage = "datacollection";// this is .php server page
+const PGInfoModal = (props) => {
+  console.log("props modal: ", props);
+  const serverpage = "datacollection"; // this is .php server page
   const [currentRow, setCurrentRow] = useState(props.currentInvoice);
   const [pgInfo, setPGInfo] = useState([]);
   // const [errorObject, setErrorObject] = useState({});
   const UserInfo = LoginUserInfo();
 
-useEffect(()=>{
-  getData();
+  useEffect(() => {
+    getData();
+  }, [currentRow]);
 
-},[currentRow]);
-
-
-  function getData(){
-    console.log('currentRow: ', currentRow);
+  function getData() {
+    console.log("currentRow: ", currentRow);
 
     if (currentRow.PGId) {
-
       let params = {
         action: "getPGInfo",
         lan: language(),
@@ -30,27 +31,20 @@ useEffect(()=>{
       };
 
       apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-        console.log('res: ', res.data.datalist[0]);
-       
+        console.log("res: ", res.data.datalist[0]);
+
         setPGInfo(res.data.datalist[0]);
-
-
       });
-
     }
-
-    
   }
 
-  function modalClose(){
-    console.log('props modal: ', props);
+  function modalClose() {
+    console.log("props modal: ", props);
     props.modalCallback("close");
   }
 
-
   return (
     <>
-
       {/* <!-- GROUP MODAL START --> */}
       <div id="groupModal" class="modal">
         {/* <!-- Modal content --> */}
@@ -59,15 +53,13 @@ useEffect(()=>{
             <h4>PG Information</h4>
           </div>
 
-            
-            {/* <label>PG Name</label>
+          {/* <label>PG Name</label>
             <label>{pgInfo.PGName}</label> */}
 
-        <div class="pgmodalBody pt-10">
-
+          <div class="pgmodalBody pt-10">
             <label>Division:</label>
             <span>{pgInfo.DivisionName}</span>
-            
+
             <label>District:</label>
             <span>{pgInfo.DistrictName}</span>
 
@@ -76,20 +68,18 @@ useEffect(()=>{
 
             <label>Union:</label>
             <span>{pgInfo.UnionName}</span>
-            
+
             <label>PG Name:</label>
-             <span> {pgInfo.PGName}</span>
+            <span> {pgInfo.PGName}</span>
 
             <label>Group Code:</label>
-             <span> {pgInfo.PgGroupCode}</span>
-
+            <span> {pgInfo.PgGroupCode}</span>
 
             <label>PG Bank Account Number:</label>
-             <span> {pgInfo.PgBankAccountNumber}</span>
-
+            <span> {pgInfo.PgBankAccountNumber}</span>
 
             <label>Bank Name:</label>
-             <span> {pgInfo.BankName}</span>
+            <span> {pgInfo.BankName}</span>
 
             <label>Value Chain:</label>
             <span> {pgInfo.ValueChainName}</span>
@@ -103,18 +93,11 @@ useEffect(()=>{
             <label>Status:</label>
             <span> {pgInfo.ActiveStatus}</span>
 
-
             <label>Address:</label>
             <span>{pgInfo.Address}</span>
-            
+          </div>
 
-            
-        </div>
-        
-
-
-
-         {/*  <table>
+          {/*  <table>
             <tbody>
               <tr>
                 <td>PG Name:</td>
@@ -124,23 +107,13 @@ useEffect(()=>{
               </tr>
             </tbody>
           </table> */}
-         
-         
-         
-
-          
 
           <div class="modalItem">
-
             <Button label={"Close"} class={"btnClose"} onClick={modalClose} />
-            
           </div>
         </div>
       </div>
       {/* <!-- GROUP MODAL END --> */}
-
-
-
     </>
   );
 };
