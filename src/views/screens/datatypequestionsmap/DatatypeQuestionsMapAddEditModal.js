@@ -11,7 +11,7 @@ const DatatypeQuestionsMapAddEditModal = (props) => {
 
   const { useState } = React;
   const [bFirstm, setBFirstm] = useState(true);
-
+console.log("currentRow ------ ",props.currentRow);
   // console.log('props modal: ', props);
   const serverpage = "datatypequestionsmap";// this is .php server page
   const [currentRow, setCurrentRow] = useState(props.currentRow);
@@ -103,6 +103,7 @@ const DatatypeQuestionsMapAddEditModal = (props) => {
         lan: language(),
         UserId: UserInfo.UserId,
         DataTypeId: props.currentRow.DataTypeId,
+        SurveyId: props.currentRow.SurveyId,
         rowData: selectedRows,
       };
 

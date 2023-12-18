@@ -38,6 +38,7 @@ import PGandPGmembersInformation from "views/screens/pgandpgmembersinformation/i
 import DashboardPage from "views/screens/DashboardPage";
 import SurveyTitleEntry from "views/screens/surveytitleentry/index.js";
 import UnionEntry from "views/screens/unionentry/index.js";
+import TrainingAdd from "views/screens/trainingadd/index.js";
 
 
 import UserContextProvider from "./context/user-info-context";
@@ -154,6 +155,10 @@ ReactDOM.render(
           <Route
             path="/unionentry"
             render={(props) => <UnionEntry {...props} />}
+          />
+          <Route
+            path="/trainingadd"
+            render={(props) => <TrainingAdd {...props} />}
           />
 
           <Route path="/" render={(props) => <Index {...props} />} />

@@ -395,6 +395,8 @@ function DataTypeQuestionsMapExport() {
 	global $sql, $tableProperties, $TEXT, $siteTitle;
 
 	$DataTypeId = $_REQUEST['DataTypeId'];
+	$SurveyId = $_REQUEST['SurveyId'];
+	$SurveyName = $_REQUEST['SurveyName'];
 	
 	$sql = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName, c.QuestionCode, a.SortOrder, a.DataTypeId, a.Category
 	,0 QDataCount
@@ -402,6 +404,7 @@ function DataTypeQuestionsMapExport() {
 	INNER JOIN t_datatype b ON a.DataTypeId = b.DataTypeId
 	INNER JOIN t_questions c ON a.QuestionId = c.QuestionId
 	WHERE a.DataTypeId = $DataTypeId
+	AND a.SurveyId = $SurveyId
 	ORDER BY a.SortOrder ASC;";
 
 
@@ -425,7 +428,7 @@ function DataTypeQuestionsMapExport() {
 	//Report header list
 	$tableProperties["header_list"][0] = $siteTitle;
 	$tableProperties["header_list"][1] = 'Data Type Questions Map';
-	$tableProperties["header_list"][2] = 'Data Type: '.$DataTypeName;
+	$tableProperties["header_list"][2] = 'Data Type: '.$DataTypeName. ', Survey: '.$SurveyName;
 	// $tableProperties["header_list"][1] = 'Heading 2';
 	
 	//Report save name. Not allow any type of special character

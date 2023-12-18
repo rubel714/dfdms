@@ -184,7 +184,7 @@ const SurveyTitleEntryAddEditModal = (props) => {
 
               <div class="contactmodalBody pt-10 ">
                  
-                  <label> Is Mandatory?</label>
+                  <label>Current Survey</label>
                   <input
                     id="CurrentSurvey"
                     name="CurrentSurvey"

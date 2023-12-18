@@ -256,6 +256,17 @@ function AfterLoginNavbar(props) {
                         </a>
                       </li>
                     )}
+                   {/*  {menuShowPermision("trainingadd") === 1 && (
+                     
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("trainingadd")}
+                        >
+                          Training
+                        </a>
+                      </li>
+                    )} */}
 
                  
                   

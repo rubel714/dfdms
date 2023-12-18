@@ -43,10 +43,11 @@ switch($task){
 function getDataList($data){
 
 	$DataTypeId = trim($data->DataTypeId);
+	$SurveyId = trim($data->SurveyId);
 
 	try{
 		$dbh = new Db();
-	 	$query = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName, c.QuestionCode, a.SortOrder, a.DataTypeId, a.Category
+	 	$query = "SELECT a.QMapId AS id, a.MapType, b.DataTypeName, c.QuestionName, a.LabelName, c.QuestionCode, a.SortOrder, a.DataTypeId, a.Category, a.SurveyId
 		,/*(SELECT COUNT(DataValueItemId)
 		FROM t_datavaluemaster m
 		INNER JOIN t_datavalueitems n ON m.DataValueMasterId=n.DataValueMasterId
@@ -56,7 +57,9 @@ function getDataList($data){
 		INNER JOIN t_datatype b ON a.DataTypeId = b.DataTypeId
 		INNER JOIN t_questions c ON a.QuestionId = c.QuestionId
 		WHERE a.DataTypeId = $DataTypeId
+		AND a.SurveyId = $SurveyId
 		ORDER BY a.SortOrder ASC;";
+
 		
 		$resultdata = $dbh->query($query);
 		
@@ -173,6 +176,8 @@ function questionAdd($data) {
 		$lan = trim($data->lan); 
 		$UserId = trim($data->UserId); 
 		$DataTypeId = trim($data->DataTypeId); 
+		$SurveyId = trim($data->SurveyId); 
+
 
 		$QMapId = $data->rowData->id;
 		
@@ -182,7 +187,7 @@ function questionAdd($data) {
 			$dbh = new Db();
 			$aQuerys = array();
 
-			$cq="SELECT QuestionId FROM t_datatype_questions_map WHERE DataTypeId = $DataTypeId";
+			$cq="SELECT QuestionId FROM t_datatype_questions_map WHERE DataTypeId = $DataTypeId AND SurveyId = $SurveyId";
 		    $questionMapped = $dbh->query($cq);
 
 		
@@ -225,14 +230,16 @@ function questionAdd($data) {
 							'MapType',
 							'QuestionId',
 							'LabelName',
-							'SortOrder'
+							'SortOrder',
+							'SurveyId'
 						];
 						$q->values = [
 							$DataTypeId,
 							$MapType,
 							$row->id,
 							$LabelName,
-							$SortOrder
+							$SortOrder,
+							$SurveyId
 						];
 					
 						$q->pks = ['QMapId'];
