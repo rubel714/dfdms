@@ -18,11 +18,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   const UserInfo = LoginUserInfo();
   const baseUrl = process.env.REACT_APP_FRONT_URL;
 
-
   const [isRegularBeneficiaryList, setIsRegularBeneficiaryList] =
     useState(null);
-  const [currisRegularBeneficiary, setCurrIsRegularBeneficiary] =
-    useState(1);
+  const [currisRegularBeneficiary, setCurrIsRegularBeneficiary] = useState(1);
 
   const [parentQuestionList, setParentQuestionList] = useState(null);
   const [currParentQuestion, setCurrParentQuestion] = useState(null);
@@ -38,24 +36,27 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     BeneficiaryPhoto: `${baseUrl}src/assets/farmerimage/placeholder.png`,
     FarmsPhoto: `${baseUrl}src/assets/farmerimage/placeholder.png`,
   });
-  
-  
 
-  const [uploadCompleted, setUploadCompleted] = useState(0); 
+  const [uploadCompleted, setUploadCompleted] = useState(0);
 
   const [gender, setGender] = useState(null);
   const [currGender, setCurrGender] = useState(null);
 
-  const [disabilityStatus, setDisabilityStatus] = useState([{ id: "2", name: "No" }]);
+  const [disabilityStatus, setDisabilityStatus] = useState([
+    { id: "2", name: "No" },
+  ]);
   const [currDisabilityStatus, setCurrDisabilityStatus] = useState(2);
   const [currRelationWithHeadOfHH, setCurrRelationWithHeadOfHH] = useState(1); // or false
   const [currPGRegistered, setCurrPGRegistered] = useState(0); // or false
   const [currIsHeadOfTheGroup, setCurrIsHeadOfTheGroup] = useState(0); // or false
   const [
     currPGPartnershipWithOtherCompany,
-    setCurrPGPartnershipWithOtherCompany
+    setCurrPGPartnershipWithOtherCompany,
   ] = useState(0); // or false
-  const [currAreYouRegisteredYourFirmWithDlsRadioFlag, setCurrAreYouRegisteredYourFirmWithDlsRadioFlag] = useState(0); // or false
+  const [
+    currAreYouRegisteredYourFirmWithDlsRadioFlag,
+    setCurrAreYouRegisteredYourFirmWithDlsRadioFlag,
+  ] = useState(0); // or false
 
   const [headOfHHSex, setHeadOfHHSex] = useState(null);
   const [currHeadOfHHSex, setCurrHeadOfHHSex] = useState(null);
@@ -69,7 +70,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   const [cityCorporation, setCityCorporation] = useState(null);
   const [currCityCorporation, setCurrCityCorporation] = useState(null);
 
-/*   const [ward, setWard] = useState(null);
+  /*   const [ward, setWard] = useState(null);
   const [currWard, setCurrWard] = useState(null); */
 
   const [pgList, setPGId] = useState(null);
@@ -92,16 +93,11 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   const [currDepartment, setCurrDepartment] = useState(null);
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() + 1);
-  
-
 
   const relationWith = {
-    1: 'Himself/Herself',
-    2: 'Others'
+    1: "Himself/Herself",
+    2: "Others",
   };
-  
-  
-
 
   React.useEffect(() => {
     getDivision(
@@ -112,7 +108,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       props.currentRow.ValuechainId,
       props.currentRow.PGId
     );
-
 
     getRoleList(props.currentRow.TypeOfFarmerId);
     getIsRegularBeneficiaryList(props.currentRow.IsRegular);
@@ -129,7 +124,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     getCityCorporationList(props.currentRow.CityCorporation);
     /* getWardList(props.currentRow.Ward);
     getPGIdList(props.currentRow.PGId); */
-   // getValuechainIdList(props.currentRow.ValuechainId);
+    // getValuechainIdList(props.currentRow.ValuechainId);
 
     // Set the initial value of RelationWithHeadOfHH
     if (
@@ -169,22 +164,17 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
       setCurrPGPartnershipWithOtherCompany(0);
     }
 
-
     if (
       currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag !== undefined &&
       currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag !== null
     ) {
-      setCurrAreYouRegisteredYourFirmWithDlsRadioFlag(currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag);
+      setCurrAreYouRegisteredYourFirmWithDlsRadioFlag(
+        currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag
+      );
     } else {
       setCurrAreYouRegisteredYourFirmWithDlsRadioFlag(0);
     }
-
   }, []);
-
-
-
-
-
 
   function getDivision(
     selectDivisionId,
@@ -318,14 +308,14 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
       setCurrUnionId(selectUnionId);
 
-     /*  getWardList(
+      /*  getWardList(
         selectDivisionId,
         SelectDistrictId,
         selectUpazilaId,
         selectUnionId,
         selectPGId
       ); */
-	  
+
       /* getPGIdList(
         selectDivisionId,
         SelectDistrictId,
@@ -352,19 +342,17 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         selectValuechainId,
         selectPGId
       );
-
-
     });
   }
 
-
-  function getValuechainIdList( selectDivisionId,
+  function getValuechainIdList(
+    selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
     selectValuechainId,
     selectPGId
-    ) {
+  ) {
     let params = {
       action: "QuestionMapCategoryList",
       lan: language(),
@@ -386,7 +374,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         selectValuechainId,
         selectPGId
       );
-
     });
   }
 
@@ -404,7 +391,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     });
   }
 
-
   function getDepartmentList(selectDepartment) {
     let params = {
       action: "AgencyDepartmntList",
@@ -413,7 +399,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDepartment([{ id: "", name: "Select Agency/Department" }].concat(res.data.datalist));
+      setDepartment(
+        [{ id: "", name: "Select Agency/Department" }].concat(res.data.datalist)
+      );
 
       setCurrDepartment(selectDepartment);
     });
@@ -468,8 +456,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     });
   }
 
-
-
   function getRoleList(selectRoleId) {
     let params = {
       action: "QuestionMapCategoryList",
@@ -509,17 +495,16 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
       setCityCorporation(
-        [{ id: "", name: "Select City Corporation/ Municipality" }].concat(res.data.datalist)
+        [{ id: "", name: "Select City Corporation/ Municipality" }].concat(
+          res.data.datalist
+        )
       );
 
       setCurrCityCorporation(selectCityCorporation);
     });
   }
 
-
-
-
-/*   function getWardList(selectDivisionId,
+  /*   function getWardList(selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
@@ -539,12 +524,14 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     });
   } */
 
-  function getPGIdList( selectDivisionId,
+  function getPGIdList(
+    selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
     selectUnionId,
     selectValuechainId,
-    selectPGId) {
+    selectPGId
+  ) {
     let params = {
       action: "PgGroupListByUnion",
       lan: language(),
@@ -573,9 +560,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setIsRegularBeneficiaryList(
-        res.data.datalist
-      );
+      setIsRegularBeneficiaryList(res.data.datalist);
 
       setCurrIsRegularBeneficiary(selectIsRegularBeneficiary);
     });
@@ -641,14 +626,27 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     } else if (name === "UnionId") {
       setCurrUnionId(value);
       /* getWardList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, ""); */
-      getPGIdList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, currentRow.ValuechainId, "");
+      getPGIdList(
+        currentRow.DivisionId,
+        currentRow.DistrictId,
+        currentRow.UpazilaId,
+        value,
+        currentRow.ValuechainId,
+        ""
+      );
     }
 
     if (name === "ValuechainId") {
       setCurrValuechainId(value);
-      getPGIdList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, currentRow.UnionId, value, "");
+      getPGIdList(
+        currentRow.DivisionId,
+        currentRow.DistrictId,
+        currentRow.UpazilaId,
+        currentRow.UnionId,
+        value,
+        ""
+      );
     }
-
 
     if (name === "Gender") {
       setCurrGender(value);
@@ -686,73 +684,70 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     /*   if (name === "QuestionParentId") {
       setCurrParentQuestion(value);
     } */
-  
+
     if (name == "Phone") {
-          const onlyNums = value.replace(/[^0-9]/g, '');
-          const limitedValue = onlyNums.slice(0, 11);
-          data["Phone"] = limitedValue;
-
-    } 
-
-    if (name === "dob") {
-          const dob = new Date(value);
-          const today = new Date();
-          const age = today.getFullYear() - dob.getFullYear();
-      
-          if (
-              today.getMonth() < dob.getMonth() ||
-              (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())
-          ) {
-              data["FarmersAge"] = (age - 1).toString();
-          } else {
-              data["FarmersAge"] = age.toString();
-          }
-      }
-
-      
-       if (name === "NID") {
-
-          const onlyNums = value.replace(/[^0-9]/g, '');
-          const limitedValue = onlyNums.slice(0, 17);
-          data["NID"] = limitedValue;
-      } 
-      
-
-
-      if (name === "WhenDidYouStartToOperateYourFirm") {
-        const WhenDidYouStartToOperateYourFirm = new Date(value);
-        const today = new Date();
-    
-        // Calculate the difference in months
-        const monthDifference = (today.getFullYear() - WhenDidYouStartToOperateYourFirm.getFullYear()) * 12 +
-            today.getMonth() - WhenDidYouStartToOperateYourFirm.getMonth();
-    
-        data["NumberOfMonthsOfYourOperation"] = monthDifference.toString();
+      const onlyNums = value.replace(/[^0-9]/g, "");
+      const limitedValue = onlyNums.slice(0, 11);
+      data["Phone"] = limitedValue;
     }
 
+    if (name === "dob") {
+      const dob = new Date(value);
+      const today = new Date();
+      const age = today.getFullYear() - dob.getFullYear();
 
+      if (
+        today.getMonth() < dob.getMonth() ||
+        (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())
+      ) {
+        data["FarmersAge"] = (age - 1).toString();
+      } else {
+        data["FarmersAge"] = age.toString();
+      }
+    }
 
+    if (name === "NID") {
+      const onlyNums = value.replace(/[^0-9]/g, "");
+      const limitedValue = onlyNums.slice(0, 17);
+      data["NID"] = limitedValue;
+    }
+
+    if (name === "WhenDidYouStartToOperateYourFirm") {
+      const WhenDidYouStartToOperateYourFirm = new Date(value);
+      const today = new Date();
+
+      // Calculate the difference in months
+      const monthDifference =
+        (today.getFullYear() - WhenDidYouStartToOperateYourFirm.getFullYear()) *
+          12 +
+        today.getMonth() -
+        WhenDidYouStartToOperateYourFirm.getMonth();
+
+      data["NumberOfMonthsOfYourOperation"] = monthDifference.toString();
+    }
   };
-
 
   function handleBlur() {
     let data = { ...currentRow };
     const inputValue = data["NID"];
 
-    if (inputValue.length !== 10 && inputValue.length !== 13 && inputValue.length !== 17) {
-      if(inputValue.length > 0){
-          props.masterProps.openNoticeModal({
-            isOpen: true,
-            msg: "Beneficiary NID must be either 10 or 13 or 17 Digits",
-            msgtype: 0,
-          });
-        }
-      
+    if (
+      inputValue.length !== 10 &&
+      inputValue.length !== 13 &&
+      inputValue.length !== 17
+    ) {
+      if (inputValue.length > 0) {
+        props.masterProps.openNoticeModal({
+          isOpen: true,
+          msg: "Beneficiary NID must be either 10 or 13 or 17 Digits",
+          msgtype: 0,
+        });
+      }
+
       // Reset NID to an empty string
-      data["NID"] = '';
+      data["NID"] = "";
     }
   }
- 
 
   function handleChangeCheck(e) {
     // console.log('e.target.checked: ', e.target.checked);
@@ -766,7 +761,22 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
   const validateForm = () => {
     // let validateFields = ["FarmerName", "DiscountAmount", "DiscountPercentage"]
-    let validateFields = ["NID", "FarmerName", "PGFarmerCode", "TypeOfMember","DivisionId", "DistrictId", "UpazilaId", "UnionId","Address","Gender","dob","FarmersAge","ValuechainId","PGId"];
+    let validateFields = [
+      "NID",
+      "FarmerName",
+      "PGFarmerCode",
+      "TypeOfMember",
+      "DivisionId",
+      "DistrictId",
+      "UpazilaId",
+      "UnionId",
+      "Address",
+      "Gender",
+      "dob",
+      "FarmersAge",
+      "ValuechainId",
+      "PGId",
+    ];
     if (currentRow.RelationWithHeadOfHH === 2) {
       validateFields.push("ifOtherSpecify");
     }
@@ -776,7 +786,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     if (currentRow.PGPartnershipWithOtherCompany === 1) {
       validateFields.push("NameOfTheCompanyYourPgPartnerWith");
     }
-    
+
     let errorData = {};
     let isValid = true;
     validateFields.map((field) => {
@@ -791,15 +801,18 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   };
 
   function addEditAPICall() {
-
-    if(currentRow.NID.length > 0){
-      if (currentRow.NID.length !== 10 && currentRow.NID.length !== 13 && currentRow.NID.length !== 17) {
+    if (currentRow.NID.length > 0) {
+      if (
+        currentRow.NID.length !== 10 &&
+        currentRow.NID.length !== 13 &&
+        currentRow.NID.length !== 17
+      ) {
         props.masterProps.openNoticeModal({
           isOpen: true,
           msg: "Beneficiary NID must be either 10 or 13 or 17 Digits",
           msgtype: 0,
         });
-    
+
         return;
       }
     }
@@ -814,32 +827,21 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
         rowData: currentRow,
       };
 
-   
-     
+      apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+        // console.log('res: ', res);
 
-        apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-          // console.log('res: ', res);
-  
-          props.masterProps.openNoticeModal({
-            isOpen: true,
-            msg: res.data.message,
-            msgtype: res.data.success,
-          });
-  
-          // console.log('props modal: ', props);
-          if (res.data.success === 1) {
-            setUploadCompleted(0);
-            props.modalCallback("addedit");
-          }
+        props.masterProps.openNoticeModal({
+          isOpen: true,
+          msg: res.data.message,
+          msgtype: res.data.success,
         });
 
-   
-          
-
-  
-
-
-
+        // console.log('props modal: ', props);
+        if (res.data.success === 1) {
+          setUploadCompleted(0);
+          props.modalCallback("addedit");
+        }
+      });
     }
   }
 
@@ -848,16 +850,13 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     props.modalCallback("close");
   }
 
-
-
-/*   React.useEffect(() => {
+  /*   React.useEffect(() => {
     if (props.currentRow.NidFrontPhoto) {
       setPreviewImage(require("../../../assets/farmerimage/" + props.currentRow.NidFrontPhoto));
     }
   }, [props.currentRow.NidFrontPhoto]); */
 
-
-/*   const handleFileChange = (e) => {
+  /*   const handleFileChange = (e) => {
     setUploadCompleted(1);
     e.preventDefault(); // Prevent default form submission behavior
     const file = e.target.files[0];
@@ -868,13 +867,12 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     
   }; */
 
- 
   const handleFileChange = (e, photoType) => {
     setUploadCompleted(1);
-  
+
     e.preventDefault(); // Prevent default form submission behavior
     const file = e.target.files[0];
-  
+
     if (file) {
       uploadImage(file, photoType);
       setPreviewImages((prevImages) => ({
@@ -884,7 +882,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     }
   };
 
- /*  const uploadImage = (file) => {
+  /*  const uploadImage = (file) => {
     console.log('file: ', file);
     
     if (!file) {
@@ -918,35 +916,35 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
   }; */
 
+  const uploadImage = (file, photoType) => {
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
 
-const uploadImage = (file, photoType) => {
-  if (!file) {
-    console.error("No file selected");
-    return;
-  }
+    const formData = new FormData();
+    let timestamp = Math.floor(new Date().getTime() / 1000);
 
-  const formData = new FormData();
-  let timestamp = Math.floor(new Date().getTime() / 1000);
+    formData.append("formName", "farmerProfile");
+    formData.append("file", file);
+    formData.append("timestamp", timestamp);
+    formData.append(
+      "filename",
+      `./src/assets/farmerimage/${timestamp}_${file.name}`
+    );
 
-  formData.append("formName", "farmerProfile");
-  formData.append("file", file);
-  formData.append("timestamp", timestamp);
-  formData.append(
-    "filename",
-    `./src/assets/farmerimage/${timestamp}_${file.name}`
-  );
-
-  apiCall.post("upload-image", formData, apiOption()).then((res) => {
-    setCurrentRow((prevData) => ({
-      ...prevData,
-      [photoType]: `${timestamp}_${file.name}`,
-    }));
-  }).catch((error) => {
-    console.error("API call error:", error);
-  });
-};
-
-
+    apiCall
+      .post("upload-image", formData, apiOption())
+      .then((res) => {
+        setCurrentRow((prevData) => ({
+          ...prevData,
+          [photoType]: `${timestamp}_${file.name}`,
+        }));
+      })
+      .catch((error) => {
+        console.error("API call error:", error);
+      });
+  };
 
   const handleChangeMany = (newValue, propertyName) => {
     let data = { ...currentRow };
@@ -1001,10 +999,10 @@ const uploadImage = (file, photoType) => {
     setSelectedRoles(updatedRoles);
   };
 
-
-
-  console.log("AreYouRegisteredYourFirmWithDlsRadioFlag:", currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag);
-
+  console.log(
+    "AreYouRegisteredYourFirmWithDlsRadioFlag:",
+    currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag
+  );
 
   return (
     <>
@@ -1014,7 +1012,11 @@ const uploadImage = (file, photoType) => {
         <div class="modal-content">
           <div class="modalHeaderWithButton">
             <h4>Add/Edit Farmer Profile</h4>
-            <Button label={"Back to List"} class={"btnClose"} onClick={modalClose} />
+            <Button
+              label={"Back to List"}
+              class={"btnClose"}
+              onClick={modalClose}
+            />
           </div>
 
           <div class="contactmodalBody pt-10">
@@ -1043,7 +1045,7 @@ const uploadImage = (file, photoType) => {
               placeholder="Enter Beneficiary NID"
               value={currentRow.NID}
               onChange={(e) => handleChange(e)}
-              onBlur={handleBlur} 
+              onBlur={handleBlur}
             />
           </div>
 
@@ -1057,17 +1059,21 @@ const uploadImage = (file, photoType) => {
               //onChange={handleFileChange}
               onChange={(e) => handleFileChange(e, "NidFrontPhoto")}
             />
-            
+
             {previewImages.NidFrontPhoto && (
-                <div className="image-preview">
-                  <img
-                    //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidFrontPhoto}`}
-                    src={currentRow.NidFrontPhoto?`${baseUrl}src/assets/farmerimage/${currentRow.NidFrontPhoto}`:previewImage}
-                    alt="NID Front Preview"
-                    className="preview-image"
-                  />
-                </div>
-              )}
+              <div className="image-preview-nid">
+                <img
+                  //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidFrontPhoto}`}
+                  src={
+                    currentRow.NidFrontPhoto
+                      ? `${baseUrl}src/assets/farmerimage/${currentRow.NidFrontPhoto}`
+                      : previewImage
+                  }
+                  alt="NID Front Preview"
+                  className="preview-image"
+                />
+              </div>
+            )}
           </div>
 
           <div className="contactmodalBody pt-10">
@@ -1081,15 +1087,19 @@ const uploadImage = (file, photoType) => {
             />
 
             {previewImages.NidBackPhoto && (
-                <div className="image-preview">
-                  <img
-                    //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidBackPhoto}`}
-                    src={currentRow.NidBackPhoto?`${baseUrl}src/assets/farmerimage/${currentRow.NidBackPhoto}`:previewImage}
-                    alt="NID Back Preview"
-                    className="preview-image"
-                  />
-                </div>
-              )}
+              <div className="image-preview-nid">
+                <img
+                  //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidBackPhoto}`}
+                  src={
+                    currentRow.NidBackPhoto
+                      ? `${baseUrl}src/assets/farmerimage/${currentRow.NidBackPhoto}`
+                      : previewImage
+                  }
+                  alt="NID Back Preview"
+                  className="preview-image"
+                />
+              </div>
+            )}
           </div>
 
           <div class="contactmodalBody pt-10">
@@ -1125,16 +1135,20 @@ const uploadImage = (file, photoType) => {
               accept="image/*"
               onChange={(e) => handleFileChange(e, "BeneficiaryPhoto")}
             />
-              {previewImages.BeneficiaryPhoto && (
-                <div className="image-preview">
-                  <img
-                    //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.BeneficiaryPhoto}`}
-                    src={currentRow.BeneficiaryPhoto?`${baseUrl}src/assets/farmerimage/${currentRow.BeneficiaryPhoto}`:previewImage}
-                    alt="Beneficiary Preview"
-                    className="preview-image"
-                  />
-                </div>
-              )}
+            {previewImages.BeneficiaryPhoto && (
+              <div className="image-preview">
+                <img
+                  //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.BeneficiaryPhoto}`}
+                  src={
+                    currentRow.BeneficiaryPhoto
+                      ? `${baseUrl}src/assets/farmerimage/${currentRow.BeneficiaryPhoto}`
+                      : previewImage
+                  }
+                  alt="Beneficiary Preview"
+                  className="preview-image"
+                />
+              </div>
+            )}
           </div>
 
           <div class="contactmodalBody pt-10 ">
@@ -1157,7 +1171,6 @@ const uploadImage = (file, photoType) => {
               value={currentRow.SpouseName}
               onChange={(e) => handleChange(e)}
             />
-
           </div>
 
           <div class="contactmodalBody pt-10 ">
@@ -1181,9 +1194,6 @@ const uploadImage = (file, photoType) => {
               value={currentRow.dob}
               onChange={(e) => handleChange(e)}
             />
-            
-
-
           </div>
 
           <div class="contactmodalBody pt-10 ">
@@ -1230,7 +1240,7 @@ const uploadImage = (file, photoType) => {
             </select>
 
             <label>Farmer's Relationship with Head of HH</label>
-           {/*  <div className="checkbox-label">
+            {/*  <div className="checkbox-label">
               <label className="radio-label">
                 <input
                   type="radio"
@@ -1256,35 +1266,32 @@ const uploadImage = (file, photoType) => {
               </label>
             </div> */}
 
-              <div className="checkbox-label">
-                {Object.entries(relationWith).map(([value, label]) => (
-                  <label className="radio-label" key={value}>
-                    <input
-                      type="radio"
-                      id={`RelationWithHeadOfHH_${value}`}
-                      name="RelationWithHeadOfHH"
-                      value={value}
-                      checked={(currentRow.RelationWithHeadOfHH === 0 && Number(value) === 1) || currentRow.RelationWithHeadOfHH === Number(value)}
-                      onChange={() => handleChangeMany(Number(value), "RelationWithHeadOfHH")}
-                    />
-                    {label}
-                  </label>
-                ))}
-              </div>
-
-           
-
-
+            <div className="checkbox-label">
+              {Object.entries(relationWith).map(([value, label]) => (
+                <label className="radio-label" key={value}>
+                  <input
+                    type="radio"
+                    id={`RelationWithHeadOfHH_${value}`}
+                    name="RelationWithHeadOfHH"
+                    value={value}
+                    checked={
+                      (currentRow.RelationWithHeadOfHH === 0 &&
+                        Number(value) === 1) ||
+                      currentRow.RelationWithHeadOfHH === Number(value)
+                    }
+                    onChange={() =>
+                      handleChangeMany(Number(value), "RelationWithHeadOfHH")
+                    }
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
           </div>
 
-         
-            
-          {(currentRow.RelationWithHeadOfHH === 2) && (
-               <>
-            <div class="modalItem modalItemCondition">
-
-               
-              
+          {currentRow.RelationWithHeadOfHH === 2 && (
+            <>
+              <div class="modalItem modalItemCondition">
                 <label>If others, specify* </label>
                 <input
                   type="text"
@@ -1295,14 +1302,9 @@ const uploadImage = (file, photoType) => {
                   value={currentRow.ifOtherSpecify}
                   onChange={(e) => handleChange(e)}
                 />
-                   </div>
-                </>
-              
-              )}
-
-
-
-         
+              </div>
+            </>
+          )}
 
           <div class="contactmodalBody pt-10 ">
             <label>Farmer's Head of HH Sex</label>
@@ -1346,50 +1348,45 @@ const uploadImage = (file, photoType) => {
               </label>
             </div>
 
-            {(currentRow.PGRegistered === 1) && (
-               <>
+            {currentRow.PGRegistered === 1 && (
+              <>
                 <label>Agency/Department</label>
-                  <select
-                    id="DepartmentId"
-                    name="DepartmentId"
-                    class={errorObject.DepartmentId}
-                    value={currDepartment}
-                    onChange={(e) => handleChange(e)}
-                  >
-                    {department &&
-                      department.map((item, index) => {
-                        return <option value={item.id}>{item.name}</option>;
-                      })}
-                  </select>
+                <select
+                  id="DepartmentId"
+                  name="DepartmentId"
+                  class={errorObject.DepartmentId}
+                  value={currDepartment}
+                  onChange={(e) => handleChange(e)}
+                >
+                  {department &&
+                    department.map((item, index) => {
+                      return <option value={item.id}>{item.name}</option>;
+                    })}
+                </select>
 
-                  <label>Date of Registration </label>
-                  <input
-                    type="date"
-                    id="DateOfRegistration"
-                    name="DateOfRegistration"
-                    class={errorObject.DateOfRegistration}
-                    placeholder="Select Date of Registration"
-                    value={currentRow.DateOfRegistration}
-                    onChange={(e) => handleChange(e)}
-                  />
+                <label>Date of Registration </label>
+                <input
+                  type="date"
+                  id="DateOfRegistration"
+                  name="DateOfRegistration"
+                  class={errorObject.DateOfRegistration}
+                  placeholder="Select Date of Registration"
+                  value={currentRow.DateOfRegistration}
+                  onChange={(e) => handleChange(e)}
+                />
 
-                  <label>Registration No *</label>
-                  <input
-                    type="text"
-                    id="RegistrationNo"
-                    name="RegistrationNo"
-                    placeholder="Enter Registration No"
-                    class={errorObject.RegistrationNo}
-                    value={currentRow.RegistrationNo}
-                    onChange={(e) => handleChange(e)}
-                  />
-
-
-                </>
-              )}
-            
-
-
+                <label>Registration No *</label>
+                <input
+                  type="text"
+                  id="RegistrationNo"
+                  name="RegistrationNo"
+                  placeholder="Enter Registration No"
+                  class={errorObject.RegistrationNo}
+                  value={currentRow.RegistrationNo}
+                  onChange={(e) => handleChange(e)}
+                />
+              </>
+            )}
           </div>
 
           <div class="contactmodalBody pt-10 ">
@@ -1440,8 +1437,8 @@ const uploadImage = (file, photoType) => {
               </label>
             </div>
 
-            {(currentRow.PGPartnershipWithOtherCompany === 1) && (
-               <>
+            {currentRow.PGPartnershipWithOtherCompany === 1 && (
+              <>
                 <label>Name of The Company your PG Partner with* </label>
                 <input
                   type="text"
@@ -1452,10 +1449,8 @@ const uploadImage = (file, photoType) => {
                   value={currentRow.NameOfTheCompanyYourPgPartnerWith}
                   onChange={(e) => handleChange(e)}
                 />
-                </>
-              )}
-
-
+              </>
+            )}
           </div>
 
           <div class="contactmodalBody pt-10">
@@ -1576,8 +1571,7 @@ const uploadImage = (file, photoType) => {
           </div>
 
           <div class="contactmodalBody pt-10">
-
-          {/* <label>Name of Producer Group</label>
+            {/* <label>Name of Producer Group</label>
             <select
               id="PGId"
               name="PGId"
@@ -1590,8 +1584,6 @@ const uploadImage = (file, photoType) => {
                   return <option value={item.id}>{item.name}</option>;
                 })}
             </select> */}
-
-           
 
             <label>Ward</label>
             <input
@@ -1613,7 +1605,7 @@ const uploadImage = (file, photoType) => {
               onChange={(e) => handleChange(e)}
             />
 
-           {/*  <select
+            {/*  <select
               id="Ward"
               name="Ward"
               class={errorObject.Ward}
@@ -1628,22 +1620,21 @@ const uploadImage = (file, photoType) => {
           </div>
 
           <div class="contactmodalBody pt-10 ">
+            <label>City Corporation/ Municipality</label>
+            <select
+              id="CityCorporation"
+              name="CityCorporation"
+              class={errorObject.CityCorporation}
+              value={currCityCorporation}
+              onChange={(e) => handleChange(e)}
+            >
+              {cityCorporation &&
+                cityCorporation.map((item, index) => {
+                  return <option value={item.id}>{item.name}</option>;
+                })}
+            </select>
 
-          <label>City Corporation/ Municipality</label>
-          <select
-            id="CityCorporation"
-            name="CityCorporation"
-            class={errorObject.CityCorporation}
-            value={currCityCorporation}
-            onChange={(e) => handleChange(e)}
-          >
-            {cityCorporation &&
-              cityCorporation.map((item, index) => {
-                return <option value={item.id}>{item.name}</option>;
-              })}
-          </select>
-
-          <label>Address* </label>
+            <label>Address* </label>
             <input
               type="text"
               id="Address"
@@ -1663,11 +1654,9 @@ const uploadImage = (file, photoType) => {
               value={currentRow.VillageName}
               onChange={(e) => handleChange(e)}
             /> */}
-
           </div>
 
           <div className="contactmodalBody pt-10">
-
             <label>Latitute</label>
             <input
               type="text"
@@ -1679,8 +1668,7 @@ const uploadImage = (file, photoType) => {
               onChange={(e) => handleChange(e)}
             />
 
-
-<label>Are You Head of The Group?</label>
+            <label>Are You Head of The Group?</label>
             <div className="checkbox-label">
               <label className="radio-label">
                 <input
@@ -1707,8 +1695,7 @@ const uploadImage = (file, photoType) => {
               </label>
             </div>
 
-
-          {/* <label>Address* </label>
+            {/* <label>Address* </label>
             <input
               type="text"
               id="Address"
@@ -1718,9 +1705,6 @@ const uploadImage = (file, photoType) => {
               value={currentRow.Address}
               onChange={(e) => handleChange(e)}
             /> */}
-         
-
-
           </div>
 
           <div className="contactmodalBody pt-10">
@@ -1771,9 +1755,7 @@ const uploadImage = (file, photoType) => {
             </div> */}
           </div>
 
-
           <div class="contactmodalBody pt-10 ">
-    
             <label>When Did you start to operate your farm? </label>
             <input
               type="date"
@@ -1783,20 +1765,12 @@ const uploadImage = (file, photoType) => {
               placeholder="Select Date of birth"
               value={currentRow.WhenDidYouStartToOperateYourFirm}
               onChange={(e) => handleChange(e)}
-              max={currentDate.toISOString().split('T')[0]}
-
-
+              max={currentDate.toISOString().split("T")[0]}
             />
-			
-		
-
-
           </div>
-		  
-		  
-		<div class="contactmodalBody pt-10 ">  
 
-    <label>Number of Months of your operation </label>
+          <div class="contactmodalBody pt-10 ">
+            <label>Number of Months of your operation </label>
             <input
               type="text"
               id="NumberOfMonthsOfYourOperation"
@@ -1807,68 +1781,80 @@ const uploadImage = (file, photoType) => {
               value={currentRow.NumberOfMonthsOfYourOperation}
               onChange={(e) => handleChange(e)}
             />
-            
 
             <label>Are you registered your farm with DLS? </label>
-<div className="checkbox-label">
-  <label className="radio-label">
-    <input
-      type="radio"
-      id="AreYouRegisteredYourFirmWithDlsRadioFlag"
-      name="AreYouRegisteredYourFirmWithDlsRadioFlag"
-      value={1}
-      checked={currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 1}
-      onChange={() => handleChangeMany(1, "AreYouRegisteredYourFirmWithDlsRadioFlag")}
-    />
-    Yes
-  </label>
+            <div className="checkbox-label">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="AreYouRegisteredYourFirmWithDlsRadioFlag"
+                  name="AreYouRegisteredYourFirmWithDlsRadioFlag"
+                  value={1}
+                  checked={
+                    currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 1
+                  }
+                  onChange={() =>
+                    handleChangeMany(
+                      1,
+                      "AreYouRegisteredYourFirmWithDlsRadioFlag"
+                    )
+                  }
+                />
+                Yes
+              </label>
 
-  <label className="radio-label">
-    <input
-      type="radio"
-      id="AreYouRegisteredYourFirmWithDlsRadioFlag_false"
-      name="AreYouRegisteredYourFirmWithDlsRadioFlag"
-      value={0}
-      checked={currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 0}
-      onChange={() => handleChangeMany(0, "AreYouRegisteredYourFirmWithDlsRadioFlag")}
-    />
-    No
-  </label>
-</div>
-			
-		
-	</div>
-	
-	
-	
-		<div class="contactmodalBody pt-10 ">  
-    <label>Registration Date </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="AreYouRegisteredYourFirmWithDlsRadioFlag_false"
+                  name="AreYouRegisteredYourFirmWithDlsRadioFlag"
+                  value={0}
+                  checked={
+                    currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 0
+                  }
+                  onChange={() =>
+                    handleChangeMany(
+                      0,
+                      "AreYouRegisteredYourFirmWithDlsRadioFlag"
+                    )
+                  }
+                />
+                No
+              </label>
+            </div>
+          </div>
+
+          <div class="contactmodalBody pt-10 ">
+            <label>Registration Date </label>
             <input
               type="date"
               id="registrationDate"
               name="registrationDate"
-              disabled={currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 0}
+              disabled={
+                currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 0
+              }
               class={errorObject.registrationDate}
               placeholder="Select Registration Date"
               value={currentRow.registrationDate}
               onChange={(e) => handleChange(e)}
             />
-			
-			<label>Registration No. </label>
-             <input
+
+            <label>Registration No. </label>
+            <input
               type="text"
               id="IfRegisteredYesRegistrationNo"
               name="IfRegisteredYesRegistrationNo"
-              disabled={currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 0}
+              disabled={
+                currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 0
+              }
               class={errorObject.IfRegisteredYesRegistrationNo}
               placeholder="Enter Registration No."
               value={currentRow.IfRegisteredYesRegistrationNo}
               onChange={(e) => handleChange(e)}
             />
-	</div>
-	
-	
-	<div className="contactmodalBody pt-10">
+          </div>
+
+          <div className="contactmodalBody pt-10">
             <label>Farm's Photo</label>
             <input
               type="file"
@@ -1878,21 +1864,24 @@ const uploadImage = (file, photoType) => {
               //onChange={handleFileChange}
               onChange={(e) => handleFileChange(e, "FarmsPhoto")}
             />
-            
+
             {previewImages.FarmsPhoto && (
-                <div className="image-preview">
-                  <img
-                    //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.FarmsPhoto}`}
-                    src={currentRow.FarmsPhoto?`${baseUrl}src/assets/farmerimage/${currentRow.FarmsPhoto}`:previewImage}
-                    alt="Farm's Photo"
-                    className="preview-image"
-                  />
-                </div>
-              )}
+              <div className="image-preview">
+                <img
+                  //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.FarmsPhoto}`}
+                  src={
+                    currentRow.FarmsPhoto
+                      ? `${baseUrl}src/assets/farmerimage/${currentRow.FarmsPhoto}`
+                      : previewImage
+                  }
+                  alt="Farm's Photo"
+                  className="preview-image"
+                />
+              </div>
+            )}
           </div>
 
-
-         {/*  <div className="contactmodalBody pt-10">
+          {/*  <div className="contactmodalBody pt-10">
             <label>Value Chain</label>
             <select
               id="ValuechainId"

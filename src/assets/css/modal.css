@@ -378,3 +378,12 @@
     color: #007bff;
     font-weight: bold; 
   }
+
+
+  .image-preview-nid {
+    width: 108px;
+    height: 67px;
+    overflow: hidden;
+    border: 2px solid #c8baba;
+    box-sizing: border-box;
+}
