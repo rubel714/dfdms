@@ -355,7 +355,7 @@ const ValueChainWisePGMemberDistribution = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Reports ❯ Value Chain wise PG Member Distribution
+            Home ❯ Reports ❯ Farmer Distribution
           </h4>
         </div>
 

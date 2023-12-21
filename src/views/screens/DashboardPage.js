@@ -5,6 +5,7 @@ import { Button } from "../../components/CustomControl/Button";
 import AfterLoginNavbar from "components/Navbars/AfterLoginNavbar";
 import CustomTable from "components/CustomTable/CustomTable";
 import { apiCall, apiOption, LoginUserInfo, language } from "../../actions/api";
+import DarkFooter from "components/Footers/DarkFooter.js";
 import ExecuteQueryHook from "../../components/hooks/ExecuteQueryHook";
 import {
   Card,
@@ -722,6 +723,9 @@ const DashboardPage = (props) => {
             </CardContent>
           </Card>
         </div>
+
+        <DarkFooter {...props} />
+
       </div>
     </>
   );

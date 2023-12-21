@@ -218,7 +218,7 @@ for ($p = 0; $p < count($reporttitlelist); $p++) {
 	$spreadsheet->getActiveSheet()->mergeCells('C' . $rn . ':G' . $rn);
 	$rn++;
 }
-$spreadsheet->getActiveSheet()->SetCellValue('C' . $rn, "Division, District, Upazila wise PG and PG members information");
+$spreadsheet->getActiveSheet()->SetCellValue('C' . $rn, "Administrative Distribution of PGs & Farmers");
 $spreadsheet->getActiveSheet()->getStyle('C' . $rn)->getFont();
 $spreadsheet->getActiveSheet()->getStyle('C' . $rn)->applyFromArray(array('font' => array('size' => '14', 'bold' => true)), 'C' . $rn);
 $spreadsheet->getActiveSheet()->getStyle('C' . $rn)->getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
@@ -718,7 +718,7 @@ date_default_timezone_set('Africa/Porto-Novo');
 
 $exportTime = date("Y-m-d-His", time());
 $writer = new Xlsx($spreadsheet);
-$file = 'Division-District-Upazila-wise-PG-and-PG-members-information-' . $exportTime . '.xlsx'; //Save file name
+$file = 'Administrative-Distribution-of-PGs-and-Farmers-' . $exportTime . '.xlsx'; //Save file name
 $writer->save('media/' . $file);
 header('Location:media/' . $file); //File open location
 

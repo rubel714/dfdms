@@ -320,7 +320,7 @@ const RoleToMenuPermissionEntry = (props) => {
       <div class="bodyContainer">
         <div class="topHeader">
           <h4>
-            Home ❯ Admin ❯ Role to Menu Permission
+            Home ❯ Admin ❯ Permission
           </h4>
         </div>
 

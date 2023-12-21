@@ -358,7 +358,7 @@ const ValueChainWisePGDistribution = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Reports ❯ Value Chain wise PG Distribution
+            Home ❯ Reports ❯ PG Distribution
           </h4>
         </div>
 

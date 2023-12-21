@@ -178,7 +178,7 @@
 	
 
 	 }
-	 $spreadsheet->getActiveSheet()->SetCellValue('C'.$rn, "Gender wise PG Members");
+	 $spreadsheet->getActiveSheet()->SetCellValue('C'.$rn, "Gender Status");
 	$spreadsheet->getActiveSheet()->getStyle('C'.$rn)->getFont();
 	$spreadsheet -> getActiveSheet()->getStyle('C'.$rn) -> applyFromArray(array('font' => array('size' => '14', 'bold' => true)), 'C'.$rn);
 	$spreadsheet -> getActiveSheet()->getStyle('C'.$rn) -> getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
@@ -486,7 +486,7 @@ date_default_timezone_set('Africa/Porto-Novo');
 
 $exportTime = date("Y-m-d-His", time());
 $writer = new Xlsx($spreadsheet);
-$file = 'Gender-wise-PG-Members-' . $exportTime . '.xlsx'; //Save file name
+$file = 'Gender_Status-' . $exportTime . '.xlsx'; //Save file name
 $writer->save('media/' . $file);
 header('Location:media/' . $file); //File open location
 

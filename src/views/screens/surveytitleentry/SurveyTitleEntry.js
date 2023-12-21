@@ -224,7 +224,7 @@ const SurveyTitleEntry = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Admin ❯ Survey Title Entry
+            Home ❯ Admin ❯ Survey Title
           </h4>
         </div>
 

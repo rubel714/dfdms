@@ -356,7 +356,7 @@ const GenderWisePGMembers = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Reports ❯ Gender wise PG Members
+            Home ❯ Reports ❯ Gender Status
           </h4>
         </div>
 

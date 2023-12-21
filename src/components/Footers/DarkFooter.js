@@ -28,7 +28,7 @@ function DarkFooter() {
         </div> */}
 
         <div class="footer">
-            <h6>Powred By DFDMS. &#169; Reserved</h6>
+            <h6>Powered By LDDP, DLS. &#169; Department of Livestock Services :Developed by Big O Solution</h6>
         </div>
       </Container>
     </footer>

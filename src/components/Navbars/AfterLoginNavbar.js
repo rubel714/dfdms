@@ -71,7 +71,7 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("membersbypg")}
                         >
-                          Members by PG
+                          PG Members
                         </a>
                       </li>
                     )}
@@ -81,7 +81,7 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("genderwisepgmembers")}
                         >
-                          Gender wise PG Members
+                          Gender Status
                         </a>
                       </li>
                     )}
@@ -91,7 +91,7 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("valuechainwisepgdistribution")}
                         >
-                          Value Chain wise PG Distribution
+                          PG Distribution
                         </a>
                       </li>
                     )}
@@ -101,7 +101,7 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("valuechainwisepgmemberdistribution")}
                         >
-                          Value Chain wise PG Member Distribution
+                          Farmer Distribution
                         </a>
                       </li>
                     )}
@@ -111,7 +111,7 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("pgandpgmembersinformation")}
                         >
-                          Division, District, Upazila wise PG and PG members information
+                          Administrative Distribution of PGs & Farmers
                         </a>
                       </li>
                     )}
@@ -130,7 +130,91 @@ function AfterLoginNavbar(props) {
                 </li>
               )}
 
-              {menuShowPermision("admin") === 1 && (
+              
+
+              {menuShowPermision("datacollection") === 1 && (
+                <li class="dropdownMenu">
+                  {" "}
+                  Data Collection
+                  <ul class="dropdownList">
+
+
+                  {menuShowPermision("farmersdatacollectionentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("farmersdatacollectionentry")}
+                        >
+                          Farmer Data Entry
+                        </a>
+                      </li>
+                    )}
+
+
+                  {menuShowPermision("pgdatacollectionentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("pgdatacollectionentry")}
+                        >
+                          PG Data Entry
+                        </a>
+                      </li>
+                    )}
+
+                  
+                  {menuShowPermision("lgddatacollectionentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("lgddatacollectionentry")}
+                        >
+                          Community Data Entry
+                        </a>
+                      </li>
+                    )}
+
+{/* 
+                  {menuShowPermision("pgdatacollection") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("pgdatacollection")}
+                        >
+                          PG Data Collection
+                        </a>
+                      </li>
+                    )}
+
+                  {menuShowPermision("farmersdatacollection") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("farmersdatacollection")}
+                        >
+                          Farmers Data Collection
+                        </a>
+                      </li>
+                    )}
+                    
+                  {menuShowPermision("datafromlgd") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("datafromlgd")}
+                        >
+                          LGD Data Collection
+                        </a>
+                      </li>
+                    )} */}
+
+
+                  </ul>
+                </li>
+              )}
+
+
+{menuShowPermision("admin") === 1 && (
                 <li class="dropdownMenu">
                   {" "}
                   Admin
@@ -164,7 +248,7 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("datatypequestionsmap")}
                         >
-                          Data Type Questions Map
+                          Question Links
                         </a>
                       </li>
                     )}
@@ -224,7 +308,7 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("roletomenupermissionentry")}
                         >
-                          Role to Menu Permission
+                          Permission
                         </a>
                       </li>
                     )}
@@ -241,7 +325,7 @@ function AfterLoginNavbar(props) {
                           href="javascript:void(0)"
                           onClick={() => props.history.push("surveytitleentry")}
                         >
-                          Survey Title Entry
+                          Survey Title
                         </a>
                       </li>
                     )}
@@ -256,7 +340,7 @@ function AfterLoginNavbar(props) {
                         </a>
                       </li>
                     )}
-                   {/*  {menuShowPermision("trainingadd") === 1 && (
+                    {/* {menuShowPermision("trainingadd") === 1 && (
                      
                       <li>
                         <a
@@ -268,111 +352,25 @@ function AfterLoginNavbar(props) {
                       </li>
                     )} */}
 
-                 
-                  
-
-
 
                   </ul>
                 </li>
               )}
-
-
-
-              {menuShowPermision("datacollection") === 1 && (
-                <li class="dropdownMenu">
-                  {" "}
-                  Data Collection
-                  <ul class="dropdownList">
-
-
-                  {menuShowPermision("farmersdatacollectionentry") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("farmersdatacollectionentry")}
-                        >
-                          Farmers Data Collection Entry
-                        </a>
-                      </li>
-                    )}
-
-
-                  {menuShowPermision("pgdatacollectionentry") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("pgdatacollectionentry")}
-                        >
-                          PG Data Collection Entry
-                        </a>
-                      </li>
-                    )}
-
-                  
-                  {menuShowPermision("lgddatacollectionentry") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("lgddatacollectionentry")}
-                        >
-                          LGD Data Collection Entry
-                        </a>
-                      </li>
-                    )}
-
-{/* 
-                  {menuShowPermision("pgdatacollection") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("pgdatacollection")}
-                        >
-                          PG Data Collection
-                        </a>
-                      </li>
-                    )}
-
-                  {menuShowPermision("farmersdatacollection") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("farmersdatacollection")}
-                        >
-                          Farmers Data Collection
-                        </a>
-                      </li>
-                    )}
-                    
-                  {menuShowPermision("datafromlgd") === 1 && (
-                      <li>
-                        <a
-                          href="javascript:void(0)"
-                          onClick={() => props.history.push("datafromlgd")}
-                        >
-                          LGD Data Collection
-                        </a>
-                      </li>
-                    )} */}
-
-
-                  </ul>
-                </li>
-              )}
+              
             </ul>
           </div>
 
           {/* <!-- ICON BAR --> */}
           <div class="menuIconBar">
-          <a href="./farmersdatacollectionentry" title="Farmers Data Collection Entry">
+          <a href="./farmersdatacollectionentry" title="Farmer Data Entry">
             <img src={require("assets/ico/farmersdatacollectionentry.png")} alt="Receive" />
           </a>
 
-          <a href="./pgdatacollectionentry" title="PG Data Collection Entry">
+          <a href="./pgdatacollectionentry" title="PG Data Entry">
             <img src={require("assets/ico/pgdatacollectionentry.png")} alt="Customer" />
           </a>
 
-          <a href="./lgddatacollectionentry" title="LGD Data Collection Entry">
+          <a href="./lgddatacollectionentry" title="Community Data Entry">
             <img src={require("assets/ico/lgddatacollectionentry.png")} alt="Sales" />
           </a>
 

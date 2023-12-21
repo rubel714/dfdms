@@ -301,7 +301,7 @@ const MembersByPg = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Reports ❯ Members by PG
+            Home ❯ Reports ❯ PG Members
           </h4>
         </div>
 

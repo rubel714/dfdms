@@ -295,12 +295,12 @@ function MembersbyPGataExport() {
     
 	//Report header list
 	$tableProperties["header_list"][0] = $siteTitle;
-	$tableProperties["header_list"][1] = 'Members by PG	List';
+	$tableProperties["header_list"][1] = 'PG Members List';
 	$tableProperties["header_list"][2] = $DivisionName. $DistrictName. $UpazilaName;
 	// $tableProperties["header_list"][1] = 'Heading 2';
 	
 	//Report save name. Not allow any type of special character
-	$tableProperties["report_save_name"] = 'Members_by_PG_List';
+	$tableProperties["report_save_name"] = 'PG_Members_List';
 }
  
  
@@ -381,12 +381,12 @@ function RoleToMenuPermissionExport() {
     
 	//Report header list
 	$tableProperties["header_list"][0] = $siteTitle;
-	$tableProperties["header_list"][1] = 'Role to Menu Permission';
+	$tableProperties["header_list"][1] = 'Permission';
 	$tableProperties["header_list"][2] = 'Role: '.$RoleName;
 	// $tableProperties["header_list"][1] = 'Heading 2';
 	
 	//Report save name. Not allow any type of special character
-	$tableProperties["report_save_name"] = 'Role_to_Menu_Permission';
+	$tableProperties["report_save_name"] = 'Permission';
 }
  
 
@@ -427,12 +427,12 @@ function DataTypeQuestionsMapExport() {
     
 	//Report header list
 	$tableProperties["header_list"][0] = $siteTitle;
-	$tableProperties["header_list"][1] = 'Data Type Questions Map';
+	$tableProperties["header_list"][1] = 'Question Links';
 	$tableProperties["header_list"][2] = 'Data Type: '.$DataTypeName. ', Survey: '.$SurveyName;
 	// $tableProperties["header_list"][1] = 'Heading 2';
 	
 	//Report save name. Not allow any type of special character
-	$tableProperties["report_save_name"] = 'Data_Type_Questions_Map';
+	$tableProperties["report_save_name"] = 'Question_Links';
 }
  
 

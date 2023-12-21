@@ -414,7 +414,7 @@ const DatatypeQuestionsMap = (props) => {
       <div class="bodyContainer">
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
-          <h4>Home ❯ Admin ❯ Data Type Questions Map</h4>
+          <h4>Home ❯ Admin ❯ Question Links</h4>
         </div>
 
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}

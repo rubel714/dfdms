@@ -174,7 +174,7 @@
 	
 
 	 }
-	 $spreadsheet->getActiveSheet()->SetCellValue('C'.$rn, "Value Chain wise PG Member Distribution");
+	 $spreadsheet->getActiveSheet()->SetCellValue('C'.$rn, "Farmer Distribution");
 	$spreadsheet->getActiveSheet()->getStyle('C'.$rn)->getFont();
 	$spreadsheet -> getActiveSheet()->getStyle('C'.$rn) -> applyFromArray(array('font' => array('size' => '14', 'bold' => true)), 'C'.$rn);
 	$spreadsheet -> getActiveSheet()->getStyle('C'.$rn) -> getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
@@ -469,7 +469,7 @@ date_default_timezone_set('Africa/Porto-Novo');
 
 $exportTime = date("Y-m-d-His", time());
 $writer = new Xlsx($spreadsheet);
-$file = 'value-chain-wise-pg-member-distribution-' . $exportTime . '.xlsx'; //Save file name
+$file = 'Farmer_Distribution-' . $exportTime . '.xlsx'; //Save file name
 $writer->save('media/' . $file);
 header('Location:media/' . $file); //File open location
 

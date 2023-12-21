@@ -32,7 +32,7 @@ function IndexHeader() {
   return (
     <>
       {/* <h1>DFDMS</h1>
-      <h3 className="mt-10">Integrated Data collection and monitoring</h3>
+      <h3 className="mt-10">Digital Field Data Monitoring System (DFDMS)</h3>
  */}
        {loading ? (
         <div className="loader-div">
@@ -56,8 +56,8 @@ function IndexHeader() {
         <Container>
           <div className="content-center brand bg-home">
             <h1 className="h1-seo">DFDMS</h1>
-            <h2>Integrated Data collection and monitoring</h2>
-            <h5 className="mt-10">An information system called Digital Field Data Monitoring System (DFDMS)- is developed in order to monitor the farmers and producer groups in the field. This application will be used from whole Bangladesh (up to Union level).</h5>
+            <h2>Digital Field Data Monitoring System (DFDMS)</h2>
+            <h5 className="mt-10">A tool to monitor livestock farmers and producer groups in Bangladesh</h5>
           </div>
         </Container>
       </div> 
