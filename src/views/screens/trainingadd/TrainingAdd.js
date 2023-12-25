@@ -16,6 +16,7 @@ import {
   language,
 } from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
+import FarmerAddModal from "./FarmerAddModal";
 /* import FarmerInfoModal from "./FarmerInfoModal"; */
 /* import PGInfoModal from "./PGInfoModal"; */
 
@@ -32,7 +33,7 @@ const DataCollectionEntry = (props) => {
 
   const [bFirst, setBFirst] = useState(true);
   const [currentRow, setCurrentRow] = useState([]);
-  const [showModal, setShowModal] = useState(false); //true=show modal, false=hide modal
+
 
   const {isLoading, data: dataList, error, ExecuteQuery} = ExecuteQueryHook(); //Fetch data
   const UserInfo = LoginUserInfo();
@@ -46,6 +47,9 @@ const DataCollectionEntry = (props) => {
   const [currDivisionId, setCurrDivisionId] = useState(UserInfo.DivisionId);
   const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
   const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
+
+  const [showModal, setShowModal] = useState(false); //true=show modal, false=hide modal
+
 
   /* =====Start of Excel Export Code==== */
   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
@@ -73,8 +77,8 @@ const DataCollectionEntry = (props) => {
     { field: "rownumber", label: "SL", align: "center", width: "3%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
     {
-      field: "PgGroupCode",
-      label: "Group Code",
+      field: "TrainingDate",
+      label: "Training Date",
       align: "left",
       visible: true,
       sort: true,
@@ -82,8 +86,8 @@ const DataCollectionEntry = (props) => {
       width: "7%"
     },
     {
-      field: "PGName",
-      label: "PG Name",
+      field: "TrainingTitle",
+      label: "Training Title",
       align: "left",
       visible: true,
       sort: true,
@@ -91,8 +95,8 @@ const DataCollectionEntry = (props) => {
     },
 
     {
-      field: "PgBankAccountNumber",
-      label: "Bank Account Number",
+      field: "TrainingDescription",
+      label: "Training Description",
       align: "left",
       visible: true,
       sort: true,
@@ -101,8 +105,8 @@ const DataCollectionEntry = (props) => {
     },
 
     {
-      field: "BankName",
-      label: "Bank Name",
+      field: "Venue",
+      label: "Venue",
       align: "left",
       visible: true,
       sort: true,
@@ -110,15 +114,6 @@ const DataCollectionEntry = (props) => {
       width: "12%"
     },
 
-    {
-      field: "ValueChainName",
-      label: "Value Chain",
-      align: "left",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "10%"
-    },
     {
       field: "DivisionName",
       label: "Division",
@@ -147,8 +142,8 @@ const DataCollectionEntry = (props) => {
       width: "9%",
     },
     {
-      field: "UnionName",
-      label: "Union",
+      field: "PGName",
+      label: "PG",
       align: "left",
       visible: true,
       sort: true,
@@ -231,6 +226,18 @@ const DataCollectionEntry = (props) => {
             TrainingDescription: "",
             Venue: "",
           });
+
+          setCurrentRow_form({
+            id: "",
+            DivisionId: "",
+            DistrictId: "",
+            UpazilaId: "",
+            PGId: "",
+            TrainingDate: "",
+            TrainingTitle: "",
+            TrainingDescription: "",
+            Venue: "",
+          });
     /* openModal(); */
     setListEditPanelToggle(false); // false = hide list and show add/edit panel
   };
@@ -246,22 +253,6 @@ const DataCollectionEntry = (props) => {
   };
 
   
-  function openModal() {
-    setShowModal(true); //true=modal show, false=modal hide
-  }
-
-  function modalCallback(response) {
-    //response = close, addedit
-    // console.log('response: ', response);
-    /* getDataList(); */
-    if(response !=='close'){
-      getDataList();
-    }
-    
-    setShowModal(false); //true=modal show, false=modal hide
-
-  }
-
   const deleteData = (rowData) => {
     swal({
       title: "Are you sure?",
@@ -341,11 +332,6 @@ const DataCollectionEntry = (props) => {
         SelectDistrictId,
         selectUpazilaId
       );
-
-      /* getProductGeneric(
-        selectDivisionId,
-        SelectProductGenericId
-      ); */
 
 
     });
@@ -668,7 +654,7 @@ function addEditAPICall() {
     };
 
     apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-      props.masterProps.openNoticeModal({
+      props.openNoticeModal({
         isOpen: true,
         msg: res.data.message,
         msgtype: res.data.success,
@@ -695,6 +681,7 @@ const handleChangeMany_form_form = (newValue, propertyName) => {
 
 
 const backToList = () => {
+  setErrorObject_form({});
   setListEditPanelToggle(true); // true = show list and hide add/edit panel
   getDataList(); //invoice list
 };
@@ -704,6 +691,73 @@ const backToList = () => {
 ============END ENTRY FORM=======================
 ============END ENTRY FORM=======================
 ============================================= */}
+
+
+
+
+
+
+
+
+
+
+
+
+{/* ============Start Farmer Pick===================
+============Start Farmer Pick=======================
+============Start Farmer Pick=======================
+==================================================== */}
+
+
+const addFarmerPick = () => {
+  // console.log("rowData: ", rowData);
+  // console.log("dataList: ", dataList);
+
+  /* setCurrentRow({
+    id: "",
+    MapType: "",
+    DataTypeId: currDataTypeId,
+    SurveyId: currSurveyId,
+  }); */
+
+  openModal();
+
+};
+
+
+  function openModal() {
+    setShowModal(true); 
+  }
+
+
+  function modalCallback(response) {
+
+    if (response !== "close") {
+      getDataList();
+    }
+    setShowModal(false); //true=modal show, false=modal hide
+
+  }
+
+
+
+{/* ============End Farmer Pick===================
+============End Farmer Pick=======================
+============End Farmer Pick=======================
+==================================================== */}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -834,11 +888,28 @@ const backToList = () => {
                   {/* <h2>গ্রুপের তথ্য সংগ্রহ ফরম (PG data collection form)</h2> */}
                 </div>
 
+
                 <div
                   class="input-areaPartition grid-container"
                   id="areaPartion-x"
                 >
-                  
+
+                <div class="alignRightText">
+                    <Button
+                        label={"Save"}
+                        class={"btnSave"}
+                        onClick={addEditAPICall}
+                      
+                    /> 
+
+                    <Button
+                        label={"Back To List"}
+                        class={"btnClose"}
+                        onClick={backToList}
+                      /> 
+                    
+                  </div>
+
 
             <div className="contactmodalBody pt-10">
 
@@ -953,22 +1024,22 @@ const backToList = () => {
 
 
                 </div>
+
+
+                <div class="alignRightText">
+                    <Button
+                        label={"Add Farmer"}
+                        class={"btnSave"}
+                        onClick={addFarmerPick}
+                      
+                    /> 
+
+                   
+                    
+                  </div>
                
 
-                  <div class="btnAddForm">
-                   <Button
-                      label={"সংরক্ষণ করুন (Save)"}
-                      class={"btnAddCustom"}
-                      onClick={addEditAPICall}
-                     
-                  /> 
-
-                   <Button
-                      label={"ফেরত যান (Back To List)"}
-                      class={"btnBackCustom"}
-                      onClick={backToList}
-                    /> 
-                  </div>
+                 
                 </div>
               </div>
             )}
@@ -1002,6 +1073,16 @@ const backToList = () => {
 
 
       </div>
+
+
+
+      {showModal && (
+        <FarmerAddModal
+          masterProps={props}
+          currentRow={currentRow_form}
+          modalCallback={modalCallback}
+        />
+      )}
 
 
 
