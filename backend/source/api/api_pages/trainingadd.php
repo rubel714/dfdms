@@ -18,9 +18,16 @@ switch($task){
 	case "deleteData":
 		$returnData = deleteData($data);
 	break;
+	case "deleteDataMany":
+		$returnData = deleteDataMany($data);
+	break;
 
 	case "getFarmerDataList":
 		$returnData = getFarmerDataList($data);
+	break;
+
+	case "getDataListMany":
+		$returnData = getDataListMany($data);
 	break;
 		
 	case "farmerAdd":
@@ -107,9 +114,9 @@ function dataAddEdit($data) {
 				$q->columns = ['EntryDate','TrainingDate','DivisionId','DistrictId','UpazilaId','PGId', 'TrainingTitle','TrainingDescription', 'Venue','UserId'];
 				$q->values = [$EntryDate,$TrainingDate,$DivisionId,$DistrictId,$UpazilaId,$PGId, $TrainingTitle, $TrainingDescription, $Venue, $UserId];
 				$q->pks = ['TrainingId'];
-				$q->bUseInsetId = false;
+				$q->bUseInsetId = true;
 				$q->build_query();
-				$aQuerys = array($q); 
+				$aQuerys[] = $q;
 			}else{
 				$u = new updateq();
 				$u->table = 't_training';
@@ -117,19 +124,28 @@ function dataAddEdit($data) {
 				$u->values = [$EntryDate,$TrainingDate,$DivisionId,$DistrictId,$UpazilaId,$PGId, $TrainingTitle, $TrainingDescription, $Venue];
 				$u->pks = ['TrainingId'];
 				$u->pk_values = [$TrainingId];
+				$u->bUseInsetId = false;
 				$u->build_query();
-				$aQuerys = array($u);
+				$aQuerys[] = $u;
 			}
 
 		
+			print_r($aQuerys);
+
+
 			$res = exec_query($aQuerys, $UserId, $lan);  
 			$success=($res['msgType']=='success')?1:0;
 			$status=($res['msgType']=='success')?200:500;
+			$lastInsertedId = $dbh->lastInsertId();
+			
+
+
 
 			$returnData = [
 			    "success" => $success ,
 				"status" => $status,
 				"UserId"=> $UserId,
+				"LastInsertid" => $lastInsertedId,
 				"message" => $res['msg']
 			];
 
@@ -165,6 +181,52 @@ function deleteData($data) {
             $d->table = 't_training';
             $d->pks = ['TrainingId'];
             $d->pk_values = [$TrainingId];
+            $d->build_query();
+            $aQuerys = array($d);
+
+			$res = exec_query($aQuerys, $UserId, $lan);  
+			$success=($res['msgType']=='success')?1:0;
+			$status=($res['msgType']=='success')?200:500;
+
+			$returnData = [
+				"success" => $success ,
+				"status" => $status,
+				"UserId"=> $UserId,
+				"message" => $res['msg']
+			];
+			
+		}catch(PDOException $e){
+			$returnData = msg(0,500,$e->getMessage());
+		}
+		
+		return $returnData;
+	}
+}
+
+
+function deleteDataMany($data) {
+ 
+	if($_SERVER["REQUEST_METHOD"] != "POST"){
+		return $returnData = msg(0,404,'Page Not Found!');
+	}
+	// CHECKING EMPTY FIELDS
+	elseif(!isset($data->rowData->id)){
+		$fields = ['fields' => ['id']];
+		return $returnData = msg(0,422,'Please Fill in all Required Fields!',$fields);
+	}else{
+		
+		$TrainingDetailsId = $data->rowData->id;
+		$lan = trim($data->lan); 
+		$UserId = trim($data->UserId); 
+
+		try{
+
+			$dbh = new Db();
+			
+            $d = new deleteq();
+            $d->table = 't_training_details';
+            $d->pks = ['TrainingDetailsId'];
+            $d->pk_values = [$TrainingDetailsId];
             $d->build_query();
             $aQuerys = array($d);
 
@@ -258,6 +320,90 @@ function getFarmerDataList($data){
 			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
 			AND (a.PGId = $PGId OR $PGId=0)
+		  ;";
+		
+		$resultdata = $dbh->query($query);
+		
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
+
+function getDataListMany($data){
+
+		$TrainingId = trim($data->TrainingId)?trim($data->TrainingId):0; 
+
+
+	try{
+		$dbh = new Db();
+		$query = "SELECT 
+			a.`FarmerId`,
+			e.`TrainingDetailsId` id,
+			a.`DivisionId`,
+			a.`DistrictId`,
+			a.`UpazilaId`,
+			a.`UnionId`,
+			a.`CityCorporation`,
+			a.`Ward`,
+			a.`PGId`,
+			a.`FarmerName`,
+			a.`NID`,
+			a.`Phone`,
+			a.`FatherName`,
+			a.`ValueChain`,
+			a.`MotherName`,
+			a.`LiveStockNo`,
+			a.`LiveStockOther`,
+			a.`Address`,
+			a.`IsRegular`,
+			a.`NidFrontPhoto`,
+			a.`NidBackPhoto`,
+			a.`BeneficiaryPhoto`,
+			a.`SpouseName`,
+			a.`Gender`,
+			a.`FarmersAge`,
+			a.`DisabilityStatus`,
+			a.`RelationWithHeadOfHH`,
+			a.`HeadOfHHSex`,
+			a.`PGRegistered`,
+			a.`PGPartnershipWithOtherCompany`,
+			a.`TypeOfMember`,
+			a.`PGFarmerCode`,
+			a.`OccupationId`,
+			a.`VillageName`,
+			a.`Latitute`,
+			a.`Longitute`,
+			a.`IsHeadOfTheGroup`,
+			a.`ValuechainId`,
+			a.`TypeOfFarmerId`,
+			a.dob,
+			case when a.IsRegular=1 then 'Regular' else 'No' end IsRegularBeneficiary,
+			b.GenderName, c.ValueChainName, d.PGName, a.DepartmentId, a.ifOtherSpecify, a.DateOfRegistration
+			, a.RegistrationNo, a.NameOfTheCompanyYourPgPartnerWith 
+			, a.WhenDidYouStartToOperateYourFirm
+			, a.NumberOfMonthsOfYourOperation
+			, a.AreYouRegisteredYourFirmWithDlsRadioFlag
+			, a.registrationDate
+			, a.IfRegisteredYesRegistrationNo
+			, a.FarmsPhoto
+		  FROM
+		  `t_farmer` a 
+		  Inner Join t_gender b ON a.Gender = b.GenderId
+		  Inner Join t_training_details e ON a.FarmerId = e.FarmerId
+		  LEFT JOIN t_valuechain c ON a.ValuechainId = c.ValuechainId
+		  LEFT JOIN t_pg d ON a.PGId = d.PGId
+		  WHERE e.TrainingId = $TrainingId
 		  ;";
 		
 		$resultdata = $dbh->query($query);

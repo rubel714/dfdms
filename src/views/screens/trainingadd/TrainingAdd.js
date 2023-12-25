@@ -36,6 +36,7 @@ const DataCollectionEntry = (props) => {
 
 
   const {isLoading, data: dataList, error, ExecuteQuery} = ExecuteQueryHook(); //Fetch data
+ const { isLoadig2, data: dataListMany, error2, ExecuteQuery: ExecuteQueryMany } = ExecuteQueryHook();
   const UserInfo = LoginUserInfo();
 
   const [currentFilter, setCurrentFilter] = useState([]); 
@@ -228,6 +229,7 @@ const DataCollectionEntry = (props) => {
           });
 
           setCurrentRow_form({
+            TrainingId: "",
             id: "",
             DivisionId: "",
             DistrictId: "",
@@ -239,6 +241,7 @@ const DataCollectionEntry = (props) => {
             Venue: "",
           });
     /* openModal(); */
+
     setListEditPanelToggle(false); // false = hide list and show add/edit panel
   };
 
@@ -571,6 +574,16 @@ const handleChange_form = (e) => {
   setCurrentRow_form(data);
   setErrorObject_form({ ...errorObject_form, [name]: null });
 
+  
+};
+
+const handleChange_form_dipendency = (e) => {
+  const { name, value } = e.target;
+  let data = { ...currentRow_form };
+  data[name] = value;
+  setCurrentRow_form(data);
+  setErrorObject_form({ ...errorObject_form, [name]: null });
+
   // for dependency
   if (name === "DivisionId") {
     setCurrDivisionId_form(value);
@@ -720,6 +733,10 @@ const addFarmerPick = () => {
     SurveyId: currSurveyId,
   }); */
 
+  /* setCurrentRow_form({
+    TrainingId: "",
+  }); */
+
   openModal();
 
 };
@@ -733,11 +750,218 @@ const addFarmerPick = () => {
   function modalCallback(response) {
 
     if (response !== "close") {
-      getDataList();
+      getDataListMany();
     }
     setShowModal(false); //true=modal show, false=modal hide
 
   }
+
+
+
+
+  const columnListMany = [
+    { field: "rownumber", label: "SL", align: "center", width: "3%" },
+    { field: 'id', label: 'id',width:'10%',align:'center',visible:false,sort:false,filter:false },
+    {
+      field: "FarmerName",
+      label: "Beneficiary Name",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+    },
+
+    {
+      field: "NID",
+      label: "Beneficiary NID",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "10%",
+    },
+    {
+      field: "Phone",
+      label: "Mobile Number",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "10%",
+    },
+    {
+      field: "FatherName",
+      label: "Father's Name",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "12%",
+    },
+    {
+      field: "MotherName",
+      label: "Mother's Name",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "10%",
+    },
+    {
+      field: "SpouseName",
+      label: "Spouse Name",
+      align: "left",
+      visible: false,
+      sort: true,
+      filter: true,
+      width: "10%",
+    },
+    {
+      field: "GenderName",
+      label: "Gender",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "7%",
+    },
+    {
+      field: "FarmersAge",
+      label: "Farmer's Age",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "7%",
+    },
+    {
+      field: "ValueChainName",
+      label: "Value Chain",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "7%",
+    },
+    {
+      field: "PGName",
+      label: "Name of Producer Group",
+      align: "left",
+      visible: false,
+      sort: true,
+      filter: true,
+      width: "12%",
+    },
+    {
+      field: "IsRegularBeneficiary",
+      label: "Is Regular Beneficiary?",
+      align: "center",
+      visible: false,
+      sort: true,
+      filter: true,
+      width: "4%",
+    },
+    {
+      field: "custom",
+      label: "Action",
+      width: "7%",
+      align: "center",
+      visible: true,
+      sort: false,
+      filter: false,
+    },
+  ];
+
+
+  function getDataListMany(){
+
+    let params = {
+      action: "getDataListMany",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      TrainingId: currentRow_form.id,
+    };
+ 
+    ExecuteQueryMany(serverpage, params);
+  }
+
+
+useEffect(() => {
+    getDataListMany();
+}, [currentRow_form.id]);
+
+  
+
+  function actioncontrolMany(rowData) {
+    return (
+       <>
+
+        <DeleteOutline
+          className={"table-delete-icon"}
+          onClick={() => {
+            deleteDataMany(rowData);
+          }}
+        />
+      </>
+    );
+  }
+
+  
+  
+  const deleteDataMany = (rowData) => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this data!",
+      icon: "warning",
+      buttons: {
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+        cancel: {
+          text: "No",
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+      },
+      dangerMode: true,
+    }).then((allowAction) => {
+      if (allowAction) {
+        deleteManyApi(rowData);
+      }
+    });
+  };
+
+  function deleteManyApi(rowData) {
+
+        
+ 
+    let params = {
+      action: "deleteDataMany",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      rowData: rowData,
+    };
+
+    // apiCall.post("productgroup", { params }, apiOption()).then((res) => {
+    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+      console.log('res: ', res);
+      props.openNoticeModal({
+        isOpen: true,
+        msg: res.data.message,
+        msgtype: res.data.success,
+      });
+      getDataListMany();
+    });
+
+  }
+
+
 
 
 
@@ -931,7 +1155,7 @@ const addFarmerPick = () => {
               name="DivisionId"
               className={errorObject_form.DivisionId}
               value={currDivisionId_form}
-              onChange={(e) => handleChange_form(e)}
+              onChange={(e) => handleChange_form_dipendency(e)}
             >
               {divisionList_form &&
                 divisionList_form.map((item, index) => {
@@ -939,13 +1163,16 @@ const addFarmerPick = () => {
                 })}
             </select>
 
+            </div>
+
+            <div class="contactmodalBody pt-10">
             <label>District *</label>
             <select
               id="DistrictId"
               name="DistrictId"
               className={errorObject_form.DistrictId}
               value={currDistrictId_form}
-              onChange={(e) => handleChange_form(e)}
+              onChange={(e) => handleChange_form_dipendency(e)}
             >
               {districtList_form &&
                 districtList_form.map((item, index) => {
@@ -959,7 +1186,7 @@ const addFarmerPick = () => {
               name="UpazilaId"
               className={errorObject_form.UpazilaId}
               value={currUpazilaId_form}
-              onChange={(e) => handleChange_form(e)}
+              onChange={(e) => handleChange_form_dipendency(e)}
             >
               {upazilaList_form &&
                 upazilaList_form.map((item, index) => {
@@ -967,24 +1194,27 @@ const addFarmerPick = () => {
                 })}
             </select>
 
+            </div>
+
+            <div class="contactmodalBody pt-10">
             <label>PG *</label>
             <select
               id="PGId"
               name="PGId"
               className={errorObject_form.PGId}
               value={currPGId_form}
-              onChange={(e) => handleChange_form(e)}
+              onChange={(e) => handleChange_form_dipendency(e)}
             >
               {pgList_form &&
                 pgList_form.map((item, index) => {
                   return <option value={item.id}>{item.name}</option>;
                 })}
             </select>
-          </div>
+        
 
 
 
-                 <div class="contactmodalBody pt-10">
+                
 
                     <label>Training Title *</label>
                     <input
@@ -997,7 +1227,9 @@ const addFarmerPick = () => {
                       onChange={(e) => handleChange_form(e)}
                     />
 
+</div>
 
+<div class="contactmodalBody pt-10">
 
                     <label>Training Description *</label>
                     <input
@@ -1026,22 +1258,41 @@ const addFarmerPick = () => {
                 </div>
 
 
-                <div class="alignRightText">
+                
+                 <div class="alignRightText">
                     <Button
-                        label={"Add Farmer"}
-                        class={"btnSave"}
-                        onClick={addFarmerPick}
+                      label={"Add Farmer"}
+                      class={"btnSave"}
+                      onClick={addFarmerPick}
+                      disabled={!currentRow_form.id}
                       
                     /> 
-
-                   
-                    
                   </div>
-               
+
+                  <div class="subContainer">
+                    <div className="App">
+                      <CustomTable
+                        columns={columnListMany}
+                        rows={dataListMany ? dataListMany : {}}
+                        actioncontrol={actioncontrolMany}
+                        ispagination={false}
+                        isLoading={isLoading}
+                      />
+                    </div>
+                  </div>
+
+		
 
                  
                 </div>
+
+                
+
               </div>
+
+
+
+
             )}
           </>
         )}

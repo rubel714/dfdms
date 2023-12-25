@@ -274,7 +274,7 @@ console.log("currentRow-modal ------ ",props.currentRow);
         {/* <!-- Modal content --> */}
         <div class="modal-content">
           <div class="modalHeader">
-            <h4>Select Question</h4>
+            <h4>Select Farmer</h4>
           </div>
 
 
