@@ -387,3 +387,19 @@
     border: 2px solid #c8baba;
     box-sizing: border-box;
 }
+
+
+.contactmodalBodyOnePage {
+    display: grid;
+    grid-template-columns: 14% 36% 13% 37%;
+    grid-row-gap: 8px;
+    row-gap: 8px;
+}
+
+.contactmodalBodyOnePage label {
+    font-size: .8rem;
+    font-weight: bold;
+    padding-top: 8px;
+    text-align: end;
+    padding-right: 8px;
+}

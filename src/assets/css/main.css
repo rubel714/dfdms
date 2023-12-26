@@ -1107,3 +1107,42 @@ input[type=search] {
 .menuListBar {
     z-index: 3;
 }
+
+.btnSelect {
+    background-color: rgb(10, 109, 134);
+    font-size: 0.75rem;
+    height: 30px;
+    padding: 0px 4px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.searchAdd5 {
+    display: grid;
+    grid-row-gap: 8px;
+    padding-left: 6px;
+    grid-template-columns: 17% 17% 17% 40%;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+
+
+.modalItemFixed {
+    height: 300px; /* Set the desired height */
+    overflow-y: auto;
+  }
+  
+  /* If you want to style the scrollbar, you can use the following CSS */
+  .modalItemFixed::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  .modalItemFixed::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+  }
+  
+  .modalItemFixed::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }

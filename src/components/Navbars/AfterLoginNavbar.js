@@ -340,7 +340,7 @@ function AfterLoginNavbar(props) {
                         </a>
                       </li>
                     )}
-                    {/* {menuShowPermision("trainingadd") === 1 && (
+                     {menuShowPermision("trainingadd") === 1 && (
                      
                       <li>
                         <a
@@ -350,7 +350,7 @@ function AfterLoginNavbar(props) {
                           Training
                         </a>
                       </li>
-                    )} */}
+                    )}
 
 
                   </ul>
