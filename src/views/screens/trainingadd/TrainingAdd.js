@@ -77,6 +77,8 @@ const DataCollectionEntry = (props) => {
   const columnList = [
     { field: "rownumber", label: "SL", align: "center", width: "3%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
+    { field: 'id', label: 'id',width:'10%',align:'center',visible:false,sort:false,filter:false },
+    { field: 'TrainingId', label: 'TrainingId',width:'10%',align:'center',visible:false,sort:false,filter:false },
     {
       field: "TrainingDate",
       label: "Training Date",
@@ -252,6 +254,7 @@ const DataCollectionEntry = (props) => {
     setCurrentRow(rowData);
     setCurrentRow_form(rowData);
     /* openModal(); */
+    setTrainingIdStatus(true);
     setListEditPanelToggle(false); // false = hide list and show add/edit panel
   };
 
@@ -447,7 +450,7 @@ const DataCollectionEntry = (props) => {
 ============ENTRY FORM=======================
 ============================================= */}
 
-const [currentRow_form, setCurrentRow_form] = useState(currentRow);
+const [currentRow_form, setCurrentRow_form] = useState({});
 const [errorObject_form, setErrorObject_form] = useState({});
 
 
@@ -638,6 +641,10 @@ const validateForm = () => {
   return isValid;
 };
 
+const [apiCallSuccess, setApiCallSuccess] = useState(false);
+
+const [trainingIdStatus, setTrainingIdStatus] = useState(false);
+
 function addEditAPICall() {
 
   
@@ -673,13 +680,46 @@ function addEditAPICall() {
         msgtype: res.data.success,
       });
 
-     /*  if (res.data.success === 1) {
-        props.modalCallback("addedit");
-      } */
+      if (res.data.success === 1) {
 
+        console.log("res------------- ",res.data.LastTrainingId);
+              setTrainingIdStatus(true); // Enable the button on success
+
+            setCurrentRow_form({
+              TrainingId: res.data.LastTrainingId,
+              id: res.data.LastTrainingId,
+              DivisionId: currentRow_form?currentRow_form.DivisionId:res.data.LastInsertid[0].DivisionId,
+              DistrictId: currentRow_form?currentRow_form.DistrictId:res.data.LastInsertid[0].DistrictId,
+              UpazilaId: currentRow_form?currentRow_form.UpazilaId:res.data.LastInsertid[0].UpazilaId,
+              PGId: currentRow_form?currentRow_form.PGId:res.data.LastInsertid[0].PGId,
+              TrainingDate: currentRow_form?currentRow_form.TrainingDate:res.data.LastInsertid[0].TrainingDate,
+              TrainingTitle: currentRow_form?currentRow_form.TrainingTitle:res.data.LastInsertid[0].TrainingTitle,
+              TrainingDescription: currentRow_form?currentRow_form.TrainingDescription:res.data.LastInsertid[0].TrainingDescription,
+              Venue: currentRow_form?currentRow_form.Venue:res.data.LastInsertid[0].Venue,
+            }); 
+
+            
+    
+       // Set the API call success state to true
+       setApiCallSuccess(true);
+      }
+
+    })
+    .catch((error) => {
+      // Handle API call error
+      setApiCallSuccess(false);
+      setTrainingIdStatus(false); // Disable the button on error
     });
   }
 }
+
+
+
+useEffect(() => {
+  console.log("currentRow_form in useEffect: ", currentRow_form);
+  console.log("currentRow_form.id in useEffect: ", currentRow_form.id);
+}, [currentRow_form, trainingIdStatus]);
+
 
 function modalClose() {
   props.modalCallback("close");
@@ -1264,8 +1304,9 @@ useEffect(() => {
                       label={"Add Farmer"}
                       class={"btnSave"}
                       onClick={addFarmerPick}
-                      disabled={!currentRow_form.id}
-                      
+                      //disabled={!currentRow_form.id || !trainingIdStatus}
+                      disabled={!currentRow_form.id || !trainingIdStatus}
+
                     /> 
                   </div>
 

@@ -48,7 +48,7 @@ function getDataList($data){
 		$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
 
 
-		$query = "SELECT a.TrainingId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.PGId, 
+		$query = "SELECT a.TrainingId AS id, a.TrainingId, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.PGId, 
 			b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, f.`PGName`,
 			a.TrainingDate, a.TrainingTitle, a.TrainingDescription, a.Venue
 		
@@ -109,6 +109,9 @@ function dataAddEdit($data) {
 			$aQuerys = array();
 
 			if($TrainingId == ""){
+
+				$TrainingIdWH = "";
+
 				$q = new insertq();
 				$q->table = 't_training';
 				$q->columns = ['EntryDate','TrainingDate','DivisionId','DistrictId','UpazilaId','PGId', 'TrainingTitle','TrainingDescription', 'Venue','UserId'];
@@ -118,6 +121,9 @@ function dataAddEdit($data) {
 				$q->build_query();
 				$aQuerys[] = $q;
 			}else{
+
+				$TrainingIdWH = " WHERE TrainingId = $TrainingId";
+
 				$u = new updateq();
 				$u->table = 't_training';
 				$u->columns = ['EntryDate','TrainingDate','DivisionId','DistrictId','UpazilaId','PGId', 'TrainingTitle','TrainingDescription', 'Venue'];
@@ -130,22 +136,30 @@ function dataAddEdit($data) {
 			}
 
 		
-			print_r($aQuerys);
-
-
 			$res = exec_query($aQuerys, $UserId, $lan);  
 			$success=($res['msgType']=='success')?1:0;
 			$status=($res['msgType']=='success')?200:500;
-			$lastInsertedId = $dbh->lastInsertId();
 			
+			
+			if($res['msgType']=='success'){
 
+				$queryD = "SELECT COALESCE(MAX(TrainingId), '') AS MaxTrainingId, `TrainingDate`,`DivisionId`,`DistrictId`,`UpazilaId`,`PGId`,`TrainingTitle`,`TrainingDescription`,`Venue`
+				FROM t_training
+				
+				ORDER BY TrainingId DESC;";
+					$lastTrainingIdsq = $dbh->query($queryD);
+					$lastInsertedId = $lastTrainingIdsq[0]['MaxTrainingId'];
 
+				}else{
+					$lastInsertedId = "";
+				}
 
 			$returnData = [
 			    "success" => $success ,
 				"status" => $status,
 				"UserId"=> $UserId,
-				"LastInsertid" => $lastInsertedId,
+				"LastInsertid" => $lastTrainingIdsq,
+				"LastTrainingId" => $res['TrainingId'],
 				"message" => $res['msg']
 			];
 
