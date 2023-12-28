@@ -1007,19 +1007,19 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
   return (
     <>
       {/* <!-- GROUP MODAL START --> */}
-      <div id="groupModal" class="modal">
+      <div class="subContainer inputArea">
         {/* <!-- Modal content --> */}
-        <div class="modal-content">
-          <div class="modalHeaderWithButton">
+        <div class="modal-contentX">
+          {/* <div class="modalHeaderWithButton">
             <h4>Add/Edit Farmer Profile</h4>
             <Button
               label={"Back to List"}
               class={"btnClose"}
               onClick={modalClose}
             />
-          </div>
+          </div> */}
 
-          <div class="contactmodalBody pt-10">
+          <div class="contactmodalBodyOnePage pt-10">
             <label>Is Regular Beneficiary?</label>
             <select
               id="IsRegular"
@@ -1049,7 +1049,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div className="contactmodalBody pt-10">
+          <div className="contactmodalBodyOnePage pt-10">
             <label>NID Front Photo</label>
             <input
               type="file"
@@ -1076,7 +1076,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             )}
           </div>
 
-          <div className="contactmodalBody pt-10">
+          <div className="contactmodalBodyOnePage pt-10">
             <label>NID Back Photo</label>
             <input
               type="file"
@@ -1102,7 +1102,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             )}
           </div>
 
-          <div class="contactmodalBody pt-10">
+          <div class="contactmodalBodyOnePage pt-10">
             <label>Beneficiary Name *</label>
             <input
               type="text"
@@ -1126,7 +1126,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div class="contactmodalBody pt-10 ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Beneficiary Photo</label>
             <input
               type="file"
@@ -1151,7 +1151,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             )}
           </div>
 
-          <div class="contactmodalBody pt-10 ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Father's Name </label>
             <input
               type="text"
@@ -1173,7 +1173,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div class="contactmodalBody pt-10 ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Mother's Name </label>
             <input
               type="text"
@@ -1196,7 +1196,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div class="contactmodalBody pt-10 ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Gender*</label>
             <select
               id="Gender"
@@ -1224,7 +1224,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div class="contactmodalBody pt-10 ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Disability Status</label>
             <select
               id="DisabilityStatus"
@@ -1306,7 +1306,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </>
           )}
 
-          <div class="contactmodalBody pt-10 ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Farmer's Head of HH Sex</label>
             <select
               id="HeadOfHHSex"
@@ -1389,7 +1389,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             )}
           </div>
 
-          <div class="contactmodalBody pt-10 ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Type Of Member*</label>
             <select
               id="TypeOfMember"
@@ -1453,7 +1453,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             )}
           </div>
 
-          <div class="contactmodalBody pt-10">
+          <div class="contactmodalBodyOnePage pt-10">
             <label>PG Farmer Code* </label>
             <input
               type="text"
@@ -1480,7 +1480,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
           </div>
 
-          <div class="contactmodalBody pt-10">
+          <div class="contactmodalBodyOnePage pt-10">
             <label>Division *</label>
             <select
               id="DivisionId"
@@ -1510,7 +1510,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
           </div>
 
-          <div class="contactmodalBody pt-10">
+          <div class="contactmodalBodyOnePage pt-10">
             <label>Upazila *</label>
             <select
               id="UpazilaId"
@@ -1540,7 +1540,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
           </div>
 
-          <div className="contactmodalBody pt-10">
+          <div className="contactmodalBodyOnePage pt-10">
             <label>Value Chain*</label>
             <select
               id="ValuechainId"
@@ -1570,7 +1570,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
           </div>
 
-          <div class="contactmodalBody pt-10">
+          <div class="contactmodalBodyOnePage pt-10">
             {/* <label>Name of Producer Group</label>
             <select
               id="PGId"
@@ -1619,7 +1619,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select> */}
           </div>
 
-          <div class="contactmodalBody pt-10 ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>City Corporation/ Municipality</label>
             <select
               id="CityCorporation"
@@ -1656,7 +1656,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             /> */}
           </div>
 
-          <div className="contactmodalBody pt-10">
+          <div className="contactmodalBodyOnePage pt-10">
             <label>Latitute</label>
             <input
               type="text"
@@ -1707,7 +1707,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             /> */}
           </div>
 
-          <div className="contactmodalBody pt-10">
+          <div className="contactmodalBodyOnePage pt-10">
             <label>Longitute</label>
             <div className="autocompleteContainer">
               <input
@@ -1755,7 +1755,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </div> */}
           </div>
 
-          <div class="contactmodalBody pt-10 ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>When Did you start to operate your farm? </label>
             <input
               type="date"
@@ -1769,7 +1769,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div class="contactmodalBody pt-10 ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Number of Months of your operation </label>
             <input
               type="text"
@@ -1824,7 +1824,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </div>
           </div>
 
-          <div class="contactmodalBody pt-10 ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Registration Date </label>
             <input
               type="date"
@@ -1854,7 +1854,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div className="contactmodalBody pt-10">
+          <div className="contactmodalBodyOnePage pt-10">
             <label>Farm's Photo</label>
             <input
               type="file"
@@ -1881,7 +1881,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             )}
           </div>
 
-          {/*  <div className="contactmodalBody pt-10">
+          {/*  <div className="contactmodalBodyOnePage pt-10">
             <label>Value Chain</label>
             <select
               id="ValuechainId"
@@ -1897,11 +1897,11 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
           </div> */}
 
-          {/* <div class="contactmodalBody pt-10">
+          {/* <div class="contactmodalBodyOnePage pt-10">
             <label>Type of Farmers:</label>
           </div>
 
-          <div class="contactmodalBodyLeargeBox pt-10">
+          <div class="contactmodalBodyOnePageLeargeBox pt-10">
             <label></label>
             <div class="checkbox-group-type">
               {rolesToDisplay.map((role) => (
@@ -1921,7 +1921,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </div>
           </div> */}
 
-          {/*  <div class="contactmodalBody modalItem">
+          {/*  <div class="contactmodalBodyOnePage modalItem">
                 <label> Is Mandatory?</label>
                   <input
                     id="IsRegular"

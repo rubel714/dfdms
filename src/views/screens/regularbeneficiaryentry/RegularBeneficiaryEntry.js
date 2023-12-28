@@ -13,6 +13,7 @@ const RegularBeneficiaryEntry = (props) => {
   const serverpage = "regularbeneficiaryentry"; // this is .php server page
 
   const { useState } = React;
+  const [listEditPanelToggle, setListEditPanelToggle] = useState(true);
   const [bFirst, setBFirst] = useState(true);
   const [currentRow, setCurrentRow] = useState([]);
   const [showModal, setShowModal] = useState(false); //true=show modal, false=hide modal
@@ -28,6 +29,8 @@ const RegularBeneficiaryEntry = (props) => {
   const [currDivisionId, setCurrDivisionId] = useState(UserInfo.DivisionId);
   const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
   const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
+
+  
 
 
    /* =====Start of Excel Export Code==== */
@@ -306,8 +309,8 @@ const RegularBeneficiaryEntry = (props) => {
             UpazilaId: UserInfo.UpazilaId,
        
           });
-
-    openModal();
+          setListEditPanelToggle(false);
+    /* openModal(); */
   };
 
   const editData = (rowData) => {
@@ -315,7 +318,8 @@ const RegularBeneficiaryEntry = (props) => {
     // console.log("dataList: ", dataList);
 
     setCurrentRow(rowData);
-    openModal();
+    /* openModal(); */
+    setListEditPanelToggle(false);
   };
 
   
@@ -331,6 +335,7 @@ const RegularBeneficiaryEntry = (props) => {
       getDataList();
     }
     setShowModal(false); //true=modal show, false=modal hide
+    setListEditPanelToggle(true);
 
   }
 
@@ -521,6 +526,11 @@ const RegularBeneficiaryEntry = (props) => {
   }, [currDivisionId, currDistrictId, currUpazilaId]);
 
 
+  const backToList = () => {
+    setListEditPanelToggle(true); // true = show list and hide add/edit panel
+  };
+
+
   return (
     <>
       <div class="bodyContainer">
@@ -529,8 +539,23 @@ const RegularBeneficiaryEntry = (props) => {
           <h4>
             Home ❯ Admin ❯ Farmer Profile
           </h4>
+
+          {!listEditPanelToggle ? (
+              <>
+                <Button
+                  label={"Back To List"}
+                  class={"btnClose"}
+                  onClick={backToList}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+
         </div>
 
+        {listEditPanelToggle && (
+          <>
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
         <div class="searchAdd3">
           <div class="formControl-filter-data-label">
@@ -603,14 +628,29 @@ const RegularBeneficiaryEntry = (props) => {
             />
           </div>
         </div>
+
+        </>
+        )}
+
+        {!listEditPanelToggle && (
+                  <>
+                    {/* {!currentInvoice.BPosted && ( */}
+                    {1 == 1 && (
+
+                <RegularBeneficiaryEntryAddEditModal masterProps={props} currentRow={currentRow} modalCallback={modalCallback}/>
+
+              )}
+              </>
+            )}
+
+        
       </div>
       {/* <!-- BODY CONTAINER END --> */}
-
-
-      {showModal && (<RegularBeneficiaryEntryAddEditModal masterProps={props} currentRow={currentRow} modalCallback={modalCallback}/>)}
-
-
+ 
     </>
+
+    
+
   );
 };
 
