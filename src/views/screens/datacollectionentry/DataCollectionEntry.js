@@ -389,41 +389,62 @@ const DataCollectionEntry = (props) => {
     ExecuteQuery: ExecuteQuerySingle,
   } = ExecuteQueryHook(); //Fetch data for single
 
-
-  
-  
   /* =====Start of Excel Export Code==== */
   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
   const PrintPDFExcelExportFunction = (reportType) => {
     let finalUrl = EXCEL_EXPORT_URL + "report/datacollection_export_excel.php";
 
-    let QuarterName=quarterList[quarterList.findIndex(list => list.id == currFilterQuarterId)].name;
-    let DivisionName=divisionList[divisionList.findIndex(divisionList_List => divisionList_List.id == currDivisionId)].name;
-    let DistrictName=districtList[districtList.findIndex(districtList_List => districtList_List.id == currDistrictId)].name;
-    let UpazilaName=upazilaList[upazilaList.findIndex(upazilaList_List => upazilaList_List.id == currUpazilaId)].name;
-   
-
+    let QuarterName =
+      quarterList[
+        quarterList.findIndex((list) => list.id == currFilterQuarterId)
+      ].name;
+    let DivisionName =
+      divisionList[
+        divisionList.findIndex(
+          (divisionList_List) => divisionList_List.id == currDivisionId
+        )
+      ].name;
+    let DistrictName =
+      districtList[
+        districtList.findIndex(
+          (districtList_List) => districtList_List.id == currDistrictId
+        )
+      ].name;
+    let UpazilaName =
+      upazilaList[
+        upazilaList.findIndex(
+          (upazilaList_List) => upazilaList_List.id == currUpazilaId
+        )
+      ].name;
 
     window.open(
       finalUrl +
         "?action=DataExport" +
         "&reportType=excel" +
-        "&YearId=" + currFilterYearId +
-        "&QuarterId=" + currFilterQuarterId +
-        "&QuarterName=" + QuarterName +
-        "&DivisionId=" + currDivisionId +
-        "&DistrictId=" + currDistrictId +
-        "&UpazilaId=" + currUpazilaId +
-        "&DivisionName=" + DivisionName +
-        "&DistrictName=" + DistrictName +
-        "&UpazilaName=" + UpazilaName +
+        "&YearId=" +
+        currFilterYearId +
+        "&QuarterId=" +
+        currFilterQuarterId +
+        "&QuarterName=" +
+        QuarterName +
+        "&DivisionId=" +
+        currDivisionId +
+        "&DistrictId=" +
+        currDistrictId +
+        "&UpazilaId=" +
+        currUpazilaId +
+        "&DivisionName=" +
+        DivisionName +
+        "&DistrictName=" +
+        DistrictName +
+        "&UpazilaName=" +
+        UpazilaName +
         "&TimeStamp=" +
         Date.now()
     );
   };
   /* =====End of Excel Export Code==== */
-
 
   const newInvoice = () => {
     console.log("dataTypeId: ", dataTypeId);
@@ -973,7 +994,7 @@ const DataCollectionEntry = (props) => {
       label: "ফার্মার",
       // width: "13%",
       align: "left",
-      visible: dataTypeId==2?true:false,
+      visible: dataTypeId == 2 ? true : false,
       sort: true,
       filter: true,
     },
@@ -1992,6 +2013,18 @@ const DataCollectionEntry = (props) => {
           {dataTypeId === 3 && (
             <h4>Home ❯ Data Collection ❯ এলজিডি তথ্য (LGD Data Collection)</h4>
           )}
+
+          {!listEditPanelToggle ? (
+            <>
+              <Button
+                label={"ফেরত যান (Back To List)"}
+                class={"btnClose"}
+                onClick={backToList}
+              />
+            </>
+          ) : (
+            <></>
+          )}
         </div>
 
         {showPGModal && (
@@ -2223,9 +2256,11 @@ const DataCollectionEntry = (props) => {
                 />
               )}
 
-
-          <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
-
+              <Button
+                label={"Export"}
+                class={"btnPrint"}
+                onClick={PrintPDFExcelExportFunction}
+              />
             </div>
 
             {/* <!-- ####---Master invoice list---####s --> */}
