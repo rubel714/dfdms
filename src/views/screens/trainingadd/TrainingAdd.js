@@ -322,7 +322,10 @@ const DataCollectionEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDivisionList([{ id: "", name: "All" }].concat(res.data.datalist));
+     /*  setDivisionList([{ id: "", name: "All" }].concat(res.data.datalist)); */
+     setDivisionList(
+      res.data.datalist
+    );
 
       //setCurrDivisionId(selectDivisionId);
 
@@ -431,10 +434,14 @@ const DataCollectionEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDivisionList_form(
+      /* setDivisionList_form(
         [{ id: "", name: "Select Division" }].concat(res.data.datalist)
       );
+ */
 
+      setDivisionList_form(
+        res.data.datalist
+      );
       setCurrDivisionId_form(selectDivisionId);
 
       getDistrict_form(

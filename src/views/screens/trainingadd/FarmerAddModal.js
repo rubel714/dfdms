@@ -37,7 +37,7 @@ const FarmerAddModal = (props) => {
     {
       field: "id",
       label: "id",
-      width: "10%",
+      width: "5",
       align: "center",
       visible: false,
       sort: false,
@@ -50,6 +50,7 @@ const FarmerAddModal = (props) => {
       visible: true,
       sort: true,
       filter: true,
+      width: "100",
     },
 
     {
@@ -59,7 +60,7 @@ const FarmerAddModal = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "100",
     },
     {
       field: "Phone",
@@ -68,7 +69,7 @@ const FarmerAddModal = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "100",
     },
     {
       field: "FatherName",
@@ -77,7 +78,7 @@ const FarmerAddModal = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "12%",
+      width: "100",
     },
     {
       field: "MotherName",
@@ -86,7 +87,7 @@ const FarmerAddModal = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "100",
     },
     {
       field: "SpouseName",
@@ -95,7 +96,7 @@ const FarmerAddModal = (props) => {
       visible: false,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "100",
     },
     {
       field: "GenderName",
@@ -104,7 +105,7 @@ const FarmerAddModal = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "7%",
+      width: "100",
     },
     {
       field: "FarmersAge",
@@ -113,7 +114,7 @@ const FarmerAddModal = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "7%",
+      width: "100",
     },
     {
       field: "ValueChainName",
@@ -122,7 +123,7 @@ const FarmerAddModal = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "7%",
+      width: "100",
     },
     {
       field: "PGName",
@@ -131,7 +132,7 @@ const FarmerAddModal = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "12%",
+      width: "100",
     },
     {
       field: "IsRegularBeneficiary",
@@ -140,7 +141,7 @@ const FarmerAddModal = (props) => {
       visible: false,
       sort: true,
       filter: true,
-      width: "4%",
+      width: "50",
     },
   ];
 
@@ -152,7 +153,11 @@ const FarmerAddModal = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDivisionList([{ id: "", name: "All" }].concat(res.data.datalist));
+      /* setDivisionList([{ id: "", name: "All" }].concat(res.data.datalist)); */
+      
+      setDivisionList(
+        res.data.datalist
+      );
 
       //setCurrDivisionId(selectDivisionId);
 
