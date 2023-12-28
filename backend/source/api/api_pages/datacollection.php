@@ -69,7 +69,7 @@ function getDataList($data)
 			 when a.StatusId=2 then 'Waiting for Accept'
 			 when a.StatusId=3 then 'Waiting for Approve'
 			 when a.StatusId=5 then 'Approved'
-			 else '' end CurrentStatus,g.ValueChainName,h.UserName,i.SurveyTitle,a.SurveyId
+			 else '' end CurrentStatus,g.ValueChainName,h.UserName,i.SurveyTitle,a.SurveyId,j.FarmerName
 		FROM t_datavaluemaster a
 		inner join t_division b on a.DivisionId=b.DivisionId
 		inner join t_district c on a.DistrictId=c.DistrictId
@@ -79,6 +79,7 @@ function getDataList($data)
 		inner join t_valuechain g on a.ValuechainId=g.ValuechainId
 		inner join t_users h on a.UserId=h.UserId
 		inner join t_survey i on a.SurveyId=i.SurveyId
+		left join t_farmer j on a.FarmerId=j.FarmerId
 		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)

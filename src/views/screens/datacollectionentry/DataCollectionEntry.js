@@ -389,22 +389,41 @@ const DataCollectionEntry = (props) => {
     ExecuteQuery: ExecuteQuerySingle,
   } = ExecuteQueryHook(); //Fetch data for single
 
+
+  
+  
   /* =====Start of Excel Export Code==== */
-  // const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
+  const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
-  // const PrintPDFExcelExportFunction = (reportType) => {
-  //   let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+  const PrintPDFExcelExportFunction = (reportType) => {
+    let finalUrl = EXCEL_EXPORT_URL + "report/datacollection_export_excel.php";
 
-  //   window.open(
-  //     finalUrl +
-  //       "?action=StrengthExport" +
-  //       "&reportType=" +
-  //       reportType +
-  //       "&TimeStamp=" +
-  //       Date.now()
-  //   );
-  // };
+    let QuarterName=quarterList[quarterList.findIndex(list => list.id == currFilterQuarterId)].name;
+    let DivisionName=divisionList[divisionList.findIndex(divisionList_List => divisionList_List.id == currDivisionId)].name;
+    let DistrictName=districtList[districtList.findIndex(districtList_List => districtList_List.id == currDistrictId)].name;
+    let UpazilaName=upazilaList[upazilaList.findIndex(upazilaList_List => upazilaList_List.id == currUpazilaId)].name;
+   
+
+
+    window.open(
+      finalUrl +
+        "?action=DataExport" +
+        "&reportType=excel" +
+        "&YearId=" + currFilterYearId +
+        "&QuarterId=" + currFilterQuarterId +
+        "&QuarterName=" + QuarterName +
+        "&DivisionId=" + currDivisionId +
+        "&DistrictId=" + currDistrictId +
+        "&UpazilaId=" + currUpazilaId +
+        "&DivisionName=" + DivisionName +
+        "&DistrictName=" + DistrictName +
+        "&UpazilaName=" + UpazilaName +
+        "&TimeStamp=" +
+        Date.now()
+    );
+  };
   /* =====End of Excel Export Code==== */
+
 
   const newInvoice = () => {
     console.log("dataTypeId: ", dataTypeId);
@@ -945,7 +964,16 @@ const DataCollectionEntry = (props) => {
       label: "তথ্য সংগ্রহ বছর-ত্রৈমাসিক",
       width: "8%",
       align: "left",
-      visible: true,
+      visible: false,
+      sort: true,
+      filter: true,
+    },
+    {
+      field: "FarmerName",
+      label: "ফার্মার",
+      // width: "13%",
+      align: "left",
+      visible: dataTypeId==2?true:false,
       sort: true,
       filter: true,
     },
@@ -2194,6 +2222,10 @@ const DataCollectionEntry = (props) => {
                   onClick={addData}
                 />
               )}
+
+
+          <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
+
             </div>
 
             {/* <!-- ####---Master invoice list---####s --> */}
