@@ -84,17 +84,30 @@ textarea {
 }
 
 /* Container Header, its not NAVBAR */
-.topHeader {
+/* .topHeader {
     display: flex;
     flex-direction: row;
     align-items: center;
-    /* Flex */
     height: 50px;
     background-color: var(--secondary-color);
     border: var(--header-border);
     color: var(--headerFont-color);
     border-radius: 8px;
     padding: 8px;
+} */
+
+.topHeader {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    background-color: var(--secondary-color);
+    border: var(--header-border);
+    color: var(--headerFont-color);
+    border-radius: 8px;
+    padding: 8px;
+    align-content: stretch;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .topHeader h4 {
