@@ -40,6 +40,8 @@ import SurveyTitleEntry from "views/screens/surveytitleentry/index.js";
 import UnionEntry from "views/screens/unionentry/index.js";
 import TrainingAdd from "views/screens/trainingadd/index.js";
 
+import AuditLot from "views/screens/auditlog/index.js";
+import ErrorLog from "views/screens/errorlog/index.js";
 
 import UserContextProvider from "./context/user-info-context";
 
@@ -84,7 +86,7 @@ ReactDOM.render(
             path="/datatypequestionsmap"
             render={(props) => <DatatypeQuestionsMap {...props} />}
           />
-    
+
           <Route
             path="/pgdatacollection"
             render={(props) => <PGDataCollection {...props} />}
@@ -136,7 +138,9 @@ ReactDOM.render(
           />
           <Route
             path="/valuechainwisepgmemberdistribution"
-            render={(props) => <ValueChainWisePGMemberDistribution {...props} />}
+            render={(props) => (
+              <ValueChainWisePGMemberDistribution {...props} />
+            )}
           />
           <Route
             path="/pgandpgmembersinformation"
@@ -160,6 +164,9 @@ ReactDOM.render(
             path="/trainingadd"
             render={(props) => <TrainingAdd {...props} />}
           />
+          <Route path="/auditlog" render={(props) => <AuditLot {...props} />} />
+
+          <Route path="/errorlog" render={(props) => <ErrorLog {...props} />} />
 
           <Route path="/" render={(props) => <Index {...props} />} />
         </Switch>
