@@ -440,6 +440,8 @@ const DataCollectionEntry = (props) => {
         DistrictName +
         "&UpazilaName=" +
         UpazilaName +
+        "&DataTypeId=" +
+        dataTypeId +
         "&TimeStamp=" +
         Date.now()
     );
@@ -681,7 +683,7 @@ const DataCollectionEntry = (props) => {
       );
     } else if (dataTypeId === 3) {
       setEntryFormTitle(
-        "গ্ৰুপের তথ্য সংগ্রহ ফরম (Large Group Discussion Data)"
+        "গ্ৰুপের তথ্য সংগ্রহ ফরম (Community Data Collection Form)"
       );
       setEntryFormSubTitle(
         "ত্রৈমাসিক তথ্য সংগ্রহ এবং সংরক্ষণ (Quarterly Data Collection and Storage)"
@@ -2011,7 +2013,7 @@ const DataCollectionEntry = (props) => {
           )}
 
           {dataTypeId === 3 && (
-            <h4>Home ❯ Data Collection ❯ এলজিডি তথ্য (LGD Data Collection)</h4>
+            <h4>Home ❯ Data Collection ❯ এলজিডি তথ্য (Community Data Collection)</h4>
           )}
 
           {!listEditPanelToggle ? (

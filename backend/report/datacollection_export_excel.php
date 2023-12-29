@@ -1,482 +1,507 @@
 <?php
 
-	/* Database Connection */
-	include_once ('../env.php');
-	include_once ('../source/api/pdolibs/pdo_lib.php');
-	include_once ('../source/api/pdolibs/function_global.php');
+/* Database Connection */
+include_once('../env.php');
+include_once('../source/api/pdolibs/pdo_lib.php');
+include_once('../source/api/pdolibs/function_global.php');
 
-	/* include PhpSpreadsheet library */
-	require("PhpSpreadsheet/vendor/autoload.php");
+/* include PhpSpreadsheet library */
+require("PhpSpreadsheet/vendor/autoload.php");
 
-
-	$lan = isset($_REQUEST['lan']) ? $_REQUEST['lan'] : "en_GB";
-	$menukey = isset($_REQUEST['menukey']) ? $_REQUEST['menukey'] : "";
-	include_once ('../source/api/languages/lang_switcher_custom.php');
-
-	$db = new Db();
-
-
-	$YearId = isset($_REQUEST['YearId']) ? $_REQUEST['YearId'] : 0;
-	$QuarterId = isset($_REQUEST['QuarterId']) ? $_REQUEST['QuarterId'] : 0;
-	$DivisionId = isset($_REQUEST['DivisionId']) ? $_REQUEST['DivisionId'] : 0;
-	$DistrictId = isset($_REQUEST['DistrictId']) ? $_REQUEST['DistrictId'] : 0;
-	$UpazilaId = isset($_REQUEST['UpazilaId']) ? $_REQUEST['UpazilaId'] : 0;
-
-	$QuarterName = isset($_REQUEST['QuarterName']) ? $_REQUEST['QuarterName'] : '';
-	$DivisionName = isset($_REQUEST['DivisionName']) ? $_REQUEST['DivisionName'] : '';
-	$DistrictName = isset($_REQUEST['DistrictName']) ? $_REQUEST['DistrictName'] : '';
-	$UpazilaName = isset($_REQUEST['UpazilaName']) ? $_REQUEST['UpazilaName'] : '';
-	
-
-	$filterSubHeader = 'Year: '.$YearId.', Quarter: '.$QuarterName.', Division: '.$DivisionName.', District: '.$DistrictName.', Upazila: '.$UpazilaName;
-	
-	$dataList = array(
-		'category'=>array(),
-		'series'=>array()
-	);
-		
-	
-	$index=0;
-	$i=0;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Style\Protection;
+use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Worksheet\Row;
+use PhpOffice\PhpSpreadsheet\Calculation\Calculation;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 
-	
-	$query = "SELECT g.GenderName
-	,SUM(CASE WHEN f.`ValueChain`='DAIRY' THEN 1 ELSE 0 END) Dairy
-	,SUM(CASE WHEN f.`ValueChain`='BUFFALO' THEN 1 ELSE 0 END) Buffalo
-	,SUM(CASE WHEN f.`ValueChain`='BEEFFATTENING' THEN 1 ELSE 0 END) BeefFattening
-	,SUM(CASE WHEN f.`ValueChain`='GOAT' THEN 1 ELSE 0 END) Goat
-	,SUM(CASE WHEN f.`ValueChain`='SHEEP' THEN 1 ELSE 0 END) Sheep
-	,SUM(CASE WHEN f.`ValueChain`='SCAVENGINGCHICKENLOCAL' THEN 1 ELSE 0 END) ScavengingChickens
-	,SUM(CASE WHEN f.`ValueChain`='DUCK' THEN 1 ELSE 0 END) Duck
-	,SUM(CASE WHEN f.`ValueChain`='QUAIL' THEN 1 ELSE 0 END) Quail
-	,SUM(CASE WHEN f.`ValueChain`='PIGEON' THEN 1 ELSE 0 END) Pigeon
-	,COUNT(f.`FarmerId`) AS GrandTotal
-	FROM `t_farmer` f
-	INNER JOIN `t_gender` g ON f.`Gender` = g.GenderId
-	WHERE (f.DivisionId = $DivisionId OR $DivisionId=0)
-	AND (f.DistrictId = $DistrictId OR $DistrictId=0)
-	AND (f.UpazilaId = $UpazilaId OR $UpazilaId=0)
-	GROUP BY g.GenderName
+$lan = isset($_REQUEST['lan']) ? $_REQUEST['lan'] : "en_GB";
+$menukey = isset($_REQUEST['menukey']) ? $_REQUEST['menukey'] : "";
+include_once('../source/api/languages/lang_switcher_custom.php');
 
-	;";
-
-	$resultdata = $db->query($query);
-	
-	
-	if ($lan == 'en_GB') {
-		$siteTitle = reportsitetitleeng;
-	} else if ($lan == 'fr_FR') {
-		$siteTitle = reportsitetitlefr;
-	} 
-
-	$reporttitlelist = explode('<br/>',$siteTitle);
-		if(count($reporttitlelist) > 1){
-			$reportHeaderList[0] = $reporttitlelist[count($reporttitlelist)-1];
-			for($h=(count($reporttitlelist)-2); $h>=0; $h-- ){
-				array_unshift($reportHeaderList, $reporttitlelist[$h]);
-			}
-		}
+$db = new Db();
 
 
+$YearId = isset($_REQUEST['YearId']) ? $_REQUEST['YearId'] : 0;
+$QuarterId = isset($_REQUEST['QuarterId']) ? $_REQUEST['QuarterId'] : 0;
+$DivisionId = isset($_REQUEST['DivisionId']) ? $_REQUEST['DivisionId'] : 0;
+$DistrictId = isset($_REQUEST['DistrictId']) ? $_REQUEST['DistrictId'] : 0;
+$UpazilaId = isset($_REQUEST['UpazilaId']) ? $_REQUEST['UpazilaId'] : 0;
+$DataTypeId = isset($_REQUEST['DataTypeId']) ? $_REQUEST['DataTypeId'] : 0;
 
-	use PhpOffice\PhpSpreadsheet\Spreadsheet;
-	use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-	use PhpOffice\PhpSpreadsheet\Writer\Xls;	
-	use PhpOffice\PhpSpreadsheet\Style\Alignment;
-	use PhpOffice\PhpSpreadsheet\Style\Fill;
-	use PhpOffice\PhpSpreadsheet\Style\Color;
-	use PhpOffice\PhpSpreadsheet\Style\Border;
-	use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-	use PhpOffice\PhpSpreadsheet\Style\Protection;
-	use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
-	use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-	use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
-	use PhpOffice\PhpSpreadsheet\Worksheet\Row;
-	use PhpOffice\PhpSpreadsheet\Calculation\Calculation;
-	use PhpOffice\PhpSpreadsheet\Cell\Cell;
-	use PhpOffice\PhpSpreadsheet\Cell\DataValidation;	
-	use PhpOffice\PhpSpreadsheet\IOFactory;	
-	
-	$spreadsheet = new Spreadsheet();
-	
-	/*Page Setup
+$QuarterName = isset($_REQUEST['QuarterName']) ? $_REQUEST['QuarterName'] : '';
+$DivisionName = isset($_REQUEST['DivisionName']) ? $_REQUEST['DivisionName'] : '';
+$DistrictName = isset($_REQUEST['DistrictName']) ? $_REQUEST['DistrictName'] : '';
+$UpazilaName = isset($_REQUEST['UpazilaName']) ? $_REQUEST['UpazilaName'] : '';
+
+
+$filterSubHeader = 'Year: ' . $YearId . ', Quarter: ' . $QuarterName . ', Division: ' . $DivisionName . ', District: ' . $DistrictName . ', Upazila: ' . $UpazilaName;
+
+$ReportTitle = "";
+if ($DataTypeId == 1) {
+	$ReportTitle = "PG data collection";
+} else if ($DataTypeId == 2) {
+	$ReportTitle = "Farmers data collection";
+} else if ($DataTypeId == 3) {
+	$ReportTitle = "Community data collection";
+}
+
+$siteTitle = reportsitetitleeng;
+
+$reporttitlelist = explode('<br/>', $siteTitle);
+if (count($reporttitlelist) > 1) {
+	$reportHeaderList[0] = $reporttitlelist[count($reporttitlelist) - 1];
+	for ($h = (count($reporttitlelist) - 2); $h >= 0; $h--) {
+		array_unshift($reportHeaderList, $reporttitlelist[$h]);
+	}
+}
+
+$ExcelColName = array(
+	'1' => 'A',
+	'2' => 'B',
+	'3' => 'C',
+	'4' => 'D',
+	'5' => 'E',
+	'6' => 'F',
+	'7' => 'G',
+	'8' => 'H',
+	'9' => 'I',
+	'10' => 'J',
+	'11' => 'K',
+	'12' => 'L',
+	'13' => 'M',
+	'14' => 'N',
+	'15' => 'O',
+	'16' => 'P',
+	'17' => 'Q',
+	'18' => 'R',
+	'19' => 'S',
+	'20' => 'T',
+	'21' => 'U',
+	'22' => 'V',
+	'23' => 'W',
+	'24' => 'X',
+	'25' => 'Y',
+	'26' => 'Z',
+	'27' => 'AA',
+	'28' => 'AB',
+	'29' => 'AC',
+	'30' => 'AD',
+	'31' => 'AE',
+	'32' => 'AF',
+	'33' => 'AG',
+	'34' => 'AH',
+	'35' => 'AI',
+	'36' => 'AJ',
+	'37' => 'AK',
+	'38' => 'AL',
+	'39' => 'AM',
+	'40' => 'AN',
+	'41' => 'AO',
+	'42' => 'AP',
+	'43' => 'AQ',
+	'44' => 'AR',
+	'45' => 'AS',
+	'46' => 'AT',
+	'47' => 'AU',
+	'48' => 'AV',
+	'49' => 'AW',
+	'50' => 'AX',
+	'51' => 'AY',
+	'52' => 'AZ',
+	'53' => 'BA',
+	'54' => 'BB',
+	'55' => 'BC',
+	'56' => 'BD',
+	'57' => 'BE',
+	'58' => 'BF',
+	'59' => 'BG',
+	'60' => 'BH',
+	'61' => 'BI',
+	'62' => 'BJ',
+	'63' => 'BK',
+	'64' => 'BL',
+	'65' => 'BM',
+	'66' => 'BN',
+	'67' => 'BO',
+	'68' => 'BP',
+	'69' => 'BQ',
+	'70' => 'BR',
+	'71' => 'BS',
+	'72' => 'BT',
+	'73' => 'BU',
+	'74' => 'BV',
+	'75' => 'BW',
+	'76' => 'BX',
+	'77' => 'BY',
+	'78' => 'BZ'
+);
+
+$index = 0;
+$i = 0;
+
+
+$query = "SELECT a.`DataValueMasterId` as id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGId`,a.FarmerId,
+a.Categories, a.`YearId`, a.`QuarterId`, a.`Remarks`, 
+a.`DataCollectorName`, a.`DataCollectionDate`, a.`UserId`,a.BPosted
+, concat(a.YearId,' (',e.QuarterName,')') QuarterName, b.DivisionName,c.DistrictName,d.UpazilaName,f.PGName
+,a.StatusId,a.DesignationId,a.PhoneNumber,
+case when a.StatusId=1 then 'Waiting for Submit'
+		when a.StatusId=2 then 'Waiting for Accept'
+		when a.StatusId=3 then 'Waiting for Approve'
+		when a.StatusId=5 then 'Approved'
+		else '' end CurrentStatus,g.ValueChainName,h.UserName,i.SurveyTitle,a.SurveyId,j.FarmerName
+		FROM t_datavaluemaster a
+		inner join t_division b on a.DivisionId=b.DivisionId
+		inner join t_district c on a.DistrictId=c.DistrictId
+		inner join t_upazila d on a.UpazilaId=d.UpazilaId
+		inner join t_quarter e on a.QuarterId=e.QuarterId
+		inner join t_pg f on a.PGId=f.PGId
+		inner join t_valuechain g on a.ValuechainId=g.ValuechainId
+		inner join t_users h on a.UserId=h.UserId
+		inner join t_survey i on a.SurveyId=i.SurveyId
+		left join t_farmer j on a.FarmerId=j.FarmerId
+		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
+		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
+		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+		AND a.DataTypeId=$DataTypeId
+		AND a.YearId = '$YearId'
+		AND a.QuarterId = $QuarterId
+		ORDER BY a.CreateTs DESC;";
+
+$resultdata = $db->query($query);
+
+
+$ColSettings = array(
+	"SqlField" => ["SERIAL", "FarmerName", "SurveyTitle", "DataCollectionDate", "PGName", "ValueChainName", "UpazilaName", "DataCollectorName", "UserName", "CurrentStatus", "Remarks"],
+	"ColName" => ["Sl", "Farmer", "Survey", "Date of Interview", "PG", "Value Chain", "Upazila", "Enumerator", "Entry By", "Status", "Comment"],
+	"Alignment" => ["center", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left"],
+	"Width" => [10, 20, 22, 15, 22, 12, 12, 12, 12, 17, 20],
+);
+
+$ColumnCount = count($ColSettings["ColName"]);
+
+
+$spreadsheet = new Spreadsheet();
+
+/*Page Setup
 	Page Orientation(ORIENTATION_LANDSCAPE/ORIENTATION_PORTRAIT), 
 	Paper Size(PAPERSIZE_A3,PAPERSIZE_A4,PAPERSIZE_A5,PAPERSIZE_LETTER,PAPERSIZE_LEGAL etc)*/
-	$spreadsheet->getActiveSheet()->getPageSetup()->setOrientation(PageSetup::ORIENTATION_PORTRAIT);
-	$spreadsheet->getActiveSheet()->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A4);
-	
-	/*Set Page Margins for a Worksheet*/
-	$spreadsheet->getActiveSheet()->getPageMargins()->setTop(0.75);
-	$spreadsheet->getActiveSheet()->getPageMargins()->setRight(0.70);
-	$spreadsheet->getActiveSheet()->getPageMargins()->setLeft(0.70);
-	$spreadsheet->getActiveSheet()->getPageMargins()->setBottom(0.75);	
-	
-	/*Center a page horizontally/vertically*/
-	$spreadsheet->getActiveSheet()->getPageSetup()->setHorizontalCentered(false);
-	$spreadsheet->getActiveSheet()->getPageSetup()->setVerticalCentered(true);
+$spreadsheet->getActiveSheet()->getPageSetup()->setOrientation(PageSetup::ORIENTATION_PORTRAIT);
+$spreadsheet->getActiveSheet()->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A4);
 
-	/*Show/hide gridlines(true/false)*/
-	$spreadsheet->getActiveSheet()->setShowGridlines(true);
-	
-	$spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
-	$spreadsheet->getActiveSheet()->getPageSetup()->setFitToHeight(0);	
-	
-	//Activate work sheet
-    $spreadsheet->createSheet(0);
-    $spreadsheet->setActiveSheetIndex(0);
-	$spreadsheet->getActiveSheet(0);
-	
-	//work sheet name
-    $spreadsheet->getActiveSheet()->setTitle('data');
-	
-	/*Default Font Set*/
-	$spreadsheet->getDefaultStyle()->getFont()->setName('Calibri');
-	
-	/*Default Font Size Set*/
-	$spreadsheet->getDefaultStyle()->getFont()->setSize(11);
-	
-	
-	/* Border color */
-	$styleThinBlackBorderOutline = array('borders' => array('outline' => array('borderStyle' => Border::BORDER_THIN, 'color' => array('argb' => '5a5a5a'))));
-	$rn=2;
+/*Set Page Margins for a Worksheet*/
+$spreadsheet->getActiveSheet()->getPageMargins()->setTop(0.75);
+$spreadsheet->getActiveSheet()->getPageMargins()->setRight(0.70);
+$spreadsheet->getActiveSheet()->getPageMargins()->setLeft(0.70);
+$spreadsheet->getActiveSheet()->getPageMargins()->setBottom(0.75);
+
+/*Center a page horizontally/vertically*/
+$spreadsheet->getActiveSheet()->getPageSetup()->setHorizontalCentered(false);
+$spreadsheet->getActiveSheet()->getPageSetup()->setVerticalCentered(true);
+
+/*Show/hide gridlines(true/false)*/
+$spreadsheet->getActiveSheet()->setShowGridlines(true);
+
+$spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+$spreadsheet->getActiveSheet()->getPageSetup()->setFitToHeight(0);
+
+//Activate work sheet
+$spreadsheet->createSheet(0);
+$spreadsheet->setActiveSheetIndex(0);
+$spreadsheet->getActiveSheet(0);
+
+//work sheet name
+$spreadsheet->getActiveSheet()->setTitle('data');
+
+/*Default Font Set*/
+$spreadsheet->getDefaultStyle()->getFont()->setName('Calibri');
+
+/*Default Font Size Set*/
+$spreadsheet->getDefaultStyle()->getFont()->setSize(11);
 
 
-	/*Draw image*/
-	/* $drawing = new Drawing(); 
-	$drawing->setPath('images/logo.png');
-	$drawing->setCoordinates('A' . $rn);
-	$drawing->setWidth(75);
-	$drawing->setHeight(75);
-	$drawing->setOffsetX(40);                    
-	$drawing->setOffsetY(6);
-	$drawing->setWorksheet($spreadsheet->getActiveSheet());
-	$spreadsheet->getActiveSheet()->mergeCells('A2:B5');
-	//$rn=2;
-	
-	$drawing = new Drawing(); 
-	$drawing->setPath('images/benin_logo.png');
-	$drawing->setCoordinates('L' . $rn);
-	$drawing->setWidth(85);
-	$drawing->setHeight(85);
-	$drawing->setOffsetX(200);    // set x position 
-	$drawing->setOffsetY(4);
-	$drawing->setWorksheet($spreadsheet->getActiveSheet());
-	$spreadsheet->getActiveSheet()->mergeCells('L2:M5'); */
-	//$rn++;
-	for($p = 0; $p < count($reporttitlelist); $p++){
-		
-		$spreadsheet->getActiveSheet()->SetCellValue('C'.$rn, $reporttitlelist[$p]);
-		$spreadsheet->getActiveSheet()->getStyle('C'.$rn)->getFont();
-		/* Font Size for Cells */
-		$spreadsheet->getActiveSheet()->getStyle('C'.$rn)->applyFromArray(array('font' => array('size' => '13', 'bold' => true)), 'C'.$rn);
-		/* Text Alignment Horizontal(HORIZONTAL_LEFT,HORIZONTAL_CENTER,HORIZONTAL_RIGHT) */
-		$spreadsheet->getActiveSheet()->getStyle('C'.$rn)->getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
-		/* Text Alignment Vertical(VERTICAL_TOP,VERTICAL_CENTER,VERTICAL_BOTTOM) */
-		$spreadsheet->getActiveSheet()->getStyle('C'.$rn)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		/* merge Cell */
-		$spreadsheet->getActiveSheet()->mergeCells('C'.$rn.':G'.$rn);
-		$rn++;
-	
-
-	 }
-	 $spreadsheet->getActiveSheet()->SetCellValue('C'.$rn, "Gender wise PG Members");
-	$spreadsheet->getActiveSheet()->getStyle('C'.$rn)->getFont();
-	$spreadsheet -> getActiveSheet()->getStyle('C'.$rn) -> applyFromArray(array('font' => array('size' => '14', 'bold' => true)), 'C'.$rn);
-	$spreadsheet -> getActiveSheet()->getStyle('C'.$rn) -> getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('C'.$rn)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet->getActiveSheet()->mergeCells('C'.$rn.':G'.$rn);
-		$rn++;
-	//head - 2
- 	
-
-	//head - 3
- 	$spreadsheet->getActiveSheet()->SetCellValue('C'.$rn, $filterSubHeader);
-	$spreadsheet->getActiveSheet()->getStyle('C'.$rn)->getFont();
-	$spreadsheet -> getActiveSheet()->getStyle('C'.$rn) -> applyFromArray(array('font' => array('size' => '14', 'bold' => true)), 'C'.$rn);
-	$spreadsheet -> getActiveSheet()->getStyle('C'.$rn) -> getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('C'.$rn)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet->getActiveSheet()->mergeCells('C'.$rn.':G'.$rn);
-		$rn++;
-
-	//head - 4
-	/* $spreadsheet->getActiveSheet()->SetCellValue('C'.$rn, $FacilityName);
-	$spreadsheet->getActiveSheet()->getStyle('C'.$rn)->getFont();
-	$spreadsheet -> getActiveSheet()->getStyle('C'.$rn) -> applyFromArray(array('font' => array('size' => '14', 'bold' => true)), 'A4');
-	$spreadsheet -> getActiveSheet()->getStyle('C'.$rn) -> getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('C'.$rn)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet->getActiveSheet()->mergeCells('C'.$rn.':G'.$rn);
-		$rn++; */
-
-	
-	
+/* Border color */
+$styleThinBlackBorderOutline = array('borders' => array('outline' => array('borderStyle' => Border::BORDER_THIN, 'color' => array('argb' => '5a5a5a'))));
+$rn = 2;
 
 
-	/*Value Set for Cells*/
-    $spreadsheet -> getActiveSheet()											
-			->SetCellValue('A5', 'Gender')
-			->SetCellValue('B5', 'Dairy')
-			->SetCellValue('C5', 'Buffalo')
-			->SetCellValue('D5', 'Beef Fattening')
-			->SetCellValue('E5', 'Goat')
-			->SetCellValue('F5', 'Sheep')
-			->SetCellValue('G5', 'Scavenging Chickens')
-			->SetCellValue('H5', 'Duck')
-			->SetCellValue('I5', 'Quail')
-			->SetCellValue('J5', 'Pigeon')
-			->SetCellValue('K5', 'Grand Total')
-			->SetCellValue('L5', '% of Gender')
-			
-			;
-					
-	/*Font Size for Cells*/
-	//$spreadsheet -> getActiveSheet()->getStyle('A6') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'A6');	
-	$spreadsheet -> getActiveSheet()->getStyle('A5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'A5');
-	$spreadsheet -> getActiveSheet()->getStyle('B5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'B5');
-	$spreadsheet -> getActiveSheet()->getStyle('C5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'C5');
-	$spreadsheet -> getActiveSheet()->getStyle('D5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'D5');
-	$spreadsheet -> getActiveSheet()->getStyle('E5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'E5');
-	$spreadsheet -> getActiveSheet()->getStyle('F5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'F5');
-	$spreadsheet -> getActiveSheet()->getStyle('G5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'G5');
-	$spreadsheet -> getActiveSheet()->getStyle('H5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'H5');
-	$spreadsheet -> getActiveSheet()->getStyle('I5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'I5');
-	$spreadsheet -> getActiveSheet()->getStyle('J5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'J5');
-	$spreadsheet -> getActiveSheet()->getStyle('K5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'K5');
-	$spreadsheet -> getActiveSheet()->getStyle('L5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'L5');
 
-	/*Text Alignment Horizontal(HORIZONTAL_LEFT,HORIZONTAL_CENTER,HORIZONTAL_RIGHT)*/
-	//$spreadsheet -> getActiveSheet()->getStyle('A6') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-	$spreadsheet -> getActiveSheet()->getStyle('A5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	$spreadsheet -> getActiveSheet()->getStyle('B5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet -> getActiveSheet()->getStyle('C5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet -> getActiveSheet()->getStyle('D5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet -> getActiveSheet()->getStyle('E5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet -> getActiveSheet()->getStyle('F5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet -> getActiveSheet()->getStyle('G5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet -> getActiveSheet()->getStyle('H5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet -> getActiveSheet()->getStyle('I5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet -> getActiveSheet()->getStyle('J5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet -> getActiveSheet()->getStyle('K5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet -> getActiveSheet()->getStyle('L5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+for ($p = 0; $p < count($reporttitlelist); $p++) {
 
-	/*Text Alignment Vertical(VERTICAL_TOP,VERTICAL_CENTER,VERTICAL_BOTTOM)*/
-	//$spreadsheet -> getActiveSheet() -> getStyle('A6')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('A5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('B5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('C5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('D5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('E5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('F5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('G5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('H5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('I5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('J5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('K5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	$spreadsheet -> getActiveSheet() -> getStyle('L5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	$spreadsheet->getActiveSheet()->SetCellValue('C' . $rn, $reporttitlelist[$p]);
+	$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->getFont();
+	/* Font Size for Cells */
+	$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->applyFromArray(array('font' => array('size' => '13', 'bold' => true)), 'C' . $rn);
+	/* Text Alignment Horizontal(HORIZONTAL_LEFT,HORIZONTAL_CENTER,HORIZONTAL_RIGHT) */
+	$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
+	/* Text Alignment Vertical(VERTICAL_TOP,VERTICAL_CENTER,VERTICAL_BOTTOM) */
+	$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	/* merge Cell */
+	// $spreadsheet->getActiveSheet()->mergeCells('C' . $rn . ':K' . $rn);
+	$spreadsheet->getActiveSheet()->mergeCells('C' . $rn . ':' . $ExcelColName[$ColumnCount] . $rn);
+	$rn++;
+}
 
-	/*Width for Cells*/
-	//$spreadsheet -> getActiveSheet() -> getColumnDimension('A') -> setWidth(15);
-	$spreadsheet -> getActiveSheet() -> getColumnDimension('A') -> setWidth(30);
-	$spreadsheet -> getActiveSheet() -> getColumnDimension('B') -> setWidth(15);
-	$spreadsheet -> getActiveSheet() -> getColumnDimension('C') -> setWidth(15);
-	$spreadsheet -> getActiveSheet() -> getColumnDimension('D') -> setWidth(15);
-	$spreadsheet -> getActiveSheet() -> getColumnDimension('K') -> setWidth(17);
-	$spreadsheet -> getActiveSheet() -> getColumnDimension('L') -> setWidth(17);
-
-	/*Wrap text*/
-	$spreadsheet->getActiveSheet()->getStyle('A5')->getAlignment()->setWrapText(true);
-	
-	/*border color set for cells*/
-	//$spreadsheet -> getActiveSheet() -> getStyle('A6:A6') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('A5:A5') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('B5:B5') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('C5:C5') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('D5:D5') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('E5:E5') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('F5:F5') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('G5:G5') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('H5:H5') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('I5:I5') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('J5:J5') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('K5:K5') -> applyFromArray($styleThinBlackBorderOutline);
-	$spreadsheet -> getActiveSheet() -> getStyle('L5:L5') -> applyFromArray($styleThinBlackBorderOutline);
-
-	$charList = array('1' => 'A', '2' => 'B', '3' => 'C', '4' => 'D', '5' =>'E', '6' => 'F', '7' => 'G', '8' => 'H', '9' => 'I', '10' => 'J', '11' => 'K', '12' => 'L', '13' => 'M', '14' => 'N', '15' => 'O');
-
-	$index = 1;
-	$rowNo = 10;
-
-	
-	$i=1; 
-	$j=6;
-
-	$TotalDairy = 0;
-	$TotalBuffalo = 0;
-	$TotalBeefFattening = 0;
-	$TotalGoat = 0;
-	$TotalSheep = 0;
-	$TotalScavengingChickens = 0;
-	$TotalDuck = 0;
-	$TotalQuail = 0;
-	$TotalPigeon = 0;
-	$TotalGrandTotal = 0;
-	$TotalPercentage = 0;
-
-	$dataList = array();
+//$spreadsheet->getActiveSheet()->SetCellValue('C'.$rn, "Farmers Data Collection");
+$spreadsheet->getActiveSheet()->SetCellValue('C' . $rn, $ReportTitle);
+$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->getFont();
+$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->applyFromArray(array('font' => array('size' => '14', 'bold' => true)), 'C' . $rn);
+$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->mergeCells('C' . $rn . ':K' . $rn);
+$spreadsheet->getActiveSheet()->mergeCells('C' . $rn . ':' . $ExcelColName[$ColumnCount] . $rn);
+$rn++;
+//head - 2
 
 
-		foreach ($resultdata as $key => $row) {
-			$dataList[] = $row;
+//head - 3
+$spreadsheet->getActiveSheet()->SetCellValue('C' . $rn, $filterSubHeader);
+$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->getFont();
+$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->applyFromArray(array('font' => array('size' => '14', 'bold' => true)), 'C' . $rn);
+$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('C' . $rn)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->mergeCells('C' . $rn . ':K' . $rn);
+$spreadsheet->getActiveSheet()->mergeCells('C' . $rn . ':' . $ExcelColName[$ColumnCount] . $rn);
+$rn++;
 
-			/**Calculate column total */
-			$TotalDairy += $row["Dairy"];
-			$TotalBuffalo += $row["Buffalo"];
-			$TotalBeefFattening += $row["BeefFattening"];
-			$TotalGoat += $row["Goat"];
-			$TotalSheep += $row["Sheep"];
-			$TotalScavengingChickens += $row["ScavengingChickens"];
-			$TotalDuck += $row["Duck"];
-			$TotalQuail += $row["Quail"];
-			$TotalPigeon += $row["Pigeon"];
-			$TotalGrandTotal += $row["GrandTotal"];
+
+/*Value Set for Cells*/
+// $spreadsheet->getActiveSheet()
+// 	->SetCellValue('A5', 'Sl')
+// 	->SetCellValue('B5', 'Farmer')
+// 	->SetCellValue('C5', 'Survey')
+// 	->SetCellValue('D5', 'Date of Interview')
+// 	->SetCellValue('E5', 'PG')
+// 	->SetCellValue('F5', 'Value Chain')
+// 	->SetCellValue('G5', 'Upazila')
+// 	->SetCellValue('H5', 'Enumerator')
+// 	->SetCellValue('I5', 'Entry By')
+// 	->SetCellValue('J5', 'Status')
+// 	->SetCellValue('K5', 'Comment');
+
+foreach ($ColSettings["ColName"] as $key => $ColName) {
+
+	// $spreadsheet->getActiveSheet()->SetCellValue('A5', 'Sl');
+	$spreadsheet->getActiveSheet()->SetCellValue($ExcelColName[$key + 1] . $rn, $ColName);
+	$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn)->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), $ExcelColName[$key + 1] . $rn);
+
+	if ($ColSettings["Alignment"][$key] == "center") {
+		$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+	} else if ($ColSettings["Alignment"][$key] == "right") {
+		$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+	} else {
+		$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	}
+
+	$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+
+	$spreadsheet->getActiveSheet()->getColumnDimension($ExcelColName[$key + 1])->setWidth($ColSettings["Width"][$key]);
+
+	$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn . ':' . $ExcelColName[$key + 1] . $rn)->applyFromArray($styleThinBlackBorderOutline);
+}
+
+
+/*Font Size for Cells*/
+//$spreadsheet -> getActiveSheet()->getStyle('A6') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'A6');	
+// $spreadsheet->getActiveSheet()->getStyle('A5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'A5');
+// $spreadsheet->getActiveSheet()->getStyle('B5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'B5');
+// $spreadsheet->getActiveSheet()->getStyle('C5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'C5');
+// $spreadsheet->getActiveSheet()->getStyle('D5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'D5');
+// $spreadsheet->getActiveSheet()->getStyle('E5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'E5');
+// $spreadsheet->getActiveSheet()->getStyle('F5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'F5');
+// $spreadsheet->getActiveSheet()->getStyle('G5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'G5');
+// $spreadsheet->getActiveSheet()->getStyle('H5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'H5');
+// $spreadsheet->getActiveSheet()->getStyle('I5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'I5');
+// $spreadsheet->getActiveSheet()->getStyle('J5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'J5');
+// $spreadsheet->getActiveSheet()->getStyle('K5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'K5');
+// $spreadsheet -> getActiveSheet()->getStyle('L5') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'L5');
+
+/*Text Alignment Horizontal(HORIZONTAL_LEFT,HORIZONTAL_CENTER,HORIZONTAL_RIGHT)*/
+//$spreadsheet -> getActiveSheet()->getStyle('A6') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('A5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('B5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+// $spreadsheet->getActiveSheet()->getStyle('C5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+// $spreadsheet->getActiveSheet()->getStyle('D5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+// $spreadsheet->getActiveSheet()->getStyle('E5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+// $spreadsheet->getActiveSheet()->getStyle('F5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+// $spreadsheet->getActiveSheet()->getStyle('G5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+// $spreadsheet->getActiveSheet()->getStyle('H5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+// $spreadsheet->getActiveSheet()->getStyle('I5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+// $spreadsheet->getActiveSheet()->getStyle('J5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+// $spreadsheet->getActiveSheet()->getStyle('K5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+// $spreadsheet -> getActiveSheet()->getStyle('L5') -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+
+/*Text Alignment Vertical(VERTICAL_TOP,VERTICAL_CENTER,VERTICAL_BOTTOM)*/
+//$spreadsheet -> getActiveSheet() -> getStyle('A6')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('A5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('B5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('C5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('D5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('E5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('F5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('G5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('H5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('I5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('J5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+// $spreadsheet->getActiveSheet()->getStyle('K5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+
+/*Width for Cells*/
+// $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(10);
+// $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+// $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(22);
+// $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+// $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(22);
+// $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(12);
+// $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(12);
+// $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(12);
+// $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(12);
+// $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(17);
+// $spreadsheet->getActiveSheet()->getColumnDimension('K')->setWidth(20);
+
+/*Wrap text*/
+// $spreadsheet->getActiveSheet()->getStyle('A5')->getAlignment()->setWrapText(true);
+
+/*border color set for cells*/
+//$spreadsheet -> getActiveSheet() -> getStyle('A6:A6') -> applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet->getActiveSheet()->getStyle('A5:A5')->applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet->getActiveSheet()->getStyle('B5:B5')->applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet->getActiveSheet()->getStyle('C5:C5')->applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet->getActiveSheet()->getStyle('D5:D5')->applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet->getActiveSheet()->getStyle('E5:E5')->applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet->getActiveSheet()->getStyle('F5:F5')->applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet->getActiveSheet()->getStyle('G5:G5')->applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet->getActiveSheet()->getStyle('H5:H5')->applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet->getActiveSheet()->getStyle('I5:I5')->applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet->getActiveSheet()->getStyle('J5:J5')->applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet->getActiveSheet()->getStyle('K5:K5')->applyFromArray($styleThinBlackBorderOutline);
+// $spreadsheet -> getActiveSheet() -> getStyle('L5:L5') -> applyFromArray($styleThinBlackBorderOutline);
+
+$j = 6;
+$rn++;
+
+$dataList = array();
+
+foreach ($resultdata as $key => $row) {
+	$dataList[] = $row;
+
+	/**Calculate column total */
+	// $TotalDairy += $row["Dairy"];
+	// $TotalBuffalo += $row["Buffalo"];
+	// $TotalBeefFattening += $row["BeefFattening"];
+	// $TotalGoat += $row["Goat"];
+	// $TotalSheep += $row["Sheep"];
+	// $TotalScavengingChickens += $row["ScavengingChickens"];
+	// $TotalDuck += $row["Duck"];
+	// $TotalQuail += $row["Quail"];
+	// $TotalPigeon += $row["Pigeon"];
+	// $TotalGrandTotal += $row["GrandTotal"];
+}
+
+
+
+
+$sl = 1;
+
+
+/**Calculate Percentage */
+foreach ($dataList as $k => $row) {
+
+	// $spreadsheet->getActiveSheet()
+	// 	->SetCellValue('A' . $j, ($key + 1))
+	// 	->SetCellValue('B' . $j, $row['FarmerName'])
+	// 	->SetCellValue('C' . $j, $row['SurveyTitle'])
+	// 	->SetCellValue('D' . $j, $row['DataCollectionDate'])
+	// 	->SetCellValue('E' . $j, $row['PGName'])
+	// 	->SetCellValue('F' . $j, $row['ValueChainName'])
+	// 	->SetCellValue('G' . $j, $row['UpazilaName'])
+	// 	->SetCellValue('H' . $j, $row['DataCollectorName'])
+	// 	->SetCellValue('I' . $j, $row['UserName'])
+	// 	->SetCellValue('J' . $j, $row['CurrentStatus'])
+	// 	->SetCellValue('K' . $j, $row['Remarks']);
+
+	//	"SqlField" => ["SERIAL", "FarmerName", "FarmerName", "FarmerName", "FarmerName", "FarmerName", "FarmerName", "FarmerName", "FarmerName", "FarmerName", "FarmerName"],
+	foreach ($ColSettings["SqlField"] as $key => $field) {
+		if ($field == "SERIAL") {
+			$spreadsheet->getActiveSheet()->SetCellValue($ExcelColName[$key + 1] . $rn, $sl);
+		} else {
+			$spreadsheet->getActiveSheet()->SetCellValue($ExcelColName[$key + 1] . $rn, $row[$field]);
+		}
+
+		$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn . ':' . $ExcelColName[$key + 1] . $rn)->applyFromArray($styleThinBlackBorderOutline);
+
+
+		if ($ColSettings["Alignment"][$key] == "center") {
+			$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn . ':' . $ExcelColName[$key + 1] . $rn)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+		} else if ($ColSettings["Alignment"][$key] == "right") {
+			$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn . ':' . $ExcelColName[$key + 1] . $rn)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+		} else {
+			$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn . ':' . $ExcelColName[$key + 1] . $rn)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 		}
 
 
-		/**For Total row */
-		if (count($dataList) > 0) {
-			$row = array();
-			$row["GenderName"] = "Grand Total";
-			$row["Dairy"] = $TotalDairy;
-			$row["Buffalo"] = $TotalBuffalo;
-			$row["BeefFattening"] = $TotalBeefFattening;
-			$row["Goat"] = $TotalGoat;
-			$row["Sheep"] = $TotalSheep;
-			$row["ScavengingChickens"] = $TotalScavengingChickens;
-			$row["Duck"] = $TotalDuck;
-			$row["Quail"] = $TotalQuail;
-			$row["Pigeon"] = $TotalPigeon;
-			$row["GrandTotal"] = $TotalGrandTotal;
-			$row["Percentage"] = 0;
-			$dataList[] = $row;
-		}
-
-
-
-
-		/**Calculate Percentage */
-		foreach ($dataList as $key => $row) {
-			$row["Percentage"] = ($row["GrandTotal"]*100)/$TotalGrandTotal;
-
-			$spreadsheet->getActiveSheet()							
-				->SetCellValue('A'.$j, $row['GenderName'])	
-				->SetCellValue('B'.$j, $row['Dairy'])																
-				->SetCellValue('C'.$j, $row['Buffalo'])																
-				->SetCellValue('D'.$j, $row['BeefFattening'])																
-				 ->SetCellValue('E'.$j, $row['Goat'])
-				->SetCellValue('F'.$j, $row['Sheep'])
-				->SetCellValue('G'.$j, $row['ScavengingChickens'])
-				->SetCellValue('H'.$j, $row['Duck'])
-				->SetCellValue('I'.$j, $row['Quail'])
-				->SetCellValue('J'.$j, $row['Pigeon'])
-				->SetCellValue('K'.$j, $row['GrandTotal'])
-				->SetCellValue('L'.$j, $row["Percentage"])
-				
-			;
-
-			$spreadsheet -> getActiveSheet() -> getStyle('A' . $j . ':A' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-		$spreadsheet -> getActiveSheet() -> getStyle('B' . $j . ':B' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-		$spreadsheet -> getActiveSheet() -> getStyle('C' . $j . ':C' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-		$spreadsheet -> getActiveSheet() -> getStyle('D' . $j . ':D' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-		$spreadsheet -> getActiveSheet() -> getStyle('E' . $j . ':E' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-		$spreadsheet -> getActiveSheet() -> getStyle('F' . $j . ':F' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-		$spreadsheet -> getActiveSheet() -> getStyle('G' . $j . ':G' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-		$spreadsheet -> getActiveSheet() -> getStyle('H' . $j . ':H' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-		$spreadsheet -> getActiveSheet() -> getStyle('I' . $j . ':I' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-		$spreadsheet -> getActiveSheet() -> getStyle('J' . $j . ':J' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-		$spreadsheet -> getActiveSheet() -> getStyle('K' . $j . ':K' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-		$spreadsheet -> getActiveSheet() -> getStyle('L' . $j . ':L' . $j) -> applyFromArray($styleThinBlackBorderOutline);
-	
-		
-		$spreadsheet -> getActiveSheet()->getStyle('A' . $j . ':A' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-		$spreadsheet -> getActiveSheet()->getStyle('B' . $j . ':B' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-		$spreadsheet -> getActiveSheet()->getStyle('C' . $j . ':C' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-		$spreadsheet -> getActiveSheet()->getStyle('D' . $j . ':D' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-		$spreadsheet -> getActiveSheet()->getStyle('E' . $j . ':E' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-		$spreadsheet -> getActiveSheet()->getStyle('F' . $j . ':F' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-		$spreadsheet -> getActiveSheet()->getStyle('G' . $j . ':G' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-		$spreadsheet -> getActiveSheet()->getStyle('H' . $j . ':H' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-		$spreadsheet -> getActiveSheet()->getStyle('I' . $j . ':I' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-		$spreadsheet -> getActiveSheet()->getStyle('J' . $j . ':J' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-		$spreadsheet -> getActiveSheet()->getStyle('K' . $j . ':K' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-		$spreadsheet -> getActiveSheet()->getStyle('L' . $j . ':L' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-		
-		
-		$spreadsheet -> getActiveSheet() -> getStyle('A' . $j . ':A' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$spreadsheet -> getActiveSheet() -> getStyle('B' . $j . ':B' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$spreadsheet -> getActiveSheet() -> getStyle('C' . $j . ':C' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$spreadsheet -> getActiveSheet() -> getStyle('D' . $j . ':D' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$spreadsheet -> getActiveSheet() -> getStyle('E' . $j . ':E' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$spreadsheet -> getActiveSheet() -> getStyle('F' . $j . ':F' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$spreadsheet -> getActiveSheet() -> getStyle('G' . $j . ':G' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$spreadsheet -> getActiveSheet() -> getStyle('H' . $j . ':H' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$spreadsheet -> getActiveSheet() -> getStyle('I' . $j . ':I' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$spreadsheet -> getActiveSheet() -> getStyle('J' . $j . ':J' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$spreadsheet -> getActiveSheet() -> getStyle('K' . $j . ':K' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-		$spreadsheet -> getActiveSheet() -> getStyle('L' . $j . ':L' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	
-		
-		$spreadsheet->getActiveSheet()->getStyle('B'.$j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-		$spreadsheet->getActiveSheet()->getStyle('B'.$j)->getNumberFormat()->setFormatCode('#,##0'); 	
-	
-		
-		$spreadsheet->getActiveSheet()->getStyle('C'.$j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-		$spreadsheet->getActiveSheet()->getStyle('C'.$j)->getNumberFormat()->setFormatCode('#,##0'); 	
-	
-		
-		$spreadsheet->getActiveSheet()->getStyle('D'.$j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-		$spreadsheet->getActiveSheet()->getStyle('D'.$j)->getNumberFormat()->setFormatCode('#,##0'); 	
-	
-		
-		$spreadsheet->getActiveSheet()->getStyle('E'.$j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-		$spreadsheet->getActiveSheet()->getStyle('E'.$j)->getNumberFormat()->setFormatCode('#,##0'); 	
-	
-		
-		$spreadsheet->getActiveSheet()->getStyle('F'.$j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-		$spreadsheet->getActiveSheet()->getStyle('F'.$j)->getNumberFormat()->setFormatCode('#,##0'); 	
-	
-		
-		$spreadsheet->getActiveSheet()->getStyle('G'.$j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-		$spreadsheet->getActiveSheet()->getStyle('G'.$j)->getNumberFormat()->setFormatCode('#,##0'); 	
-	
-		
-		$spreadsheet->getActiveSheet()->getStyle('H'.$j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-		$spreadsheet->getActiveSheet()->getStyle('H'.$j)->getNumberFormat()->setFormatCode('#,##0'); 	
-	
+		$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn . ':' . $ExcelColName[$key + 1] . $rn)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
 		
-		$spreadsheet->getActiveSheet()->getStyle('I'.$j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-		$spreadsheet->getActiveSheet()->getStyle('I'.$j)->getNumberFormat()->setFormatCode('#,##0'); 	
-	
-		
-		$spreadsheet->getActiveSheet()->getStyle('J'.$j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-		$spreadsheet->getActiveSheet()->getStyle('J'.$j)->getNumberFormat()->setFormatCode('#,##0'); 	
-	
-		
-		$spreadsheet->getActiveSheet()->getStyle('K'.$j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-		$spreadsheet->getActiveSheet()->getStyle('K'.$j)->getNumberFormat()->setFormatCode('#,##0'); 	
-	
-	
-		$spreadsheet->getActiveSheet()->getStyle('L'.$j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-		$spreadsheet->getActiveSheet()->getStyle('L'.$j)->getNumberFormat()->setFormatCode('#,##0.0'); 	
-	
-	
-			$i++; $j++;
+	}
+	$sl++;
+	$rn++;
+	// $spreadsheet->getActiveSheet()->getStyle('A' . $j . ':A' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	// $spreadsheet->getActiveSheet()->getStyle('B' . $j . ':B' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	// $spreadsheet->getActiveSheet()->getStyle('C' . $j . ':C' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	// $spreadsheet->getActiveSheet()->getStyle('D' . $j . ':D' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	// $spreadsheet->getActiveSheet()->getStyle('E' . $j . ':E' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	// $spreadsheet->getActiveSheet()->getStyle('F' . $j . ':F' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	// $spreadsheet->getActiveSheet()->getStyle('G' . $j . ':G' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	// $spreadsheet->getActiveSheet()->getStyle('H' . $j . ':H' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	// $spreadsheet->getActiveSheet()->getStyle('I' . $j . ':I' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	// $spreadsheet->getActiveSheet()->getStyle('J' . $j . ':J' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	// $spreadsheet->getActiveSheet()->getStyle('K' . $j . ':K' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	// $spreadsheet -> getActiveSheet() -> getStyle('L' . $j . ':L' . $j) -> applyFromArray($styleThinBlackBorderOutline);
 
 
+	// $spreadsheet->getActiveSheet()->getStyle('A' . $j . ':A' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+	// $spreadsheet->getActiveSheet()->getStyle('B' . $j . ':B' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	// $spreadsheet->getActiveSheet()->getStyle('C' . $j . ':C' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	// $spreadsheet->getActiveSheet()->getStyle('D' . $j . ':D' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	// $spreadsheet->getActiveSheet()->getStyle('E' . $j . ':E' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	// $spreadsheet->getActiveSheet()->getStyle('F' . $j . ':F' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	// $spreadsheet->getActiveSheet()->getStyle('G' . $j . ':G' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	// $spreadsheet->getActiveSheet()->getStyle('H' . $j . ':H' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	// $spreadsheet->getActiveSheet()->getStyle('I' . $j . ':I' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	// $spreadsheet->getActiveSheet()->getStyle('J' . $j . ':J' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	// $spreadsheet->getActiveSheet()->getStyle('K' . $j . ':K' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	// $spreadsheet -> getActiveSheet()->getStyle('L' . $j . ':L' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 
-		}
-	
-	
+
+	// $spreadsheet->getActiveSheet()->getStyle('A' . $j . ':A' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	// $spreadsheet->getActiveSheet()->getStyle('B' . $j . ':B' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	// $spreadsheet->getActiveSheet()->getStyle('C' . $j . ':C' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	// $spreadsheet->getActiveSheet()->getStyle('D' . $j . ':D' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	// $spreadsheet->getActiveSheet()->getStyle('E' . $j . ':E' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	// $spreadsheet->getActiveSheet()->getStyle('F' . $j . ':F' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	// $spreadsheet->getActiveSheet()->getStyle('G' . $j . ':G' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	// $spreadsheet->getActiveSheet()->getStyle('H' . $j . ':H' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	// $spreadsheet->getActiveSheet()->getStyle('I' . $j . ':I' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	// $spreadsheet->getActiveSheet()->getStyle('J' . $j . ':J' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+	// $spreadsheet->getActiveSheet()->getStyle('K' . $j . ':K' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+
+	// $j++;
+}
+
+
 
 
 
@@ -484,7 +509,7 @@
 /* * *********************************** */
 /* * ************************************ */
 
-date_default_timezone_set('Africa/Porto-Novo');
+// date_default_timezone_set('Africa/Porto-Novo');
 
 $exportTime = date("Y-m-d-His", time());
 $writer = new Xlsx($spreadsheet);
@@ -492,10 +517,22 @@ $file = 'Data_Collection_' . $exportTime . '.xlsx'; //Save file name
 $writer->save('media/' . $file);
 header('Location:media/' . $file); //File open location
 
-function cellColor($cells, $color) {
-    global $spreadsheet;
+function cellColor($cells, $color)
+{
+	global $spreadsheet;
 
-    $spreadsheet->getActiveSheet()->getStyle($cells)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB($color);
+	$spreadsheet->getActiveSheet()->getStyle($cells)->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB($color);
 }
 
-?>
+
+//0=A,1=B,2=C .........
+// function getExcelColumnNameFromNumber($num) {
+// 	$numeric = $num % 26;
+// 	$letter = chr(65 + $numeric);
+// 	$num2 = intval($num / 26);
+// 	if ($num2 > 0) {
+// 		return getNameFromNumber($num2 - 1) . $letter;
+// 	} else {
+// 		return $letter;
+// 	}
+//  }
