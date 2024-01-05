@@ -48,6 +48,7 @@ const DataCollectionEntry = (props) => {
   const [currDivisionId, setCurrDivisionId] = useState(UserInfo.DivisionId);
   const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
   const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
+  
 
   const [showModal, setShowModal] = useState(false); //true=show modal, false=hide modal
 
@@ -86,8 +87,8 @@ const DataCollectionEntry = (props) => {
       filter: false,
     },
     {
-      field: "TrainingId",
-      label: "TrainingId",
+      field: "TrainingTitle",
+      label: "Training Title",
       width: "10%",
       align: "center",
       visible: false,
@@ -231,10 +232,11 @@ const DataCollectionEntry = (props) => {
       DistrictId: "",
       UpazilaId: "",
       PGId: "",
+      ValuechainId: "",
       TrainingDate: "",
-      TrainingTitle: "",
+      TrainingTitleId: "",
       TrainingDescription: "",
-      Venue: "",
+      VenueId: "",
     });
 
     setCurrentRow_form({
@@ -244,10 +246,11 @@ const DataCollectionEntry = (props) => {
       DistrictId: "",
       UpazilaId: "",
       PGId: "",
+      ValuechainId: "",
       TrainingDate: "",
-      TrainingTitle: "",
+      TrainingTitleId: "",
       TrainingDescription: "",
-      Venue: "",
+      VenueId: "",
     });
     /* openModal(); */
 
@@ -411,20 +414,42 @@ const DataCollectionEntry = (props) => {
   const [currDistrictId_form, setCurrDistrictId_form] = useState(null);
   const [currUpazilaId_form, setCurrUpazilaId_form] = useState(null);
   const [currPGId_form, setCurrPGId_form] = useState(null);
+  const [valuechainList, setValuechainId] = useState(null);
+  const [currValuechainId, setCurrValuechainId] = useState(null);
+
+  const [TrainingTitleList, setTrainingTitleList] = useState(null);
+  const [currTrainingTitle, setCurrTrainingTitle] = useState(null);
+  
+  const [VenueList, setVenueList] = useState(null);
+  const [currVenue, setCurrVenue] = useState(null);
+
+
 
   useEffect(() => {
     getDivision_form(
       currentRow_form.DivisionId,
       currentRow_form.DistrictId,
       currentRow_form.UpazilaId,
+      currentRow_form.ValuechainId,
       currentRow_form.PGId
     );
+
+    getTrainingTitleList(
+      currentRow_form.TrainingTitleId
+    );
+	
+	    getVenueList(
+        currentRow_form.VenueId
+    );
+	
+
   }, [currentRow_form]);
 
   function getDivision_form(
     selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
+    selectValuechainId,
     selectUnionId
   ) {
     let params = {
@@ -434,20 +459,22 @@ const DataCollectionEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      /* setDivisionList_form(
+       setDivisionList_form(
         [{ id: "", name: "Select Division" }].concat(res.data.datalist)
       );
- */
 
-      setDivisionList_form(
+
+      /* setDivisionList_form(
         res.data.datalist
-      );
+      ); */
+      
       setCurrDivisionId_form(selectDivisionId);
 
       getDistrict_form(
         selectDivisionId,
         SelectDistrictId,
         selectUpazilaId,
+        selectValuechainId,
         selectUnionId
       );
     });
@@ -457,6 +484,7 @@ const DataCollectionEntry = (props) => {
     selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
+    selectValuechainId,
     selectUnionId
   ) {
     let params = {
@@ -477,6 +505,7 @@ const DataCollectionEntry = (props) => {
         selectDivisionId,
         SelectDistrictId,
         selectUpazilaId,
+        selectValuechainId,
         selectUnionId
       );
     });
@@ -486,6 +515,7 @@ const DataCollectionEntry = (props) => {
     selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
+    selectValuechainId,
     selectUnionId
   ) {
     let params = {
@@ -503,28 +533,63 @@ const DataCollectionEntry = (props) => {
       setErrorObject_form({ ...errorObject_form, ["UpazilaId"]: null });
 
       setCurrUpazilaId_form(selectUpazilaId);
-      getUnion_form(
+      getValuechainIdList(
         selectDivisionId,
         SelectDistrictId,
         selectUpazilaId,
+        selectValuechainId,
         selectUnionId
       );
     });
   }
 
-  function getUnion_form(
+
+  function getValuechainIdList(
     selectDivisionId,
     SelectDistrictId,
     selectUpazilaId,
+    selectValuechainId,
     selectUnionId
   ) {
     let params = {
-      action: "PgGroupList",
+      action: "QuestionMapCategoryList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setValuechainId(
+        [{ id: "", name: "Select Value Chain" }].concat(res.data.datalist)
+      );
+
+      setCurrValuechainId(selectValuechainId);
+
+      getPGIdList_form(
+        selectDivisionId,
+        SelectDistrictId,
+        selectUpazilaId,
+        selectValuechainId,
+        selectUnionId
+      );
+    });
+  }
+
+
+  function getPGIdList_form(
+    selectDivisionId,
+    SelectDistrictId,
+    selectUpazilaId,
+    selectValuechainId,
+    selectUnionId
+  ) {
+    let params = {
+      action: "PgGroupListByUnion",
       lan: language(),
       UserId: UserInfo.UserId,
       DivisionId: selectDivisionId,
       DistrictId: SelectDistrictId,
       UpazilaId: selectUpazilaId,
+      ValuechainId: selectValuechainId,
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
@@ -535,12 +600,67 @@ const DataCollectionEntry = (props) => {
     });
   }
 
+
+
+
+  	
+function getTrainingTitleList(
+  selectTrainingTitle
+) {
+  let params = {
+    action: "TrainingTitleList",
+    lan: language(),
+    UserId: UserInfo.UserId,
+  };
+
+  apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+    setTrainingTitleList(
+      [{ id: "", name: "Select Training Title" }].concat(res.data.datalist)
+    );
+
+    setCurrTrainingTitle(selectTrainingTitle);
+
+  });
+}
+
+
+
+function getVenueList(
+  selectVenue
+) {
+  let params = {
+    action: "VenueList",
+    lan: language(),
+    UserId: UserInfo.UserId,
+  };
+
+  apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+    setVenueList(
+      [{ id: "", name: "Select Venue" }].concat(res.data.datalist)
+    );
+
+    setCurrVenue(selectVenue);
+
+  });
+}
+
   const handleChange_form = (e) => {
     const { name, value } = e.target;
     let data = { ...currentRow_form };
     data[name] = value;
     setCurrentRow_form(data);
     setErrorObject_form({ ...errorObject_form, [name]: null });
+
+    if (name === "TrainingTitleId") {
+      setCurrTrainingTitle(value);
+
+    } 
+	
+	if (name === "TrainingTitleId") {
+      setCurrTrainingTitle(value);
+
+    } 
+
   };
 
   const handleChange_form_dipendency = (e) => {
@@ -556,17 +676,27 @@ const DataCollectionEntry = (props) => {
 
       setCurrDistrictId_form("");
       setCurrUpazilaId_form("");
-      getDistrict_form(value, "", "", "");
-      getUpazila_form(value, "", "", "");
-      getUnion_form(value, "", "", "");
+      getDistrict_form(value, "", "", "", "");
+      getUpazila_form(value, "", "", "", "");
+      getPGIdList_form(value, "", "", "", "");
     } else if (name === "DistrictId") {
       setCurrDistrictId_form(value);
-      getUpazila_form(currentRow_form.DivisionId, value, "", "");
+      getUpazila_form(currentRow_form.DivisionId, value, "", "", "");
     } else if (name === "UpazilaId") {
       setCurrUpazilaId_form(value);
-      getUnion_form(
+      getPGIdList_form(
         currentRow_form.DivisionId,
         currentRow_form.DistrictId,
+        value,
+        "",
+        ""
+      );
+    }  else if (name === "ValuechainId") {
+      setCurrValuechainId(value);
+      getPGIdList_form(
+        currentRow_form.DivisionId,
+        currentRow_form.DistrictId,
+        currentRow_form.UpazilaId,
         value,
         ""
       );
@@ -590,9 +720,10 @@ const DataCollectionEntry = (props) => {
       "DistrictId",
       "UpazilaId",
       "PGId",
-      "TrainingTitle",
+      "ValuechainId",
+      "TrainingTitleId",
       "TrainingDescription",
-      "Venue",
+      "VenueId",
     ];
     let errorData = {};
     let isValid = true;
@@ -676,15 +807,15 @@ const DataCollectionEntry = (props) => {
               TrainingDate: currentRow_form
                 ? currentRow_form.TrainingDate
                 : res.data.LastInsertid[0].TrainingDate,
-              TrainingTitle: currentRow_form
-                ? currentRow_form.TrainingTitle
-                : res.data.LastInsertid[0].TrainingTitle,
+              TrainingTitleId: currentRow_form
+                ? currentRow_form.TrainingTitleId
+                : res.data.LastInsertid[0].TrainingTitleId,
               TrainingDescription: currentRow_form
                 ? currentRow_form.TrainingDescription
                 : res.data.LastInsertid[0].TrainingDescription,
-              Venue: currentRow_form
-                ? currentRow_form.Venue
-                : res.data.LastInsertid[0].Venue,
+              VenueId: currentRow_form
+                ? currentRow_form.VenueId
+                : res.data.LastInsertid[0].VenueId,
             });
 
             // Set the API call success state to true
@@ -1059,8 +1190,7 @@ const DataCollectionEntry = (props) => {
             {1 == 1 && (
               <div class="subContainer inputArea">
                 <div class="text-center">
-                  {/*  <h2>{entryFormTitle}</h2> */}
-                  {/* <h2>গ্রুপের তথ্য সংগ্রহ ফরম (PG data collection form)</h2> */}
+                 
                 </div>
 
                 <div
@@ -1139,6 +1269,21 @@ const DataCollectionEntry = (props) => {
                   </div>
 
                   <div class="contactmodalBodyOnePage pt-10">
+                   
+                    <label>Value Chain*</label>
+                      <select
+                        id="ValuechainId"
+                        name="ValuechainId"
+                        class={errorObject_form.ValuechainId}
+                        value={currValuechainId}
+                        onChange={(e) => handleChange_form_dipendency(e)}
+                      >
+                        {valuechainList &&
+                          valuechainList.map((item, index) => {
+                            return <option value={item.id}>{item.name}</option>;
+                          })}
+                      </select>
+                   
                     <label>PG *</label>
                     <select
                       id="PGId"
@@ -1153,19 +1298,28 @@ const DataCollectionEntry = (props) => {
                         })}
                     </select>
 
-                    <label>Training Title *</label>
-                    <input
-                      type="text"
-                      id="TrainingTitle"
-                      name="TrainingTitle"
-                      class={errorObject_form.TrainingTitle}
-                      placeholder="Enter Training Title"
-                      value={currentRow_form.TrainingTitle}
-                      onChange={(e) => handleChange_form(e)}
-                    />
+                   
                   </div>
 
+
                   <div class="contactmodalBodyOnePage pt-10">
+                   
+
+                    <label>Training Title *</label>
+                    <select
+                      id="TrainingTitleId"
+                      name="TrainingTitleId"
+                      className={errorObject_form.TrainingTitleId}
+                      value={currTrainingTitle}
+                      onChange={(e) => handleChange_form(e)}
+                    >
+                      {TrainingTitleList &&
+                        TrainingTitleList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                        })}
+                    </select>
+
+
                     <label>Training Description *</label>
                     <input
                       type="text"
@@ -1177,16 +1331,26 @@ const DataCollectionEntry = (props) => {
                       onChange={(e) => handleChange_form(e)}
                     />
 
+
+
+                  </div>
+
+
+                  <div class="contactmodalBodyOnePage pt-10">
+               
                     <label>Venue *</label>
-                    <input
-                      type="text"
-                      id="Venue"
-                      name="Venue"
-                      class={errorObject_form.Venue}
-                      placeholder="Enter Venue"
-                      value={currentRow_form.Venue}
+                    <select
+                      id="VenueId"
+                      name="VenueId"
+                      className={errorObject_form.VenueId}
+                      value={currVenue}
                       onChange={(e) => handleChange_form(e)}
-                    />
+                    >
+                      {VenueList &&
+                        VenueList.map((item, index) => {
+                          return <option value={item.id}>{item.name}</option>;
+                        })}
+                    </select>
                   </div>
 
                   <div class="alignRightText">

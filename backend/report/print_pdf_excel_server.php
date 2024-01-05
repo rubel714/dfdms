@@ -604,17 +604,35 @@ function TrainingDataExport() {
 
 	$sql = "SELECT a.TrainingId AS id, a.TrainingId, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.PGId, 
 	b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, f.`PGName`,
-	a.TrainingDate, a.TrainingTitle, a.TrainingDescription, a.Venue
-
+	a.TrainingDate, a.TrainingDescription
+	,g.TrainingTitle , h.Venue,
+	eb.`FarmerName`,
+			eb.`NID`,
+			eb.`Phone`,
+			eb.`FatherName`,
+			eb.`MotherName`,
+			ec.`GenderName`,
+			eb.`ValueChain`,
+			j.ValueChainName
 	FROM `t_training` a
 	INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
 	INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
 	INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
 	INNER JOIN t_pg f ON a.`PGId` = f.`PGId`
+	INNER JOIN t_training_title g ON a.`TrainingTitleId` = g.`TrainingTitleId`
+	INNER JOIN t_venue h ON a.`VenueId` = h.`VenueId`
+
+	LEFT JOIN t_training_details ea ON a.TrainingId = ea.TrainingId
+    LEFT JOIN t_farmer eb ON eb.FarmerId = ea.FarmerId
+    LEFT JOIN t_gender ec ON eb.Gender = ec.GenderId
+    LEFT JOIN t_valuechain j ON eb.`ValuechainId` = j.`ValuechainId`
+	
 	WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 	AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 	AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
 	ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, f.`PGName` ASC;";
+
+
 
 $db = new Db();
 $sqlrresultHeader = $db->query($sql);
@@ -640,8 +658,8 @@ if($UpazilaId == 0){
 
 
 	
-    $tableProperties["query_field"] = array("TrainingDate","TrainingTitle","TrainingDescription","Venue","DivisionName","DistrictName","UpazilaName","PGName");
-    $tableProperties["table_header"] = array('Training Date','Training Title','Training Description','Venue','Division','District','Upazila','PG');
+    $tableProperties["query_field"] = array("TrainingDate","TrainingTitle","TrainingDescription","Venue","DivisionName","DistrictName","UpazilaName","PGName","FarmerName","NID","Phone","FatherName","MotherName","GenderName","ValueChainName");
+    $tableProperties["table_header"] = array('Training Date','Training Title','Training Description','Venue','Division','District','Upazila','PG','Beneficiary Name','Beneficiary NID','Mobile Number','Father\'s Name','Mother\'s Name','Gender','Value Chain');
     $tableProperties["align"] = array("left");
     $tableProperties["width_print_pdf"] = array("6%","5%","15%","5%","5%","5%","5%","5%","5%"); //when exist serial then here total 95% and 5% use for serial
     $tableProperties["width_excel"] = array("15","30","30","15","16","12","12","12","30","12","12","12","25");
@@ -655,7 +673,6 @@ if($UpazilaId == 0){
 	$tableProperties["header_list"][0] = $siteTitle;
 	$tableProperties["header_list"][1] = 'Training List';
 	$tableProperties["header_list"][2] = $DivisionName. $DistrictName. $UpazilaName;
-	// $tableProperties["header_list"][1] = 'Heading 2';
 	
 	//Report save name. Not allow any type of special character
 	$tableProperties["report_save_name"] = 'Training_List';

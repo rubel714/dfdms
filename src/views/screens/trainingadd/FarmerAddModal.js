@@ -28,9 +28,9 @@ const FarmerAddModal = (props) => {
   const [districtList, setDistrictList] = useState(null);
   const [upazilaList, setUpazilaList] = useState(null);
 
-  const [currDivisionId, setCurrDivisionId] = useState(UserInfo.DivisionId);
-  const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
-  const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
+  const [currDivisionId, setCurrDivisionId] = useState(props.currentRow.DivisionId);
+  const [currDistrictId, setCurrDistrictId] = useState(props.currentRow.DistrictId);
+  const [currUpazilaId, setCurrUpazilaId] = useState(props.currentRow.UpazilaId);
 
   const columnList = [
     { field: "rownumber", label: "SL", align: "center", width: "3%" },

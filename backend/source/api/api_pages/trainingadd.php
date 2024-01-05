@@ -50,13 +50,15 @@ function getDataList($data){
 
 		$query = "SELECT a.TrainingId AS id, a.TrainingId, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.PGId, 
 			b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, f.`PGName`,
-			a.TrainingDate, a.TrainingTitle, a.TrainingDescription, a.Venue
-		
+			a.TrainingDate, a.TrainingTitleId, a.TrainingDescription, a.VenueId, a.ValuechainId
+			,g.TrainingTitle , h.Venue
 			FROM `t_training` a
 			INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
 			INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
 			INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
 			INNER JOIN t_pg f ON a.`PGId` = f.`PGId`
+			INNER JOIN t_training_title g ON a.`TrainingTitleId` = g.`TrainingTitleId`
+			INNER JOIN t_venue h ON a.`VenueId` = h.`VenueId`
 			WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
@@ -98,9 +100,10 @@ function dataAddEdit($data) {
 		$DistrictId = $data->rowData->DistrictId;
 		$UpazilaId = $data->rowData->UpazilaId;
 		$PGId = $data->rowData->PGId;
-		$TrainingTitle = $data->rowData->TrainingTitle;
+		$TrainingTitleId = $data->rowData->TrainingTitleId;
 		$TrainingDescription = $data->rowData->TrainingDescription;
-		$Venue = $data->rowData->Venue;
+		$VenueId = $data->rowData->VenueId;
+		$ValuechainId = $data->rowData->ValuechainId;
 
 
 		try{
@@ -110,24 +113,24 @@ function dataAddEdit($data) {
 
 			if($TrainingId == ""){
 
-				$TrainingIdWH = "";
+				//$TrainingIdWH = "";
 
 				$q = new insertq();
 				$q->table = 't_training';
-				$q->columns = ['EntryDate','TrainingDate','DivisionId','DistrictId','UpazilaId','PGId', 'TrainingTitle','TrainingDescription', 'Venue','UserId'];
-				$q->values = [$EntryDate,$TrainingDate,$DivisionId,$DistrictId,$UpazilaId,$PGId, $TrainingTitle, $TrainingDescription, $Venue, $UserId];
+				$q->columns = ['EntryDate','TrainingDate','DivisionId','DistrictId','UpazilaId','PGId', 'TrainingTitleId','TrainingDescription', 'VenueId','UserId','ValuechainId'];
+				$q->values = [$EntryDate,$TrainingDate,$DivisionId,$DistrictId,$UpazilaId,$PGId, $TrainingTitleId, $TrainingDescription, $VenueId, $UserId, $ValuechainId];
 				$q->pks = ['TrainingId'];
 				$q->bUseInsetId = true;
 				$q->build_query();
 				$aQuerys[] = $q;
 			}else{
 
-				$TrainingIdWH = " WHERE TrainingId = $TrainingId";
+				//$TrainingIdWH = " WHERE TrainingId = $TrainingId";
 
 				$u = new updateq();
 				$u->table = 't_training';
-				$u->columns = ['EntryDate','TrainingDate','DivisionId','DistrictId','UpazilaId','PGId', 'TrainingTitle','TrainingDescription', 'Venue'];
-				$u->values = [$EntryDate,$TrainingDate,$DivisionId,$DistrictId,$UpazilaId,$PGId, $TrainingTitle, $TrainingDescription, $Venue];
+				$u->columns = ['EntryDate','TrainingDate','DivisionId','DistrictId','UpazilaId','PGId', 'TrainingTitleId','TrainingDescription', 'VenueId','ValuechainId'];
+				$u->values = [$EntryDate,$TrainingDate,$DivisionId,$DistrictId,$UpazilaId,$PGId, $TrainingTitleId, $TrainingDescription, $VenueId, $ValuechainId];
 				$u->pks = ['TrainingId'];
 				$u->pk_values = [$TrainingId];
 				$u->bUseInsetId = false;
@@ -143,7 +146,7 @@ function dataAddEdit($data) {
 			
 			if($res['msgType']=='success'){
 
-				$queryD = "SELECT COALESCE(MAX(TrainingId), '') AS MaxTrainingId, `TrainingDate`,`DivisionId`,`DistrictId`,`UpazilaId`,`PGId`,`TrainingTitle`,`TrainingDescription`,`Venue`
+				$queryD = "SELECT COALESCE(MAX(TrainingId), '') AS MaxTrainingId, `TrainingDate`,`DivisionId`,`DistrictId`,`UpazilaId`,`PGId`,`TrainingTitleId`,`TrainingDescription`,`VenueId`
 				FROM t_training
 				
 				ORDER BY TrainingId DESC;";

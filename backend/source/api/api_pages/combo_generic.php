@@ -91,6 +91,14 @@ switch($task){
 		$returnData = BankList($data);
 		break;
 
+	case "TrainingTitleList":
+		$returnData = TrainingTitleList($data);
+		break;
+		
+	case "VenueList":
+		$returnData = VenueList($data);
+		break;
+
 	case "HeadOfHHSexList":
 		$returnData = HeadOfHHSexList($data);
 		break;
@@ -758,6 +766,58 @@ function BankList($data) {
 
 		$query = "SELECT BankId id, BankName name
 		FROM t_bank ORDER BY BankName;"; 
+
+		$resultdata = $dbh->query($query);
+
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function TrainingTitleList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$query = "SELECT TrainingTitleId id, TrainingTitle name
+		FROM t_training_title ORDER BY TrainingTitle;"; 
+
+		$resultdata = $dbh->query($query);
+
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function VenueList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$query = "SELECT VenueId id, Venue name
+		FROM t_venue ORDER BY Venue;"; 
 
 		$resultdata = $dbh->query($query);
 
