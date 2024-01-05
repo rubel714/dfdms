@@ -26,6 +26,14 @@ switch($task){
 			DataTypeExport();
 			break;
 			
+		case "TrainingTitleExport":
+			TrainingTitleExport();
+			break;
+			
+		case "VenueExport":
+			VenueExport();
+			break;
+			
 		case "RoleExport":
 			RoleExport();
 			break;
@@ -110,6 +118,68 @@ function DataTypeExport() {
 	
 	//Report save name. Not allow any type of special character
 	$tableProperties["report_save_name"] = 'DataTypeList';
+}
+
+ 
+
+function TrainingTitleExport() {
+
+	global $sql, $tableProperties, $TEXT, $siteTitle;
+	// $ClientId = $_REQUEST['ClientId'];
+
+	$sql = "SELECT TrainingTitle
+	FROM t_training_title 
+	ORDER BY `TrainingTitle`;";
+	
+    $tableProperties["query_field"] = array("TrainingTitle");
+    $tableProperties["table_header"] = array('Training Title');
+    $tableProperties["align"] = array("left");
+    $tableProperties["width_print_pdf"] = array("60%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("50");
+    $tableProperties["precision"] = array("string"); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0); //colorcode field = 1 not color code field = 0
+	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
+    $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
+    
+	//Report header list
+	$tableProperties["header_list"][0] = $siteTitle;
+	$tableProperties["header_list"][1] = 'Trainig Title List';
+	// $tableProperties["header_list"][1] = 'Heading 2';
+	
+	//Report save name. Not allow any type of special character
+	$tableProperties["report_save_name"] = 'TrainigTitleList';
+}
+
+ 
+
+function VenueExport() {
+
+	global $sql, $tableProperties, $TEXT, $siteTitle;
+	// $ClientId = $_REQUEST['ClientId'];
+
+	$sql = "SELECT Venue
+	FROM t_venue 
+	ORDER BY `Venue`;";
+	
+    $tableProperties["query_field"] = array("Venue");
+    $tableProperties["table_header"] = array('Venue');
+    $tableProperties["align"] = array("left");
+    $tableProperties["width_print_pdf"] = array("60%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("50");
+    $tableProperties["precision"] = array("string"); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0); //colorcode field = 1 not color code field = 0
+	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
+    $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
+    
+	//Report header list
+	$tableProperties["header_list"][0] = $siteTitle;
+	$tableProperties["header_list"][1] = 'Venue List';
+	// $tableProperties["header_list"][1] = 'Heading 2';
+	
+	//Report save name. Not allow any type of special character
+	$tableProperties["report_save_name"] = 'VenueList';
 }
 
  
