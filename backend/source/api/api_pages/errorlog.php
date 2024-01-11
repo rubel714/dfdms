@@ -18,9 +18,6 @@ switch($task){
 
 function getDataList($data){
 
-	
-	$ClientId = trim($data->ClientId); 
-	$BranchId = trim($data->BranchId); 
 	$StartDate = trim($data->StartDate); 
 	$EndDate = trim($data->EndDate); 
 	$QueryType = trim($data->QueryType); 
