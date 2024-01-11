@@ -15,6 +15,8 @@ import LoginPage from "views/screens/LoginPage.js";
 import CheckPermission from "views/screens/CheckPermission.js";
 
 import DataType from "views/screens/datatype/index.js";
+import TrainingTitle from "views/screens/trainingtitle/index.js";
+import Venue from "views/screens/venue/index.js";
 import UserRole from "views/screens/userrole/index.js";
 import RoleToMenuPermissionEntry from "views/screens/roletomenupermissionentry/index.js";
 
@@ -72,6 +74,8 @@ ReactDOM.render(
           />
 
           <Route path="/datatype" render={(props) => <DataType {...props} />} />
+          <Route path="/trainingtitle" render={(props) => <TrainingTitle {...props} />} />
+          <Route path="/venue" render={(props) => <Venue {...props} />} />
           <Route path="/userrole" render={(props) => <UserRole {...props} />} />
           <Route
             path="/roletomenupermissionentry"

@@ -347,6 +347,30 @@ function AfterLoginNavbar(props) {
                         </a>
                       </li>
                     )}
+                  
+                    <li class="bordertopmenu"> </li>
+
+                    {menuShowPermision("trainingtitle") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("trainingtitle")}
+                        >
+                          Training Title
+                        </a>
+                      </li>
+                    )}
+                    {menuShowPermision("venue") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("venue")}
+                        >
+                          Venue
+                        </a>
+                      </li>
+                    )}
+
                     {menuShowPermision("trainingadd") === 1 && (
                       <li>
                         <a
@@ -357,6 +381,9 @@ function AfterLoginNavbar(props) {
                         </a>
                       </li>
                     )}
+
+                  
+
                     <li class="bordertopmenu"> </li>
 
                     {menuShowPermision("auditlog") === 1 && (
