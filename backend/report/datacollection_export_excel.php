@@ -46,6 +46,8 @@ $DivisionName = isset($_REQUEST['DivisionName']) ? $_REQUEST['DivisionName'] : '
 $DistrictName = isset($_REQUEST['DistrictName']) ? $_REQUEST['DistrictName'] : '';
 $UpazilaName = isset($_REQUEST['UpazilaName']) ? $_REQUEST['UpazilaName'] : '';
 
+$SurveyId = 2;//******************************************************************************************************* */
+
 
 $filterSubHeader = 'Year: ' . $YearId . ', Quarter: ' . $QuarterName . ', Division: ' . $DivisionName . ', District: ' . $DistrictName . ', Upazila: ' . $UpazilaName;
 
@@ -68,89 +70,155 @@ if (count($reporttitlelist) > 1) {
 	}
 }
 
-$ExcelColName = array(
-	'1' => 'A',
-	'2' => 'B',
-	'3' => 'C',
-	'4' => 'D',
-	'5' => 'E',
-	'6' => 'F',
-	'7' => 'G',
-	'8' => 'H',
-	'9' => 'I',
-	'10' => 'J',
-	'11' => 'K',
-	'12' => 'L',
-	'13' => 'M',
-	'14' => 'N',
-	'15' => 'O',
-	'16' => 'P',
-	'17' => 'Q',
-	'18' => 'R',
-	'19' => 'S',
-	'20' => 'T',
-	'21' => 'U',
-	'22' => 'V',
-	'23' => 'W',
-	'24' => 'X',
-	'25' => 'Y',
-	'26' => 'Z',
-	'27' => 'AA',
-	'28' => 'AB',
-	'29' => 'AC',
-	'30' => 'AD',
-	'31' => 'AE',
-	'32' => 'AF',
-	'33' => 'AG',
-	'34' => 'AH',
-	'35' => 'AI',
-	'36' => 'AJ',
-	'37' => 'AK',
-	'38' => 'AL',
-	'39' => 'AM',
-	'40' => 'AN',
-	'41' => 'AO',
-	'42' => 'AP',
-	'43' => 'AQ',
-	'44' => 'AR',
-	'45' => 'AS',
-	'46' => 'AT',
-	'47' => 'AU',
-	'48' => 'AV',
-	'49' => 'AW',
-	'50' => 'AX',
-	'51' => 'AY',
-	'52' => 'AZ',
-	'53' => 'BA',
-	'54' => 'BB',
-	'55' => 'BC',
-	'56' => 'BD',
-	'57' => 'BE',
-	'58' => 'BF',
-	'59' => 'BG',
-	'60' => 'BH',
-	'61' => 'BI',
-	'62' => 'BJ',
-	'63' => 'BK',
-	'64' => 'BL',
-	'65' => 'BM',
-	'66' => 'BN',
-	'67' => 'BO',
-	'68' => 'BP',
-	'69' => 'BQ',
-	'70' => 'BR',
-	'71' => 'BS',
-	'72' => 'BT',
-	'73' => 'BU',
-	'74' => 'BV',
-	'75' => 'BW',
-	'76' => 'BX',
-	'77' => 'BY',
-	'78' => 'BZ'
-);
+// $ExcelColName = array(
+// 	'1' => 'A',
+// 	'2' => 'B',
+// 	'3' => 'C',
+// 	'4' => 'D',
+// 	'5' => 'E',
+// 	'6' => 'F',
+// 	'7' => 'G',
+// 	'8' => 'H',
+// 	'9' => 'I',
+// 	'10' => 'J',
+// 	'11' => 'K',
+// 	'12' => 'L',
+// 	'13' => 'M',
+// 	'14' => 'N',
+// 	'15' => 'O',
+// 	'16' => 'P',
+// 	'17' => 'Q',
+// 	'18' => 'R',
+// 	'19' => 'S',
+// 	'20' => 'T',
+// 	'21' => 'U',
+// 	'22' => 'V',
+// 	'23' => 'W',
+// 	'24' => 'X',
+// 	'25' => 'Y',
+// 	'26' => 'Z',
+// 	'27' => 'AA',
+// 	'28' => 'AB',
+// 	'29' => 'AC',
+// 	'30' => 'AD',
+// 	'31' => 'AE',
+// 	'32' => 'AF',
+// 	'33' => 'AG',
+// 	'34' => 'AH',
+// 	'35' => 'AI',
+// 	'36' => 'AJ',
+// 	'37' => 'AK',
+// 	'38' => 'AL',
+// 	'39' => 'AM',
+// 	'40' => 'AN',
+// 	'41' => 'AO',
+// 	'42' => 'AP',
+// 	'43' => 'AQ',
+// 	'44' => 'AR',
+// 	'45' => 'AS',
+// 	'46' => 'AT',
+// 	'47' => 'AU',
+// 	'48' => 'AV',
+// 	'49' => 'AW',
+// 	'50' => 'AX',
+// 	'51' => 'AY',
+// 	'52' => 'AZ',
+// 	'53' => 'BA',
+// 	'54' => 'BB',
+// 	'55' => 'BC',
+// 	'56' => 'BD',
+// 	'57' => 'BE',
+// 	'58' => 'BF',
+// 	'59' => 'BG',
+// 	'60' => 'BH',
+// 	'61' => 'BI',
+// 	'62' => 'BJ',
+// 	'63' => 'BK',
+// 	'64' => 'BL',
+// 	'65' => 'BM',
+// 	'66' => 'BN',
+// 	'67' => 'BO',
+// 	'68' => 'BP',
+// 	'69' => 'BQ',
+// 	'70' => 'BR',
+// 	'71' => 'BS',
+// 	'72' => 'BT',
+// 	'73' => 'BU',
+// 	'74' => 'BV',
+// 	'75' => 'BW',
+// 	'76' => 'BX',
+// 	'77' => 'BY',
+// 	'78' => 'BZ'
+// );
 
 $index = 0;
 $i = 0;
+
+
+
+$ColSettings = array(
+	"SqlField" => ["SERIAL", "FarmerName", "SurveyTitle", "DataCollectionDate", "PGName", "ValueChainName", "UpazilaName", "DataCollectorName", "UserName", "CurrentStatus", "Remarks"],
+	"ColName" => ["Sl", "Farmer", "Survey", "Date of Interview", "PG", "Value Chain", "Upazila", "Enumerator", "Entry By", "Status", "Comment"],
+	"Alignment" => ["center", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left"],
+	"Width" => [10, 20, 22, 15, 22, 12, 12, 12, 12, 17, 20],
+);
+
+
+
+$query = "SELECT a.`QuestionId`, a.`QuestionCode`, 
+CASE WHEN a.`QuestionParentId`>0 THEN (SELECT i.`QuestionName` FROM t_questions i WHERE i.QuestionId=a.`QuestionParentId`) ELSE a.`QuestionName` END QuestionName,
+ a.`QuestionType`, a.`IsMandatory`, a.`QuestionParentId`, b.`SortOrder`, 0 SortOrderChild,a.Settings,b.Category
+FROM t_questions a
+INNER JOIN t_datatype_questions_map b ON a.QuestionId=b.QuestionId
+WHERE b.DataTypeId = $DataTypeId
+AND b.SurveyId=$SurveyId
+AND a.QuestionType != 'MultiOption'
+AND a.QuestionType != 'Label'
+
+
+UNION ALL
+
+SELECT child.`QuestionId`, child.`QuestionCode`, 
+CASE WHEN child.`QuestionParentId`>0 THEN (SELECT CONCAT(i.`QuestionName`,' ',child.`QuestionName`) FROM t_questions i WHERE i.QuestionId=child.`QuestionParentId`) ELSE child.`QuestionName` END QuestionName,
+ child.`QuestionType`, child.`IsMandatory`, child.`QuestionParentId`, 
+(SELECT s.SortOrder FROM t_datatype_questions_map s WHERE s.QuestionId=child.QuestionParentId AND s.SurveyId=$SurveyId) `SortOrder`, 
+child.SortOrderChild,child.Settings,m.Category
+FROM t_questions AS child
+INNER JOIN t_datatype_questions_map AS m ON child.QuestionParentId=m.QuestionId
+WHERE child.QuestionParentId != 0 AND m.DataTypeId = $DataTypeId AND m.SurveyId=$SurveyId
+
+ORDER BY SortOrder ASC, SortOrderChild ASC
+;";
+
+$resultquestion = $db->query($query);
+$questionList = array();
+
+$sqlMany = "";
+
+foreach ($resultquestion as $key1 => $row1) {
+
+	$QuestionId = $row1["QuestionId"];
+	$questionList[] = $row1;
+
+	$ColSettings["SqlField"][] = "Q_".$QuestionId;//$row1["QuestionName"];
+	$ColSettings["ColName"][] = $row1["QuestionName"];
+	$ColSettings["Alignment"][] = "left";
+	$ColSettings["Width"][] = 15;
+
+
+	$sqlMany .= ",(SELECT v.DataValue FROM t_datavalueitems v WHERE a.DataValueMasterId=v.DataValueMasterId AND v.QuestionId=$QuestionId) Q_$QuestionId";
+}
+
+// $ColSettings = array(
+// 	"SqlField" => ["SERIAL", "FarmerName", "SurveyTitle", "DataCollectionDate", "PGName", "ValueChainName", "UpazilaName", "DataCollectorName", "UserName", "CurrentStatus", "Remarks"],
+// 	"ColName" => ["Sl", "Farmer", "Survey", "Date of Interview", "PG", "Value Chain", "Upazila", "Enumerator", "Entry By", "Status", "Comment"],
+// 	"Alignment" => ["center", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left"],
+// 	"Width" => [10, 20, 22, 15, 22, 12, 12, 12, 12, 17, 20],
+// );
+// echo "<pre>";
+// print_r($questionList);
+// exit;
+
 
 
 $query = "SELECT a.`DataValueMasterId` as id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGId`,a.FarmerId,
@@ -163,6 +231,9 @@ case when a.StatusId=1 then 'Waiting for Submit'
 		when a.StatusId=3 then 'Waiting for Approve'
 		when a.StatusId=5 then 'Approved'
 		else '' end CurrentStatus,g.ValueChainName,h.UserName,i.SurveyTitle,a.SurveyId,j.FarmerName
+		
+		$sqlMany
+
 		FROM t_datavaluemaster a
 		inner join t_division b on a.DivisionId=b.DivisionId
 		inner join t_district c on a.DistrictId=c.DistrictId
@@ -180,19 +251,28 @@ case when a.StatusId=1 then 'Waiting for Submit'
 		AND a.YearId = '$YearId'
 		AND a.QuarterId = $QuarterId
 		ORDER BY a.CreateTs DESC;";
-
+// echo $query;
+// exit;
 $resultdata = $db->query($query);
 
 
-$ColSettings = array(
-	"SqlField" => ["SERIAL", "FarmerName", "SurveyTitle", "DataCollectionDate", "PGName", "ValueChainName", "UpazilaName", "DataCollectorName", "UserName", "CurrentStatus", "Remarks"],
-	"ColName" => ["Sl", "Farmer", "Survey", "Date of Interview", "PG", "Value Chain", "Upazila", "Enumerator", "Entry By", "Status", "Comment"],
-	"Alignment" => ["center", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left"],
-	"Width" => [10, 20, 22, 15, 22, 12, 12, 12, 12, 17, 20],
-);
+
+
+
+
+
+
+$ExcelColName = array();
+for ($na = 0; $na < count($ColSettings["SqlField"]); $na++) {
+	$ExcelColName[$na+1]=generateAlphabet($na);
+}
+
+
+
+
+
 
 $ColumnCount = count($ColSettings["ColName"]);
-
 
 $spreadsheet = new Spreadsheet();
 
@@ -526,13 +606,12 @@ function cellColor($cells, $color)
 
 
 //0=A,1=B,2=C .........
-// function getExcelColumnNameFromNumber($num) {
-// 	$numeric = $num % 26;
-// 	$letter = chr(65 + $numeric);
-// 	$num2 = intval($num / 26);
-// 	if ($num2 > 0) {
-// 		return getNameFromNumber($num2 - 1) . $letter;
-// 	} else {
-// 		return $letter;
-// 	}
-//  }
+function generateAlphabet($na) {
+	$sa = "";
+	while ($na >= 0) {
+		$sa = chr($na % 26 + 65) . $sa;
+		$na = floor($na / 26) - 1;
+	}
+	return $sa;
+}
+
