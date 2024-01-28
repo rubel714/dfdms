@@ -54,7 +54,7 @@ input[type=text],
 input[type=number],
 input[type=date],
 select {
-    /* width: 100%; */
+    width: 100%;
     height: 28px;
     /* font-size: .9rem; */
     /* font-size: 1.1rem; */
@@ -1159,3 +1159,90 @@ input[type=search] {
   .modalItemFixed::-webkit-scrollbar-track {
     background-color: #f1f1f1;
   }
+
+  
+  /*none pg table*/
+  .newTableDivNonpg {
+    overflow-x: auto;
+  }
+
+  .tg-Nonpg {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .tg-Nonpg-nlfa {
+    background-color: #95bc666b;
+  }
+  .tg-Nonpg-22sb {
+    background-color: #add1f170;
+    max-width: 130px;
+  }
+
+  .tg-Nonpg-33sb {
+    background-color: #add1f170;
+    max-width: 118px;
+  }
+
+  .tg-Nonpg-44sb {
+    background-color: #add1f170;
+    max-width: 124px;
+  }
+
+
+  .tg-Nonpg td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  
+  .tg-Nonpgtitle {
+    font-weight: bold;
+  }
+
+  .NonpgOdd {
+    background-color: #1cc7d44d;
+  }
+  .NonpgEven {
+    background-color: #0972c45c;
+  }
+  
+  
+ 
+ 
+  
+  .formControl-mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 650px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2px 15px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+    .formControl-mobile {
+        flex-direction: row;
+        align-items: center; /* Updated to center the items vertically in the row */
+    }
+
+    .formControl-mobile label {
+        margin-right: 15px; /* Add some spacing between the label and input on desktop */
+    }
+}
+
+.modalItem-mobile {
+    display: flex;
+    justify-content: center; /* Align items horizontally in the center */
+    padding-top: 10px;
+}
+
+.modalItem-mobile .btnSave{
+    margin-left: 10px;
+}

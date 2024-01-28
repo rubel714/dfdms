@@ -23,6 +23,7 @@ import RoleToMenuPermissionEntry from "views/screens/roletomenupermissionentry/i
 import PGDataCollectionEntry from "views/screens/datacollectionentry/index.js";
 import FarmersDataCollectionEntry from "views/screens/datacollectionentry/indexfarmer.js";
 import LGDDataCollectionEntry from "views/screens/datacollectionentry/indexlgd.js";
+import FarmerDataEntryNonPG from "views/screens/farmerdataentrynonpg/index.js";
 
 import PGDataCollection from "views/screens/pgdatacollection/index.js";
 import FarmersDataCollection from "views/screens/farmersdatacollection/index.js";
@@ -106,6 +107,10 @@ ReactDOM.render(
           <Route
             path="/lgddatacollectionentry"
             render={(props) => <LGDDataCollectionEntry {...props} />}
+          />
+          <Route
+            path="/farmerdataentrynonpg"
+            render={(props) => <FarmerDataEntryNonPG {...props} />}
           />
 
           <Route

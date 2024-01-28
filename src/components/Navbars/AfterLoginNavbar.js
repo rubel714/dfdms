@@ -186,6 +186,19 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+                    {menuShowPermision("farmerdataentrynonpg") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() =>
+                            props.history.push("farmerdataentrynonpg")
+                          }
+                        >
+                          Farmer Data Entry(non-PG)
+                        </a>
+                      </li>
+                    )}
+
                     {/* 
                   {menuShowPermision("pgdatacollection") === 1 && (
                       <li>
