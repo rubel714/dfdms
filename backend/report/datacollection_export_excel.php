@@ -46,8 +46,6 @@ $DivisionName = isset($_REQUEST['DivisionName']) ? $_REQUEST['DivisionName'] : '
 $DistrictName = isset($_REQUEST['DistrictName']) ? $_REQUEST['DistrictName'] : '';
 $UpazilaName = isset($_REQUEST['UpazilaName']) ? $_REQUEST['UpazilaName'] : '';
 
-$SurveyId = 2;//******************************************************************************************************* */
-
 
 $filterSubHeader = 'Year: ' . $YearId . ', Quarter: ' . $QuarterName . ', Division: ' . $DivisionName . ', District: ' . $DistrictName . ', Upazila: ' . $UpazilaName;
 
@@ -70,85 +68,34 @@ if (count($reporttitlelist) > 1) {
 	}
 }
 
+
+
+$SurveyId = 0;
+$query1 = "SELECT a.SurveyId
+		FROM t_datavaluemaster a
+		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
+		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
+		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+		AND a.DataTypeId=$DataTypeId
+		AND a.YearId = '$YearId'
+		AND a.QuarterId = $QuarterId
+		ORDER BY a.CreateTs DESC
+		limit 0,1;";
+// echo $query;
+// exit;
+$resultdata1 = $db->query($query1);
+foreach ($resultdata1 as $rr) {
+	/**Get surveyid from first row of data */
+	$SurveyId = $rr["SurveyId"];
+}
+
+
 // $ExcelColName = array(
 // 	'1' => 'A',
 // 	'2' => 'B',
 // 	'3' => 'C',
 // 	'4' => 'D',
-// 	'5' => 'E',
-// 	'6' => 'F',
-// 	'7' => 'G',
-// 	'8' => 'H',
-// 	'9' => 'I',
-// 	'10' => 'J',
-// 	'11' => 'K',
-// 	'12' => 'L',
-// 	'13' => 'M',
-// 	'14' => 'N',
-// 	'15' => 'O',
-// 	'16' => 'P',
-// 	'17' => 'Q',
-// 	'18' => 'R',
-// 	'19' => 'S',
-// 	'20' => 'T',
-// 	'21' => 'U',
-// 	'22' => 'V',
-// 	'23' => 'W',
-// 	'24' => 'X',
-// 	'25' => 'Y',
-// 	'26' => 'Z',
-// 	'27' => 'AA',
-// 	'28' => 'AB',
-// 	'29' => 'AC',
-// 	'30' => 'AD',
-// 	'31' => 'AE',
-// 	'32' => 'AF',
-// 	'33' => 'AG',
-// 	'34' => 'AH',
-// 	'35' => 'AI',
-// 	'36' => 'AJ',
-// 	'37' => 'AK',
-// 	'38' => 'AL',
-// 	'39' => 'AM',
-// 	'40' => 'AN',
-// 	'41' => 'AO',
-// 	'42' => 'AP',
-// 	'43' => 'AQ',
-// 	'44' => 'AR',
-// 	'45' => 'AS',
-// 	'46' => 'AT',
-// 	'47' => 'AU',
-// 	'48' => 'AV',
-// 	'49' => 'AW',
-// 	'50' => 'AX',
-// 	'51' => 'AY',
-// 	'52' => 'AZ',
-// 	'53' => 'BA',
-// 	'54' => 'BB',
-// 	'55' => 'BC',
-// 	'56' => 'BD',
-// 	'57' => 'BE',
-// 	'58' => 'BF',
-// 	'59' => 'BG',
-// 	'60' => 'BH',
-// 	'61' => 'BI',
-// 	'62' => 'BJ',
-// 	'63' => 'BK',
-// 	'64' => 'BL',
-// 	'65' => 'BM',
-// 	'66' => 'BN',
-// 	'67' => 'BO',
-// 	'68' => 'BP',
-// 	'69' => 'BQ',
-// 	'70' => 'BR',
-// 	'71' => 'BS',
-// 	'72' => 'BT',
-// 	'73' => 'BU',
-// 	'74' => 'BV',
-// 	'75' => 'BW',
-// 	'76' => 'BX',
-// 	'77' => 'BY',
-// 	'78' => 'BZ'
+// 	'5' => 'E'
 // );
 
 $index = 0;
@@ -187,8 +134,7 @@ FROM t_questions AS child
 INNER JOIN t_datatype_questions_map AS m ON child.QuestionParentId=m.QuestionId
 WHERE child.QuestionParentId != 0 AND m.DataTypeId = $DataTypeId AND m.SurveyId=$SurveyId
 
-ORDER BY SortOrder ASC, SortOrderChild ASC
-;";
+ORDER BY SortOrder ASC, SortOrderChild ASC;";
 
 $resultquestion = $db->query($query);
 $questionList = array();
@@ -198,26 +144,16 @@ $sqlMany = "";
 foreach ($resultquestion as $key1 => $row1) {
 
 	$QuestionId = $row1["QuestionId"];
-	$questionList[] = $row1;
+	$questionList[$QuestionId] = $row1;
 
-	$ColSettings["SqlField"][] = "Q_".$QuestionId;//$row1["QuestionName"];
+	$ColSettings["SqlField"][] = "Q__" . $QuestionId; //$row1["QuestionName"];
 	$ColSettings["ColName"][] = $row1["QuestionName"];
 	$ColSettings["Alignment"][] = "left";
 	$ColSettings["Width"][] = 15;
 
 
-	$sqlMany .= ",(SELECT v.DataValue FROM t_datavalueitems v WHERE a.DataValueMasterId=v.DataValueMasterId AND v.QuestionId=$QuestionId) Q_$QuestionId";
+	$sqlMany .= ",(SELECT v.DataValue FROM t_datavalueitems v WHERE a.DataValueMasterId=v.DataValueMasterId AND v.QuestionId=$QuestionId) Q__$QuestionId";
 }
-
-// $ColSettings = array(
-// 	"SqlField" => ["SERIAL", "FarmerName", "SurveyTitle", "DataCollectionDate", "PGName", "ValueChainName", "UpazilaName", "DataCollectorName", "UserName", "CurrentStatus", "Remarks"],
-// 	"ColName" => ["Sl", "Farmer", "Survey", "Date of Interview", "PG", "Value Chain", "Upazila", "Enumerator", "Entry By", "Status", "Comment"],
-// 	"Alignment" => ["center", "left", "left", "left", "left", "left", "left", "left", "left", "left", "left"],
-// 	"Width" => [10, 20, 22, 15, 22, 12, 12, 12, 12, 17, 20],
-// );
-// echo "<pre>";
-// print_r($questionList);
-// exit;
 
 
 
@@ -264,7 +200,7 @@ $resultdata = $db->query($query);
 
 $ExcelColName = array();
 for ($na = 0; $na < count($ColSettings["SqlField"]); $na++) {
-	$ExcelColName[$na+1]=generateAlphabet($na);
+	$ExcelColName[$na + 1] = generateAlphabet($na);
 }
 
 
@@ -517,7 +453,8 @@ foreach ($dataList as $k => $row) {
 		if ($field == "SERIAL") {
 			$spreadsheet->getActiveSheet()->SetCellValue($ExcelColName[$key + 1] . $rn, $sl);
 		} else {
-			$spreadsheet->getActiveSheet()->SetCellValue($ExcelColName[$key + 1] . $rn, $row[$field]);
+			// $spreadsheet->getActiveSheet()->SetCellValue($ExcelColName[$key + 1] . $rn, $row[$field]);
+			$spreadsheet->getActiveSheet()->SetCellValue($ExcelColName[$key + 1] . $rn, formatCellValue($field, $row[$field]));
 		}
 
 		$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn . ':' . $ExcelColName[$key + 1] . $rn)->applyFromArray($styleThinBlackBorderOutline);
@@ -533,50 +470,19 @@ foreach ($dataList as $k => $row) {
 
 
 		$spreadsheet->getActiveSheet()->getStyle($ExcelColName[$key + 1] . $rn . ':' . $ExcelColName[$key + 1] . $rn)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-
-		
 	}
 	$sl++;
 	$rn++;
 	// $spreadsheet->getActiveSheet()->getStyle('A' . $j . ':A' . $j)->applyFromArray($styleThinBlackBorderOutline);
 	// $spreadsheet->getActiveSheet()->getStyle('B' . $j . ':B' . $j)->applyFromArray($styleThinBlackBorderOutline);
-	// $spreadsheet->getActiveSheet()->getStyle('C' . $j . ':C' . $j)->applyFromArray($styleThinBlackBorderOutline);
-	// $spreadsheet->getActiveSheet()->getStyle('D' . $j . ':D' . $j)->applyFromArray($styleThinBlackBorderOutline);
-	// $spreadsheet->getActiveSheet()->getStyle('E' . $j . ':E' . $j)->applyFromArray($styleThinBlackBorderOutline);
-	// $spreadsheet->getActiveSheet()->getStyle('F' . $j . ':F' . $j)->applyFromArray($styleThinBlackBorderOutline);
-	// $spreadsheet->getActiveSheet()->getStyle('G' . $j . ':G' . $j)->applyFromArray($styleThinBlackBorderOutline);
-	// $spreadsheet->getActiveSheet()->getStyle('H' . $j . ':H' . $j)->applyFromArray($styleThinBlackBorderOutline);
-	// $spreadsheet->getActiveSheet()->getStyle('I' . $j . ':I' . $j)->applyFromArray($styleThinBlackBorderOutline);
-	// $spreadsheet->getActiveSheet()->getStyle('J' . $j . ':J' . $j)->applyFromArray($styleThinBlackBorderOutline);
-	// $spreadsheet->getActiveSheet()->getStyle('K' . $j . ':K' . $j)->applyFromArray($styleThinBlackBorderOutline);
-	// $spreadsheet -> getActiveSheet() -> getStyle('L' . $j . ':L' . $j) -> applyFromArray($styleThinBlackBorderOutline);
 
 
 	// $spreadsheet->getActiveSheet()->getStyle('A' . $j . ':A' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 	// $spreadsheet->getActiveSheet()->getStyle('B' . $j . ':B' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	// $spreadsheet->getActiveSheet()->getStyle('C' . $j . ':C' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	// $spreadsheet->getActiveSheet()->getStyle('D' . $j . ':D' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	// $spreadsheet->getActiveSheet()->getStyle('E' . $j . ':E' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	// $spreadsheet->getActiveSheet()->getStyle('F' . $j . ':F' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	// $spreadsheet->getActiveSheet()->getStyle('G' . $j . ':G' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	// $spreadsheet->getActiveSheet()->getStyle('H' . $j . ':H' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	// $spreadsheet->getActiveSheet()->getStyle('I' . $j . ':I' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	// $spreadsheet->getActiveSheet()->getStyle('J' . $j . ':J' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	// $spreadsheet->getActiveSheet()->getStyle('K' . $j . ':K' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	// $spreadsheet -> getActiveSheet()->getStyle('L' . $j . ':L' . $j) -> getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 
 
 	// $spreadsheet->getActiveSheet()->getStyle('A' . $j . ':A' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 	// $spreadsheet->getActiveSheet()->getStyle('B' . $j . ':B' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	// $spreadsheet->getActiveSheet()->getStyle('C' . $j . ':C' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	// $spreadsheet->getActiveSheet()->getStyle('D' . $j . ':D' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	// $spreadsheet->getActiveSheet()->getStyle('E' . $j . ':E' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	// $spreadsheet->getActiveSheet()->getStyle('F' . $j . ':F' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	// $spreadsheet->getActiveSheet()->getStyle('G' . $j . ':G' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	// $spreadsheet->getActiveSheet()->getStyle('H' . $j . ':H' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	// $spreadsheet->getActiveSheet()->getStyle('I' . $j . ':I' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	// $spreadsheet->getActiveSheet()->getStyle('J' . $j . ':J' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-	// $spreadsheet->getActiveSheet()->getStyle('K' . $j . ':K' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
 	// $j++;
 }
@@ -597,6 +503,54 @@ $file = 'Data_Collection_' . $exportTime . '.xlsx'; //Save file name
 $writer->save('media/' . $file);
 header('Location:media/' . $file); //File open location
 
+
+
+
+// $questionList[$QuestionId] = $row1;
+
+function formatCellValue($field, $value)
+{
+	$retValue = "";
+	global $questionList;
+
+	$isQuestion = strpos($field, "__");
+
+	// echo $field;
+	// echo "===";
+	// echo "---$isQuestion---,";
+	if ($isQuestion > 0) {
+		// echo "YES=";
+		$qids = explode("__", $field);
+		$qid = $qids[1];
+		$qarr = $questionList[$qid];
+		$questionType = $qarr["QuestionType"];
+
+		if ($questionType == "YesNo") {
+			if($value){
+				$retValue = $value == "true" ? "Yes" : "No";
+			}else{
+				$retValue = $value;
+			}
+		} else if ($questionType == "Check") {
+			if($value){
+				$retValue = $value == "1" ? "Yes" : "No";
+			}else{
+				$retValue = $value;
+			}
+		} else {
+			$retValue = $value;
+		}
+	} else {
+		$retValue = $value;
+	}
+
+
+	return $retValue;
+}
+
+
+
+
 function cellColor($cells, $color)
 {
 	global $spreadsheet;
@@ -606,7 +560,8 @@ function cellColor($cells, $color)
 
 
 //0=A,1=B,2=C .........
-function generateAlphabet($na) {
+function generateAlphabet($na)
+{
 	$sa = "";
 	while ($na >= 0) {
 		$sa = chr($na % 26 + 65) . $sa;
@@ -614,4 +569,3 @@ function generateAlphabet($na) {
 	}
 	return $sa;
 }
-
