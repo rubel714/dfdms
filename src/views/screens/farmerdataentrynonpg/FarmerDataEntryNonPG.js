@@ -75,7 +75,7 @@ const FarmerDataEntryNonPG = (props) => {
     { field: "rownumber", label: "SL", align: "center", width: "3%" }, 
     {
       field: "FarmerName",
-      label: "Beneficiary Name",
+      label: "Farmer’s Name (নাম)",
       align: "left",
       visible: true,
       sort: true,
@@ -83,8 +83,35 @@ const FarmerDataEntryNonPG = (props) => {
     },
 
     {
-      field: "NID",
-      label: "Beneficiary NID",
+      field: "FatherName",
+      label: "Father’s Name (পিতা/স্বামী)",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "10%",
+    },
+    {
+      field: "MotherName",
+      label: "Mother’s Name (মাতার নাম)",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "10%",
+    },
+    {
+      field: "HusbandWifeName",
+      label: "Husband’s/Wife’s Name (স্বামীর / স্ত্রীর নাম)",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "12%",
+    },
+    {
+      field: "NameOfTheFarm",
+      label: "Name of the farm (খামারের নাম)",
       align: "left",
       visible: true,
       sort: true,
@@ -93,43 +120,16 @@ const FarmerDataEntryNonPG = (props) => {
     },
     {
       field: "Phone",
-      label: "Mobile Number",
+      label: "Mobile number (মোবাইল নং)",
       align: "left",
       visible: true,
-      sort: true,
-      filter: true,
-      width: "10%",
-    },
-    {
-      field: "FatherName",
-      label: "Father's Name",
-      align: "left",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "12%",
-    },
-    {
-      field: "MotherName",
-      label: "Mother's Name",
-      align: "left",
-      visible: true,
-      sort: true,
-      filter: true,
-      width: "10%",
-    },
-    {
-      field: "SpouseName",
-      label: "Spouse Name",
-      align: "left",
-      visible: false,
       sort: true,
       filter: true,
       width: "10%",
     },
     {
       field: "GenderName",
-      label: "Gender",
+      label: "Gender (জেন্ডার)",
       align: "left",
       visible: true,
       sort: true,
@@ -137,8 +137,8 @@ const FarmerDataEntryNonPG = (props) => {
       width: "7%",
     },
     {
-      field: "FarmersAge",
-      label: "Farmer's Age",
+      field: "IsDisabilityStatus",
+      label: "Is there any disability (প্রতিবন্ধি কিনা)",
       align: "left",
       visible: true,
       sort: true,
@@ -146,8 +146,8 @@ const FarmerDataEntryNonPG = (props) => {
       width: "7%",
     },
     {
-      field: "ValueChainName",
-      label: "Value Chain",
+      field: "NID",
+      label: "NID (জাতীয় পরিচয় পত্র/ ভোটার আইডি কার্ড নম্বর)",
       align: "left",
       visible: true,
       sort: true,
@@ -155,24 +155,15 @@ const FarmerDataEntryNonPG = (props) => {
       width: "7%",
     },
     {
-      field: "PGName",
-      label: "Name of Producer Group",
+      field: "IsPGMemberStatus",
+      label: "Are you the member of a PG under LDDP (আপনি কি LDDP প্রকল্পের আওতাধীন কোনো পিজি'র সদস্য) ?",
       align: "left",
-      visible: true,
+      visible: false,
       sort: true,
       filter: true,
       width: "12%",
     },
-    {
-      field: "IsRegularBeneficiary",
-      label: "Is Regular Beneficiary?",
-      align: "center",
-      visible: false,
-      sort: true,
-      filter: true,
-      width: "4%",
-    },
-
+ 
     {
       field: "custom",
       label: "Action",
@@ -546,7 +537,7 @@ const FarmerDataEntryNonPG = (props) => {
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
         <div class="searchAdd3">
           <div class="formControl-filter-data-label">
-              <label for="DivisionId">Division: </label>
+              <label for="DivisionId">Division (বিভাগ): </label>
               <select
                   class="dropdown_filter"
                   id="DivisionId"
@@ -562,7 +553,7 @@ const FarmerDataEntryNonPG = (props) => {
           </div>
 
           <div class="formControl-filter-data-label">
-              <label for="DistrictId">District: </label>
+              <label for="DistrictId">District (জেলা): </label>
               <select
                   class="dropdown_filter"
                   id="DistrictId"
@@ -578,7 +569,7 @@ const FarmerDataEntryNonPG = (props) => {
           </div>
 
           <div class="formControl-filter-data-label">
-              <label for="UpazilaId">Upazila: </label>
+              <label for="UpazilaId">Upazila (উপজেলা): </label>
               <select
                   id="UpazilaId"
                   name="UpazilaId"

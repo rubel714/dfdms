@@ -100,7 +100,9 @@ function getDataList($data){
 			a.`UserId`,
 			a.`UpdateTs`,
 			a.`CreateTs`,
-			b.GenderName
+			b.GenderName,
+			case when a.IsDisability=1 then 'Yes' else 'No' end IsDisabilityStatus,
+			case when a.IsPGMember=1 then 'Yes' else 'No' end IsPGMemberStatus
 			
 		  FROM
 		  `t_householdlivestocksurvey` a 
