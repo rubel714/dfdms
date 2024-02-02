@@ -507,7 +507,7 @@ const FarmerDataEntryNonPG = (props) => {
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>
-            Home ❯ Admin ❯ Farmer Data Entry(non-PG)
+            Home ❯ Admin ❯ Household Livestock Survey 2024
           </h4>
 
           {!listEditPanelToggle ? (

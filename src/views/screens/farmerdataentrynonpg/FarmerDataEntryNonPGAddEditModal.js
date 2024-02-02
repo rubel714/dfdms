@@ -186,7 +186,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
       setDivisionList(
-        [{ id: "", name: "বিভাগ নির্বাচন করুন" }].concat(res.data.datalist)
+        [{ id: "", name: "Select Division" }].concat(res.data.datalist)
       );
 
       setCurrDivisionId(selectDivisionId);
@@ -220,7 +220,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
       setDistrictList(
-        [{ id: "", name: "জেলা নির্বাচন করুন" }].concat(res.data.datalist)
+        [{ id: "", name: "Select District" }].concat(res.data.datalist)
       );
       setErrorObject({ ...errorObject, ["DistrictId"]: null });
 
@@ -254,7 +254,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
       setUpazilaList(
-        [{ id: "", name: "উপজেলা নির্বাচন করুন" }].concat(res.data.datalist)
+        [{ id: "", name: "Select Upazila" }].concat(res.data.datalist)
       );
       setErrorObject({ ...errorObject, ["UpazilaId"]: null });
 
@@ -289,7 +289,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
       setUnionList(
-        [{ id: "", name: "ইউনিয়ন নির্বাচন করুন" }].concat(res.data.datalist)
+        [{ id: "", name: "Select Union" }].concat(res.data.datalist)
       );
       setErrorObject({ ...errorObject, ["UnionId"]: null });
 
@@ -355,7 +355,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setGender([{ id: "", name: "জেন্ডার নির্বাচন করুন" }].concat(res.data.datalist));
+      setGender([{ id: "", name: "Select Gender" }].concat(res.data.datalist));
 
       setCurrGender(selectGender);
     });
@@ -670,7 +670,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
       if (inputValue.length > 0) {
         props.masterProps.openNoticeModal({
           isOpen: true,
-          msg: "Beneficiary NID must be either 10 or 13 or 17 Digits",
+          msg: "NID must be either 10 or 13 or 17 Digits",
           msgtype: 0,
         });
       }
@@ -740,7 +740,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
       ) {
         props.masterProps.openNoticeModal({
           isOpen: true,
-          msg: "Beneficiary NID must be either 10 or 13 or 17 Digits",
+          msg: "NID must be either 10 or 13 or 17 Digits",
           msgtype: 0,
         });
 
@@ -887,12 +887,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
   return (
     <>
       {/* <!-- GROUP MODAL START --> */}
-      <div class="subContainer inputArea">
+      <div class="subContainer inputAreaMobile">
         {/* <!-- Modal content --> */}
         <div class="modal-contentX">
 
         <div class="text-center">
-          <h2>পরিবার/খামার মালিকের তথ্যাদি</h2> 
+          <h2>Household Livestock Survey 2024</h2> 
         </div>
 
           {/* <div class="modalHeaderWithButton">
@@ -904,133 +904,10 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             />
           </div> */}
 
-          <div class="formControl-mobile">
-            <label>নামঃ*</label>
-            <input
-              type="text"
-              id="FarmerOwnerName"
-              name="FarmerOwnerName"
-              //disabled={currentRow.id?true:false}
-              class={errorObject.FarmerOwnerName}
-              placeholder=""
-              value={currentRow.FarmerOwnerName}
-              onChange={(e) => handleChange(e)}
-            />
-            </div>
-
-          <div class="formControl-mobile">
-            <label>পিতা/স্বামীঃ </label>
-            <input
-              type="text"
-              id="FatherName"
-              name="FatherName"
-              placeholder=""
-              value={currentRow.FatherName}
-              onChange={(e) => handleChange(e)}
-            />
-
-           
-          </div>
-
-          <div class="formControl-mobile">
-            <label>মাতার নামঃ </label>
-            <input
-              type="text"
-              id="MotherName"
-              name="MotherName"
-              placeholder=""
-              value={currentRow.MotherName}
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-
-          <div class="formControl-mobile">
-            <label>খামারের নামঃ</label>
-            <input
-              type="text"
-              id="FarmerName"
-              name="FarmerName"
-              //disabled={currentRow.id?true:false}
-              //class={errorObject.FarmerName}
-              placeholder=""
-              value={currentRow.FarmerName}
-              onChange={(e) => handleChange(e)}
-            />
-            </div>
-          
-          
-            <div class="formControl-mobile">
-            <label>মোবাইলঃ </label>
-            <input
-              type="text"
-              id="Phone"
-              name="Phone"
-              placeholder=""
-              value={currentRow.Phone}
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-
-          <div class="formControl-mobile">
-            <label>জেন্ডারঃ</label>
-            <select
-              id="Gender"
-              name="Gender"
-              className="chosen_dropdown"
-              class={errorObject.Gender}
-              value={currGender}
-              onChange={(e) => handleChange(e)}
-            >
-              {gender &&
-                gender.map((item, index) => {
-                  return <option value={item.id}>{item.name}</option>;
-                })}
-            </select>
 
           
-          </div>
-
-          <div class="formControl-mobile">
-            <label>প্রতিবন্ধী কিনা ?</label>
-            <select
-              id="DisabilityStatus"
-              name="DisabilityStatus"
-              class={errorObject.DisabilityStatus}
-              value={currDisabilityStatus}
-              onChange={(e) => handleChange(e)}
-            >
-              {disabilityStatus &&
-                disabilityStatus.map((item, index) => {
-                  return <option value={item.id}>{item.name}</option>;
-                })}
-            </select>
-
-          
-          </div>
-
-
-          <div class="formControl-mobile">
-            <label>এনআইডিঃ </label>
-            <input
-              type="text"
-              id="NID"
-              name="NID"
-              //disabled={currentRow.id?true:false}
-              class={errorObject.NID}
-              placeholder=""
-              value={currentRow.NID}
-              onChange={(e) => handleChange(e)}
-              onBlur={handleBlur}
-            />
-          </div>
-
-          
-
-         
-         
-
-          <div class="formControl-mobile">
-            <label>বিভাগঃ *</label>
+<div class="formControl-mobile">
+            <label>Division (বিভাগ) *</label>
             <select
               id="DivisionId"
               name="DivisionId"
@@ -1045,7 +922,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             </select>
             </div>
             <div class="formControl-mobile">
-            <label>জেলাঃ *</label>
+            <label>District (জেলা) *</label>
             <select
               id="DistrictId"
               name="DistrictId"
@@ -1061,7 +938,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>উপজেলাঃ *</label>
+            <label>Upazila (উপজেলা) *</label>
             <select
               id="UpazilaId"
               name="UpazilaId"
@@ -1076,7 +953,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             </select>
             </div>
             <div class="formControl-mobile">
-            <label>ইউনিয়নঃ *</label>
+            <label>Union (ইউনিয়ন) *</label>
             <select
               id="UnionId"
               name="UnionId"
@@ -1094,7 +971,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
           <div class="formControl-mobile">
           
-            <label>ওয়ার্ডঃ</label>
+            <label>Ward (ওয়ার্ড)</label>
             <input
               type="text"
               id="Ward"
@@ -1105,7 +982,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             />
           </div>
           <div class="formControl-mobile">
-            <label>গ্রামঃ</label>
+            <label>Village (গ্রাম)</label>
             <input
               type="text"
               id="VillageName"
@@ -1118,7 +995,200 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
            
           </div>
 
+
           <div class="formControl-mobile">
+            <label>Farmer’s Name (নাম)*</label>
+            <input
+              type="text"
+              id="FarmerOwnerName"
+              name="FarmerOwnerName"
+              //disabled={currentRow.id?true:false}
+              class={errorObject.FarmerOwnerName}
+              placeholder=""
+              value={currentRow.FarmerOwnerName}
+              onChange={(e) => handleChange(e)}
+            />
+            </div>
+
+          <div class="formControl-mobile">
+            <label>Father’s Name (পিতা/স্বামী) </label>
+            <input
+              type="text"
+              id="FatherName"
+              name="FatherName"
+              placeholder=""
+              value={currentRow.FatherName}
+              onChange={(e) => handleChange(e)}
+            />
+
+           
+          </div>
+
+          <div class="formControl-mobile">
+            <label>Mother’s Name (মাতার নাম) </label>
+            <input
+              type="text"
+              id="MotherName"
+              name="MotherName"
+              placeholder=""
+              value={currentRow.MotherName}
+              onChange={(e) => handleChange(e)}
+            />
+          </div>
+
+          <div class="formControl-mobile">
+            <label>Husband’s/Wife’s Name (স্বামীর / স্ত্রীর নাম)</label>
+            <input
+              type="text"
+              id="MotherName"
+              name="MotherName"
+              placeholder=""
+              value={currentRow.MotherName}
+              onChange={(e) => handleChange(e)}
+            />
+          </div>
+
+          <div class="formControl-mobile">
+            <label>Name of the farm (খামারের নাম)</label>
+            <input
+              type="text"
+              id="FarmerName"
+              name="FarmerName"
+              //disabled={currentRow.id?true:false}
+              //class={errorObject.FarmerName}
+              placeholder=""
+              value={currentRow.FarmerName}
+              onChange={(e) => handleChange(e)}
+            />
+            </div>
+          
+          
+            <div class="formControl-mobile">
+            <label>Mobile number (মোবাইল নং) </label>
+            <input
+              type="text"
+              id="Phone"
+              name="Phone"
+              placeholder=""
+              value={currentRow.Phone}
+              onChange={(e) => handleChange(e)}
+            />
+          </div>
+
+          <div class="formControl-mobile">
+            <label>Gender (জেন্ডার)</label>
+            <select
+              id="Gender"
+              name="Gender"
+              className="chosen_dropdown"
+              class={errorObject.Gender}
+              value={currGender}
+              onChange={(e) => handleChange(e)}
+            >
+              {gender &&
+                gender.map((item, index) => {
+                  return <option value={item.id}>{item.name}</option>;
+                })}
+            </select>
+
+          
+          </div>
+
+       
+
+          <div class="formControl-mobile">
+          <label>Is there any disability (প্রতিবন্ধি কিনা)</label>
+          <div className="checkbox-label">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="AreYouRegisteredYourFirmWithDlsRadioFlag"
+                  name="AreYouRegisteredYourFirmWithDlsRadioFlag"
+                  value={1}
+                  checked={
+                    currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 1
+                  }
+                  onChange={() =>
+                    handleChangeMany(
+                      1,
+                      "AreYouRegisteredYourFirmWithDlsRadioFlag"
+                    )
+                  }
+                />
+                Yes
+              </label>
+
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="AreYouRegisteredYourFirmWithDlsRadioFlag_false"
+                  name="AreYouRegisteredYourFirmWithDlsRadioFlag"
+                  value={0}
+                  checked={
+                    currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 0
+                  }
+                  onChange={() =>
+                    handleChangeMany(
+                      0,
+                      "AreYouRegisteredYourFirmWithDlsRadioFlag"
+                    )
+                  }
+                />
+                No
+              </label>
+            </div>
+          </div>
+
+
+          <div class="formControl-mobile">
+            <label>NID (এনআইডি) </label>
+            <input
+              type="text"
+              id="NID"
+              name="NID"
+              //disabled={currentRow.id?true:false}
+              class={errorObject.NID}
+              placeholder=""
+              value={currentRow.NID}
+              onChange={(e) => handleChange(e)}
+              onBlur={handleBlur}
+            />
+          </div>
+
+          <div class="formControl-mobile">
+          <label>Are you the member of a PG under LDDP (আপনি কি LDDP প্রকল্পের আওতাধীন কোনো পিজি'র সদস্য) ?</label>
+            <div className="checkbox-label">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="IsHeadOfTheGroup"
+                  name="IsHeadOfTheGroup"
+                  value={1}
+                  checked={currentRow.IsHeadOfTheGroup === 1}
+                  onChange={() => handleChangeMany(1, "IsHeadOfTheGroup")}
+                />
+                Yes
+              </label>
+
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="IsHeadOfTheGroup_false"
+                  name="IsHeadOfTheGroup"
+                  value={0}
+                  checked={currentRow.IsHeadOfTheGroup === 0}
+                  onChange={() => handleChangeMany(0, "IsHeadOfTheGroup")}
+                />
+                No
+              </label>
+          </div>
+          </div>
+
+
+         
+         
+
+          {/* <div class="formControl-mobile">
             <label>সিটি কর্পোরেশন/পৌরসভা</label>
             <select
               id="CityCorporation"
@@ -1134,10 +1204,10 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             </select>
 
          
-          </div>
+          </div> */}
 
           <div className="formControl-mobile">
-            <label>অক্ষাংশঃ</label>
+            <label>Latitude (অক্ষাংশ)</label>
             <input
               type="text"
               id="Latitute"
@@ -1154,7 +1224,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
           </div>
 
           <div className="formControl-mobile">
-            <label>দ্রাঘিমাংশঃ</label>
+            <label>Longitude (দ্রাঘিমাংশ)</label>
             <div className="autocompleteContainer">
               <input
                 type="text"
@@ -1167,7 +1237,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
               />
 
               <Button
-                label={"জিও লোকেশান"}
+                label={"Geo location"}
                 class={"btnDetailsLatLong"}
                 onClick={getLocation}
               />
@@ -1178,100 +1248,80 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
 
 
-
+{/* ========= Start Cow Table ===========*/}
           <div className="formControl-mobile">
             <label></label>
             <div className="newTableDivNonpg">
-                <table className="tg-Nonpg">
+                <table className="tg-Nonpg border1">
                   <thead>
 
-                      <tr>
+                      {/* <tr>
                         <td className="tg-Nonpg-sl tg-Nonpgtitle" colSpan="3">
-                            গবাদি প্রাণির সংখ্যা
+                        Number of cattle (গবাদি প্রাণির সংখ্যা)
                         </td>
-                       
-                      </tr>
+                      </tr> */}
+
                       <tr>
-                        <td className="tg-Nonpg-sl NonpgOdd" rowSpan="2">
-                            গাভী
+                        <td className="tg-Nonpg-sl NonpgOdd bgncoa8" rowSpan="2">
+                            Cow (গাভীর সংখ্যা)
                         </td>
-                        <td className="tg-Nonpg-22sb" >
-                            দেশি
+                        <td className="tg-Nonpg-22sb bgncoa8" >
+                            Native (দেশি)
                         </td>
-                        <td className="tg-Nonpg-22sb" >
+                        <td className="tg-Nonpg-22sb bgncoa8" >
                             <input
                             type="number"
                             className="numberInput"
+                            placeholder="0"
                             value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
+                            onChange={(e) => handleChange(e)}
                             />
                         </td>
                       </tr>
                       <tr>
-                        <td className="tg-Nonpg-22sb">
-                            শংকর
+                        <td className="tg-Nonpg-22sb bgncoa8">
+                            Cross (শংকর)
                         </td>
-                        <td className="tg-Nonpg-22sb">
+                        <td className="tg-Nonpg-22sb bgncoa8">
                             <input
                             type="number"
                             className="numberInput"
+                            placeholder="0"
                             value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
+                            onChange={(e) => handleChange(e)}
                             />
                         </td>
                       </tr>
 
 
                       <tr>
-                        <td className="tg-Nonpg-sl NonpgEven" rowSpan="2">
-                         ষাঁড়/বলদ
+                        <td className="tg-Nonpg-sl NonpgEven bgncoa8" rowSpan="2">
+                            Bull/Castrated Bull (ষাঁড়/বলদ সংখ্যা)
                         </td>
-                        <td className="tg-Nonpg-22sb" >
-                            দেশি
+                        <td className="tg-Nonpg-22sb bgncoa8" >
+                            Native (দেশি)
                         </td>
-                        <td className="tg-Nonpg-22sb" >
+                        <td className="tg-Nonpg-22sb bgncoa8" >
                             <input
                             type="number"
                             className="numberInput"
+                            placeholder="0"
                             value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
+                            onChange={(e) => handleChange(e)}
                             />
                         </td>
                       </tr>
                       <tr>
-                        <td className="tg-Nonpg-22sb">
-                            শংকর
+                        <td className="tg-Nonpg-22sb bgncoa8">
+                            Cross (শংকর)
                         </td>
-                        <td className="tg-Nonpg-22sb">
+                        <td className="tg-Nonpg-22sb bgncoa8">
                             <input
                             type="number"
                             className="numberInput"
+                            placeholder="0"
                             value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
+                            onChange={(e) => handleChange(e)}
                             />
                         </td>
                       </tr>
@@ -1280,639 +1330,504 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
 
                       <tr>
-                        <td className="tg-Nonpg-sl NonpgOdd" rowSpan="2">
-                            বাছুর পুং/স্ত্রী
+                        <td className="tg-Nonpg-sl NonpgOdd bgncoa8" rowSpan="2">
+                            Calf Male (এঁড়ে বাছুর সংখ্যা)
                         </td>
-                        <td className="tg-Nonpg-22sb" >
-                            দেশি
+                        <td className="tg-Nonpg-22sb bgncoa8" >
+                            Native (দেশি)
                         </td>
-                        <td className="tg-Nonpg-22sb" >
+                        <td className="tg-Nonpg-22sb bgncoa8" >
                             <input
                             type="number"
                             className="numberInput"
+                            placeholder="0"
                             value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
+                            onChange={(e) => handleChange(e)}
                             />
                         </td>
                       </tr>
                       <tr>
-                        <td className="tg-Nonpg-22sb">
-                            শংকর
+                        <td className="tg-Nonpg-22sb bgncoa8">
+                            Cross (শংকর)
                         </td>
-                        <td className="tg-Nonpg-22sb">
+                        <td className="tg-Nonpg-22sb bgncoa8">
                             <input
                             type="number"
                             className="numberInput"
+                            placeholder="0"
                             value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
+                            onChange={(e) => handleChange(e)}
                             />
                         </td>
                       </tr>
 
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
-            </div>
-          </div>
 
-          {/* Start ছাগল সংখ্যা */}
-          <div className="formControl-mobile">
-            <label></label>
-            <div className="newTableDivNonpg">
-                <table className="tg-Nonpg">
-                  <thead>
+
 
                       <tr>
-                        <td className="tg-Nonpg-sl tg-Nonpgtitle" colSpan="3">
-                            ছাগল সংখ্যা
+                        <td className="tg-Nonpg-sl NonpgEven bgncoa8" rowSpan="2">
+                           Calf Female (বকনা বাছুর সংখ্যা)
                         </td>
-                       
-                      </tr>
-                      <tr>
-                        <td className="tg-Nonpg-33sb" >
-                            ব্ল্যাক বেঙ্গল
+                        <td className="tg-Nonpg-22sb bgncoa8" >
+                            Native (দেশি)
                         </td>
-                        <td className="tg-Nonpg-33sb" >
+                        <td className="tg-Nonpg-22sb bgncoa8" >
                             <input
                             type="number"
                             className="numberInput"
+                            placeholder="0"
                             value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
+                            onChange={(e) => handleChange(e)}
                             />
                         </td>
                       </tr>
                       <tr>
-                        <td className="tg-Nonpg-33sb">
-                            যমুনাপাড়ি/অন্যান্য
+                        <td className="tg-Nonpg-22sb bgncoa8">
+                            Cross (শংকর)
                         </td>
-                        <td className="tg-Nonpg-33sb">
+                        <td className="tg-Nonpg-22sb bgncoa8">
                             <input
                             type="number"
                             className="numberInput"
+                            placeholder="0"
                             value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
+                            onChange={(e) => handleChange(e)}
                             />
                         </td>
                       </tr>
 
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
-            </div>
-          </div>
-           {/* End ছাগল সংখ্যা */}
-
-           {/* Start ভেড়া সংখ্যা (বাচ্চা সহ) */}
-          <div className="formControl-mobile">
-            <label></label>
-            <div className="newTableDivNonpg">
-                <table className="tg-Nonpg">
-                  <thead>
-
-                      <tr>
-                        <td className="tg-Nonpg-sl tg-Nonpgtitle" colSpan="3">
-                          ভেড়া সংখ্যা/মহিষ সংখ্যা (বাচ্চা সহ) 
-                        </td>
-                       
-                      </tr>
-                      <tr>
-                        <td className="tg-Nonpg-22sb" >
-                           ভেড়া সংখ্যা (বাচ্চা সহ)
-                        </td>
-                        <td className="tg-Nonpg-22sb" >
-                            <input
-                            type="number"
-                            className="numberInput"
-                            value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
-                            />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="tg-Nonpg-22sb">
-                             মহিষ সংখ্যা (বাচ্চা সহ)
-                        </td>
-                        <td className="tg-Nonpg-22sb">
-                            <input
-                            type="number"
-                            className="numberInput"
-                            value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
-                            />
-                        </td>
-                      </tr>
-
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
-            </div>
-          </div>
-           {/* End ভেড়া সংখ্যা (বাচ্চা সহ) */}
-
-           {/* Start দুধ উৎপাদন (লিঃ/দিন) */}
-           
-            <div className="formControl-mobile">
-              <label></label>
-              <div className="newTableDivNonpg">
-                  <table className="tg-Nonpg">
-                    <thead>
-
-                        <tr>
-                          <td className="tg-Nonpg-sl tg-Nonpgtitle" colSpan="3">
-                              দুধ উৎপাদন (লিঃ/দিন)
-                          </td>
-                        
-                        </tr>
-                        <tr>
-                          <td className="tg-Nonpg-sl NonpgOdd" rowSpan="2">
-                            গাভী
-                          </td>
-                          <td className="tg-Nonpg-22sb" >
-                            দেশি
-                          </td>
-                          <td className="tg-Nonpg-22sb" >
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="tg-Nonpg-22sb">
-                              শংকর
-                          </td>
-                          <td className="tg-Nonpg-22sb">
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td className="tg-Nonpg-sl NonpgEven" rowSpan="2">
-                            মহিষ/ছাগল 
-                          </td>
-                          <td className="tg-Nonpg-22sb" >
-                            মহিষ 
-                          </td>
-                          <td className="tg-Nonpg-22sb" >
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="tg-Nonpg-22sb">
-                              ছাগল 
-                          </td>
-                          <td className="tg-Nonpg-22sb">
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
-
-                    </thead>
-                    <tbody>
-                    </tbody>
-                  </table>
-              </div>
-            </div>
-
-           {/* End দুধ উৎপাদন (লিঃ/দিন) */}
 
 
-          {/* Start মুরগি */}
-          <div className="formControl-mobile">
-            <label></label>
-            <div className="newTableDivNonpg">
-                <table className="tg-Nonpg">
-                  <thead>
-
-                      <tr>
-                        <td className="tg-Nonpg-sl tg-Nonpgtitle" colSpan="3">
-                            মুরগি
-                        </td>
-                       
-                      </tr>
-                      <tr>
-                        <td className="tg-Nonpg-22sb" >
-                            দেশি
-                        </td>
-                        <td className="tg-Nonpg-22sb" >
-                            <input
-                            type="number"
-                            className="numberInput"
-                            value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
-                            />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="tg-Nonpg-22sb">
-                            লেয়ার
-                        </td>
-                        <td className="tg-Nonpg-22sb">
-                            <input
-                            type="number"
-                            className="numberInput"
-                            value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
-                            />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="tg-Nonpg-22sb">
-                           সোনালী/ককরেল
-                        </td>
-                        <td className="tg-Nonpg-22sb">
-                            <input
-                            type="number"
-                            className="numberInput"
-                            value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
-                            />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="tg-Nonpg-22sb">
-                            ব্রয়লার
-                        </td>
-                        <td className="tg-Nonpg-22sb">
-                            <input
-                            type="number"
-                            className="numberInput"
-                            value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
-                            />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="tg-Nonpg-22sb">
-                           ডিম উৎপাদন (দৈনিক)
-                        </td>
-                        <td className="tg-Nonpg-22sb">
-                            <input
-                            type="number"
-                            className="numberInput"
-                            value={currentRow.Production}
-                            /* onChange={(e) =>
-                            changeCustomTableCellExtend(
-                            e,
-                            "Production",
-                            currentRow.DataValueItemDetailsId
-                            )
-                            } */
-                            />
-                        </td>
-                      </tr>
-
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
-            </div>
-          </div>
-           {/* End মুরগি */}
-
-
-             {/* Start হাঁস/রাজঁহাস */}
-            <div className="formControl-mobile">
-              <label></label>
-              <div className="newTableDivNonpg">
-                  <table className="tg-Nonpg">
-                    <thead>
-
-                        <tr>
-                          <td className="tg-Nonpg-sl tg-Nonpgtitle" colSpan="3">
-                            হাঁস/রাজঁহাস
-                          </td>
-                        
-                        </tr>
-                        <tr>
-                          <td className="tg-Nonpg-22sb" >
-                            সংখ্যা
-                          </td>
-                          <td className="tg-Nonpg-22sb" >
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="tg-Nonpg-22sb">
-                              ডিম উৎপাদন (দৈনিক)
-                          </td>
-                          <td className="tg-Nonpg-22sb">
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
-                        
-
-                    </thead>
-                    <tbody>
-                    </tbody>
-                  </table>
-              </div>
-            </div>
-            {/* End হাঁস/রাজঁহাস */}
-
-
-               {/* Start কবুতর, কোয়েল, টার্কি/তিতির/অন্যান্য */}
-               <div className="formControl-mobile">
-              <label></label>
-              <div className="newTableDivNonpg">
-                  <table className="tg-Nonpg">
-                    <thead>
-
-                        <tr>
-                          <td className="tg-Nonpg-sl tg-Nonpgtitle" colSpan="3">
-                            কবুতর, কোয়েল, টার্কি/তিতির/অন্যান্য
-                          </td>
-                        
-                        </tr>
-                        <tr>
-                          <td className="tg-Nonpg-44sb" >
-                            কবুতর
-                          </td>
-                          <td className="tg-Nonpg-44sb" >
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="tg-Nonpg-44sb">
-                             কোয়েল
-                          </td>
-                          <td className="tg-Nonpg-44sb">
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td className="tg-Nonpg-44sb" >
-                            টার্কি/তিতির/অন্যান্য
-                          </td>
-                          <td className="tg-Nonpg-44sb" >
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
-                        
-
-                    </thead>
-                    <tbody>
-                    </tbody>
-                  </table>
-              </div>
-            </div>
-            {/* End কবুতর, কোয়েল, টার্কি/তিতির/অন্যান্য */}
-
-            
-             {/* Start ঘাস চাষের বিবরণ (জমির পরিমাণ শতক) */}
-             <div className="formControl-mobile">
-              <label></label>
-              <div className="newTableDivNonpg">
-                  <table className="tg-Nonpg">
-                    <thead>
-
-                        <tr>
-                          <td className="tg-Nonpg-sl tg-Nonpgtitle" colSpan="3">
-                               ঘাস চাষের বিবরণ (জমির পরিমাণ শতক)
-                          </td>
-                        
-                        </tr>
-                        <tr>
-                          <td className="tg-Nonpg-33sb" >
-                            জমির পরিমান
-                          </td>
-                          <td className="tg-Nonpg-33sb" >
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="tg-Nonpg-33sb">
-                              উৎপাদন কেজি/বার্ষিক
-                          </td>
-                          <td className="tg-Nonpg-33sb">
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
-                        
-
-                    </thead>
-                    <tbody>
-                    </tbody>
-                  </table>
-              </div>
-            </div>
-            {/* End ঘাস চাষের বিবরণ (জমির পরিমাণ শতক) */}
-
-             {/* Start ঘাস চাষের বিবরণ (জমির পরিমাণ শতক) */}
-             <div className="formControl-mobile">
-              <label></label>
-              <div className="newTableDivNonpg">
-                  <table className="tg-Nonpg">
-                    <thead>
-
-                        <tr>
-                          <td className="tg-Nonpg-sl tg-Nonpgtitle" colSpan="3">
-                               পরিবারের সদস্য সংখ্যা 
-                          </td>
-                        
-                        </tr>
-                        <tr>
-                          <td className="tg-Nonpg-22sb" >
-                              পরিবারের সদস্য সংখ্যা 
-                          </td>
-                          <td className="tg-Nonpg-22sb" >
-                              <input
-                              type="number"
-                              className="numberInput"
-                              value={currentRow.Production}
-                              /* onChange={(e) =>
-                              changeCustomTableCellExtend(
-                              e,
-                              "Production",
-                              currentRow.DataValueItemDetailsId
-                              )
-                              } */
-                              />
-                          </td>
-                        </tr>
                       
-                        
+                      <tr>
+                        <td className="tg-Nonpg-sl NonpgOdd bgncoa8" rowSpan="2">
+                          Milk Production per day (Liter)/(দৈনিক দুধের পরিমান (লিটার))
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa8" >
+                            Native (দেশি)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa8" >
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="tg-Nonpg-22sb bgncoa8">
+                            Cross (শংকর)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa8 fixed-width-td">
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+
+
+
+
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+            </div>
+          </div>
+
+{/* ========= End Cow Table ===========*/}
+
+
+
+
+{/* ========= Start Buffalo Table ===========*/}
+<div className="formControl-mobile">
+            <label></label>
+            <div className="newTableDivNonpg">
+                <table className="tg-Nonpg border2">
+                  <thead>
+
+                      {/* <tr>
+                        <td className="tg-Nonpg-sl tg-Nonpgtitle" colSpan="3">
+                        Number of cattle (গবাদি প্রাণির সংখ্যা)
+                        </td>
+                      </tr> */}
+
+                      <tr>
+                        <td className="tg-Nonpg-sl NonpgOdd bgncoa2" rowSpan="2">
+                            Adult Buffalo (মহিষের সংখ্যা)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa2" >
+                            Male (ষাঁড়)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa2 maxwidthinp" >
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="tg-Nonpg-22sb bgncoa2">
+                           Female (গাভী)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa2 maxwidthinp">
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+
+
+                      <tr>
+                        <td className="tg-Nonpg-sl NonpgEven bgncoa2" rowSpan="2">
+                           Calf Buffalo (বাছুর মহিষের সংখ্যা)	
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa2" >
+                             Male (এঁড়ে)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa2" >
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="tg-Nonpg-22sb bgncoa2">
+                            Female (বকনা)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa2">
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+
+
+
+
+                      <tr>
+                        <td className="tg-Nonpg-sl NonpgOdd bgncoa2" colSpan="2">
+                           Milk Production per day (দৈনিক দুধের পরিমান (লিটার))
+                        </td>
+                      
+                        <td className="tg-Nonpg-22sb bgncoa2 fixed-width-td" >
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+             
+
+
+
+
+
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+            </div>
+          </div>
+
+{/* ========= End Buffalo Table ===========*/}
+
+
+
+{/* ========= Start Goat Table ===========*/}
+<div className="formControl-mobile">
+            <label></label>
+            <div className="newTableDivNonpg">
+                <table className="tg-Nonpg border3">
+                  <thead>
+
+                      {/* <tr>
+                        <td className="tg-Nonpg-sl tg-Nonpgtitle" colSpan="3">
+                        Number of cattle (গবাদি প্রাণির সংখ্যা)
+                        </td>
+                      </tr> */}
+
+                      <tr>
+                        <td className="tg-Nonpg-sl NonpgOdd bgncoa1" rowSpan="2">
+                           Adult Goat (ছাগল সংখ্যা)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1" >
+                             Male (পাঁঠা/খাসি) 
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1" >
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="tg-Nonpg-22sb bgncoa1">
+                            Female (ছাগী)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1">
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+
+
+                      <tr>
+                        <td className="tg-Nonpg-sl NonpgEven bgncoa1" rowSpan="2">
+                            Calf (ছাগল ছানার সংখ্যা) 
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1" >
+                             Male (পুং) 
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1" >
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="tg-Nonpg-22sb bgncoa1">
+                           Female (স্ত্রী)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1">
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+
+
+
+                      <tr>
+                        <td className="tg-Nonpg-sl NonpgOdd bgncoa1" rowSpan="2">
+                            Adult Sheep (ভেড়ার সংখ্যা) 
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1" >
+                             Male (পাঁঠা/খাসি) 
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1" >
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="tg-Nonpg-22sb bgncoa1">
+                             Female(ভেড়ি)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1">
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+
+
+                      
+                      <tr>
+                        <td className="tg-Nonpg-sl NonpgEven bgncoa1" rowSpan="2">
+                            Calf (ভেড়া ছানার সংখ্যা)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1" >
+                             Male (পুং) 
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1" >
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="tg-Nonpg-22sb bgncoa1">
+                           Female (স্ত্রী)
+                        </td>
+                        <td className="tg-Nonpg-22sb bgncoa1">
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+
+
+
+                      <tr>
+                        <td className="tg-Nonpg-sl NonpgOdd bgncoa1" colSpan="2">
+                            Milk Production per day (Liter)/(দৈনিক দুধের পরিমান (লিটার))
+                        </td>
+                      
+                        <td className="tg-Nonpg-22sb bgncoa1 fixed-width-td" >
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+             
+
+
+
+
+
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+            </div>
+          </div>
+
+{/* ========= End Goat Table ===========*/}
+
+
+
+
+           {/* Start Chicken Table */}
+           
+           <div className="formControl-mobile">
+              <label></label>
+              <div className="newTableDivNonpg">
+                  <table className="tg-Nonpg border4">
+                    <thead>
+
+                       
+                        <tr>
+                          <td className="tg-Nonpg-sl NonpgOdd bgnco" rowSpan="4">
+                              Chicken (মুরগির সংখ্যা) 
+                          </td>
+                          <td className="tg-Nonpg-22sb bgnco" >
+                             Native (দেশি)
+                          </td>
+                          <td className="tg-Nonpg-22sb bgnco" >
+                              <input
+                              type="number"
+                              className="numberInput"
+                              placeholder="0"
+                              value={currentRow.Production}
+                              onChange={(e) => handleChange(e)}
+                              />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="tg-Nonpg-22sb bgnco">
+                              Layer (লেয়ার)
+                          </td>
+                          <td className="tg-Nonpg-22sb bgnco">
+                              <input
+                              type="number"
+                              className="numberInput"
+                              placeholder="0"
+                              value={currentRow.Production}
+                              onChange={(e) => handleChange(e)}
+                              />
+                          </td>
+                        </tr>
+
+                        <tr>
+                          
+                          <td className="tg-Nonpg-22sb bgnco" >
+                          Sonali/Fayoumi/ Cockerel (সোনালী / ফাউমি / ককরেল)
+                          </td>
+                          <td className="tg-Nonpg-22sb bgnco" >
+                              <input
+                              type="number"
+                              className="numberInput"
+                              placeholder="0"
+                              value={currentRow.Production}
+                              onChange={(e) => handleChange(e)}
+                              />
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td className="tg-Nonpg-22sb bgnco">
+                          Broiler (ব্রয়লার)
+                          </td>
+                          <td className="tg-Nonpg-22sb bgnco">
+                              <input
+                              type="number"
+                              className="numberInput"
+                              placeholder="0"
+                              value={currentRow.Production}
+                              onChange={(e) => handleChange(e)}
+                              />
+                          </td>
+                        </tr>
+
+                        <tr>
+                        <td className="tg-Nonpg-sl NonpgEven bgnco" colSpan="2">
+                        Daily Egg production (দৈনিক ডিম উৎপাদন)
+                        </td>
+                      
+                        <td className="tg-Nonpg-22sb bgnco fixed-width-td" >
+                            <input
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.Production}
+                            onChange={(e) => handleChange(e)}
+                            />
+                        </td>
+                      </tr>
+
 
                     </thead>
                     <tbody>
@@ -1920,7 +1835,189 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                   </table>
               </div>
             </div>
-            {/* End পরিবারের সদস্য সংখ্যা  */}
+
+           {/* End Chicken Table */}
+
+
+          {/* Start Ducks/Swan Table */}
+          <div className="formControl-mobile">
+                      <label></label>
+                      <div className="newTableDivNonpg">
+                          <table className="tg-Nonpg border5">
+                            <thead>
+
+                                <tr>
+                                  <td className="tg-Nonpg-s1" >
+                                      Number of Ducks/Swan (হাঁসের/রাজহাঁসের সংখ্যা)
+                                  </td>
+                                  <td className="tg-Nonpg-s1" >
+                                      <input
+                                      type="number"
+                                      className="numberInput"
+                                      placeholder="0"
+                                      value={currentRow.Production}
+                                      onChange={(e) => handleChange(e)}
+                                      />
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className="tg-Nonpg-s1">
+                                       Daily Egg production (দৈনিক হাঁসের ডিম উৎপাদন)
+                                  </td>
+                                  <td className="tg-Nonpg-s1 fixed-width-td">
+                                      <input
+                                      type="number"
+                                      className="numberInput"
+                                      placeholder="0"
+                                      value={currentRow.Production}
+                                      onChange={(e) => handleChange(e)}
+                                      />
+                                  </td>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
+                    {/* End Ducks/Swan  */}
+
+
+                      {/* Start Pigeon  Table */}
+                      <div className="formControl-mobile">
+                            <label></label>
+                            <div className="newTableDivNonpg">
+                                <table className="tg-Nonpg border6">
+                                  <thead>
+
+                                      <tr>
+                                        <td className="tg-Nonpg-ab" >
+                                            Number of Pigeon (কবুতরের সংখ্যা)
+                                        </td>
+                                        <td className="tg-Nonpg-ab fixed-width-td" >
+                                            <input
+                                            type="number"
+                                            className="numberInput"
+                                            placeholder="0"
+                                            value={currentRow.Production}
+                                            onChange={(e) => handleChange(e)}
+                                            />
+                                        </td>
+                                      </tr>
+                                      
+
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                                </table>
+                            </div>
+                          </div>
+                          {/* End Pigeon   */}
+
+
+
+                      {/* Start family members Table */}
+                      <div className="formControl-mobile">
+                            <label></label>
+                            <div className="newTableDivNonpg">
+                                <table className="tg-Nonpg border7">
+                                  <thead>
+
+                                      <tr>
+                                        <td className="tg-Nonpg-st" >
+                                        Number of family members (পরিবারের মোট সদস্য সংখ্যা)
+                                        </td>
+                                        <td className="tg-Nonpg-st fixed-width-td" >
+                                            <input
+                                            type="number"
+                                            className="numberInput"
+                                            placeholder="0"
+                                            value={currentRow.Production}
+                                            onChange={(e) => handleChange(e)}
+                                            />
+                                        </td>
+                                      </tr>
+                                      
+
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                                </table>
+                            </div>
+                          </div>
+                          {/* End family members    */}
+
+
+
+
+                      {/* Start land  Table */}
+                      <div className="formControl-mobile">
+                            <label></label>
+                            <div className="newTableDivNonpg">
+                                <table className="tg-Nonpg border8">
+                                  <thead>
+
+                                      <tr>
+                                        <td className="tg-Nonpg-99sb" >
+                                        Total cultivable land in decimal (মোট চাষ যোগ্য জমির পরিমান (শতাংশ))
+                                        </td>
+                                        <td className="tg-Nonpg-99sb" >
+                                            <input
+                                            type="number"
+                                            className="numberInput"
+                                            placeholder="0"
+                                            value={currentRow.Production}
+                                            onChange={(e) => handleChange(e)}
+                                            />
+                                        </td>
+                                      </tr>
+
+
+                                      <tr>
+                                        <td className="tg-Nonpg-99sb" >
+                                        Own land for Fodder cultivation (নিজস্ব ঘাস চাষের জমি (শতাংশ))
+                                        </td>
+                                        <td className="tg-Nonpg-99sb" >
+                                            <input
+                                            type="number"
+                                            className="numberInput"
+                                            placeholder="0"
+                                            value={currentRow.Production}
+                                            onChange={(e) => handleChange(e)}
+                                            />
+                                        </td>
+                                      </tr>
+
+                                      <tr>
+                                        <td className="tg-Nonpg-99sb" >
+                                        Leased land for fodder cultivation (লিজ নেয়া ঘাস চাষের জমি (শতাংশ))
+                                        </td>
+                                        <td className="tg-Nonpg-99sb fixed-width-td" >
+                                            <input
+                                            type="number"
+                                            className="numberInput"
+                                            placeholder="0"
+                                            value={currentRow.Production}
+                                            onChange={(e) => handleChange(e)}
+                                            />
+                                        </td>
+                                      </tr>
+                                      
+                                      
+
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                                </table>
+                            </div>
+                          </div>
+                          {/* End land  members    */}
+
+
+
+
+
 
         
           <div class="modalItem-mobile ">

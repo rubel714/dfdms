@@ -1192,7 +1192,7 @@ input[type=search] {
 
   .tg-Nonpg td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 5px;
   }
 
   
@@ -1207,9 +1207,7 @@ input[type=search] {
     background-color: #0972c45c;
   }
   
-  
- 
- 
+
   
   .formControl-mobile {
     flex-direction: column;
@@ -1220,11 +1218,11 @@ input[type=search] {
     padding: 2px 15px;
 }
 
-input {
+/* input {
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
-}
+} */
 
 @media (min-width: 768px) {
     .formControl-mobile {
@@ -1245,4 +1243,67 @@ input {
 
 .modalItem-mobile .btnSave{
     margin-left: 10px;
+}
+
+.border1 {
+    border: 3px solid #be6702;
+}
+.border2 {
+    border: 3px solid #665ac8;
+}
+.border3 {
+    border: 3px solid #d656c7;
+}
+.border4 {
+    border: 3px solid #0a8e91;
+}
+.border5 {
+    border: 3px solid #a5de08;
+}
+.border6 {
+    border: 3px solid #5d1380;
+}
+.border7 {
+    border: 3px solid #55adc4;
+}
+.border8 {
+    border: 3px solid #ab0470;
+}
+
+.tg-Nonpg-99sb {
+    background-color: #f4bbfb5c;
+  }
+
+.tg-Nonpg-st {
+    background-color: #53cdf75c;
+  }
+
+.tg-Nonpg-ab {
+    background-color: #787df75c;
+  }
+
+.tg-Nonpg-s1 {
+    background-color: #ddf3b05c;
+  }
+
+.bgnco {
+    background-color: #4cf1f75c;
+  }
+
+.bgncoa1 {
+    background-color: #8d70ee5c;
+  }
+
+.bgncoa2 {
+    background-color: #89d8ffb3;
+  }
+.bgncoa8 {
+    background-color: #ff95953d;
+  }
+.maxwidthinp {
+    max-width: 118px !important;
+  }
+
+.fixed-width-td {
+    width: 120px;
 }

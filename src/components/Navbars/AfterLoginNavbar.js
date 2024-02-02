@@ -194,7 +194,7 @@ function AfterLoginNavbar(props) {
                             props.history.push("farmerdataentrynonpg")
                           }
                         >
-                          Farmer Data Entry(non-PG)
+                          Household Livestock Survey 2024
                         </a>
                       </li>
                     )}
