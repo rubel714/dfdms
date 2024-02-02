@@ -1269,9 +1269,15 @@ input[type=search] {
 .border8 {
     border: 3px solid #ab0470;
 }
+.border9 {
+    border: 3px solid #039829;
+}
 
 .tg-Nonpg-99sb {
     background-color: #f4bbfb5c;
+  }
+  .tg-Nonpg-99sx {
+    background-color: #c2bbfb;
   }
 
 .tg-Nonpg-st {
@@ -1299,6 +1305,10 @@ input[type=search] {
   }
 .bgncoa8 {
     background-color: #ff95953d;
+  }
+
+  .tg-Nonpg-99sbx {
+    background-color: #c2bbfb;
   }
 .maxwidthinp {
     max-width: 118px !important;

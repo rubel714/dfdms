@@ -91,6 +91,9 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() + 1);
 
+
+  const [DesignationList, setDesignationList] = useState(null);
+
   const relationWith = {
     1: "Himself/Herself",
     2: "Others",
@@ -119,6 +122,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
     getTypeOfMemberList(props.currentRow.TypeOfMember);
     getFamilyOccupationList(props.currentRow.OccupationId);
     getCityCorporationList(props.currentRow.CityCorporation);
+    getDesignation();
 
     // Set the initial value of RelationWithHeadOfHH
     if (
@@ -139,10 +143,10 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
       setCurrPGRegistered(0);
     }
     if (
-      currentRow.IsHeadOfTheGroup !== undefined &&
-      currentRow.IsHeadOfTheGroup !== null
+      currentRow.IsPGMember !== undefined &&
+      currentRow.IsPGMember !== null
     ) {
-      setCurrIsHeadOfTheGroup(currentRow.IsHeadOfTheGroup);
+      setCurrIsHeadOfTheGroup(currentRow.IsPGMember);
     } else {
       setCurrIsHeadOfTheGroup(0);
     }
@@ -159,16 +163,35 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
     }
 
     if (
-      currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag !== undefined &&
-      currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag !== null
+      currentRow.IsDisability !== undefined &&
+      currentRow.IsDisability !== null
     ) {
       setCurrAreYouRegisteredYourFirmWithDlsRadioFlag(
-        currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag
+        currentRow.IsDisability
       );
     } else {
       setCurrAreYouRegisteredYourFirmWithDlsRadioFlag(0);
     }
   }, []);
+
+
+  
+  function getDesignation() {
+    let params = {
+      action: "DesignationList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setDesignationList(
+        [{ id: "", name: "Select Designation" }].concat(res.data.datalist)
+      );
+
+      // setCurrDesignationId(selectDesignationId);
+    });
+  }
+
 
   function getDivision(
     selectDivisionId,
@@ -537,6 +560,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
     const { name, value } = e.target;
     let data = { ...currentRow };
     data[name] = value;
+    console.log('value ffff : ', value);
 
     setCurrentRow(data);
 
@@ -658,6 +682,18 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
     }
   };
 
+
+  const handleChangeChoosenMaster = (name, value) => {
+
+    let data = { ...currentRow };
+    data[name] = value;
+
+    setCurrentRow(data);
+    /* setErrorObject({ ...errorObject, [name]: null }); */
+
+  };
+
+
   function handleBlur() {
     let data = { ...currentRow };
     const inputValue = data["NID"];
@@ -693,20 +729,14 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
   const validateForm = () => {
     // let validateFields = ["FarmerName", "DiscountAmount", "DiscountPercentage"]
     let validateFields = [
-      "NID",
-      "FarmerName",
-      "PGFarmerCode",
-      "TypeOfMember",
       "DivisionId",
       "DistrictId",
       "UpazilaId",
       "UnionId",
-      "Address",
-      "Gender",
-      "dob",
-      "FarmersAge",
-      "ValuechainId",
-      "PGId",
+      "FarmerName",
+      "NID",
+      "DataCollectionDate",
+      "DataCollectorName",
     ];
     if (currentRow.RelationWithHeadOfHH === 2) {
       validateFields.push("ifOtherSpecify");
@@ -879,10 +909,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
     setSelectedRoles(updatedRoles);
   };
 
-  console.log(
-    "AreYouRegisteredYourFirmWithDlsRadioFlag:",
-    currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag
-  );
+
 
   return (
     <>
@@ -985,10 +1012,10 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             <label>Village (গ্রাম)</label>
             <input
               type="text"
-              id="VillageName"
-              name="VillageName"
+              id="Village"
+              name="Village"
               placeholder=""
-              value={currentRow.VillageName}
+              value={currentRow.Village}
               onChange={(e) => handleChange(e)}
             />
 
@@ -1000,12 +1027,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             <label>Farmer’s Name (নাম)*</label>
             <input
               type="text"
-              id="FarmerOwnerName"
-              name="FarmerOwnerName"
+              id="FarmerName"
+              name="FarmerName"
               //disabled={currentRow.id?true:false}
-              class={errorObject.FarmerOwnerName}
+              class={errorObject.FarmerName}
               placeholder=""
-              value={currentRow.FarmerOwnerName}
+              value={currentRow.FarmerName}
               onChange={(e) => handleChange(e)}
             />
             </div>
@@ -1040,10 +1067,10 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             <label>Husband’s/Wife’s Name (স্বামীর / স্ত্রীর নাম)</label>
             <input
               type="text"
-              id="MotherName"
-              name="MotherName"
+              id="HusbandWifeName"
+              name="HusbandWifeName"
               placeholder=""
-              value={currentRow.MotherName}
+              value={currentRow.HusbandWifeName}
               onChange={(e) => handleChange(e)}
             />
           </div>
@@ -1052,12 +1079,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             <label>Name of the farm (খামারের নাম)</label>
             <input
               type="text"
-              id="FarmerName"
-              name="FarmerName"
+              id="NameOfTheFarm"
+              name="NameOfTheFarm"
               //disabled={currentRow.id?true:false}
               //class={errorObject.FarmerName}
               placeholder=""
-              value={currentRow.FarmerName}
+              value={currentRow.NameOfTheFarm}
               onChange={(e) => handleChange(e)}
             />
             </div>
@@ -1102,16 +1129,16 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
               <label className="radio-label">
                 <input
                   type="radio"
-                  id="AreYouRegisteredYourFirmWithDlsRadioFlag"
-                  name="AreYouRegisteredYourFirmWithDlsRadioFlag"
+                  id="IsDisability"
+                  name="IsDisability"
                   value={1}
                   checked={
-                    currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 1
+                    currentRow.IsDisability === 1
                   }
                   onChange={() =>
                     handleChangeMany(
                       1,
-                      "AreYouRegisteredYourFirmWithDlsRadioFlag"
+                      "IsDisability"
                     )
                   }
                 />
@@ -1122,15 +1149,15 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                 <input
                   type="radio"
                   id="AreYouRegisteredYourFirmWithDlsRadioFlag_false"
-                  name="AreYouRegisteredYourFirmWithDlsRadioFlag"
+                  name="IsDisability"
                   value={0}
                   checked={
-                    currentRow.AreYouRegisteredYourFirmWithDlsRadioFlag === 0
+                    currentRow.IsDisability === 0
                   }
                   onChange={() =>
                     handleChangeMany(
                       0,
-                      "AreYouRegisteredYourFirmWithDlsRadioFlag"
+                      "IsDisability"
                     )
                   }
                 />
@@ -1141,7 +1168,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
 
           <div class="formControl-mobile">
-            <label>NID (এনআইডি) </label>
+            <label>NID (জাতীয় পরিচয় পত্র/ ভোটার আইডি কার্ড নম্বর) *</label>
             <input
               type="text"
               id="NID"
@@ -1161,11 +1188,11 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
               <label className="radio-label">
                 <input
                   type="radio"
-                  id="IsHeadOfTheGroup"
-                  name="IsHeadOfTheGroup"
+                  id="IsPGMember"
+                  name="IsPGMember"
                   value={1}
-                  checked={currentRow.IsHeadOfTheGroup === 1}
-                  onChange={() => handleChangeMany(1, "IsHeadOfTheGroup")}
+                  checked={currentRow.IsPGMember === 1}
+                  onChange={() => handleChangeMany(1, "IsPGMember")}
                 />
                 Yes
               </label>
@@ -1174,37 +1201,15 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                 <input
                   type="radio"
                   id="IsHeadOfTheGroup_false"
-                  name="IsHeadOfTheGroup"
+                  name="IsPGMember"
                   value={0}
-                  checked={currentRow.IsHeadOfTheGroup === 0}
-                  onChange={() => handleChangeMany(0, "IsHeadOfTheGroup")}
+                  checked={currentRow.IsPGMember === 0}
+                  onChange={() => handleChangeMany(0, "IsPGMember")}
                 />
                 No
               </label>
           </div>
           </div>
-
-
-         
-         
-
-          {/* <div class="formControl-mobile">
-            <label>সিটি কর্পোরেশন/পৌরসভা</label>
-            <select
-              id="CityCorporation"
-              name="CityCorporation"
-              class={errorObject.CityCorporation}
-              value={currCityCorporation}
-              onChange={(e) => handleChange(e)}
-            >
-              {cityCorporation &&
-                cityCorporation.map((item, index) => {
-                  return <option value={item.id}>{item.name}</option>;
-                })}
-            </select>
-
-         
-          </div> */}
 
           <div className="formControl-mobile">
             <label>Latitude (অক্ষাংশ)</label>
@@ -1219,8 +1224,6 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             />
 
             
-
-           
           </div>
 
           <div className="formControl-mobile">
@@ -1270,10 +1273,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa8" >
                             <input
+                            id="CowNative"
+                            name="CowNative"
                             type="number"
                             className="numberInput"
-                            placeholder="0"
-                            value={currentRow.Production}
+                            placeholder="0" 
+                            value={currentRow.CowNative}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1284,10 +1289,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa8">
                             <input
+                            id="CowCross"
+                            name="CowCross"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.CowCross}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1303,10 +1310,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa8" >
                             <input
+                            id="CowBullNative"
+                            name="CowBullNative"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.CowBullNative}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1317,10 +1326,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa8">
                             <input
+                            id="CowBullCross"
+                            name="CowBullCross"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.CowBullCross}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1338,10 +1349,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa8" >
                             <input
+                            id="CowCalfMaleNative"
+                            name="CowCalfMaleNative"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.CowCalfMaleNative}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1352,10 +1365,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa8">
                             <input
+                            id="CowCalfMaleCross"
+                            name="CowCalfMaleCross"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.CowCalfMaleCross}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1373,10 +1388,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa8" >
                             <input
+                            id="CowCalfFemaleNative"
+                            name="CowCalfFemaleNative"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.CowCalfFemaleNative}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1387,10 +1404,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa8">
                             <input
+                            id="CowCalfFemaleCross"
+                            name="CowCalfFemaleCross"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.CowCalfFemaleCross}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1408,10 +1427,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa8" >
                             <input
+                            id="CowMilkProductionNative"
+                            name="CowMilkProductionNative"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.CowMilkProductionNative}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1422,10 +1443,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa8 fixed-width-td">
                             <input
+                            id="CowMilkProductionCross"
+                            name="CowMilkProductionCross"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.CowMilkProductionCross}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1468,10 +1491,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa2 maxwidthinp" >
                             <input
+                            id="BuffaloAdultMale"
+                            name="BuffaloAdultMale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.BuffaloAdultMale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1482,10 +1507,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa2 maxwidthinp">
                             <input
+                            id="BuffaloAdultFemale"
+                            name="BuffaloAdultFemale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.BuffaloAdultFemale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1501,10 +1528,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa2" >
                             <input
+                            id="BuffaloCalfMale"
+                            name="BuffaloCalfMale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.BuffaloCalfMale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1515,10 +1544,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa2">
                             <input
+                            id="BuffaloCalfFemale"
+                            name="BuffaloCalfFemale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.BuffaloCalfFemale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1534,10 +1565,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                       
                         <td className="tg-Nonpg-22sb bgncoa2 fixed-width-td" >
                             <input
+                            id="BuffaloMilkProduction"
+                            name="BuffaloMilkProduction"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.BuffaloMilkProduction}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1581,10 +1614,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa1" >
                             <input
+                            id="GoatAdultMale"
+                            name="GoatAdultMale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.GoatAdultMale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1595,10 +1630,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa1">
                             <input
+                            id="GoatAdultFemale"
+                            name="GoatAdultFemale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.GoatAdultFemale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1614,10 +1651,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa1" >
                             <input
+                            id="GoatCalfMale"
+                            name="GoatCalfMale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.GoatCalfMale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1628,10 +1667,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa1">
                             <input
+                            id="GoatCalfFemale"
+                            name="GoatCalfFemale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.GoatCalfFemale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1648,10 +1689,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa1" >
                             <input
+                            id="SheepAdultMale"
+                            name="SheepAdultMale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.SheepAdultMale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1662,10 +1705,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa1">
                             <input
+                            id="SheepAdultFemale"
+                            name="SheepAdultFemale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.SheepAdultFemale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1682,10 +1727,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa1" >
                             <input
+                            id="SheepCalfMale"
+                            name="SheepCalfMale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.SheepCalfMale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1696,10 +1743,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa1">
                             <input
+                            id="SheepCalfFemale"
+                            name="SheepCalfFemale"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.SheepCalfFemale}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1714,10 +1763,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                       
                         <td className="tg-Nonpg-22sb bgncoa1 fixed-width-td" >
                             <input
+                            id="GoatSheepMilkProduction"
+                            name="GoatSheepMilkProduction"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.GoatSheepMilkProduction}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1758,10 +1809,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                           </td>
                           <td className="tg-Nonpg-22sb bgnco" >
                               <input
+                              id="ChickenNative"
+                              name="ChickenNative"
                               type="number"
                               className="numberInput"
                               placeholder="0"
-                              value={currentRow.Production}
+                              value={currentRow.ChickenNative}
                               onChange={(e) => handleChange(e)}
                               />
                           </td>
@@ -1772,10 +1825,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                           </td>
                           <td className="tg-Nonpg-22sb bgnco">
                               <input
+                              id="ChickenLayer"
+                              name="ChickenLayer"
                               type="number"
                               className="numberInput"
                               placeholder="0"
-                              value={currentRow.Production}
+                              value={currentRow.ChickenLayer}
                               onChange={(e) => handleChange(e)}
                               />
                           </td>
@@ -1788,10 +1843,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                           </td>
                           <td className="tg-Nonpg-22sb bgnco" >
                               <input
+                              id="ChickenSonaliFayoumiCockerelOthers"
+                              name="ChickenSonaliFayoumiCockerelOthers"
                               type="number"
                               className="numberInput"
                               placeholder="0"
-                              value={currentRow.Production}
+                              value={currentRow.ChickenSonaliFayoumiCockerelOthers}
                               onChange={(e) => handleChange(e)}
                               />
                           </td>
@@ -1803,10 +1860,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                           </td>
                           <td className="tg-Nonpg-22sb bgnco">
                               <input
+                              id="ChickenBroiler"
+                              name="ChickenBroiler"
                               type="number"
                               className="numberInput"
                               placeholder="0"
-                              value={currentRow.Production}
+                              value={currentRow.ChickenBroiler}
                               onChange={(e) => handleChange(e)}
                               />
                           </td>
@@ -1819,10 +1878,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                       
                         <td className="tg-Nonpg-22sb bgnco fixed-width-td" >
                             <input
+                            id="ChickenEgg"
+                            name="ChickenEgg"
                             type="number"
                             className="numberInput"
                             placeholder="0"
-                            value={currentRow.Production}
+                            value={currentRow.ChickenEgg}
                             onChange={(e) => handleChange(e)}
                             />
                         </td>
@@ -1852,10 +1913,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                                   </td>
                                   <td className="tg-Nonpg-s1" >
                                       <input
+                                      id="DucksNumber"
+                                      name="DucksNumber"
                                       type="number"
                                       className="numberInput"
                                       placeholder="0"
-                                      value={currentRow.Production}
+                                      value={currentRow.DucksNumber}
                                       onChange={(e) => handleChange(e)}
                                       />
                                   </td>
@@ -1866,10 +1929,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                                   </td>
                                   <td className="tg-Nonpg-s1 fixed-width-td">
                                       <input
+                                      id="DucksEgg"
+                                      name="DucksEgg"
                                       type="number"
                                       className="numberInput"
                                       placeholder="0"
-                                      value={currentRow.Production}
+                                      value={currentRow.DucksEgg}
                                       onChange={(e) => handleChange(e)}
                                       />
                                   </td>
@@ -1897,10 +1962,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                                         </td>
                                         <td className="tg-Nonpg-ab fixed-width-td" >
                                             <input
+                                            id="PigeonNumber"
+                                            name="PigeonNumber"
                                             type="number"
                                             className="numberInput"
                                             placeholder="0"
-                                            value={currentRow.Production}
+                                            value={currentRow.PigeonNumber}
                                             onChange={(e) => handleChange(e)}
                                             />
                                         </td>
@@ -1930,10 +1997,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                                         </td>
                                         <td className="tg-Nonpg-st fixed-width-td" >
                                             <input
+                                            id="FamilyMember"
+                                            name="FamilyMember"
                                             type="number"
                                             className="numberInput"
                                             placeholder="0"
-                                            value={currentRow.Production}
+                                            value={currentRow.FamilyMember}
                                             onChange={(e) => handleChange(e)}
                                             />
                                         </td>
@@ -1964,10 +2033,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                                         </td>
                                         <td className="tg-Nonpg-99sb" >
                                             <input
+                                            id="LandTotal"
+                                            name="LandTotal"
                                             type="number"
                                             className="numberInput"
                                             placeholder="0"
-                                            value={currentRow.Production}
+                                            value={currentRow.LandTotal}
                                             onChange={(e) => handleChange(e)}
                                             />
                                         </td>
@@ -1980,10 +2051,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                                         </td>
                                         <td className="tg-Nonpg-99sb" >
                                             <input
+                                            id="LandOwn"
+                                            name="LandOwn"
                                             type="number"
                                             className="numberInput"
                                             placeholder="0"
-                                            value={currentRow.Production}
+                                            value={currentRow.LandOwn}
                                             onChange={(e) => handleChange(e)}
                                             />
                                         </td>
@@ -1995,10 +2068,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                                         </td>
                                         <td className="tg-Nonpg-99sb fixed-width-td" >
                                             <input
+                                            id="LandLeased"
+                                            name="LandLeased"
                                             type="number"
                                             className="numberInput"
                                             placeholder="0"
-                                            value={currentRow.Production}
+                                            value={currentRow.LandLeased}
                                             onChange={(e) => handleChange(e)}
                                             />
                                         </td>
@@ -2013,6 +2088,146 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                             </div>
                           </div>
                           {/* End land  members    */}
+
+
+
+                      {/* Start Enumerator  Table */}
+                      <div className="formControl-mobile">
+                            <label></label>
+                            <div className="newTableDivNonpg">
+                                <table className="tg-Nonpg border9">
+                                  <thead>
+
+                                      <tr>
+                                        <td className="tg-Nonpg-99sbx" >
+                                            Date of Interview *
+                                        </td>
+                                        <td className="tg-Nonpg-99sbx" >
+                                            <input
+                                            id="DataCollectionDate"
+                                            name="DataCollectionDate"
+                                            type="date"
+                                            className="numberInput"
+                                            class={errorObject.DataCollectionDate}
+                                            /* placeholder="0" */
+                                            value={currentRow.DataCollectionDate}
+                                            onChange={(e) => handleChange(e)}
+                                            />
+                                        </td>
+                                      </tr>
+
+
+                                      <tr>
+                                        <td className="tg-Nonpg-99sbx" >
+                                          Name of Enumerator *
+                                        </td>
+                                        <td className="tg-Nonpg-99sbx" >
+                                            <input
+                                             id="DataCollectorName"
+                                             name="DataCollectorName"
+                                            type="text"
+                                           /*  className="numberInput" */
+                                            class={errorObject.DataCollectorName}
+                                            value={currentRow.DataCollectorName}
+                                            onChange={(e) => handleChange(e)}
+                                            />
+                                        </td>
+                                      </tr>
+
+                                      {/* <tr>
+                                        <td className="tg-Nonpg-99sbx" >
+                                          Enumerator Designation
+                                        </td>
+                                        <td className="tg-Nonpg-99sbx " >
+                                            <input
+                                            type="number"
+                                            className="numberInput"
+                                            value={currentRow.DesignationId}
+                                            onChange={(e) => handleChange(e)}
+                                            />
+                                        </td>
+                                      </tr> */}
+
+
+                                        <tr>
+                                          <td className="tg-Nonpg-99sbx">
+                                            Enumerator Designation
+                                          </td>
+                                          <td className="tg-Nonpg-99sbx">
+                                            <Autocomplete
+                                              autoHighlight
+                                              className="chosen_dropdown"
+                                              id="DesignationId"
+                                              name="DesignationId"
+                                              autoComplete
+                                              options={DesignationList ? DesignationList : []}
+                                              getOptionLabel={(option) => option.name}
+                                              value={
+                                                DesignationList
+                                                  ? DesignationList[
+                                                      DesignationList.findIndex(
+                                                        (list) => list.id == currentRow.DesignationId
+                                                      )
+                                                    ]
+                                                  : null
+                                              }
+                                              onChange={(event, valueobj) =>
+                                                handleChangeChoosenMaster("DesignationId", valueobj ? valueobj.id : "")
+                                              }
+                                              renderOption={(option) => (
+                                                <Typography className="chosen_dropdown_font">
+                                                  {option.name}
+                                                </Typography>
+                                              )}
+                                              renderInput={(params) => (
+                                                <TextField {...params} variant="standard" fullWidth />
+                                              )}
+                                            />
+                                          </td>
+                                        </tr>
+
+
+                                      <tr>
+                                        <td className="tg-Nonpg-99sbx" >
+                                        Cell No. of Enumerator
+                                        </td>
+                                        <td className="tg-Nonpg-99sbx" >
+                                            <input
+                                            id="PhoneNumber"
+                                            name="PhoneNumber"
+                                            type="text"
+                                            value={currentRow.PhoneNumber}
+                                            onChange={(e) => handleChange(e)}
+                                            />
+                                        </td>
+                                      </tr>
+
+                                      <tr>
+                                        <td className="tg-Nonpg-99sbx" >
+                                          Enumerator Comment
+                                        </td>
+                                        <td className="tg-Nonpg-99sbx " >
+                                            <textarea
+                                             id="Remarks"
+                                             name="Remarks"
+                                            type="text"
+                                            value={currentRow.Remarks}
+                                            onChange={(e) => handleChange(e)}
+                                            rows={3}
+                                            style={{ width: '100%' }}
+                                            />
+                                        </td>
+                                      </tr>
+                                      
+                                      
+
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                                </table>
+                            </div>
+                          </div>
+                          {/* End Enumerator members    */}
 
 
 

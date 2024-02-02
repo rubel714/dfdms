@@ -8,6 +8,7 @@ import { apiCall, apiOption , LoginUserInfo, language} from "../../../actions/ap
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
 import RegularBeneficiaryEntryAddEditModal from "./FarmerDataEntryNonPGAddEditModal";
+import moment from "moment";
 
 const FarmerDataEntryNonPG = (props) => {
   const serverpage = "farmerdataentrynonpg"; // this is .php server page
@@ -21,6 +22,7 @@ const FarmerDataEntryNonPG = (props) => {
   const {isLoading, data: dataList, error, ExecuteQuery} = ExecuteQueryHook(); //Fetch data
   const UserInfo = LoginUserInfo();
 
+
   const [currentFilter, setCurrentFilter] = useState([]); 
   const [divisionList, setDivisionList] = useState(null);
   const [districtList, setDistrictList] = useState(null);
@@ -30,7 +32,8 @@ const FarmerDataEntryNonPG = (props) => {
   const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
   const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
 
-  
+  const [currentDate, setCurrentDate] = useState(moment().format("YYYY-MM-DD"));
+
 
 
    /* =====Start of Excel Export Code==== */
@@ -234,60 +237,74 @@ const FarmerDataEntryNonPG = (props) => {
     );
   }
 
+
   const addData = () => {
     // console.log("rowData: ", rowData);
     setCurrentRow({
             id: "",
-            NID: "",
-            NidFrontPhoto: "",
-            NidBackPhoto: "",
-            FarmerName: "",
-            MotherName: "",
-            SpouseName: "",
-            BeneficiaryPhoto: "",
-            Phone: "",
-            FatherName: "",
-            IsRegular: "",
-            QuestionParentId: "",
-            FarmerId: "",
-            NidBackPhoto: "",
-            FarmersAge: "",
-            DisabilityStatus: 2,
-            RelationWithHeadOfHH: 1,
-            HeadOfHHSex: "",
-            PGRegistered: 0,
-            PGPartnershipWithOtherCompany: 0,
-            TypeOfMember: "",
-            PGFarmerCode: "",
-            OccupationId: "",
-            DivisionId: "",
-            DistrictId: "",
-            UpazilaId: "",
+            HouseHoldId: "",
+            DivisionId: UserInfo.DivisionId,
+            DistrictId: UserInfo.DistrictId,
+            UpazilaId: UserInfo.UpazilaId,
             UnionId: "",
-            CityCorporation: "",
             Ward: "",
-            VillageName: "",
-            Address: "",
+            Village: "",
+            FarmerName: "",
+            FatherName: "",
+            MotherName: "",
+            HusbandWifeName: "",
+            NameOfTheFarm: "",
+            Phone: "",
+            Gender: "",
+            IsDisability: 0,
+            NID: "",
+            IsPGMember: 0,
             Latitute: "",
             Longitute: "",
-            PGId: "",
-            IsHeadOfTheGroup: 0,
-            ValuechainId: "",
-            Gender: "",
-            multiselectPGroup: "",
-            TypeOfFarmerId: [],
-            DepartmentId: "",
-            ifOtherSpecify: "",
-            DateOfRegistration: "",
-            RegistrationNo: "",
-            NameOfTheCompanyYourPgPartnerWith: "",
-            WhenDidYouStartToOperateYourFirm: "",
-            NumberOfMonthsOfYourOperation: "",
-            AreYouRegisteredYourFirmWithDlsRadioFlag: 0,
-            registrationDate: "",
-            IfRegisteredYesRegistrationNo: "",
-            FarmsPhoto: "",
-            //IsRegular: false,
+            CowNative: "",
+            CowCross: "",
+            CowBullNative: "",
+            CowBullCross: "",
+            CowCalfMaleNative: "",
+            CowCalfMaleCross: "",
+            CowCalfFemaleNative: "",
+            CowCalfFemaleCross: "",
+            CowMilkProductionNative: "",
+            CowMilkProductionCross: "",
+            BuffaloAdultMale: "",
+            BuffaloAdultFemale: "",
+            BuffaloCalfMale: "",
+            BuffaloCalfFemale: "",
+            BuffaloMilkProduction: "",
+            GoatAdultMale: "",
+            GoatAdultFemale: "",
+            GoatCalfMale: "",
+            GoatCalfFemale: "",
+            SheepAdultMale: "",
+            SheepAdultFemale: "",
+            SheepCalfMale: "",
+            SheepCalfFemale: "",
+            GoatSheepMilkProduction: "",
+            ChickenNative: "",
+            ChickenLayer: "",
+            ChickenSonaliFayoumiCockerelOthers: "",
+            ChickenBroiler: "",
+            ChickenEgg: "",
+            DucksNumber: "",
+            DucksEgg: "",
+            PigeonNumber: "",
+            FamilyMember: "",
+            LandTotal: "",
+            LandOwn: "",
+            LandLeased: "",
+            DataCollectionDate: "",
+            DataCollectorName: UserInfo.UserName,
+            DesignationId: UserInfo.DesignationId,
+            PhoneNumber: UserInfo.Phone,
+            DataCollectionDate: currentDate,
+            UserId: UserInfo.UserId,
+            Remarks: "",
+
 
           });
 

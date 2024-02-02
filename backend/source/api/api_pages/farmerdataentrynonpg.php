@@ -33,101 +33,84 @@ function getDataList($data){
 		$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
 		$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
 
-		/* $query = "SELECT 
-			a.`FarmerId` id,
-			a.`DivisionId`,
-			a.`DistrictId`,
-			a.`UpazilaId`,
-			a.`PGId`,
-			a.`FarmerName`,
-			a.`NID`,
-			a.`Phone`,
-			a.`FatherName`,
-			a.`ValueChain`,
-			a.`MotherName`,
-			a.`LiveStockNo`,
-			a.`LiveStockOther`,
-			a.`Address`,
-			a.`IsRegular`,
-			a.`NidFrontPhoto`,
-			a.`NidBackPhoto`,
-			a.`BeneficiaryPhoto`,
-			a.`SpouseName`,
-			a.`Gender` AS GenderId,
-			a.`FarmersAge`,
-			a.`DisabilityStatus`,
-			a.`RelationWithHeadOfHH`,
-			a.`HeadOfHHSex`,
-			a.`PGRegistered`,
-			a.`PGPartnershipWithOtherCompany`,
-			a.`TypeOfMember`,
-			a.`PGFarmerCode`,
-			case when a.IsRegular=1 then 'Regular' else 'No' end IsRegularBeneficiary
-		FROM
-			t_farmer a ;"; */
-		
+	
 	$query = "SELECT 
-			a.`FarmerId`,
-			a.`FarmerId` id,
+			a.`HouseHoldId`,
+			a.`HouseHoldId` id,
+			a.`YearId`,
 			a.`DivisionId`,
 			a.`DistrictId`,
 			a.`UpazilaId`,
 			a.`UnionId`,
-			a.`CityCorporation`,
 			a.`Ward`,
-			a.`PGId`,
+			a.`Village`,
 			a.`FarmerName`,
-			a.`NID`,
-			a.`Phone`,
 			a.`FatherName`,
-			a.`ValueChain`,
 			a.`MotherName`,
-			a.`LiveStockNo`,
-			a.`LiveStockOther`,
-			a.`Address`,
-			a.`IsRegular`,
-			a.`NidFrontPhoto`,
-			a.`NidBackPhoto`,
-			a.`BeneficiaryPhoto`,
-			a.`SpouseName`,
+			a.`HusbandWifeName`,
+			a.`NameOfTheFarm`,
+			a.`Phone`,
 			a.`Gender`,
-			a.`FarmersAge`,
-			a.`DisabilityStatus`,
-			a.`RelationWithHeadOfHH`,
-			a.`HeadOfHHSex`,
-			a.`PGRegistered`,
-			a.`PGPartnershipWithOtherCompany`,
-			a.`TypeOfMember`,
-			a.`PGFarmerCode`,
-			a.`OccupationId`,
-			a.`VillageName`,
+			a.`IsDisability`,
+			a.`NID`,
+			a.`IsPGMember`,
 			a.`Latitute`,
 			a.`Longitute`,
-			a.`IsHeadOfTheGroup`,
-			a.`ValuechainId`,
-			a.`TypeOfFarmerId`,
-			a.dob,
-			case when a.IsRegular=1 then 'Regular' else 'No' end IsRegularBeneficiary,
-			b.GenderName, c.ValueChainName, d.PGName, a.DepartmentId, a.ifOtherSpecify, a.DateOfRegistration
-			, a.RegistrationNo, a.NameOfTheCompanyYourPgPartnerWith 
-			, a.WhenDidYouStartToOperateYourFirm
-			, a.NumberOfMonthsOfYourOperation
-			, a.AreYouRegisteredYourFirmWithDlsRadioFlag
-			, a.registrationDate
-			, a.IfRegisteredYesRegistrationNo
-			, a.FarmsPhoto
+			a.`CowNative`,
+			a.`CowCross`,
+			a.`CowBullNative`,
+			a.`CowBullCross`,
+			a.`CowCalfMaleNative`,
+			a.`CowCalfMaleCross`,
+			a.`CowCalfFemaleNative`,
+			a.`CowCalfFemaleCross`,
+			a.`CowMilkProductionNative`,
+			a.`CowMilkProductionCross`,
+			a.`BuffaloAdultMale`,
+			a.`BuffaloAdultFemale`,
+			a.`BuffaloCalfMale`,
+			a.`BuffaloCalfFemale`,
+			a.`BuffaloMilkProduction`,
+			a.`GoatAdultMale`,
+			a.`GoatAdultFemale`,
+			a.`GoatCalfMale`,
+			a.`GoatCalfFemale`,
+			a.`SheepAdultMale`,
+			a.`SheepAdultFemale`,
+			a.`SheepCalfMale`,
+			a.`SheepCalfFemale`,
+			a.`GoatSheepMilkProduction`,
+			a.`ChickenNative`,
+			a.`ChickenLayer`,
+			a.`ChickenSonaliFayoumiCockerelOthers`,
+			a.`ChickenBroiler`,
+			a.`ChickenEgg`,
+			a.`DucksNumber`,
+			a.`DucksEgg`,
+			a.`PigeonNumber`,
+			a.`FamilyMember`,
+			a.`LandTotal`,
+			a.`LandOwn`,
+			a.`LandLeased`,
+			a.`DataCollectionDate`,
+			a.`DataCollectorName`,
+			a.`DesignationId`,
+			a.`PhoneNumber`,
+			a.`Remarks`,
+			a.`UserId`,
+			a.`UpdateTs`,
+			a.`CreateTs`,
+			b.GenderName
+			
 		  FROM
-		  `t_farmer` a 
+		  `t_householdlivestocksurvey` a 
 		  Inner Join t_gender b ON a.Gender = b.GenderId
-		  LEFT JOIN t_valuechain c ON a.ValuechainId = c.ValuechainId
-		  LEFT JOIN t_pg d ON a.PGId = d.PGId
 		  WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
 		  ;";
 		  
 
-		
 		$resultdata = $dbh->query($query);
 		
 		$returnData = [
@@ -154,73 +137,76 @@ function dataAddEdit($data) {
 		
 
 
-	
-
-
-
 		$lan = trim($data->lan); 
 		$UserId = trim($data->UserId); 
 
-		$FarmerId = $data->rowData->id;
-
-		$NidFrontPhoto = $data->rowData->NidFrontPhoto;
-		
-		//$NidBackPhoto = isset($data->rowData->NidBackPhoto) && ($data->rowData->NidBackPhoto !== "") ? $data->rowData->NidBackPhoto : NULL;
+		$HouseHoldId = $data->rowData->id;
 
 		$DivisionId = $data->rowData->DivisionId? $data->rowData->DivisionId : null;
 		$DistrictId = $data->rowData->DistrictId? $data->rowData->DistrictId : null;
 		$UpazilaId = $data->rowData->UpazilaId? $data->rowData->UpazilaId : null;
-
-		$PGId = $data->rowData->PGId? $data->rowData->PGId : null;
-
-		$FarmerName =  $data->rowData->FarmerName ? $data->rowData->FarmerName : null;
-		$NID =  $data->rowData->NID ? $data->rowData->NID : null;
-		$Phone = $data->rowData->Phone ? $data->rowData->Phone : null;
-		$FatherName =  $data->rowData->FatherName ? $data->rowData->FatherName : null;
-		$ValueChain = $data->rowData->ValueChain ? $data->rowData->ValueChain : null;
-		$MotherName =  $data->rowData->MotherName ? $data->rowData->MotherName : null;
-		$LiveStockNo = $data->rowData->LiveStockNo ? $data->rowData->LiveStockNo : null;
-		$LiveStockOther = $data->rowData->LiveStockOther ? $data->rowData->LiveStockOther : null;
-		$Address = $data->rowData->Address ? $data->rowData->Address : null;
-		$IsRegular = isset($data->rowData->IsRegular) && ($data->rowData->IsRegular !== "") ? $data->rowData->IsRegular : null;
-		$NidBackPhoto = $data->rowData->NidBackPhoto ? $data->rowData->NidBackPhoto : null;
-		$BeneficiaryPhoto = $data->rowData->BeneficiaryPhoto ? $data->rowData->BeneficiaryPhoto : null;
-		$SpouseName =  $data->rowData->SpouseName ? $data->rowData->SpouseName : null;
-		$Gender = $data->rowData->Gender ? $data->rowData->Gender : null;
-		$FarmersAge = $data->rowData->FarmersAge ? $data->rowData->FarmersAge : null;
-		$DisabilityStatus = $data->rowData->DisabilityStatus ? $data->rowData->DisabilityStatus : null;
-		$RelationWithHeadOfHH = $data->rowData->RelationWithHeadOfHH ? $data->rowData->RelationWithHeadOfHH : 1;
-		$HeadOfHHSex = $data->rowData->HeadOfHHSex ? $data->rowData->HeadOfHHSex : null;
-		$PGRegistered = $data->rowData->PGRegistered ? $data->rowData->PGRegistered : 0;
-		$PGPartnershipWithOtherCompany =  $data->rowData->PGPartnershipWithOtherCompany ? $data->rowData->PGPartnershipWithOtherCompany : 0;
-		$TypeOfMember = $data->rowData->TypeOfMember? $data->rowData->TypeOfMember : null;
-		$PGFarmerCode = $data->rowData->PGFarmerCode? $data->rowData->PGFarmerCode : null;
-		$OccupationId =  $data->rowData->OccupationId? $data->rowData->OccupationId : null;
 		$UnionId = $data->rowData->UnionId? $data->rowData->UnionId : null;
-		$CityCorporation = $data->rowData->CityCorporation? $data->rowData->CityCorporation : null;
-		$Ward = $data->rowData->Ward? $data->rowData->Ward : null;
-		$VillageName = $data->rowData->VillageName ? $data->rowData->VillageName : null;
+
+		
+		$YearId = 2024;
+		$Village = $data->rowData->Village ? $data->rowData->Village : null;
+		$FarmerName =  $data->rowData->FarmerName ? $data->rowData->FarmerName : null;
+		$FatherName =  $data->rowData->FatherName ? $data->rowData->FatherName : null;
+		$MotherName =  $data->rowData->MotherName ? $data->rowData->MotherName : null;
+		$HusbandWifeName =  $data->rowData->HusbandWifeName ? $data->rowData->HusbandWifeName : null;
+		$NameOfTheFarm =  $data->rowData->NameOfTheFarm ? $data->rowData->NameOfTheFarm : null;
+		$Phone = $data->rowData->Phone ? $data->rowData->Phone : null;
+		$Gender = $data->rowData->Gender ? $data->rowData->Gender : null;
+		$IsDisability = $data->rowData->IsDisability ? $data->rowData->IsDisability : 0;
+		$NID =  $data->rowData->NID ? $data->rowData->NID : null;
+		$IsPGMember = $data->rowData->IsPGMember ? $data->rowData->IsPGMember : 0;
 		$Latitute =  $data->rowData->Latitute ? $data->rowData->Latitute : null;
 		$Longitute =  $data->rowData->Longitute ? $data->rowData->Longitute : null;
-		$IsHeadOfTheGroup = $data->rowData->IsHeadOfTheGroup ? $data->rowData->IsHeadOfTheGroup : 0;
-		$ValuechainId = $data->rowData->ValuechainId ? $data->rowData->ValuechainId : null;
+		$CowNative =  $data->rowData->CowNative ? $data->rowData->CowNative : null;
+		$CowCross =  $data->rowData->CowCross ? $data->rowData->CowCross : null;
+		$CowBullNative =  $data->rowData->CowBullNative ? $data->rowData->CowBullNative : null;
+		$CowBullCross =  $data->rowData->CowBullCross ? $data->rowData->CowBullCross : null;
+		$CowCalfMaleNative =  $data->rowData->CowCalfMaleNative ? $data->rowData->CowCalfMaleNative : null;
+		$CowCalfMaleCross =  $data->rowData->CowCalfMaleCross ? $data->rowData->CowCalfMaleCross : null;
+		$CowCalfFemaleNative =  $data->rowData->CowCalfFemaleNative ? $data->rowData->CowCalfFemaleNative : null;
+		$CowCalfFemaleCross =  $data->rowData->CowCalfFemaleCross ? $data->rowData->CowCalfFemaleCross : null;
+		$CowMilkProductionNative =  $data->rowData->CowMilkProductionNative ? $data->rowData->CowMilkProductionNative : null;
+		$CowMilkProductionCross =  $data->rowData->CowMilkProductionCross ? $data->rowData->CowMilkProductionCross : null;
+		$BuffaloAdultMale =  $data->rowData->BuffaloAdultMale ? $data->rowData->BuffaloAdultMale : null;
+		$BuffaloAdultFemale =  $data->rowData->BuffaloAdultFemale ? $data->rowData->BuffaloAdultFemale : null;
+		$BuffaloCalfMale =  $data->rowData->BuffaloCalfMale ? $data->rowData->BuffaloCalfMale : null;
+		$BuffaloCalfFemale =  $data->rowData->BuffaloCalfFemale ? $data->rowData->BuffaloCalfFemale : null;
+		$BuffaloMilkProduction =  $data->rowData->BuffaloMilkProduction ? $data->rowData->BuffaloMilkProduction : null;
+		$GoatAdultMale =  $data->rowData->GoatAdultMale ? $data->rowData->GoatAdultMale : null;
+		$GoatAdultFemale =  $data->rowData->GoatAdultFemale ? $data->rowData->GoatAdultFemale : null;
+		$GoatCalfMale =  $data->rowData->GoatCalfMale ? $data->rowData->GoatCalfMale : null;
+		$GoatCalfFemale =  $data->rowData->GoatCalfFemale ? $data->rowData->GoatCalfFemale : null;
+		$SheepAdultMale =  $data->rowData->SheepAdultMale ? $data->rowData->SheepAdultMale : null;
+		$SheepAdultFemale =  $data->rowData->SheepAdultFemale ? $data->rowData->SheepAdultFemale : null;
+		$SheepCalfMale =  $data->rowData->SheepCalfMale ? $data->rowData->SheepCalfMale : null;
+		$SheepCalfFemale =  $data->rowData->SheepCalfFemale ? $data->rowData->SheepCalfFemale : null;
+		$GoatSheepMilkProduction =  $data->rowData->GoatSheepMilkProduction ? $data->rowData->GoatSheepMilkProduction : null;
+		$ChickenNative =  $data->rowData->ChickenNative ? $data->rowData->ChickenNative : null;
+		$ChickenLayer =  $data->rowData->ChickenLayer ? $data->rowData->ChickenLayer : null;
+		$ChickenSonaliFayoumiCockerelOthers =  $data->rowData->ChickenSonaliFayoumiCockerelOthers ? $data->rowData->ChickenSonaliFayoumiCockerelOthers : null;
+		$ChickenBroiler =  $data->rowData->ChickenBroiler ? $data->rowData->ChickenBroiler : null;
+		$ChickenEgg =  $data->rowData->ChickenEgg ? $data->rowData->ChickenEgg : null;
+		$DucksNumber =  $data->rowData->DucksNumber ? $data->rowData->DucksNumber : null;
+		$DucksEgg =  $data->rowData->DucksEgg ? $data->rowData->DucksEgg : null;
+		$PigeonNumber =  $data->rowData->PigeonNumber ? $data->rowData->PigeonNumber : null;
+		$FamilyMember =  $data->rowData->FamilyMember ? $data->rowData->FamilyMember : null;
+		$LandTotal =  $data->rowData->LandTotal ? $data->rowData->LandTotal : null;
+		$LandOwn =  $data->rowData->LandOwn ? $data->rowData->LandOwn : null;
+		$LandLeased =  $data->rowData->LandLeased ? $data->rowData->LandLeased : null;
+		$DataCollectionDate =  $data->rowData->DataCollectionDate ? $data->rowData->DataCollectionDate : null;
+		$DataCollectorName =  $data->rowData->DataCollectorName ? $data->rowData->DataCollectorName : null;
+		$DesignationId =  $data->rowData->DesignationId ? $data->rowData->DesignationId : null;
+		$PhoneNumber =  $data->rowData->PhoneNumber ? $data->rowData->PhoneNumber : null;
+		$Remarks =  $data->rowData->Remarks ? $data->rowData->Remarks : null;
+		$Ward =  $data->rowData->Ward ? $data->rowData->Ward : null;
+		
 
-		$multiselectPGroup = isset($data->rowData->multiselectPGroup) ? $data->rowData->multiselectPGroup : '';
-		$TypeOfFarmerIdc = implode(",", $multiselectPGroup);
-		$TypeOfFarmerId = $TypeOfFarmerIdc? $TypeOfFarmerIdc : null;
-	
-		$dob = $data->rowData->dob ? $data->rowData->dob : null;
-		$DepartmentId = $data->rowData->DepartmentId ? $data->rowData->DepartmentId : null;
-		$ifOtherSpecify = $data->rowData->ifOtherSpecify ? $data->rowData->ifOtherSpecify : null;
-		$DateOfRegistration = $data->rowData->DateOfRegistration ? $data->rowData->DateOfRegistration : null;
-		$RegistrationNo = $data->rowData->RegistrationNo ? $data->rowData->RegistrationNo : null;
-		$NameOfTheCompanyYourPgPartnerWith = $data->rowData->NameOfTheCompanyYourPgPartnerWith ? $data->rowData->NameOfTheCompanyYourPgPartnerWith : null;
-		$WhenDidYouStartToOperateYourFirm = $data->rowData->WhenDidYouStartToOperateYourFirm ? $data->rowData->WhenDidYouStartToOperateYourFirm : null;
-		$NumberOfMonthsOfYourOperation = $data->rowData->NumberOfMonthsOfYourOperation ? $data->rowData->NumberOfMonthsOfYourOperation : null;
-		$AreYouRegisteredYourFirmWithDlsRadioFlag = $data->rowData->AreYouRegisteredYourFirmWithDlsRadioFlag ? $data->rowData->AreYouRegisteredYourFirmWithDlsRadioFlag : 0;
-		$registrationDate = $data->rowData->registrationDate ? $data->rowData->registrationDate : null;
-		$IfRegisteredYesRegistrationNo = $data->rowData->IfRegisteredYesRegistrationNo ? $data->rowData->IfRegisteredYesRegistrationNo : null;
-		$FarmsPhoto = $data->rowData->FarmsPhoto ? $data->rowData->FarmsPhoto : null;
+
 
 
 		try{
@@ -228,13 +214,137 @@ function dataAddEdit($data) {
 			$dbh = new Db();
 			$aQuerys = array();
 
-			if($FarmerId == ""){
+			if($HouseHoldId == ""){
 				
 				$q = new insertq();
-				$q->table = 't_farmer';
-				$q->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'UnionId', 'CityCorporation', 'Ward', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode','OccupationId','VillageName','Latitute','Longitute','IsHeadOfTheGroup','ValuechainId', 'TypeOfFarmerId', 'dob','DepartmentId','ifOtherSpecify','DateOfRegistration','RegistrationNo','NameOfTheCompanyYourPgPartnerWith','WhenDidYouStartToOperateYourFirm','NumberOfMonthsOfYourOperation','AreYouRegisteredYourFirmWithDlsRadioFlag','registrationDate','IfRegisteredYesRegistrationNo','FarmsPhoto'];
-				$q->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $UnionId, $CityCorporation, $Ward, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode, $OccupationId, $VillageName,$Latitute, $Longitute,  $IsHeadOfTheGroup, $ValuechainId, $TypeOfFarmerId, $dob, $DepartmentId, $ifOtherSpecify, $DateOfRegistration, $RegistrationNo, $NameOfTheCompanyYourPgPartnerWith, $WhenDidYouStartToOperateYourFirm, $NumberOfMonthsOfYourOperation, $AreYouRegisteredYourFirmWithDlsRadioFlag, $registrationDate, $IfRegisteredYesRegistrationNo, $FarmsPhoto];
-				$q->pks = ['FarmerId'];
+				$q->table = 't_householdlivestocksurvey';
+				$q->columns = [
+						'YearId',
+						'DivisionId',
+						'DistrictId',
+						'UpazilaId',
+						'UnionId',
+						'Ward',
+						'Village',
+						'FarmerName',
+						'FatherName',
+						'MotherName',
+						'HusbandWifeName',
+						'NameOfTheFarm',
+						'Phone',
+						'Gender',
+						'IsDisability',
+						'NID',
+						'IsPGMember',
+						'Latitute',
+						'Longitute',
+						'CowNative',
+						'CowCross',
+						'CowBullNative',
+						'CowBullCross',
+						'CowCalfMaleNative',
+						'CowCalfMaleCross',
+						'CowCalfFemaleNative',
+						'CowCalfFemaleCross',
+						'CowMilkProductionNative',
+						'CowMilkProductionCross',
+						'BuffaloAdultMale',
+						'BuffaloAdultFemale',
+						'BuffaloCalfMale',
+						'BuffaloCalfFemale',
+						'BuffaloMilkProduction',
+						'GoatAdultMale',
+						'GoatAdultFemale',
+						'GoatCalfMale',
+						'GoatCalfFemale',
+						'SheepAdultMale',
+						'SheepAdultFemale',
+						'SheepCalfMale',
+						'SheepCalfFemale',
+						'GoatSheepMilkProduction',
+						'ChickenNative',
+						'ChickenLayer',
+						'ChickenSonaliFayoumiCockerelOthers',
+						'ChickenBroiler',
+						'ChickenEgg',
+						'DucksNumber',
+						'DucksEgg',
+						'PigeonNumber',
+						'FamilyMember',
+						'LandTotal',
+						'LandOwn',
+						'LandLeased',
+						'DataCollectionDate',
+						'DataCollectorName',
+						'DesignationId',
+						'PhoneNumber',
+						'Remarks',
+						'UserId'
+					];
+				$q->values = [
+					$YearId,
+					$DivisionId,
+					$DistrictId,
+					$UpazilaId,
+					$UnionId,
+					$Ward,
+					$Village,
+					$FarmerName,
+					$FatherName,
+					$MotherName,
+					$HusbandWifeName,
+					$NameOfTheFarm,
+					$Phone,
+					$Gender,
+					$IsDisability,
+					$NID,
+					$IsPGMember,
+					$Latitute,
+					$Longitute,
+					$CowNative,
+					$CowCross,
+					$CowBullNative,
+					$CowBullCross,
+					$CowCalfMaleNative,
+					$CowCalfMaleCross,
+					$CowCalfFemaleNative,
+					$CowCalfFemaleCross,
+					$CowMilkProductionNative,
+					$CowMilkProductionCross,
+					$BuffaloAdultMale,
+					$BuffaloAdultFemale,
+					$BuffaloCalfMale,
+					$BuffaloCalfFemale,
+					$BuffaloMilkProduction,
+					$GoatAdultMale,
+					$GoatAdultFemale,
+					$GoatCalfMale,
+					$GoatCalfFemale,
+					$SheepAdultMale,
+					$SheepAdultFemale,
+					$SheepCalfMale,
+					$SheepCalfFemale,
+					$GoatSheepMilkProduction,
+					$ChickenNative,
+					$ChickenLayer,
+					$ChickenSonaliFayoumiCockerelOthers,
+					$ChickenBroiler,
+					$ChickenEgg,
+					$DucksNumber,
+					$DucksEgg,
+					$PigeonNumber,
+					$FamilyMember,
+					$LandTotal,
+					$LandOwn,
+					$LandLeased,
+					$DataCollectionDate,
+					$DataCollectorName,
+					$DesignationId,
+					$PhoneNumber,
+					$Remarks,
+					$UserId
+				];
+				$q->pks = ['HouseHoldId'];
 				$q->bUseInsetId = false;
 				$q->build_query();
 				$aQuerys = array($q); 
@@ -243,11 +353,135 @@ function dataAddEdit($data) {
 			}else{
 				
 				$u = new updateq();
-				$u->table = 't_farmer';
-				$u->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'UnionId', 'CityCorporation', 'Ward', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode','OccupationId','VillageName','Latitute','Longitute','IsHeadOfTheGroup','ValuechainId', 'TypeOfFarmerId', 'dob','DepartmentId','ifOtherSpecify','DateOfRegistration','RegistrationNo','NameOfTheCompanyYourPgPartnerWith','WhenDidYouStartToOperateYourFirm','NumberOfMonthsOfYourOperation','AreYouRegisteredYourFirmWithDlsRadioFlag','registrationDate','IfRegisteredYesRegistrationNo','FarmsPhoto'];
-				$u->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $UnionId, $CityCorporation, $Ward, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode, $OccupationId, $VillageName,$Latitute, $Longitute, $IsHeadOfTheGroup, $ValuechainId, $TypeOfFarmerId, $dob, $DepartmentId, $ifOtherSpecify, $DateOfRegistration, $RegistrationNo, $NameOfTheCompanyYourPgPartnerWith, $WhenDidYouStartToOperateYourFirm, $NumberOfMonthsOfYourOperation, $AreYouRegisteredYourFirmWithDlsRadioFlag, $registrationDate, $IfRegisteredYesRegistrationNo, $FarmsPhoto];
-				$u->pks = ['FarmerId'];
-				$u->pk_values = [$FarmerId];
+				$u->table = 't_householdlivestocksurvey';
+				$u->columns = [
+						'YearId',
+						'DivisionId',
+						'DistrictId',
+						'UpazilaId',
+						'UnionId',
+						'Ward',
+						'Village',
+						'FarmerName',
+						'FatherName',
+						'MotherName',
+						'HusbandWifeName',
+						'NameOfTheFarm',
+						'Phone',
+						'Gender',
+						'IsDisability',
+						'NID',
+						'IsPGMember',
+						'Latitute',
+						'Longitute',
+						'CowNative',
+						'CowCross',
+						'CowBullNative',
+						'CowBullCross',
+						'CowCalfMaleNative',
+						'CowCalfMaleCross',
+						'CowCalfFemaleNative',
+						'CowCalfFemaleCross',
+						'CowMilkProductionNative',
+						'CowMilkProductionCross',
+						'BuffaloAdultMale',
+						'BuffaloAdultFemale',
+						'BuffaloCalfMale',
+						'BuffaloCalfFemale',
+						'BuffaloMilkProduction',
+						'GoatAdultMale',
+						'GoatAdultFemale',
+						'GoatCalfMale',
+						'GoatCalfFemale',
+						'SheepAdultMale',
+						'SheepAdultFemale',
+						'SheepCalfMale',
+						'SheepCalfFemale',
+						'GoatSheepMilkProduction',
+						'ChickenNative',
+						'ChickenLayer',
+						'ChickenSonaliFayoumiCockerelOthers',
+						'ChickenBroiler',
+						'ChickenEgg',
+						'DucksNumber',
+						'DucksEgg',
+						'PigeonNumber',
+						'FamilyMember',
+						'LandTotal',
+						'LandOwn',
+						'LandLeased',
+						'DataCollectionDate',
+						'DataCollectorName',
+						'DesignationId',
+						'PhoneNumber',
+						'Remarks',
+						'UserId'
+					];
+				$u->values = [
+					$YearId,
+					$DivisionId,
+					$DistrictId,
+					$UpazilaId,
+					$UnionId,
+					$Ward,
+					$Village,
+					$FarmerName,
+					$FatherName,
+					$MotherName,
+					$HusbandWifeName,
+					$NameOfTheFarm,
+					$Phone,
+					$Gender,
+					$IsDisability,
+					$NID,
+					$IsPGMember,
+					$Latitute,
+					$Longitute,
+					$CowNative,
+					$CowCross,
+					$CowBullNative,
+					$CowBullCross,
+					$CowCalfMaleNative,
+					$CowCalfMaleCross,
+					$CowCalfFemaleNative,
+					$CowCalfFemaleCross,
+					$CowMilkProductionNative,
+					$CowMilkProductionCross,
+					$BuffaloAdultMale,
+					$BuffaloAdultFemale,
+					$BuffaloCalfMale,
+					$BuffaloCalfFemale,
+					$BuffaloMilkProduction,
+					$GoatAdultMale,
+					$GoatAdultFemale,
+					$GoatCalfMale,
+					$GoatCalfFemale,
+					$SheepAdultMale,
+					$SheepAdultFemale,
+					$SheepCalfMale,
+					$SheepCalfFemale,
+					$GoatSheepMilkProduction,
+					$ChickenNative,
+					$ChickenLayer,
+					$ChickenSonaliFayoumiCockerelOthers,
+					$ChickenBroiler,
+					$ChickenEgg,
+					$DucksNumber,
+					$DucksEgg,
+					$PigeonNumber,
+					$FamilyMember,
+					$LandTotal,
+					$LandOwn,
+					$LandLeased,
+					$DataCollectionDate,
+					$DataCollectorName,
+					$DesignationId,
+					$PhoneNumber,
+					$Remarks,
+					$UserId
+				];
+				$u->pks = ['HouseHoldId'];
+				$u->pk_values = [$HouseHoldId];
 				$u->build_query();
 				$aQuerys = array($u);
 			}
@@ -283,7 +517,7 @@ function deleteData($data) {
 		return $returnData = msg(0,422,'Please Fill in all Required Fields!',$fields);
 	}else{
 		
-		$FarmerId = $data->rowData->id;
+		$HouseHoldId = $data->rowData->id;
 		$lan = trim($data->lan); 
 		$UserId = trim($data->UserId); 
 
@@ -292,9 +526,9 @@ function deleteData($data) {
 			$dbh = new Db();
 			
             $d = new deleteq();
-            $d->table = 't_farmer';
-            $d->pks = ['FarmerId'];
-            $d->pk_values = [$FarmerId];
+            $d->table = 't_householdlivestocksurvey';
+            $d->pks = ['HouseHoldId'];
+            $d->pk_values = [$HouseHoldId];
             $d->build_query();
             $aQuerys = array($d);
 
