@@ -47,57 +47,92 @@ $dataList = array(
 $index = 0;
 $i = 0;
 
-
-$query = "SELECT q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,t.`DivisionId`,t.`DistrictId`,t.`UpazilaId`
-	,SUM(DairyPG) DairyPG,SUM(DairyFarmer) DairyFarmer
-	,SUM(BuffaloPG) BuffaloPG, SUM(BuffaloFarmer) BuffaloFarmer
-	,SUM(BeefFatteningPG) BeefFatteningPG, SUM(BeefFatteningFarmer) BeefFatteningFarmer
-	,SUM(GoatPG) GoatPG, SUM(GoatFarmer) GoatFarmer
-	,SUM(SheepPG) SheepPG, SUM(SheepFarmer) SheepFarmer
-	,SUM(ScavengingChickensPG) ScavengingChickensPG, SUM(ScavengingChickensFarmer) ScavengingChickensFarmer
-	,SUM(DuckPG) DuckPG, SUM(DuckFarmer) DuckFarmer
-	,SUM(QuailPG) QuailPG, SUM(QuailFarmer) QuailFarmer
-	,SUM(PigeonPG) PigeonPG,SUM(PigeonFarmer) PigeonFarmer		 
-	,0 RowTotalPG, 0 RowTotalFarmer
-	FROM
+	$query = "SELECT 
+	q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,
+	u.UnionName,
+	a.`HouseHoldId`,
+	a.`HouseHoldId` id,
+	a.`YearId`,
+	a.`DivisionId`,
+	a.`DistrictId`,
+	a.`UpazilaId`,
+	a.`UnionId`,
+	a.`Ward`,
+	a.`Village`,
+	a.`FarmerName`,
+	a.`FatherName`,
+	a.`MotherName`,
+	a.`HusbandWifeName`,
+	a.`NameOfTheFarm`,
+	a.`Phone`,
+	a.`Gender`,
+	a.`IsDisability`,
+	a.`NID`,
+	a.`IsPGMember`,
+	a.`Latitute`,
+	a.`Longitute`,
+	a.`CowNative`,
+	a.`CowCross`,
+	a.`CowBullNative`,
+	a.`CowBullCross`,
+	a.`CowCalfMaleNative`,
+	a.`CowCalfMaleCross`,
+	a.`CowCalfFemaleNative`,
+	a.`CowCalfFemaleCross`,
+	a.`CowMilkProductionNative`,
+	a.`CowMilkProductionCross`,
+	a.`BuffaloAdultMale`,
+	a.`BuffaloAdultFemale`,
+	a.`BuffaloCalfMale`,
+	a.`BuffaloCalfFemale`,
+	a.`BuffaloMilkProduction`,
+	a.`GoatAdultMale`,
+	a.`GoatAdultFemale`,
+	a.`GoatCalfMale`,
+	a.`GoatCalfFemale`,
+	a.`SheepAdultMale`,
+	a.`SheepAdultFemale`,
+	a.`SheepCalfMale`,
+	a.`SheepCalfFemale`,
+	a.`GoatSheepMilkProduction`,
+	a.`ChickenNative`,
+	a.`ChickenLayer`,
+	a.`ChickenSonaliFayoumiCockerelOthers`,
+	a.`ChickenBroiler`,
+	a.`ChickenEgg`,
+	a.`DucksNumber`,
+	a.`DucksEgg`,
+	a.`PigeonNumber`,
+	a.`FamilyMember`,
+	a.`LandTotal`,
+	a.`LandOwn`,
+	a.`LandLeased`,
+	a.`DataCollectionDate`,
+	a.`DataCollectorName`,
+	a.`DesignationId`,
+	a.`PhoneNumber`,
+	a.`Remarks`,
+	a.`UserId`,
+	a.`UpdateTs`,
+	a.`CreateTs`,
+	b.GenderName,
+	case when a.IsDisability=1 then 'Yes' else 'No' end IsDisabilityStatus,
+	case when a.IsPGMember=1 then 'Yes' else 'No' end IsPGMemberStatus,
+	us.UserName, de.DesignationName
 	
-	(SELECT f.`DivisionId`,f.`DistrictId`,f.`UpazilaId`
-	,(CASE WHEN f.`ValuechainId`='DAIRY' THEN 1 ELSE 0 END) DairyPG,0 DairyFarmer
-	,(CASE WHEN f.`ValuechainId`='BUFFALO' THEN 1 ELSE 0 END) BuffaloPG, 0 BuffaloFarmer
-	,(CASE WHEN f.`ValuechainId`='BEEFFATTENING' THEN 1 ELSE 0 END) BeefFatteningPG, 0 BeefFatteningFarmer
-	,(CASE WHEN f.`ValuechainId`='GOAT' THEN 1 ELSE 0 END) GoatPG, 0 GoatFarmer
-	,(CASE WHEN f.`ValuechainId`='SHEEP' THEN 1 ELSE 0 END) SheepPG, 0 SheepFarmer
-	,(CASE WHEN f.`ValuechainId`='SCAVENGINGCHICKENLOCAL' THEN 1 ELSE 0 END) ScavengingChickensPG, 0 ScavengingChickensFarmer
-	,(CASE WHEN f.`ValuechainId`='DUCK' THEN 1 ELSE 0 END) DuckPG, 0 DuckFarmer
-	,(CASE WHEN f.`ValuechainId`='QUAIL' THEN 1 ELSE 0 END) QuailPG, 0 QuailFarmer
-	,(CASE WHEN f.`ValuechainId`='PIGEON' THEN 1 ELSE 0 END) PigeonPG,0 PigeonFarmer
-	FROM `t_pg` f
-	WHERE (f.DivisionId = $DivisionId OR $DivisionId=0)
-	AND (f.DistrictId = $DistrictId OR $DistrictId=0)
-	AND (f.UpazilaId = $UpazilaId OR $UpazilaId=0)
-	
-	UNION ALL
-	
-	SELECT f.`DivisionId`,f.`DistrictId`,f.`UpazilaId`
-	,0 DairyPG, (CASE WHEN f.`ValueChain`='DAIRY' THEN 1 ELSE 0 END) DairyFarmer
-	,0 BuffaloPG,(CASE WHEN f.`ValueChain`='BUFFALO' THEN 1 ELSE 0 END) BuffaloFarmer
-	,0 BeefFatteningPG,(CASE WHEN f.`ValueChain`='BEEFFATTENING' THEN 1 ELSE 0 END) BeefFatteningFarmer
-	,0 BeefFatteningPG,(CASE WHEN f.`ValueChain`='GOAT' THEN 1 ELSE 0 END) GoatFarmer
-	,0 SheepPG,(CASE WHEN f.`ValueChain`='SHEEP' THEN 1 ELSE 0 END) SheepFarmer
-	,0 ScavengingChickensPG,(CASE WHEN f.`ValueChain`='SCAVENGINGCHICKENLOCAL' THEN 1 ELSE 0 END) ScavengingChickensFarmer
-	,0 DuckPG,(CASE WHEN f.`ValueChain`='DUCK' THEN 1 ELSE 0 END) DuckFarmer
-	,0 QuailPG,(CASE WHEN f.`ValueChain`='QUAIL' THEN 1 ELSE 0 END) QuailFarmer
-	,0 PigeonPG,(CASE WHEN f.`ValueChain`='PIGEON' THEN 1 ELSE 0 END) PigeonFarmer
-	FROM `t_farmer` f
-	WHERE (f.DivisionId = $DivisionId OR $DivisionId=0)
-	AND (f.DistrictId = $DistrictId OR $DistrictId=0)
-	AND (f.UpazilaId = $UpazilaId OR $UpazilaId=0)
-	) t
-	INNER JOIN `t_division` q ON t.`DivisionId`=q.`DivisionId`
-	INNER JOIN `t_district` r ON t.`DistrictId`=r.`DistrictId`
-	INNER JOIN `t_upazila` s ON t.`UpazilaId`=s.`UpazilaId`
-	GROUP BY q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,t.`DivisionId`,t.`DistrictId`,t.`UpazilaId`
-
+  FROM
+  `t_householdlivestocksurvey` a 
+  Inner Join t_gender b ON a.Gender = b.GenderId
+  INNER JOIN `t_division` q ON a.`DivisionId`=q.`DivisionId`
+	INNER JOIN `t_district` r ON a.`DistrictId`=r.`DistrictId`
+	INNER JOIN `t_upazila` s ON a.`UpazilaId`=s.`UpazilaId`
+	INNER JOIN `t_union` u ON a.`UnionId`=u.`UnionId`
+	INNER JOIN `t_users` us ON a.`UserId`=us.`UserId`
+	LEFT JOIN `t_designation` de ON a.`DesignationId`=de.`DesignationId`
+  WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
+	AND (a.DistrictId = $DistrictId OR $DistrictId=0)
+	AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+	AND a.`YearId` = 2024
 	;";
 
 
@@ -241,20 +276,31 @@ $rn++;
 
 /*Value Set for Cells*/
 $spreadsheet->getActiveSheet()
-	->SetCellValue('A5', 'Division')
-	->SetCellValue('B5', 'District')
-	->SetCellValue('C5', 'Upazila')
-	->SetCellValue('D5', 'Dairy')
-	->SetCellValue('F5', 'Buffalo')
-	->SetCellValue('H5', 'Beef Fattening')
-	->SetCellValue('J5', 'Goat')
-	->SetCellValue('L5', 'Sheep')
-	->SetCellValue('N5', 'Scavenging Chickens')
-	->SetCellValue('P5', 'Duck')
-	->SetCellValue('R5', 'Quail')
-	->SetCellValue('T5', 'Pigeon')
-	->SetCellValue('V5', 'Total PG')
-	->SetCellValue('W5', 'Total PG Members')
+	->SetCellValue('A5', 'Division (বিভাগ)')
+	->SetCellValue('B5', 'District (জেলা)')
+	->SetCellValue('C5', 'Upazila (উপজেলা)')
+	->SetCellValue('D5', 'Union (ইউনিয়ন)')
+	->SetCellValue('E5', 'Ward (ওয়ার্ড)')
+	->SetCellValue('F5', 'Village (গ্রাম)')
+	->SetCellValue('G5', 'Farmer’s Name (নাম)')
+	->SetCellValue('H5', 'Father’s Name (পিতার নাম)')
+	->SetCellValue('I5', 'Mother’s Name (মাতার নাম)')
+	->SetCellValue('J5', 'Husband’s/Wife’s Name (স্বামীর / স্ত্রীর নাম)')
+	->SetCellValue('K5', 'Name of the farm (খামারের নাম)')
+	->SetCellValue('L5', 'Mobile number (মোবাইল নং)')
+	->SetCellValue('M5', 'Gender (জেন্ডার)')
+	->SetCellValue('N5', 'Is there any disability (প্রতিবন্ধি কিনা)')
+	->SetCellValue('O5', 'NID (জাতীয় পরিচয় পত্র/ ভোটার আইডি কার্ড নম্বর)')
+	->SetCellValue('P5', 'Are you the member of a PG under LDDP (আপনি কি LDDP প্রকল্পের আওতাধীন কোনো পিজি\'র সদস্য) ?')
+	->SetCellValue('Q5', 'Latitude (অক্ষাংশ)')
+	->SetCellValue('R5', 'Longitude (দ্রাঘিমাংশ)')
+
+	->SetCellValue('S5', 'Cow (গাভীর সংখ্যা)')
+	->SetCellValue('U5', 'Bull/Castrated Bull (ষাঁড়/বলদ সংখ্যা)')
+	->SetCellValue('W5', 'Calf Male (এঁড়ে বাছুর সংখ্যা)')
+	->SetCellValue('Y5', 'Calf Female (বকনা বাছুর সংখ্যা)')
+	->SetCellValue('AA5', 'Milk Production per day (Liter)/(দৈনিক দুধের পরিমান (লিটার))')
+
 	
 	;
 
@@ -263,35 +309,64 @@ $spreadsheet->getActiveSheet()
 	->SetCellValue('A6', '')
 	->SetCellValue('B6', '')
 	->SetCellValue('C6', '')
-	->SetCellValue('D6', 'PG')
-	->SetCellValue('E6', 'PG Members')
-	->SetCellValue('F6', 'PG')
-	->SetCellValue('G6', 'PG Members')
-	->SetCellValue('H6', 'PG')
-	->SetCellValue('I6', 'PG Members')
-	->SetCellValue('J6', 'PG')
-	->SetCellValue('K6', 'PG Members')
-	->SetCellValue('L6', 'PG')
-	->SetCellValue('M6', 'PG Members')
-	->SetCellValue('N5', 'PG')
-	->SetCellValue('O6', 'PG Members')
-	->SetCellValue('P6', 'PG')
-	->SetCellValue('Q6', 'PG Members')
-	->SetCellValue('R6', 'PG')
-	->SetCellValue('S6', 'PG Members')
-	->SetCellValue('T6', 'PG')
-	->SetCellValue('U6', 'PG Members')
-	->SetCellValue('V6', '')
-	->SetCellValue('W6', '')
-	
+	->SetCellValue('D6', '')
+	->SetCellValue('E6', '')
+	->SetCellValue('F6', '')
+	->SetCellValue('G6', '')
+	->SetCellValue('H6', '')
+	->SetCellValue('I6', '')
+	->SetCellValue('J6', '')
+	->SetCellValue('K6', '')
+	->SetCellValue('L6', '')
+	->SetCellValue('M6', '')
+	->SetCellValue('N6', '')
+	->SetCellValue('O6', '')
+	->SetCellValue('P6', '')
+	->SetCellValue('Q6', '')
+	->SetCellValue('R6', '')
+	->SetCellValue('R6', '')
+	->SetCellValue('S6', 'Native (দেশি)')
+	->SetCellValue('T6', 'Cross (শংকর)')
+	->SetCellValue('U6', 'Native (দেশি)')
+	->SetCellValue('V6', 'Cross (শংকর)')
+	->SetCellValue('W6', 'Native (দেশি)')
+	->SetCellValue('X6', 'Cross (শংকর)')
+	->SetCellValue('Y6', 'Native (দেশি)')
+	->SetCellValue('Z6', 'Cross (শংকর)')
+	->SetCellValue('AA6', 'Native (দেশি)')
+	->SetCellValue('AB6', 'Cross (শংকর)')
+
 	;
 
 
 	$spreadsheet->getActiveSheet()->mergeCells('A5:A6');
 	$spreadsheet->getActiveSheet()->mergeCells('B5:B6');
 	$spreadsheet->getActiveSheet()->mergeCells('C5:C6');
+	$spreadsheet->getActiveSheet()->mergeCells('D5:D6');
+	$spreadsheet->getActiveSheet()->mergeCells('E5:E6');
+	$spreadsheet->getActiveSheet()->mergeCells('F5:F6');
+	$spreadsheet->getActiveSheet()->mergeCells('G5:G6');
+	$spreadsheet->getActiveSheet()->mergeCells('H5:H6');
+	$spreadsheet->getActiveSheet()->mergeCells('I5:I6');
+	$spreadsheet->getActiveSheet()->mergeCells('J5:J6');
+	$spreadsheet->getActiveSheet()->mergeCells('K5:K6');
+	$spreadsheet->getActiveSheet()->mergeCells('L5:L6');
+	$spreadsheet->getActiveSheet()->mergeCells('M5:M6');
+	$spreadsheet->getActiveSheet()->mergeCells('N5:N6');
+	$spreadsheet->getActiveSheet()->mergeCells('O5:O6');
+	$spreadsheet->getActiveSheet()->mergeCells('P5:P6');
+	$spreadsheet->getActiveSheet()->mergeCells('Q5:Q6');
+	$spreadsheet->getActiveSheet()->mergeCells('R5:R6');
 
-	$spreadsheet->getActiveSheet()->mergeCells('D5:E5');
+	$spreadsheet->getActiveSheet()->mergeCells('S5:T5');
+	$spreadsheet->getActiveSheet()->mergeCells('U5:V5');
+	$spreadsheet->getActiveSheet()->mergeCells('W5:X5');
+	$spreadsheet->getActiveSheet()->mergeCells('Y5:Z5');
+	$spreadsheet->getActiveSheet()->mergeCells('AA5:AB5');
+
+
+
+	/* $spreadsheet->getActiveSheet()->mergeCells('D5:E5');
 	$spreadsheet->getActiveSheet()->mergeCells('F5:G5');
 	$spreadsheet->getActiveSheet()->mergeCells('H5:I5');
 	$spreadsheet->getActiveSheet()->mergeCells('J5:K5');
@@ -303,7 +378,7 @@ $spreadsheet->getActiveSheet()
 
 
 	$spreadsheet->getActiveSheet()->mergeCells('V5:V6');
-	$spreadsheet->getActiveSheet()->mergeCells('W5:W6');
+	$spreadsheet->getActiveSheet()->mergeCells('W5:W6'); */
 
 /*Font Size for Cells*/
 //$spreadsheet -> getActiveSheet()->getStyle('A6') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'A6');	
@@ -356,27 +431,27 @@ $spreadsheet->getActiveSheet()->getStyle('U6')->applyFromArray(array('font' => a
 $spreadsheet->getActiveSheet()->getStyle('A5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 $spreadsheet->getActiveSheet()->getStyle('B5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 $spreadsheet->getActiveSheet()->getStyle('C5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-$spreadsheet->getActiveSheet()->getStyle('D5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-$spreadsheet->getActiveSheet()->getStyle('F5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-$spreadsheet->getActiveSheet()->getStyle('H5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-$spreadsheet->getActiveSheet()->getStyle('J5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-$spreadsheet->getActiveSheet()->getStyle('L5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-$spreadsheet->getActiveSheet()->getStyle('N5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-$spreadsheet->getActiveSheet()->getStyle('P5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-$spreadsheet->getActiveSheet()->getStyle('R5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-$spreadsheet->getActiveSheet()->getStyle('T5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('D5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('E5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('F5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('G5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('H5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('I5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('J5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('K5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('L5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('M5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('N5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('O5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('P5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('Q5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('R5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
+$spreadsheet->getActiveSheet()->getStyle('S5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-$spreadsheet->getActiveSheet()->getStyle('D6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-$spreadsheet->getActiveSheet()->getStyle('F6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-$spreadsheet->getActiveSheet()->getStyle('H6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-$spreadsheet->getActiveSheet()->getStyle('J6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-$spreadsheet->getActiveSheet()->getStyle('L6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-$spreadsheet->getActiveSheet()->getStyle('N6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-$spreadsheet->getActiveSheet()->getStyle('P6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-$spreadsheet->getActiveSheet()->getStyle('R6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+$spreadsheet->getActiveSheet()->getStyle('S6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 $spreadsheet->getActiveSheet()->getStyle('T6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-$spreadsheet->getActiveSheet()->getStyle('U6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+ 
 
 /*Text Alignment Vertical(VERTICAL_TOP,VERTICAL_CENTER,VERTICAL_BOTTOM)*/
 //$spreadsheet -> getActiveSheet() -> getStyle('A6')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
@@ -392,6 +467,12 @@ $spreadsheet->getActiveSheet()->getStyle('I5')->getAlignment()->setVertical(Alig
 $spreadsheet->getActiveSheet()->getStyle('J5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('K5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('L5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('M5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('N5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('O5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('P5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('Q5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('R5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('V5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('W5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
@@ -417,10 +498,26 @@ $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(17);
 $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(17);
 $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(17);
 $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(12);
-for ($column = 'D'; $column <= 'W'; $column++) {
-    $spreadsheet->getActiveSheet()->getColumnDimension($column)->setWidth(12);
+
+for ($column = 'E'; $column <= 'AZ'; $column++) {
+    $spreadsheet->getActiveSheet()->getColumnDimension($column)->setWidth(17);
 }
 
+/* for ($column = 'S'; $column <= 'AZ'; $column++) {
+    $spreadsheet->getActiveSheet()->getColumnDimension($column)->setWidth(25);
+}
+ */
+
+ $spreadsheet->getActiveSheet()->getColumnDimension('S')->setWidth(17);
+ $spreadsheet->getActiveSheet()->getColumnDimension('T')->setWidth(17);
+ $spreadsheet->getActiveSheet()->getColumnDimension('U')->setWidth(17);
+ $spreadsheet->getActiveSheet()->getColumnDimension('V')->setWidth(17);
+ $spreadsheet->getActiveSheet()->getColumnDimension('W')->setWidth(17);
+ $spreadsheet->getActiveSheet()->getColumnDimension('X')->setWidth(17);
+ $spreadsheet->getActiveSheet()->getColumnDimension('Y')->setWidth(17);
+ $spreadsheet->getActiveSheet()->getColumnDimension('Z')->setWidth(17);
+ $spreadsheet->getActiveSheet()->getColumnDimension('AA')->setWidth(17);
+ $spreadsheet->getActiveSheet()->getColumnDimension('AB')->setWidth(17);
 
 
 /*Wrap text*/
@@ -428,53 +525,45 @@ $spreadsheet->getActiveSheet()->getStyle('A5')->getAlignment()->setWrapText(true
 $spreadsheet->getActiveSheet()->getStyle('D6:W6')->getAlignment()->setWrapText(true);
 
 /*border color set for cells*/
-//$spreadsheet -> getActiveSheet() -> getStyle('A6:A6') -> applyFromArray($styleThinBlackBorderOutline);
+
 $spreadsheet->getActiveSheet()->getStyle('A5:A6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('B5:B6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('C5:C6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('D5:D5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('E5:E5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('F5:F5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('G5:G5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('H5:H5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('I5:I5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('J5:J5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('K5:K5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('L5:L5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('M5:M5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('N5:N5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('O5:O5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('P5:P5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('Q5:Q5')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('R5:R5')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('D5:D6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('E5:E6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('F5:F6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('G5:G6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('H5:H6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('I5:I6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('J5:J6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('K5:K6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('L5:L6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('M5:M6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('N5:N6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('O5:O6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('P5:P6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('Q5:Q6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('R5:R6')->applyFromArray($styleThinBlackBorderOutline);
+
 $spreadsheet->getActiveSheet()->getStyle('S5:S5')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('T5:T5')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('U5:U5')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('V5:V5')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('W5:W5')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('X5:X5')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('Y5:Y5')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('Z5:Z5')->applyFromArray($styleThinBlackBorderOutline);
 
-
-
-$spreadsheet->getActiveSheet()->getStyle('D6:D6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('E6:E6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('F6:F6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('G6:G6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('H6:H6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('I6:I6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('J6:J6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('K6:K6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('L6:L6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('M6:M6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('N6:N6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('O6:O6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('P6:P6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('Q6:Q6')->applyFromArray($styleThinBlackBorderOutline);
-$spreadsheet->getActiveSheet()->getStyle('R6:R6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('S6:S6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('T6:T6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('U6:U6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('V6:V6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('W6:W6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('X6:X6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('Y6:Y6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('Z6:Z6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('AA6:AA6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('AB6:AB6')->applyFromArray($styleThinBlackBorderOutline);
 
 $charList = array('1' => 'A', '2' => 'B', '3' => 'C', '4' => 'D', '5' => 'E', '6' => 'F', '7' => 'G', '8' => 'H', '9' => 'I', '10' => 'J', '11' => 'K', '12' => 'L', '13' => 'M', '14' => 'N', '15' => 'O');
 
@@ -485,124 +574,45 @@ $rowNo = 10;
 $i = 1;
 $j = 7;
 
-$TotalDairyPG = 0;
-$TotalDairyFarmer = 0;
-$TotalBuffaloPG = 0;
-$TotalBuffaloFarmer = 0;
-$TotalBeefFatteningPG = 0;
-$TotalBeefFatteningFarmer = 0;
-$TotalGoatPG = 0;
-$TotalGoatFarmer = 0;
-$TotalSheepPG = 0;
-$TotalSheepFarmer = 0;
-$TotalScavengingChickensPG = 0;
-$TotalScavengingChickensFarmer = 0;
-$TotalDuckPG = 0;
-$TotalDuckFarmer = 0;
-$TotalQuailPG = 0;
-$TotalQuailFarmer = 0;
-$TotalPigeonPG = 0;
-$TotalPigeonFarmer = 0;
-$TotalRowTotalPG = 0;
-$TotalRowTotalFarmer = 0;
-$TotalGrandTotal = 0;
-$TotalPercentage = 0;
 
 $dataList = array();
 
 
-foreach ($resultdata as $key => $row) {
-	$dataList[] = $row;
-
-	/**Calculate column total */
-	$TotalDairyPG += $row["DairyPG"];
-			$TotalDairyFarmer += $row["DairyFarmer"];
-			$TotalBuffaloPG += $row["BuffaloPG"];
-			$TotalBuffaloFarmer += $row["BuffaloFarmer"];
-			$TotalBeefFatteningPG += $row["BeefFatteningPG"];
-			$TotalBeefFatteningFarmer += $row["BeefFatteningFarmer"];
-			$TotalGoatPG += $row["GoatPG"];
-			$TotalGoatFarmer += $row["GoatFarmer"];
-			$TotalSheepPG += $row["SheepPG"];
-			$TotalSheepFarmer += $row["SheepFarmer"];
-			$TotalScavengingChickensPG += $row["ScavengingChickensPG"];
-			$TotalScavengingChickensFarmer += $row["ScavengingChickensFarmer"];
-			$TotalDuckPG += $row["DuckPG"];
-			$TotalDuckFarmer += $row["DuckFarmer"];
-			$TotalQuailPG += $row["QuailPG"];
-			$TotalQuailFarmer += $row["QuailFarmer"];
-			$TotalPigeonPG += $row["PigeonPG"];
-			$TotalPigeonFarmer += $row["PigeonFarmer"];
-
-			$TotalRowTotalPG += $row["RowTotalPG"];
-			$TotalRowTotalFarmer += $row["RowTotalFarmer"];
-}
-
-
-/**For Total row */
-if (count($dataList) > 0) {
-	$row = array();
-	$row["DivisionName"]="";
-			$row["DistrictName"]="";
-			$row["UpazilaName"]="";
-			$row["DairyPG"]=$TotalDairyPG;
-			$row["DairyFarmer"]=$TotalDairyFarmer;
-			$row["BuffaloPG"]=$TotalBuffaloPG;
-			$row["BuffaloFarmer"]=$TotalBuffaloFarmer;
-			$row["BeefFatteningPG"]=$TotalBeefFatteningPG;
-			$row["BeefFatteningFarmer"]=$TotalBeefFatteningFarmer;
-			$row["GoatPG"]=$TotalGoatPG;
-			$row["GoatFarmer"]=$TotalGoatFarmer;
-			$row["SheepPG"]=$TotalSheepPG;
-			$row["SheepFarmer"]=$TotalSheepFarmer;
-			$row["ScavengingChickensPG"]=$TotalScavengingChickensPG;
-			$row["ScavengingChickensFarmer"]=$TotalScavengingChickensFarmer;
-			$row["DuckPG"]=$TotalDuckPG;
-			$row["DuckFarmer"]=$TotalDuckFarmer;
-			$row["QuailPG"]=$TotalQuailPG;
-			$row["QuailFarmer"]=$TotalQuailFarmer;
-			$row["PigeonPG"]=$TotalPigeonPG;
-			$row["PigeonFarmer"]=$TotalPigeonFarmer;
-
-			$row["RowTotalPG"]=$TotalRowTotalPG;
-			$row["RowTotalFarmer"]=$TotalRowTotalFarmer;
-	$dataList[] = $row;
-}
-
-
-
 
 /**Calculate Percentage */
-foreach ($dataList as $key => $row) {
+foreach ($resultdata as $key => $row) {
 	/* $row["Percentage"] = ($row["GrandTotal"] * 100) / $TotalGrandTotal; */
 
 	$spreadsheet->getActiveSheet()
 		->SetCellValue('A' . $j, $row['DivisionName'])
 		->SetCellValue('B' . $j, $row['DistrictName'])
 		->SetCellValue('C' . $j, $row['UpazilaName'])
-		->SetCellValue('D' . $j, $row['DairyPG'])
-		->SetCellValue('E' . $j, $row['DairyFarmer'])
-		->SetCellValue('F' . $j, $row['BuffaloPG'])
-		->SetCellValue('G' . $j, $row['BuffaloFarmer'])
-		->SetCellValue('H' . $j, $row['BeefFatteningPG'])
-		->SetCellValue('I' . $j, $row['BeefFatteningFarmer'])
-		->SetCellValue('J' . $j, $row['GoatPG'])
-		->SetCellValue('K' . $j, $row['GoatFarmer'])
-		->SetCellValue('L' . $j, $row['SheepPG'])
-		->SetCellValue('M' . $j, $row['SheepFarmer'])
-		->SetCellValue('N' . $j, $row['ScavengingChickensPG'])
-		->SetCellValue('O' . $j, $row['ScavengingChickensFarmer'])
-		->SetCellValue('P' . $j, $row['DuckPG'])
-		->SetCellValue('Q' . $j, $row['DuckFarmer'])
-		->SetCellValue('R' . $j, $row['QuailPG'])
-		->SetCellValue('S' . $j, $row['QuailFarmer'])
-		->SetCellValue('T' . $j, $row['PigeonPG'])
-		->SetCellValue('U' . $j, $row['PigeonFarmer'])
-		->SetCellValue('V' . $j, $row['RowTotalPG'])
-		->SetCellValue('W' . $j, $row["RowTotalFarmer"])
+		->SetCellValue('D' . $j, $row['UnionName'])
+		->SetCellValue('E' . $j, $row['Ward'])
+		->SetCellValue('F' . $j, $row['Village'])
+		->SetCellValue('G' . $j, $row['FarmerName'])
+		->SetCellValue('H' . $j, $row['FatherName'])
+		->SetCellValue('I' . $j, $row['MotherName'])
+		->SetCellValue('J' . $j, $row['HusbandWifeName'])
+		->SetCellValue('K' . $j, $row['NameOfTheFarm'])
+		->SetCellValue('L' . $j, $row['Phone'])
+		->SetCellValue('M' . $j, $row['GenderName'])
+		->SetCellValue('N' . $j, $row['IsDisabilityStatus'])
+		->SetCellValue('O' . $j, $row['NID'])
+		->SetCellValue('P' . $j, $row['IsPGMemberStatus'])
+		->SetCellValue('Q' . $j, $row['Latitute'])
+		->SetCellValue('R' . $j, $row['Longitute'])
+		->SetCellValue('S' . $j, $row['CowNative'])
+		->SetCellValue('T' . $j, $row['CowCross'])
+		->SetCellValue('U' . $j, $row['CowBullNative'])
+		->SetCellValue('V' . $j, $row['CowBullCross'])
+		->SetCellValue('W' . $j, $row['CowCalfMaleNative'])
+		->SetCellValue('X' . $j, $row['CowCalfMaleCross'])
+		->SetCellValue('Y' . $j, $row['CowCalfFemaleNative'])
+		->SetCellValue('Z' . $j, $row['CowCalfFemaleCross'])
+		->SetCellValue('AA' . $j, $row['CowMilkProductionNative'])
+		->SetCellValue('AB' . $j, $row['CowMilkProductionCross'])
 
-
-		
 		;
 		
 
@@ -629,20 +639,31 @@ foreach ($dataList as $key => $row) {
 	$spreadsheet->getActiveSheet()->getStyle('U' . $j . ':U' . $j)->applyFromArray($styleThinBlackBorderOutline);
 	$spreadsheet->getActiveSheet()->getStyle('V' . $j . ':V' . $j)->applyFromArray($styleThinBlackBorderOutline);
 	$spreadsheet->getActiveSheet()->getStyle('W' . $j . ':W' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	$spreadsheet->getActiveSheet()->getStyle('X' . $j . ':X' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	$spreadsheet->getActiveSheet()->getStyle('Y' . $j . ':Y' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	$spreadsheet->getActiveSheet()->getStyle('Z' . $j . ':Z' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	$spreadsheet->getActiveSheet()->getStyle('AA' . $j . ':AA' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	$spreadsheet->getActiveSheet()->getStyle('AB' . $j . ':AB' . $j)->applyFromArray($styleThinBlackBorderOutline);
 
 
 	$spreadsheet->getActiveSheet()->getStyle('A' . $j . ':A' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 	$spreadsheet->getActiveSheet()->getStyle('B' . $j . ':B' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 	$spreadsheet->getActiveSheet()->getStyle('C' . $j . ':C' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-	$spreadsheet->getActiveSheet()->getStyle('D' . $j . ':D' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet->getActiveSheet()->getStyle('E' . $j . ':E' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet->getActiveSheet()->getStyle('F' . $j . ':F' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet->getActiveSheet()->getStyle('G' . $j . ':G' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet->getActiveSheet()->getStyle('H' . $j . ':H' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet->getActiveSheet()->getStyle('I' . $j . ':I' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet->getActiveSheet()->getStyle('J' . $j . ':J' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet->getActiveSheet()->getStyle('K' . $j . ':K' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-	$spreadsheet->getActiveSheet()->getStyle('L' . $j . ':L' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+	$spreadsheet->getActiveSheet()->getStyle('D' . $j . ':D' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('E' . $j . ':E' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('F' . $j . ':F' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('G' . $j . ':G' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('H' . $j . ':H' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('I' . $j . ':I' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('J' . $j . ':J' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('K' . $j . ':K' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('L' . $j . ':L' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('M' . $j . ':M' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('N' . $j . ':N' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('O' . $j . ':O' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('P' . $j . ':P' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('Q' . $j . ':Q' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+	$spreadsheet->getActiveSheet()->getStyle('R' . $j . ':R' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
 
 	$spreadsheet->getActiveSheet()->getStyle('A' . $j . ':A' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
@@ -659,50 +680,10 @@ foreach ($dataList as $key => $row) {
 	$spreadsheet->getActiveSheet()->getStyle('L' . $j . ':L' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
 
-	$spreadsheet->getActiveSheet()->getStyle('B' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$spreadsheet->getActiveSheet()->getStyle('B' . $j)->getNumberFormat()->setFormatCode('#,##0');
 
-
-	$spreadsheet->getActiveSheet()->getStyle('C' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$spreadsheet->getActiveSheet()->getStyle('C' . $j)->getNumberFormat()->setFormatCode('#,##0');
-
-
-	$spreadsheet->getActiveSheet()->getStyle('D' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$spreadsheet->getActiveSheet()->getStyle('D' . $j)->getNumberFormat()->setFormatCode('#,##0');
-
-
-	$spreadsheet->getActiveSheet()->getStyle('E' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$spreadsheet->getActiveSheet()->getStyle('E' . $j)->getNumberFormat()->setFormatCode('#,##0');
-
-
-	$spreadsheet->getActiveSheet()->getStyle('F' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$spreadsheet->getActiveSheet()->getStyle('F' . $j)->getNumberFormat()->setFormatCode('#,##0');
-
-
-	$spreadsheet->getActiveSheet()->getStyle('G' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$spreadsheet->getActiveSheet()->getStyle('G' . $j)->getNumberFormat()->setFormatCode('#,##0');
-
-
-	$spreadsheet->getActiveSheet()->getStyle('H' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$spreadsheet->getActiveSheet()->getStyle('H' . $j)->getNumberFormat()->setFormatCode('#,##0');
-
-
-
-	$spreadsheet->getActiveSheet()->getStyle('I' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$spreadsheet->getActiveSheet()->getStyle('I' . $j)->getNumberFormat()->setFormatCode('#,##0');
-
-
-	$spreadsheet->getActiveSheet()->getStyle('J' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$spreadsheet->getActiveSheet()->getStyle('J' . $j)->getNumberFormat()->setFormatCode('#,##0');
-
-
-	$spreadsheet->getActiveSheet()->getStyle('K' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$spreadsheet->getActiveSheet()->getStyle('K' . $j)->getNumberFormat()->setFormatCode('#,##0');
-
-
-	$spreadsheet->getActiveSheet()->getStyle('L' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$spreadsheet->getActiveSheet()->getStyle('L' . $j)->getNumberFormat()->setFormatCode('#,##0.0');
-
+ /* 	$spreadsheet->getActiveSheet()->getStyle('O' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+	$spreadsheet->getActiveSheet()->getStyle('O' . $j)->getNumberFormat()->setFormatCode('#,##0.0');
+ */
 
 	$i++;
 	$j++;
