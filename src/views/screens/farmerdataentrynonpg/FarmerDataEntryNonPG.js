@@ -37,37 +37,52 @@ const FarmerDataEntryNonPG = (props) => {
 
 
    /* =====Start of Excel Export Code==== */
+   
    const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
-   const PrintPDFExcelExportFunction = (reportType) => {
-     let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
- 
-     window.open(
-       finalUrl +
-         "?action=RegularBeneficiaryExport" +
-         "&reportType=excel" +
-         "&DivisionId=" + currDivisionId +
-         "&DistrictId=" + currDistrictId +
-         "&UpazilaId=" + currUpazilaId +
-         "&TimeStamp=" +
-         Date.now()
-     );
-   };
+  const PrintPDFExcelExportFunction = (reportType) => {
+    let finalUrl =
+      EXCEL_EXPORT_URL + "report/household_livestock_survey_excel.php";
 
-   const PrintPDFExcelExportFunctionAll = (reportType) => {
-     let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
- 
-     window.open(
-       finalUrl +
-         "?action=RegularBeneficiaryExport" +
-         "&reportType=excel" +
-         "&DivisionId=" + 0 +
-         "&DistrictId=" + 0 +
-         "&UpazilaId=" + 0 +
-         "&TimeStamp=" +
-         Date.now()
-     );
-   };
+    let DivisionName =
+      divisionList[
+        divisionList.findIndex(
+          (divisionList_List) => divisionList_List.id == currDivisionId
+        )
+      ].name;
+    let DistrictName =
+      districtList[
+        districtList.findIndex(
+          (districtList_List) => districtList_List.id == currDistrictId
+        )
+      ].name;
+    let UpazilaName =
+      upazilaList[
+        upazilaList.findIndex(
+          (upazilaList_List) => upazilaList_List.id == currUpazilaId
+        )
+      ].name;
+
+    window.open(
+      finalUrl +
+        "?action=MembersbyPGataExport" +
+        "&reportType=excel" +
+        "&DivisionId=" +
+        currDivisionId +
+        "&DistrictId=" +
+        currDistrictId +
+        "&UpazilaId=" +
+        currUpazilaId +
+        "&DivisionName=" +
+        DivisionName +
+        "&DistrictName=" +
+        DistrictName +
+        "&UpazilaName=" +
+        UpazilaName +
+        "&TimeStamp=" +
+        Date.now()
+    );
+  };
    /* =====End of Excel Export Code==== */
  
 
