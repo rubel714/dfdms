@@ -99,7 +99,7 @@ const FarmerDataEntryNonPG = (props) => {
 
     {
       field: "FatherName",
-      label: "Father’s Name (পিতা/স্বামী)",
+      label: "Father’s Name (পিতার নাম)",
       align: "left",
       visible: true,
       sort: true,

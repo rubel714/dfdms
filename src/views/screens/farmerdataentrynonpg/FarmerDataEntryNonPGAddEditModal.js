@@ -1038,7 +1038,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             </div>
 
           <div class="formControl-mobile">
-            <label>Father’s Name (পিতা/স্বামী) </label>
+            <label>Father’s Name (পিতার নাম) </label>
             <input
               type="text"
               id="FatherName"
