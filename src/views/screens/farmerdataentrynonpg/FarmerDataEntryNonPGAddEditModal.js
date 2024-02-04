@@ -1560,7 +1560,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
                       <tr>
                         <td className="tg-Nonpg-sl NonpgOdd bgncoa2" colSpan="2">
-                           Milk Production per day (দৈনিক দুধের পরিমান (লিটার))
+                           Household/Farm Total (Buffalo) Milk Production per day (Liter)
                         </td>
                       
                         <td className="tg-Nonpg-22sb bgncoa2 fixed-width-td" >
@@ -1758,7 +1758,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
                       <tr>
                         <td className="tg-Nonpg-sl NonpgOdd bgncoa1" colSpan="2">
-                            Milk Production per day (Liter)/(দৈনিক দুধের পরিমান (লিটার))
+                           Household/Farm Total (Goat) Milk Production per day (Liter)
                         </td>
                       
                         <td className="tg-Nonpg-22sb bgncoa1 fixed-width-td" >
@@ -1873,7 +1873,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
                         <tr>
                         <td className="tg-Nonpg-sl NonpgEven bgnco" colSpan="2">
-                        Daily Egg production (দৈনিক ডিম উৎপাদন)
+                            Household/Farm Total (Chicken) Daily Egg Production
                         </td>
                       
                         <td className="tg-Nonpg-22sb bgnco fixed-width-td" >
@@ -1925,7 +1925,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                                 </tr>
                                 <tr>
                                   <td className="tg-Nonpg-s1">
-                                       Daily Egg production (দৈনিক হাঁসের ডিম উৎপাদন)
+                                      Household/Farm Total (Duck) Daily Egg Production
                                   </td>
                                   <td className="tg-Nonpg-s1 fixed-width-td">
                                       <input
