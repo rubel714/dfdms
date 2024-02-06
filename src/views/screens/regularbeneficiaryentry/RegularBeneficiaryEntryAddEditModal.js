@@ -1938,6 +1938,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               <Button
                 label={"Update"}
                 class={"btnUpdate"}
+                disabled={props.currentRow.StatusId > 1}
                 onClick={addEditAPICall}
               />
             )}

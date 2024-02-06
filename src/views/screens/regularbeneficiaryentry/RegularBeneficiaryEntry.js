@@ -1,10 +1,15 @@
-import React, { forwardRef, useRef,  useEffect } from "react";
+import React, { forwardRef, useRef, useEffect } from "react";
 import swal from "sweetalert";
-import { DeleteOutline, Edit } from "@material-ui/icons";
-import {Button}  from "../../../components/CustomControl/Button";
+import { DeleteOutline, Edit, ViewList } from "@material-ui/icons";
+import { Button } from "../../../components/CustomControl/Button";
 
 import CustomTable from "components/CustomTable/CustomTable";
-import { apiCall, apiOption , LoginUserInfo, language} from "../../../actions/api";
+import {
+  apiCall,
+  apiOption,
+  LoginUserInfo,
+  language,
+} from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
 import RegularBeneficiaryEntryAddEditModal from "./RegularBeneficiaryEntryAddEditModal";
@@ -18,10 +23,10 @@ const RegularBeneficiaryEntry = (props) => {
   const [currentRow, setCurrentRow] = useState([]);
   const [showModal, setShowModal] = useState(false); //true=show modal, false=hide modal
 
-  const {isLoading, data: dataList, error, ExecuteQuery} = ExecuteQueryHook(); //Fetch data
+  const { isLoading, data: dataList, error, ExecuteQuery } = ExecuteQueryHook(); //Fetch data
   const UserInfo = LoginUserInfo();
 
-  const [currentFilter, setCurrentFilter] = useState([]); 
+  const [currentFilter, setCurrentFilter] = useState([]);
   const [divisionList, setDivisionList] = useState(null);
   const [districtList, setDistrictList] = useState(null);
   const [upazilaList, setUpazilaList] = useState(null);
@@ -30,48 +35,58 @@ const RegularBeneficiaryEntry = (props) => {
   const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
   const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
 
-  
+  const [showReturnCommentsModal, setShowReturnCommentsModal] = useState(false); //true=show modal, false=hide modal
+  const [returnCommentsObj, setReturnCommentsObj] = useState({
+    id: 0,
+    statusid: 0,
+    nextprev: "",
+    comments: "",
+  }); //true=show modal, false=hide modal
 
+  /* =====Start of Excel Export Code==== */
+  const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
-   /* =====Start of Excel Export Code==== */
-   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
+  const PrintPDFExcelExportFunction = (reportType) => {
+    let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
 
-   const PrintPDFExcelExportFunction = (reportType) => {
-     let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
- 
-     window.open(
-       finalUrl +
-         "?action=RegularBeneficiaryExport" +
-         "&reportType=excel" +
-         "&DivisionId=" + currDivisionId +
-         "&DistrictId=" + currDistrictId +
-         "&UpazilaId=" + currUpazilaId +
-         "&TimeStamp=" +
-         Date.now()
-     );
-   };
+    window.open(
+      finalUrl +
+        "?action=RegularBeneficiaryExport" +
+        "&reportType=excel" +
+        "&DivisionId=" +
+        currDivisionId +
+        "&DistrictId=" +
+        currDistrictId +
+        "&UpazilaId=" +
+        currUpazilaId +
+        "&TimeStamp=" +
+        Date.now()
+    );
+  };
 
-   const PrintPDFExcelExportFunctionAll = (reportType) => {
-     let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
- 
-     window.open(
-       finalUrl +
-         "?action=RegularBeneficiaryExport" +
-         "&reportType=excel" +
-         "&DivisionId=" + 0 +
-         "&DistrictId=" + 0 +
-         "&UpazilaId=" + 0 +
-         "&TimeStamp=" +
-         Date.now()
-     );
-   };
-   /* =====End of Excel Export Code==== */
- 
+  const PrintPDFExcelExportFunctionAll = (reportType) => {
+    let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+
+    window.open(
+      finalUrl +
+        "?action=RegularBeneficiaryExport" +
+        "&reportType=excel" +
+        "&DivisionId=" +
+        0 +
+        "&DistrictId=" +
+        0 +
+        "&UpazilaId=" +
+        0 +
+        "&TimeStamp=" +
+        Date.now()
+    );
+  };
+  /* =====End of Excel Export Code==== */
 
   const columnList = [
     { field: "rownumber", label: "SL", align: "center", width: "3%" },
     // { field: 'SL', label: 'SL',width:'10%',align:'center',visible:true,sort:false,filter:false },
-     /*  {
+    /*  {
       field: "NidFrontPhoto",
       label: "NID Front Photo",
       align: "center",
@@ -79,7 +94,7 @@ const RegularBeneficiaryEntry = (props) => {
       sort: false,
       filter: false,
     }, */
-   
+
     {
       field: "FarmerName",
       label: "Beneficiary Name",
@@ -96,7 +111,7 @@ const RegularBeneficiaryEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "7%",
     },
     {
       field: "Phone",
@@ -105,7 +120,7 @@ const RegularBeneficiaryEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "7%",
     },
     {
       field: "FatherName",
@@ -114,7 +129,7 @@ const RegularBeneficiaryEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "12%",
+      width: "8%",
     },
     {
       field: "MotherName",
@@ -123,7 +138,7 @@ const RegularBeneficiaryEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "8%",
     },
     {
       field: "SpouseName",
@@ -132,7 +147,7 @@ const RegularBeneficiaryEntry = (props) => {
       visible: false,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "8%",
     },
     {
       field: "GenderName",
@@ -141,7 +156,7 @@ const RegularBeneficiaryEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "7%",
+      width: "6%",
     },
     {
       field: "FarmersAge",
@@ -150,7 +165,7 @@ const RegularBeneficiaryEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "7%",
+      width: "6%",
     },
     {
       field: "ValueChainName",
@@ -159,7 +174,7 @@ const RegularBeneficiaryEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "7%",
+      width: "6%",
     },
     {
       field: "PGName",
@@ -168,7 +183,7 @@ const RegularBeneficiaryEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "12%",
+      width: "10%",
     },
     {
       field: "IsRegularBeneficiary",
@@ -181,9 +196,28 @@ const RegularBeneficiaryEntry = (props) => {
     },
 
     {
+      field: "UserName",
+      label: "ডাটা এন্ট্রি",
+      width: "8%",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+    },
+    {
+      field: "CurrentStatus",
+      label: "স্টেটাস",
+      width: "8%",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+    },
+
+    {
       field: "custom",
       label: "Action",
-      width: "5%",
+      width: "11%",
       align: "center",
       visible: true,
       sort: false,
@@ -191,25 +225,15 @@ const RegularBeneficiaryEntry = (props) => {
     },
   ];
 
-  
   if (bFirst) {
     /**First time call for datalist */
 
-
-
-    
-    getDivision(
-      UserInfo.DivisionId,
-      UserInfo.DistrictId,
-      UserInfo.UpazilaId
-    );
+    getDivision(UserInfo.DivisionId, UserInfo.DistrictId, UserInfo.UpazilaId);
     setBFirst(false);
   }
 
   /**Get data for table list */
-  function getDataList(){
-
-   
+  function getDataList() {
     let params = {
       action: "getDataList",
       lan: language(),
@@ -225,21 +249,115 @@ const RegularBeneficiaryEntry = (props) => {
 
   /** Action from table row buttons*/
   function actioncontrol(rowData) {
+    console.log("UserInfo", UserInfo);
+    console.log("StatusChangeAllow", UserInfo.StatusChangeAllow);
+    let StatusChangeAllow = UserInfo.StatusChangeAllow;
+    // let sub = StatusChangeAllow.includes("Submit");
+    // console.log('sub: ', sub);
     return (
       <>
-        <Edit
+        {/* <Edit
           className={"table-edit-icon"}
           onClick={() => {
             editData(rowData);
           }}
-        />
-
+        /> */}
+        {/* 
         <DeleteOutline
           className={"table-delete-icon"}
           onClick={() => {
             deleteData(rowData);
           }}
-        />
+        /> */}
+
+        {rowData.StatusId === 1 &&
+          UserInfo.UserId == rowData.UserId &&
+          StatusChangeAllow.includes("Submit") && (
+            <button
+              class={"btnSubmit"}
+              onClick={() => {
+                changeReportStatus(rowData.id, 2, "Next");
+              }}
+            >
+              Submit
+            </button>
+          )}
+
+        {rowData.StatusId === 2 && StatusChangeAllow.includes("Accept") && (
+          <>
+            <button
+              class={"btnAccept"}
+              onClick={() => {
+                changeReportStatus(rowData.id, 3, "Next");
+              }}
+            >
+              Accept
+            </button>
+
+            <button
+              class={"btnReturn"}
+              onClick={() => {
+                showRetCommentsModal(rowData.id, 1, "Return");
+                // changeReportStatus(rowData.id, 1, "Return");
+              }}
+            >
+              Return
+            </button>
+          </>
+        )}
+
+        {rowData.StatusId === 3 && StatusChangeAllow.includes("Approve") && (
+          <>
+            <button
+              class={"btnApprove"}
+              onClick={() => {
+                changeReportStatus(rowData.id, 5, "Next");
+              }}
+            >
+              Approve
+            </button>
+
+            <button
+              class={"btnReturn"}
+              onClick={() => {
+                showRetCommentsModal(rowData.id, 2, "Return");
+
+                // changeReportStatus(rowData.id, 2, "Return");
+              }}
+            >
+              Return
+            </button>
+          </>
+        )}
+
+        {/* {rowData.BPosted === 0 && ( */}
+        {rowData.StatusId === 1 && UserInfo.UserId == rowData.UserId && (
+          <Edit
+            className={"table-edit-icon"}
+            onClick={() => {
+              editData(rowData);
+            }}
+          />
+        )}
+
+        {/* {rowData.BPosted === 0 && ( */}
+        {rowData.StatusId === 1 && UserInfo.UserId == rowData.UserId && (
+          <DeleteOutline
+            className={"table-delete-icon"}
+            onClick={() => {
+              deleteData(rowData);
+            }}
+          />
+        )}
+
+        {(rowData.StatusId != 1 || UserInfo.UserId != rowData.UserId) && (
+          <ViewList
+            className={"table-view-icon"}
+            onClick={() => {
+              editData(rowData);
+            }}
+          />
+        )}
       </>
     );
   }
@@ -249,67 +367,65 @@ const RegularBeneficiaryEntry = (props) => {
     // console.log("dataList: ", dataList);
 
     setCurrentRow({
-            id: "",
-            NID: "",
-            NidFrontPhoto: "",
-            NidBackPhoto: "",
-            FarmerName: "",
-            MotherName: "",
-            SpouseName: "",
-            BeneficiaryPhoto: "",
-            Phone: "",
-            FatherName: "",
-            IsRegular: "",
-            QuestionParentId: "",
-            FarmerId: "",
-            NidBackPhoto: "",
-            FarmersAge: "",
-            DisabilityStatus: 2,
-            RelationWithHeadOfHH: 1,
-            HeadOfHHSex: "",
-            PGRegistered: 0,
-            PGPartnershipWithOtherCompany: 0,
-            TypeOfMember: "",
-            PGFarmerCode: "",
-            OccupationId: "",
-            DivisionId: "",
-            DistrictId: "",
-            UpazilaId: "",
-            UnionId: "",
-            CityCorporation: "",
-            Ward: "",
-            VillageName: "",
-            Address: "",
-            Latitute: "",
-            Longitute: "",
-            PGId: "",
-            IsHeadOfTheGroup: 0,
-            ValuechainId: "",
-            Gender: "",
-            multiselectPGroup: "",
-            TypeOfFarmerId: [],
-            DepartmentId: "",
-            ifOtherSpecify: "",
-            DateOfRegistration: "",
-            RegistrationNo: "",
-            NameOfTheCompanyYourPgPartnerWith: "",
-            WhenDidYouStartToOperateYourFirm: "",
-            NumberOfMonthsOfYourOperation: "",
-            AreYouRegisteredYourFirmWithDlsRadioFlag: 0,
-            registrationDate: "",
-            IfRegisteredYesRegistrationNo: "",
-            FarmsPhoto: "",
-            //IsRegular: false,
+      id: "",
+      NID: "",
+      NidFrontPhoto: "",
+      NidBackPhoto: "",
+      FarmerName: "",
+      MotherName: "",
+      SpouseName: "",
+      BeneficiaryPhoto: "",
+      Phone: "",
+      FatherName: "",
+      IsRegular: "",
+      QuestionParentId: "",
+      FarmerId: "",
+      NidBackPhoto: "",
+      FarmersAge: "",
+      DisabilityStatus: 2,
+      RelationWithHeadOfHH: 1,
+      HeadOfHHSex: "",
+      PGRegistered: 0,
+      PGPartnershipWithOtherCompany: 0,
+      TypeOfMember: "",
+      PGFarmerCode: "",
+      OccupationId: "",
+      DivisionId: "",
+      DistrictId: "",
+      UpazilaId: "",
+      UnionId: "",
+      CityCorporation: "",
+      Ward: "",
+      VillageName: "",
+      Address: "",
+      Latitute: "",
+      Longitute: "",
+      PGId: "",
+      IsHeadOfTheGroup: 0,
+      ValuechainId: "",
+      Gender: "",
+      multiselectPGroup: "",
+      TypeOfFarmerId: [],
+      DepartmentId: "",
+      ifOtherSpecify: "",
+      DateOfRegistration: "",
+      RegistrationNo: "",
+      NameOfTheCompanyYourPgPartnerWith: "",
+      WhenDidYouStartToOperateYourFirm: "",
+      NumberOfMonthsOfYourOperation: "",
+      AreYouRegisteredYourFirmWithDlsRadioFlag: 0,
+      registrationDate: "",
+      IfRegisteredYesRegistrationNo: "",
+      FarmsPhoto: "",
+      //IsRegular: false,
+    });
 
-          });
-
-          setCurrentFilter({
-            DivisionId: UserInfo.DivisionId,
-            DistrictId: UserInfo.DistrictId,
-            UpazilaId: UserInfo.UpazilaId,
-       
-          });
-          setListEditPanelToggle(false);
+    setCurrentFilter({
+      DivisionId: UserInfo.DivisionId,
+      DistrictId: UserInfo.DistrictId,
+      UpazilaId: UserInfo.UpazilaId,
+    });
+    setListEditPanelToggle(false);
     /* openModal(); */
   };
 
@@ -322,7 +438,6 @@ const RegularBeneficiaryEntry = (props) => {
     setListEditPanelToggle(false);
   };
 
-  
   function openModal() {
     setShowModal(true); //true=modal show, false=modal hide
   }
@@ -331,12 +446,11 @@ const RegularBeneficiaryEntry = (props) => {
     //response = close, addedit
     // console.log('response: ', response);
     /* getDataList(); */
-    if(response !=='close'){
+    if (response !== "close") {
       getDataList();
     }
     setShowModal(false); //true=modal show, false=modal hide
     setListEditPanelToggle(true);
-
   }
 
   const deleteData = (rowData) => {
@@ -369,9 +483,6 @@ const RegularBeneficiaryEntry = (props) => {
   };
 
   function deleteApi(rowData) {
-
-        
- 
     let params = {
       action: "deleteData",
       lan: language(),
@@ -381,7 +492,7 @@ const RegularBeneficiaryEntry = (props) => {
 
     // apiCall.post("productgroup", { params }, apiOption()).then((res) => {
     apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-      console.log('res: ', res);
+      console.log("res: ", res);
       props.openNoticeModal({
         isOpen: true,
         msg: res.data.message,
@@ -389,18 +500,9 @@ const RegularBeneficiaryEntry = (props) => {
       });
       getDataList();
     });
-
   }
 
-
-
-
-  
-  function getDivision(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId
-  ) {
+  function getDivision(selectDivisionId, SelectDistrictId, selectUpazilaId) {
     let params = {
       action: "DivisionFilterList",
       lan: language(),
@@ -412,35 +514,20 @@ const RegularBeneficiaryEntry = (props) => {
         [{ id: "", name: "All" }].concat(res.data.datalist)
       ); */
 
-      setDivisionList(
-        res.data.datalist
-      );
-
+      setDivisionList(res.data.datalist);
 
       //setCurrDivisionId(selectDivisionId);
 
-      getDistrict(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId
-      );
+      getDistrict(selectDivisionId, SelectDistrictId, selectUpazilaId);
 
       /* getProductGeneric(
         selectDivisionId,
         SelectProductGenericId
       ); */
-
-
     });
   }
 
-
-  
-  function getDistrict(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId
-  ) {
+  function getDistrict(selectDivisionId, SelectDistrictId, selectUpazilaId) {
     let params = {
       action: "DistrictFilterList",
       lan: language(),
@@ -449,27 +536,14 @@ const RegularBeneficiaryEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDistrictList(
-        [{ id: "", name: "All" }].concat(res.data.datalist)
-      );
-   
+      setDistrictList([{ id: "", name: "All" }].concat(res.data.datalist));
+
       setCurrDistrictId(SelectDistrictId);
-      getUpazila(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId
-      );
-     
+      getUpazila(selectDivisionId, SelectDistrictId, selectUpazilaId);
     });
   }
 
-
-  
-  function getUpazila(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId
-  ) {
+  function getUpazila(selectDivisionId, SelectDistrictId, selectUpazilaId) {
     let params = {
       action: "UpazilaFilterList",
       lan: language(),
@@ -479,23 +553,16 @@ const RegularBeneficiaryEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setUpazilaList(
-        [{ id: "", name: "All" }].concat(res.data.datalist)
-      );
-  
+      setUpazilaList([{ id: "", name: "All" }].concat(res.data.datalist));
+
       setCurrUpazilaId(selectUpazilaId);
-      
-     
     });
   }
 
-
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
     let data = { ...currentFilter };
     data[name] = value;
-
 
     setCurrentFilter(data);
 
@@ -507,150 +574,433 @@ const RegularBeneficiaryEntry = (props) => {
       setCurrUpazilaId("");
       getDistrict(value, "", "");
       getUpazila(value, "", "");
-
-
     } else if (name === "DistrictId") {
       setCurrDistrictId(value);
-       getUpazila(currentFilter.DivisionId, value, "");
+      getUpazila(currentFilter.DivisionId, value, "");
     } else if (name === "UpazilaId") {
       setCurrUpazilaId(value);
-    } 
-
-
-
+    }
   };
-
 
   useEffect(() => {
     getDataList();
   }, [currDivisionId, currDistrictId, currUpazilaId]);
 
-
   const backToList = () => {
     setListEditPanelToggle(true); // true = show list and hide add/edit panel
   };
 
+  function changeReportStatus(Id, StatusId, StatusNextPrev) {
+    let params = {
+      action: "changeReportStatus",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      Id: Id,
+      StatusId: StatusId,
+      StatusNextPrev: StatusNextPrev,
+      ReturnComments: returnCommentsObj.comments,
+    };
+
+    let msg = "";
+
+    if (StatusNextPrev == "Next") {
+      if (StatusId == 2) {
+        msg = "You want to submit!";
+      } else if (StatusId == 3) {
+        msg = "You want to accept!";
+      } else if (StatusId == 5) {
+        msg = "You want to approve!";
+      }
+    } else {
+      msg = "You want to return!";
+    }
+
+    swal({
+      title: "Are you sure?",
+      text: msg,
+      icon: "warning",
+      buttons: {
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+        cancel: {
+          text: "No",
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+      },
+      dangerMode: true,
+    }).then((allowAction) => {
+      if (allowAction) {
+        changeReportStatusAPICall(params);
+        closeRetCommentsModal("");
+      } else {
+      }
+    });
+  }
+
+  function changeReportStatusAPICall(params) {
+    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+      // console.log('res: ', res);
+
+      if (res.data.success) {
+        props.openNoticeModal({
+          isOpen: true,
+          msg: res.data.message,
+          msgtype: res.data.success,
+        });
+        // console.log(11111111);
+        getDataList(); //invoice list
+      } else {
+        // console.log(222222);
+        props.openNoticeModal({
+          isOpen: true,
+          msg: res.data.message,
+          msgtype: res.data.success,
+        });
+      }
+    });
+    // } else {
+    //   props.openNoticeModal({
+    //     isOpen: true,
+    //     msg: "Please enter required fields.",
+    //     msgtype: 0,
+    //   });
+    // }
+  }
+
+  function submitAllReports() {
+    changeReportStatusAll(2, "Next");
+  }
+  function acceptAllReports() {
+    changeReportStatusAll(3, "Next");
+  }
+  function approveAllReports() {
+    changeReportStatusAll(5, "Next");
+  }
+
+  function changeReportStatusAll(StatusId, StatusNextPrev) {
+    let params = {
+      action: "changeReportStatusAll",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      // Id: Id,
+      StatusId: StatusId,
+      StatusNextPrev: StatusNextPrev,
+      ReturnComments: StatusId,
+      DivisionId: currDivisionId,
+      DistrictId: currDistrictId,
+      UpazilaId: currUpazilaId,
+      // DataTypeId: dataTypeId,
+      // YearId: currFilterYearId,
+      // QuarterId: currFilterQuarterId,
+    };
+
+    let msg = "";
+
+    if (StatusNextPrev == "Next") {
+      if (StatusId == 2) {
+        msg = "You want to submit your all pending reports!";
+      } else if (StatusId == 3) {
+        msg = "You want to accept all pending reports!";
+      } else if (StatusId == 5) {
+        msg = "You want to approve all pending reports!";
+      }
+    } else {
+      msg = "You want to return all reports!";
+    }
+
+    swal({
+      title: "Are you sure?",
+      text: msg,
+      icon: "warning",
+      buttons: {
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+        cancel: {
+          text: "No",
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+      },
+      dangerMode: true,
+    }).then((allowAction) => {
+      if (allowAction) {
+        changeReportStatusAllAPICall(params);
+      }
+    });
+  }
+
+  function changeReportStatusAllAPICall(params) {
+    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+      // console.log('res: ', res);
+
+      if (res.data.success) {
+        props.openNoticeModal({
+          isOpen: true,
+          msg: res.data.message,
+          msgtype: res.data.success,
+        });
+        // console.log(11111111);
+        getDataList(); //invoice list
+      } else {
+        // console.log(222222);
+        props.openNoticeModal({
+          isOpen: true,
+          msg: res.data.message,
+          msgtype: res.data.success,
+        });
+      }
+    });
+    // } else {
+    //   props.openNoticeModal({
+    //     isOpen: true,
+    //     msg: "Please enter required fields.",
+    //     msgtype: 0,
+    //   });
+    // }
+  }
+
+  function showRetCommentsModal(id, statusid, nextprev) {
+    // rowData.id, 1, "Return"
+
+    let cData = { ...returnCommentsObj };
+    cData["id"] = id;
+    cData["statusid"] = statusid;
+    cData["nextprev"] = nextprev;
+    cData["comments"] = "";
+    setReturnCommentsObj(cData);
+
+    setShowReturnCommentsModal(true);
+  }
+
+  function commentsAndReturnSave() {
+    console.log("returnCommentsObj: ", returnCommentsObj);
+
+    if (returnCommentsObj.comments != "") {
+      changeReportStatus(
+        returnCommentsObj.id,
+        returnCommentsObj.statusid,
+        returnCommentsObj.nextprev
+      );
+    } else {
+      props.openNoticeModal({
+        isOpen: true,
+        msg: "Please enter return comments.",
+        msgtype: 0,
+      });
+    }
+  }
+
+  function closeRetCommentsModal(p) {
+    setShowReturnCommentsModal(false);
+  }
+
+  const changeComments = (e) => {
+    // console.log(e);
+    const { name, value } = e.target;
+
+    let cData = { ...returnCommentsObj };
+    console.log("cData: ", cData);
+    cData["comments"] = value;
+    console.log(" name, value: ", name, value);
+
+    setReturnCommentsObj(cData);
+    // console.log("rows: ", rows);
+  };
 
   return (
     <>
       <div class="bodyContainer">
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
-          <h4>
-            Home ❯ Admin ❯ Farmer Profile
-          </h4>
+          <h4>Home ❯ Admin ❯ Farmer Profile</h4>
 
           {!listEditPanelToggle ? (
-              <>
-                <Button
-                  label={"Back To List"}
-                  class={"btnClose"}
-                  onClick={backToList}
-                />
-              </>
-            ) : (
-              <></>
-            )}
-
+            <>
+              <Button
+                label={"Back To List"}
+                class={"btnClose"}
+                onClick={backToList}
+              />
+            </>
+          ) : (
+            <></>
+          )}
         </div>
 
         {listEditPanelToggle && (
           <>
-        {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-        <div class="searchAdd3">
-          <div class="formControl-filter-data-label">
-              <label for="DivisionId">Division: </label>
-              <select
+            {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
+            <div class="searchAdd3">
+              <div class="formControl-filter-data-label">
+                <label for="DivisionId">Division: </label>
+                <select
                   class="dropdown_filter"
                   id="DivisionId"
                   name="DivisionId"
                   value={currDivisionId}
                   onChange={(e) => handleChange(e)}
-              >
+                >
                   {divisionList &&
-                      divisionList.map((item, index) => {
-                          return <option value={item.id}>{item.name}</option>;
-                      })}
-              </select>
-          </div>
+                    divisionList.map((item, index) => {
+                      return <option value={item.id}>{item.name}</option>;
+                    })}
+                </select>
+              </div>
 
-          <div class="formControl-filter-data-label">
-              <label for="DistrictId">District: </label>
-              <select
+              <div class="formControl-filter-data-label">
+                <label for="DistrictId">District: </label>
+                <select
                   class="dropdown_filter"
                   id="DistrictId"
                   name="DistrictId"
                   value={currDistrictId}
                   onChange={(e) => handleChange(e)}
-              >
+                >
                   {districtList &&
-                      districtList.map((item, index) => {
-                          return <option value={item.id}>{item.name}</option>;
-                      })}
-              </select>
-          </div>
+                    districtList.map((item, index) => {
+                      return <option value={item.id}>{item.name}</option>;
+                    })}
+                </select>
+              </div>
 
-          <div class="formControl-filter-data-label">
-              <label for="UpazilaId">Upazila: </label>
-              <select
+              <div class="formControl-filter-data-label">
+                <label for="UpazilaId">Upazila: </label>
+                <select
                   id="UpazilaId"
                   name="UpazilaId"
                   class="dropdown_filter"
                   value={currUpazilaId}
                   onChange={(e) => handleChange(e)}
-              >
+                >
                   {upazilaList &&
-                      upazilaList.map((item, index) => {
-                          return <option value={item.id}>{item.name}</option>;
-                      })}
-              </select>
-          </div>
+                    upazilaList.map((item, index) => {
+                      return <option value={item.id}>{item.name}</option>;
+                    })}
+                </select>
+              </div>
 
-          
-          <div class="filter-button">
-              <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
-              <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
-              {/* <Button label={"All Data Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunctionAll} /> */}
-          </div>
-      
-      </div>
+              <div class="filter-button">
+                {/* <Button label={"ADD"} class={"btnAdd"} onClick={addData} /> */}
+                {UserInfo.StatusChangeAllow.includes("Submit") && (
+                  <Button
+                    label={"Submit All"}
+                    class={"btnPrint"}
+                    onClick={submitAllReports}
+                  />
+                )}
+                {UserInfo.StatusChangeAllow.includes("Accept") && (
+                  <Button
+                    label={"Accept All"}
+                    class={"btnPrint"}
+                    onClick={acceptAllReports}
+                  />
+                )}
+                {UserInfo.StatusChangeAllow.includes("Approve") && (
+                  <Button
+                    label={"Approve All"}
+                    class={"btnClose"}
+                    onClick={approveAllReports}
+                  />
+                )}
 
+                {UserInfo.StatusChangeAllow.includes("Submit") && (
+                  <Button
+                    label={"Enter Data"}
+                    class={"btnAdd"}
+                    onClick={addData}
+                  />
+                )}
+                <Button
+                  label={"Export"}
+                  class={"btnPrint"}
+                  onClick={PrintPDFExcelExportFunction}
+                />
+                {/* <Button label={"All Data Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunctionAll} /> */}
+              </div>
+            </div>
 
+            {showReturnCommentsModal && (
+              <>
+                {/* <!-- GROUP MODAL START --> */}
+                <div id="groupModal" class="modal">
+                  {/* <!-- Modal content --> */}
+                  <div class="modal-content-sm">
+                    <div class="modalHeader">
+                      <h4>Enter Comments</h4>
+                    </div>
 
-        {/* <!-- ####---THIS CLASS IS USE FOR TABLE GRID PRODUCT INFORMATION---####s --> */}
-        <div class="subContainer">
-          <div className="App">
-            <CustomTable
-              columns={columnList}
-              rows={dataList?dataList:{}}
-              actioncontrol={actioncontrol}
-              isLoading={isLoading}
-            />
-          </div>
-        </div>
+                    <div class="pgmodalBody-sm pt-10">
+                      <label>Comments:</label>
+                      <input
+                        type="text"
+                        id={"ReturnComments"}
+                        name={"ReturnComments"}
+                        value={returnCommentsObj.comments || ""}
+                        onChange={(e) => changeComments(e)}
+                      />
+                    </div>
 
-        </>
-        )}
-
-        {!listEditPanelToggle && (
-                  <>
-                    {/* {!currentInvoice.BPosted && ( */}
-                    {1 == 1 && (
-
-                <RegularBeneficiaryEntryAddEditModal masterProps={props} currentRow={currentRow} modalCallback={modalCallback}/>
-
-              )}
+                    <div class="modalItem-sm modalItem">
+                      <Button
+                        label={"Close"}
+                        class={"btnClose"}
+                        onClick={closeRetCommentsModal}
+                      />
+                      <Button
+                        label={"Return"}
+                        class={"btnSave"}
+                        onClick={commentsAndReturnSave}
+                      />
+                    </div>
+                  </div>
+                </div>
               </>
             )}
 
-        
+            {/* <!-- ####---THIS CLASS IS USE FOR TABLE GRID PRODUCT INFORMATION---####s --> */}
+            <div class="subContainer">
+              <div className="App">
+                <CustomTable
+                  columns={columnList}
+                  rows={dataList ? dataList : {}}
+                  actioncontrol={actioncontrol}
+                  isLoading={isLoading}
+                />
+              </div>
+            </div>
+          </>
+        )}
+
+        {!listEditPanelToggle && (
+          <>
+            {/* {!currentInvoice.BPosted && ( */}
+            {1 == 1 && (
+              <RegularBeneficiaryEntryAddEditModal
+                masterProps={props}
+                currentRow={currentRow}
+                modalCallback={modalCallback}
+              />
+            )}
+          </>
+        )}
       </div>
       {/* <!-- BODY CONTAINER END --> */}
- 
     </>
-
-    
-
   );
 };
 

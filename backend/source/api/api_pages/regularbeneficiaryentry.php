@@ -19,6 +19,14 @@ switch($task){
 		$returnData = deleteData($data);
 	break;
 
+	case "changeReportStatus":
+		$returnData = changeReportStatus($data);
+	break;
+	
+	case "changeReportStatusAll":
+		$returnData = changeReportStatusAll($data);
+	break;
+
 	default :
 		echo "{failure:true}";
 		break;
@@ -116,9 +124,16 @@ function getDataList($data){
 			, a.registrationDate
 			, a.IfRegisteredYesRegistrationNo
 			, a.FarmsPhoto
+
+			,a.StatusId,case when a.StatusId=1 then 'Waiting for Submit'
+			 when a.StatusId=2 then 'Waiting for Accept'
+			 when a.StatusId=3 then 'Waiting for Approve'
+			 when a.StatusId=5 then 'Approved'
+			 else '' end CurrentStatus,h.UserName,a.UserId
 		  FROM
 		  `t_farmer` a 
 		  Inner Join t_gender b ON a.Gender = b.GenderId
+			inner join t_users h on a.UserId=h.UserId
 		  LEFT JOIN t_valuechain c ON a.ValuechainId = c.ValuechainId
 		  LEFT JOIN t_pg d ON a.PGId = d.PGId
 		  WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
@@ -232,8 +247,8 @@ function dataAddEdit($data) {
 				
 				$q = new insertq();
 				$q->table = 't_farmer';
-				$q->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'UnionId', 'CityCorporation', 'Ward', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode','OccupationId','VillageName','Latitute','Longitute','IsHeadOfTheGroup','ValuechainId', 'TypeOfFarmerId', 'dob','DepartmentId','ifOtherSpecify','DateOfRegistration','RegistrationNo','NameOfTheCompanyYourPgPartnerWith','WhenDidYouStartToOperateYourFirm','NumberOfMonthsOfYourOperation','AreYouRegisteredYourFirmWithDlsRadioFlag','registrationDate','IfRegisteredYesRegistrationNo','FarmsPhoto'];
-				$q->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $UnionId, $CityCorporation, $Ward, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode, $OccupationId, $VillageName,$Latitute, $Longitute,  $IsHeadOfTheGroup, $ValuechainId, $TypeOfFarmerId, $dob, $DepartmentId, $ifOtherSpecify, $DateOfRegistration, $RegistrationNo, $NameOfTheCompanyYourPgPartnerWith, $WhenDidYouStartToOperateYourFirm, $NumberOfMonthsOfYourOperation, $AreYouRegisteredYourFirmWithDlsRadioFlag, $registrationDate, $IfRegisteredYesRegistrationNo, $FarmsPhoto];
+				$q->columns = ['FarmerName','NID','NidFrontPhoto','NidBackPhoto','IsRegular', 'DivisionId', 'DistrictId', 'UpazilaId', 'UnionId', 'CityCorporation', 'Ward', 'PGId', 'Phone', 'FatherName', 'ValueChain', 'MotherName', 'LiveStockNo', 'LiveStockOther', 'Address', 'BeneficiaryPhoto', 'SpouseName', 'Gender', 'FarmersAge', 'DisabilityStatus', 'RelationWithHeadOfHH', 'HeadOfHHSex', 'PGRegistered', 'PGPartnershipWithOtherCompany', 'TypeOfMember', 'PGFarmerCode','OccupationId','VillageName','Latitute','Longitute','IsHeadOfTheGroup','ValuechainId', 'TypeOfFarmerId', 'dob','DepartmentId','ifOtherSpecify','DateOfRegistration','RegistrationNo','NameOfTheCompanyYourPgPartnerWith','WhenDidYouStartToOperateYourFirm','NumberOfMonthsOfYourOperation','AreYouRegisteredYourFirmWithDlsRadioFlag','registrationDate','IfRegisteredYesRegistrationNo','FarmsPhoto','UserId'];
+				$q->values = [$FarmerName,$NID,$NidFrontPhoto,$NidBackPhoto,$IsRegular, $DivisionId, $DistrictId, $UpazilaId, $UnionId, $CityCorporation, $Ward, $PGId, $Phone, $FatherName, $ValueChain, $MotherName, $LiveStockNo, $LiveStockOther, $Address, $BeneficiaryPhoto, $SpouseName, $Gender, $FarmersAge, $DisabilityStatus, $RelationWithHeadOfHH, $HeadOfHHSex, $PGRegistered, $PGPartnershipWithOtherCompany, $TypeOfMember, $PGFarmerCode, $OccupationId, $VillageName,$Latitute, $Longitute,  $IsHeadOfTheGroup, $ValuechainId, $TypeOfFarmerId, $dob, $DepartmentId, $ifOtherSpecify, $DateOfRegistration, $RegistrationNo, $NameOfTheCompanyYourPgPartnerWith, $WhenDidYouStartToOperateYourFirm, $NumberOfMonthsOfYourOperation, $AreYouRegisteredYourFirmWithDlsRadioFlag, $registrationDate, $IfRegisteredYesRegistrationNo, $FarmsPhoto,$UserId];
 				$q->pks = ['FarmerId'];
 				$q->bUseInsetId = false;
 				$q->build_query();
@@ -317,5 +332,256 @@ function deleteData($data) {
 	}
 }
 
+
+function changeReportStatus($data)
+{
+
+	if ($_SERVER["REQUEST_METHOD"] != "POST") {
+		return $returnData = msg(0, 404, 'Page Not Found!');
+	}
+	// CHECKING EMPTY FIELDS
+	elseif (!isset($data->Id) || !isset($data->StatusId)) {
+		$fields = ['fields' => ['Id','StatusId']];
+		return $returnData = msg(0, 422, 'Please Fill in all Required Fields!', $fields);
+	} else {
+
+		$FarmerId = $data->Id;
+		$StatusId = $data->StatusId;
+		$StatusNextPrev = $data->StatusNextPrev;
+		$ReturnComments = $data->ReturnComments;
+		$lan = trim($data->lan);
+		$UserId = trim($data->UserId);
+
+		$curDateTime = date('Y-m-d H:i:s');
+		$UserFieldName = "";
+		$DateFieldName = "";
+		$ReturnCommentsFieldName = "";
+		$BPosted = 0;
+
+
+	
+		
+	
+		try {
+
+			$aQuerys = array();
+
+
+			if($StatusNextPrev=="Next"){
+				if($StatusId == 2){
+					$UserFieldName = "SubmitUserId";
+					$DateFieldName = "SubmitDate";
+				}else if($StatusId == 3){
+					$UserFieldName = "AcceptUserId";
+					$DateFieldName = "AcceptDate";
+				}else if($StatusId == 5){
+					$UserFieldName = "ApproveUserId";
+					$DateFieldName = "ApproveDate";
+					$BPosted = 1;
+				}
+
+				$u = new updateq();
+				$u->table = 't_farmer';
+				$u->columns = ['StatusId',$UserFieldName,$DateFieldName,'BPosted'];
+				$u->values = [$StatusId,$UserId,$curDateTime,$BPosted];
+				$u->pks = ['FarmerId'];
+				$u->pk_values = [$FarmerId];
+				$u->build_query();
+				$aQuerys[] = $u;
+
+			}else{
+				if($StatusId == 1){
+					$UserFieldName = "SubmitUserId";
+					$DateFieldName = "SubmitDate";
+					$ReturnCommentsFieldName = "AcceptReturnComments";
+
+				}else if($StatusId == 2){
+					$UserFieldName = "AcceptUserId";
+					$DateFieldName = "AcceptDate";
+					$ReturnCommentsFieldName = "ApproveReturnComments";
+				}
+
+				$u = new updateq();
+				$u->table = 't_farmer';
+				$u->columns = ['StatusId',$UserFieldName,$DateFieldName,$ReturnCommentsFieldName,'BPosted'];
+				$u->values = [$StatusId,NULL,NULL,$ReturnComments,$BPosted];
+				$u->pks = ['FarmerId'];
+				$u->pk_values = [$FarmerId];
+				$u->build_query();
+				$aQuerys[] = $u;
+			}
+
+
+			
+
+
+			$res = exec_query($aQuerys, $UserId, $lan);
+			$success = ($res['msgType'] == 'success') ? 1 : 0;
+			$status = ($res['msgType'] == 'success') ? 200 : 500;
+
+			$returnData = [
+				"success" => $success,
+				"status" => $status,
+				"UserId" => $UserId,
+				"message" => $res['msg']
+			];
+		} catch (PDOException $e) {
+			$returnData = msg(0, 500, $e->getMessage());
+		}
+
+		return $returnData;
+	}
+}
+
+
+function changeReportStatusAll($data)
+{
+
+	if ($_SERVER["REQUEST_METHOD"] != "POST") {
+		return $returnData = msg(0, 404, 'Page Not Found!');
+	}
+	// CHECKING EMPTY FIELDS
+	elseif ( !isset($data->StatusId)) {
+		$fields = ['fields' => ['StatusId']];
+		return $returnData = msg(0, 422, 'Please Fill in all Required Fields!', $fields);
+	} else {
+
+		$dbh = new Db();
+		// $DataValueMasterId = $data->Id;
+		$StatusId = $data->StatusId;
+		$StatusNextPrev = $data->StatusNextPrev;
+		$ReturnComments = $data->ReturnComments;
+		$lan = trim($data->lan);
+		$UserId = trim($data->UserId);
+		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
+		$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
+		$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
+		// $DataTypeId = trim($data->DataTypeId); 
+		// $YearId = trim($data->YearId); 
+		// $QuarterId = trim($data->QuarterId); 
+
+		$curDateTime = date('Y-m-d H:i:s');
+		$UserFieldName = "";
+		$DateFieldName = "";
+		$ReturnCommentsFieldName = "";
+		$BPosted = 0;
+	
+		try {
+
+			$aQuerys = array();
+
+
+			if($StatusNextPrev=="Next"){
+				if($StatusId == 2){
+					/**Submit all reports */
+					$UserFieldName = "SubmitUserId";
+					$DateFieldName = "SubmitDate";
+					
+					/**Only my reports will be submit all UserId=$UserId */
+					$sql = "select FarmerId from t_farmer 
+					where UserId=$UserId 
+					and StatusId=1
+					and (DivisionId=$DivisionId OR $DivisionId=0)
+					and (DistrictId=$DistrictId OR $DistrictId=0)
+					and (UpazilaId=$UpazilaId OR $UpazilaId=0);";
+
+				}else if($StatusId == 3){
+					/**Accept all reports */
+					$UserFieldName = "AcceptUserId";
+					$DateFieldName = "AcceptDate";
+
+					$sql = "select FarmerId from t_farmer 
+					where StatusId=2
+					and (DivisionId=$DivisionId OR $DivisionId=0)
+					and (DistrictId=$DistrictId OR $DistrictId=0)
+					and (UpazilaId=$UpazilaId OR $UpazilaId=0);";
+
+				}else if($StatusId == 5){
+					/**Approve all reports */
+
+					$UserFieldName = "ApproveUserId";
+					$DateFieldName = "ApproveDate";
+					$BPosted = 1;
+
+					$sql = "select FarmerId from t_farmer 
+					where StatusId=3
+					and (DivisionId=$DivisionId OR $DivisionId=0)
+					and (DistrictId=$DistrictId OR $DistrictId=0)
+					and (UpazilaId=$UpazilaId OR $UpazilaId=0);";
+					
+				}
+
+				$rData = $dbh->query($sql);
+				foreach($rData as $r){
+		
+					$FarmerId = $r["FarmerId"];
+
+					$u = new updateq();
+					$u->table = 't_farmer';
+					$u->columns = ['StatusId',$UserFieldName,$DateFieldName,'BPosted'];
+					$u->values = [$StatusId,$UserId,$curDateTime,$BPosted];
+					$u->pks = ['FarmerId'];
+					$u->pk_values = [$FarmerId];
+					$u->build_query();
+					$aQuerys[] = $u;
+				}
+
+				
+
+			}else{
+				/**Not implement yet all return */
+
+
+				// if($StatusId == 1){
+				// 	$UserFieldName = "SubmitUserId";
+				// 	$DateFieldName = "SubmitDate";
+				// 	$ReturnCommentsFieldName = "AcceptReturnComments";
+
+				// }else if($StatusId == 2){
+				// 	$UserFieldName = "AcceptUserId";
+				// 	$DateFieldName = "AcceptDate";
+				// 	$ReturnCommentsFieldName = "ApproveReturnComments";
+				// }
+
+				// $u = new updateq();
+				// $u->table = 't_farmer';
+				// $u->columns = ['StatusId',$UserFieldName,$DateFieldName,$ReturnCommentsFieldName,'BPosted'];
+				// $u->values = [$StatusId,NULL,NULL,$ReturnComments,$BPosted];
+				// $u->pks = ['DataValueMasterId'];
+				// $u->pk_values = [$DataValueMasterId];
+				// $u->build_query();
+				// $aQuerys[] = $u;
+			}
+
+
+			if(count($aQuerys)==0){
+				$returnData = [
+					"success" => 0,
+					"status" => 500,
+					"UserId" => $UserId,
+					"message" => "You have no reports"
+				];
+			}else{
+				$res = exec_query($aQuerys, $UserId, $lan);
+				$success = ($res['msgType'] == 'success') ? 1 : 0;
+				$status = ($res['msgType'] == 'success') ? 200 : 500;
+	
+				$returnData = [
+					"success" => $success,
+					"status" => $status,
+					"UserId" => $UserId,
+					"message" => $res['msg']
+				];
+			}
+
+
+	
+		} catch (PDOException $e) {
+			$returnData = msg(0, 500, $e->getMessage());
+		}
+
+		return $returnData;
+	}
+}
 
 ?>

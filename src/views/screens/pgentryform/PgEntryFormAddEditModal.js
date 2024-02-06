@@ -721,8 +721,8 @@ const PgEntryFormAddEditModal = (props) => {
           <div class="modalItem">
 
             <Button label={"Close"} class={"btnClose"} onClick={modalClose} />
-            {props.currentRow.id && (<Button label={"Update"} class={"btnUpdate"} onClick={addEditAPICall} />)}
-            {!props.currentRow.id && (<Button label={"Save"} class={"btnSave"} onClick={addEditAPICall} />)}
+            {props.currentRow.id && (<Button label={"Update"} disabled={props.currentRow.StatusId > 1} class={"btnUpdate"} onClick={addEditAPICall} />)}
+            {!props.currentRow.id && (<Button label={"Save"}  class={"btnSave"} onClick={addEditAPICall} />)}
             
           </div>
         </div>
