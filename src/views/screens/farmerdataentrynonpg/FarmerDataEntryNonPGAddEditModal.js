@@ -372,7 +372,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
   function getGenderList(selectGender) {
     let params = {
-      action: "GenderList",
+      action: "GenderListNonPG",
       lan: language(),
       UserId: UserInfo.UserId,
     };

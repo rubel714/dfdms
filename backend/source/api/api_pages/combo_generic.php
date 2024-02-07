@@ -86,6 +86,9 @@ switch($task){
 	case "GenderList":
 		$returnData = GenderList($data);
 		break;
+	case "GenderListNonPG":
+		$returnData = GenderListNonPG($data);
+		break;
 
 	case "BankList":
 		$returnData = BankList($data);
@@ -740,6 +743,32 @@ function GenderList($data) {
 
 		$query = "SELECT GenderId id, GenderName name
 		FROM t_gender ORDER BY GenderName;"; 
+
+		$resultdata = $dbh->query($query);
+
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+function GenderListNonPG($data) {
+	try{
+	
+		$dbh = new Db();
+	
+
+		$query = "SELECT GenderId id, GenderName name
+		FROM t_gender where GenderName <> 'Male-Female Both' ORDER BY GenderName;"; 
 
 		$resultdata = $dbh->query($query);
 
