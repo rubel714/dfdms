@@ -739,7 +739,7 @@ const PgEntryForm = (props) => {
         </div>
 
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-        <div class="searchAdd2">
+        <div class="searchAdd3">
           <div class="formControl-filter-data-label">
             <label for="DivisionId">Division: </label>
             <select

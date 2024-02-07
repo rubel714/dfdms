@@ -276,7 +276,10 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+                    {menuShowPermision("datatypequestionsmap") === 1 && (
                     <li class="bordertopmenu"> </li>
+                    )}
+
                     {menuShowPermision("pgentryform") === 1 && (
                       <li>
                         <a
@@ -301,7 +304,9 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+                    {menuShowPermision("datatypequestionsmap") === 1 && (
                     <li class="bordertopmenu"> </li>
+                    )}
 
                     {menuShowPermision("userrole") === 1 && (
                       <li>
@@ -338,7 +343,9 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+                    {menuShowPermision("datatypequestionsmap") === 1 && (
                     <li class="bordertopmenu"> </li>
+                    )}
 
                     {menuShowPermision("surveytitleentry") === 1 && (
                       <li>
@@ -361,7 +368,9 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
                   
+                  {menuShowPermision("datatypequestionsmap") === 1 && (
                     <li class="bordertopmenu"> </li>
+                    )}
 
                     {menuShowPermision("trainingtitle") === 1 && (
                       <li>
@@ -397,7 +406,9 @@ function AfterLoginNavbar(props) {
 
                   
 
+                  {menuShowPermision("datatypequestionsmap") === 1 && (
                     <li class="bordertopmenu"> </li>
+                    )}
 
                     {menuShowPermision("auditlog") === 1 && (
                       <li>
