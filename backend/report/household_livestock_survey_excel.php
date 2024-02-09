@@ -288,46 +288,64 @@ $spreadsheet->getActiveSheet()
 	->SetCellValue('F5', 'Village (গ্রাম)')
 	->SetCellValue('G5', 'Farmer’s Name (নাম)')
 	->SetCellValue('H5', 'Father’s Name (পিতার নাম)')
-	->SetCellValue('I5', 'Mother’s Name (মাতার নাম)')
-	->SetCellValue('J5', 'Husband’s/Wife’s Name (স্বামীর / স্ত্রীর নাম)')
-	->SetCellValue('K5', 'Name of the farm (খামারের নাম)')
-	->SetCellValue('L5', 'Mobile number (মোবাইল নং)')
-	->SetCellValue('M5', 'Gender (জেন্ডার)')
-	->SetCellValue('N5', 'Is there any disability (প্রতিবন্ধি কিনা)')
-	->SetCellValue('O5', 'NID (জাতীয় পরিচয় পত্র/ ভোটার আইডি কার্ড নম্বর)')
-	->SetCellValue('P5', 'Are you the member of a PG under LDDP (আপনি কি LDDP প্রকল্পের আওতাধীন কোনো পিজি\'র সদস্য) ?')
-	->SetCellValue('Q5', 'Latitude (অক্ষাংশ)')
-	->SetCellValue('R5', 'Longitude (দ্রাঘিমাংশ)')
+	/* ->SetCellValue('I5', 'Mother’s Name (মাতার নাম)')
+	->SetCellValue('J5', 'Husband’s/Wife’s Name (স্বামীর / স্ত্রীর নাম)') */
+	->SetCellValue('I5', 'Name of the farm (খামারের নাম)')
+	->SetCellValue('J5', 'Mobile number (মোবাইল নং)')
+	->SetCellValue('K5', 'Gender (জেন্ডার)')
+	/* ->SetCellValue('N5', 'Is there any disability (প্রতিবন্ধি কিনা)') */
+	->SetCellValue('L5', 'NID (জাতীয় পরিচয় পত্র/ ভোটার আইডি কার্ড নম্বর)')
+	->SetCellValue('M5', 'Are you the member of a PG under LDDP (আপনি কি LDDP প্রকল্পের আওতাধীন কোনো পিজি\'র সদস্য) ?')
 
-	->SetCellValue('S5', 'Cow (গাভীর সংখ্যা)')
-	->SetCellValue('U5', 'Bull/Castrated Bull (ষাঁড়/বলদ সংখ্যা)')
-	->SetCellValue('W5', 'Calf Male (এঁড়ে বাছুর সংখ্যা)')
-	->SetCellValue('Y5', 'Calf Female (বকনা বাছুর সংখ্যা)')
-	->SetCellValue('AA5', 'Household/Farm Total (Cows) Milk Production per day (Liter) (দৈনিক দুধের পরিমাণ (লিটার))')
-	->SetCellValue('AC5', 'Adult Buffalo (মহিষের সংখ্যা)')
-	->SetCellValue('AE5', 'Calf Buffalo (বাছুর মহিষের সংখ্যা)')
-	->SetCellValue('AG5', 'Household/Farm Total (Buffalo) Milk Production per day (Liter) (দৈনিক দুধের পরিমাণ (লিটার))')
-	->SetCellValue('AH5', 'Adult Goat (ছাগল সংখ্যা)')
-	->SetCellValue('AJ5', 'Calf (ছাগল বাচ্চার সংখ্যা)')
-	->SetCellValue('AL5', 'Adult Sheep (ভেড়ার সংখ্যা)')
-	->SetCellValue('AN5', 'Calf (ভেড়া বাচ্চার সংখ্যা)')
-	->SetCellValue('AP5', 'Household/Farm Total (Goat) Milk Production per day (Liter) (দৈনিক দুধের পরিমাণ (লিটার))')
-	->SetCellValue('AQ5', 'Chicken (মুরগির সংখ্যা)')
+	->SetCellValue('N5', 'Number of family members (পরিবারের মোট সদস্য সংখ্যা)')
+	->SetCellValue('O5', 'Latitude (অক্ষাংশ)')
+	->SetCellValue('P5', 'Longitude (দ্রাঘিমাংশ)')
+
+	->SetCellValue('Q5', 'Cow (গাভীর সংখ্যা)')
+	->SetCellValue('S5', 'এখন দুধ দিচ্ছে এমন গাভীর সংখ্যা')
+	->SetCellValue('T5', 'Bull/Castrated Bull (ষাঁড়/বলদ সংখ্যা)')
+	->SetCellValue('V5', 'Calf Male (এঁড়ে বাছুর সংখ্যা)')
+	->SetCellValue('X5', 'Calf Female (বকনা বাছুর সংখ্যা)')
+	->SetCellValue('Z5', 'Household/Farm Total (Cows) Milk Production per day (Liter) (দৈনিক দুধের পরিমাণ (লিটার))')
+	->SetCellValue('AB5', 'Adult Buffalo (মহিষের সংখ্যা)')
+	->SetCellValue('AD5', 'Calf Buffalo (বাছুর মহিষের সংখ্যা)')
+	->SetCellValue('AF5', 'Household/Farm Total (Buffalo) Milk Production per day (Liter) (দৈনিক দুধের পরিমাণ (লিটার))')
+	->SetCellValue('AG5', 'Adult Goat (ছাগল সংখ্যা)')
+	->SetCellValue('AI5', 'Calf (ছাগল বাচ্চার সংখ্যা)')
+	->SetCellValue('AK5', 'Adult Sheep (ভেড়ার সংখ্যা)')
+	->SetCellValue('AM5', 'Calf (ভেড়া বাচ্চার সংখ্যা)')
+	->SetCellValue('AO5', 'Household/Farm Total (Goat) Milk Production per day (Liter) (দৈনিক দুধের পরিমাণ (লিটার))')
+	->SetCellValue('AP5', 'Chicken (মুরগির সংখ্যা)')
 	->SetCellValue('AU5', 'Household/Farm Total (Chicken) Daily Egg Production (দৈনিক ডিম উৎপাদন)')
 	->SetCellValue('AV5', 'Number of Ducks/Swan (হাঁসের/রাজহাঁসের সংখ্যা)')
 	->SetCellValue('AW5', 'Household/Farm Total (Duck) Daily Egg Production (দৈনিক ডিম উৎপাদন)')
 	->SetCellValue('AX5', 'Number of Pigeon (কবুতরের সংখ্যা)')
-	->SetCellValue('AY5', 'Number of family members (পরিবারের মোট সদস্য সংখ্যা)')
-	->SetCellValue('AZ5', 'Total cultivable land in decimal (মোট চাষ যোগ্য জমির পরিমান (শতাংশ))')
-	->SetCellValue('BA5', 'Own land for Fodder cultivation (নিজস্ব ঘাস চাষের জমি (শতাংশ))')
-	->SetCellValue('BB5', 'Leased land for fodder cultivation (লিজ নেয়া ঘাস চাষের জমি (শতাংশ))')
-	->SetCellValue('BC5', 'Date of Interview')
-	->SetCellValue('BD5', 'Name of Enumerator')
-	->SetCellValue('BE5', 'Enumerator Designation')
-	->SetCellValue('BF5', 'Cell No. of Enumerator')
-	->SetCellValue('BG5', 'Enumerator Comment')
+	->SetCellValue('AY5', 'Number of Quail (কোয়েলের সংখ্যা)')
+	->SetCellValue('AZ5', 'Number of other animals (Pig/Horse) (অন্যান্য প্রাণীর সংখ্যা (শুকর/ঘোড়া))')
+
+	->SetCellValue('BA5', 'Total cultivable land in decimal (মোট চাষ যোগ্য জমির পরিমান (শতাংশ))')
+	->SetCellValue('BB5', 'Own land for Fodder cultivation (নিজস্ব ঘাস চাষের জমি (শতাংশ))')
+	->SetCellValue('BC5', 'Leased land for fodder cultivation (লিজ নেয়া ঘাস চাষের জমি (শতাংশ))')
+	->SetCellValue('BD5', 'Date of Interview')
+	->SetCellValue('BE5', 'Name of Enumerator')
+	->SetCellValue('BF5', 'Enumerator Designation')
+	->SetCellValue('BG5', 'Cell No. of Enumerator')
+	->SetCellValue('BH5', 'Enumerator Comment')
+
+
+	/* 
+	
+	
+
+
+
+
+
+
+	 */
 	
 	;
+
 
 
 	$spreadsheet->getActiveSheet()
@@ -347,43 +365,44 @@ $spreadsheet->getActiveSheet()
 	->SetCellValue('N6', '')
 	->SetCellValue('O6', '')
 	->SetCellValue('P6', '')
-	->SetCellValue('Q6', '')
-	->SetCellValue('R6', '')
-	->SetCellValue('R6', '')
-	->SetCellValue('S6', 'Native (দেশি)')
-	->SetCellValue('T6', 'Cross (শংকর)')
-	->SetCellValue('U6', 'Native (দেশি)')
-	->SetCellValue('V6', 'Cross (শংকর)')
-	->SetCellValue('W6', 'Native (দেশি)')
-	->SetCellValue('X6', 'Cross (শংকর)')
-	->SetCellValue('Y6', 'Native (দেশি)')
-	->SetCellValue('Z6', 'Cross (শংকর)')
-	->SetCellValue('AA6', 'Native (দেশি)')
-	->SetCellValue('AB6', 'Cross (শংকর)')
-	->SetCellValue('AC6', 'Male (ষাঁড়)')
-	->SetCellValue('AD6', 'Female (স্ত্রী)')
-	->SetCellValue('AE6', 'Male (এঁড়ে বাছুর)')
-	->SetCellValue('AF6', 'Female (বকনা)')
-	->SetCellValue('AG6', '')
-	->SetCellValue('AH6', 'Male (পাঁঠা/খাসি)')
-	->SetCellValue('AI6', 'Female (ছাগী)')
-	->SetCellValue('AJ6', 'Male (পুং)')
-	->SetCellValue('AK6', 'Female (স্ত্রী)')
-	->SetCellValue('AL6', 'Male (পাঁঠা/খাসি)')
-	->SetCellValue('AM6', 'Female(ভেড়ি)')
-	->SetCellValue('AN6', 'Male (পুং)')
-	->SetCellValue('AO6', 'Female (স্ত্রী)')
-	->SetCellValue('AP6', '')
-	->SetCellValue('AQ6', 'Native (দেশি)')
-	->SetCellValue('AR6', 'Layer (লেয়ার)')
-	->SetCellValue('AS6', 'Other Poultry (Fayoumi/ Cockerel/ Turkey)( ফাউমি / ককরেল/ টারকি)')
-	->SetCellValue('AT6', 'Broiler (ব্রয়লার)')
+	->SetCellValue('Q6', 'Native (দেশি)')
+	->SetCellValue('R6', 'Cross (শংকর)')
+	->SetCellValue('S6', '')
+	->SetCellValue('T6', 'Native (দেশি)')
+	->SetCellValue('U6', 'Cross (শংকর)')
+	->SetCellValue('V6', 'Native (দেশি)')
+	->SetCellValue('W6', 'Cross (শংকর)')
+	->SetCellValue('X6', 'Native (দেশি)')
+	->SetCellValue('Y6', 'Cross (শংকর)')
+	->SetCellValue('Z6', 'Native (দেশি)')
+	->SetCellValue('AA6', 'Cross (শংকর)')
+	->SetCellValue('AB6', 'Male (ষাঁড়)')
+	->SetCellValue('AC6', 'Female (স্ত্রী)')
+	->SetCellValue('AD6', 'Male (এঁড়ে বাছুর)')
+	->SetCellValue('AE6', 'Female (বকনা)')
+	->SetCellValue('AF6', '')
+	->SetCellValue('AG6', 'Male (পাঁঠা/খাসি)')
+	->SetCellValue('AH6', 'Female (ছাগী)')
+	->SetCellValue('AI6', 'Male (পুং)')
+	->SetCellValue('AJ6', 'Female (স্ত্রী)')
+	->SetCellValue('AK6', 'Male (পাঁঠা/খাসি)')
+	->SetCellValue('AL6', 'Female(ভেড়ি)')
+	->SetCellValue('AM6', 'Male (পুং)')
+	->SetCellValue('AN6', 'Female (স্ত্রী)')
+	->SetCellValue('AO6', '')
+
+	->SetCellValue('AP6', 'Native (দেশি)')
+	->SetCellValue('AQ6', 'Layer (লেয়ার)')
+	->SetCellValue('AR6', 'Broiler (ব্রয়লার)')
+	->SetCellValue('AS6', 'Sonali (সোনালী)')
+	->SetCellValue('AT6', 'Other Poultry (Fayoumi/ Cockerel/ Turkey)( ফাউমি / ককরেল/ টারকি)')
 	->SetCellValue('AU6', '')
 	->SetCellValue('AV6', '')
 	->SetCellValue('AW6', '')
 	->SetCellValue('AX6', '')
 	->SetCellValue('AY6', '')
 	->SetCellValue('AZ6', '')
+
 	->SetCellValue('BA6', '')
 	->SetCellValue('BB6', '')
 	->SetCellValue('BC6', '')
@@ -391,6 +410,16 @@ $spreadsheet->getActiveSheet()
 	->SetCellValue('BE6', '')
 	->SetCellValue('BF6', '')
 	->SetCellValue('BG6', '')
+	->SetCellValue('BH6', '')
+
+	/* 
+
+	
+
+
+
+
+ */
 	;
 
 
@@ -411,32 +440,33 @@ $spreadsheet->getActiveSheet()
 	$spreadsheet->getActiveSheet()->mergeCells('N5:N6');
 	$spreadsheet->getActiveSheet()->mergeCells('O5:O6');
 	$spreadsheet->getActiveSheet()->mergeCells('P5:P6');
-	$spreadsheet->getActiveSheet()->mergeCells('Q5:Q6');
-	$spreadsheet->getActiveSheet()->mergeCells('R5:R6');
+	/* $spreadsheet->getActiveSheet()->mergeCells('Q5:Q6');
+	$spreadsheet->getActiveSheet()->mergeCells('R5:R6'); */
 
-	$spreadsheet->getActiveSheet()->mergeCells('S5:T5');
-	$spreadsheet->getActiveSheet()->mergeCells('U5:V5');
-	$spreadsheet->getActiveSheet()->mergeCells('W5:X5');
-	$spreadsheet->getActiveSheet()->mergeCells('Y5:Z5');
-	$spreadsheet->getActiveSheet()->mergeCells('AA5:AB5');
-	$spreadsheet->getActiveSheet()->mergeCells('AC5:AD5');
-	$spreadsheet->getActiveSheet()->mergeCells('AE5:AF5');
-
-	$spreadsheet->getActiveSheet()->mergeCells('AG5:AG6');
-
-	$spreadsheet->getActiveSheet()->mergeCells('AH5:AI5');
-	$spreadsheet->getActiveSheet()->mergeCells('AJ5:AK5');
-	$spreadsheet->getActiveSheet()->mergeCells('AL5:AM5');
-	$spreadsheet->getActiveSheet()->mergeCells('AN5:AO5');
-	$spreadsheet->getActiveSheet()->mergeCells('AP5:AP6');
-	$spreadsheet->getActiveSheet()->mergeCells('AQ5:AT5');
-	
+	$spreadsheet->getActiveSheet()->mergeCells('Q5:R5');
+	$spreadsheet->getActiveSheet()->mergeCells('S5:S6');
+	$spreadsheet->getActiveSheet()->mergeCells('T5:U5');
+	$spreadsheet->getActiveSheet()->mergeCells('V5:W5');
+	$spreadsheet->getActiveSheet()->mergeCells('X5:Y5');
+	$spreadsheet->getActiveSheet()->mergeCells('Z5:AA5');
+	$spreadsheet->getActiveSheet()->mergeCells('AB5:AC5');
+	$spreadsheet->getActiveSheet()->mergeCells('AD5:AE5');
+	$spreadsheet->getActiveSheet()->mergeCells('AF5:AF6');
+	$spreadsheet->getActiveSheet()->mergeCells('AG5:AH5');
+	$spreadsheet->getActiveSheet()->mergeCells('AI5:AJ5');
+	$spreadsheet->getActiveSheet()->mergeCells('AK5:AL5');
+	$spreadsheet->getActiveSheet()->mergeCells('AM5:AN5');
+	$spreadsheet->getActiveSheet()->mergeCells('AO5:AO6');
+	$spreadsheet->getActiveSheet()->mergeCells('AP5:AT5');
 	$spreadsheet->getActiveSheet()->mergeCells('AU5:AU6');
 	$spreadsheet->getActiveSheet()->mergeCells('AV5:AV6');
 	$spreadsheet->getActiveSheet()->mergeCells('AW5:AW6');
 	$spreadsheet->getActiveSheet()->mergeCells('AX5:AX6');
 	$spreadsheet->getActiveSheet()->mergeCells('AY5:AY6');
 	$spreadsheet->getActiveSheet()->mergeCells('AZ5:AZ6');
+
+	
+
 	$spreadsheet->getActiveSheet()->mergeCells('BA5:BA6');
 	$spreadsheet->getActiveSheet()->mergeCells('BB5:BB6');
 	$spreadsheet->getActiveSheet()->mergeCells('BC5:BC6');
@@ -444,6 +474,15 @@ $spreadsheet->getActiveSheet()
 	$spreadsheet->getActiveSheet()->mergeCells('BE5:BE6');
 	$spreadsheet->getActiveSheet()->mergeCells('BF5:BF6');
 	$spreadsheet->getActiveSheet()->mergeCells('BG5:BG6');
+	$spreadsheet->getActiveSheet()->mergeCells('BH5:BH6');
+
+
+	/* 
+	
+
+	
+
+ */
 
 
 
@@ -508,6 +547,7 @@ $spreadsheet->getActiveSheet()->getStyle('BD5')->applyFromArray(array('font' => 
 $spreadsheet->getActiveSheet()->getStyle('BE5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'BE5'); 
 $spreadsheet->getActiveSheet()->getStyle('BF5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'BF5'); 
 $spreadsheet->getActiveSheet()->getStyle('BG5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'BG5'); 
+$spreadsheet->getActiveSheet()->getStyle('BH5')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'BH5'); 
 
 
 
@@ -568,6 +608,7 @@ $spreadsheet->getActiveSheet()->getStyle('BD6')->applyFromArray(array('font' => 
 $spreadsheet->getActiveSheet()->getStyle('BE6')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'BE6'); 
 $spreadsheet->getActiveSheet()->getStyle('BF6')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'BF6'); 
 $spreadsheet->getActiveSheet()->getStyle('BG6')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'BG6'); 
+$spreadsheet->getActiveSheet()->getStyle('BH6')->applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'BH6'); 
 
 
 /*Text Alignment Horizontal(HORIZONTAL_LEFT,HORIZONTAL_CENTER,HORIZONTAL_RIGHT)*/
@@ -588,8 +629,8 @@ $spreadsheet->getActiveSheet()->getStyle('M5')->getAlignment()->setHorizontal(Al
 $spreadsheet->getActiveSheet()->getStyle('N5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 $spreadsheet->getActiveSheet()->getStyle('O5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 $spreadsheet->getActiveSheet()->getStyle('P5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-$spreadsheet->getActiveSheet()->getStyle('Q5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-$spreadsheet->getActiveSheet()->getStyle('R5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+$spreadsheet->getActiveSheet()->getStyle('Q5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('R5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
 $spreadsheet->getActiveSheet()->getStyle('S5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('S5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
@@ -633,8 +674,11 @@ $spreadsheet->getActiveSheet()->getStyle('BD5')->getAlignment()->setHorizontal(A
 $spreadsheet->getActiveSheet()->getStyle('BE5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('BF5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('BG5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('BH')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
 
+$spreadsheet->getActiveSheet()->getStyle('Q6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+$spreadsheet->getActiveSheet()->getStyle('R6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 $spreadsheet->getActiveSheet()->getStyle('S6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 $spreadsheet->getActiveSheet()->getStyle('T6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 $spreadsheet->getActiveSheet()->getStyle('U6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT); 
@@ -676,6 +720,7 @@ $spreadsheet->getActiveSheet()->getStyle('BD6')->getAlignment()->setHorizontal(A
 $spreadsheet->getActiveSheet()->getStyle('BE6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 $spreadsheet->getActiveSheet()->getStyle('BF6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 $spreadsheet->getActiveSheet()->getStyle('BG6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+$spreadsheet->getActiveSheet()->getStyle('BH6')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
  
 
 /*Text Alignment Vertical(VERTICAL_TOP,VERTICAL_CENTER,VERTICAL_BOTTOM)*/
@@ -735,6 +780,8 @@ $spreadsheet->getActiveSheet()->getStyle('BC5')->getAlignment()->setVertical(Ali
 $spreadsheet->getActiveSheet()->getStyle('BD5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('BE5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('BF5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('BG5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('BH5')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
 $spreadsheet->getActiveSheet()->getStyle('A6')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('B6')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
@@ -795,6 +842,7 @@ $spreadsheet->getActiveSheet()->getStyle('BD6')->getAlignment()->setVertical(Ali
 $spreadsheet->getActiveSheet()->getStyle('BE6')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('BF6')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 $spreadsheet->getActiveSheet()->getStyle('BG6')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+$spreadsheet->getActiveSheet()->getStyle('BH6')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
 
 /*Width for Cells*/
@@ -826,12 +874,59 @@ for ($column = 'E'; $column <= 'AZ'; $column++) {
  $spreadsheet->getActiveSheet()->getColumnDimension('AS')->setWidth(17);
  $spreadsheet->getActiveSheet()->getColumnDimension('AT')->setWidth(17);
  $spreadsheet->getActiveSheet()->getColumnDimension('AU')->setWidth(17);
- $spreadsheet->getActiveSheet()->getColumnDimension('BG')->setWidth(23);
+ $spreadsheet->getActiveSheet()->getColumnDimension('BG')->setWidth(17);
+ $spreadsheet->getActiveSheet()->getColumnDimension('HG')->setWidth(23);
 
 
 /*Wrap text*/
 $spreadsheet->getActiveSheet()->getStyle('A5')->getAlignment()->setWrapText(true);
 $spreadsheet->getActiveSheet()->getStyle('D6:AAG6')->getAlignment()->setWrapText(true);
+
+
+$spreadsheet->getActiveSheet()->getStyle('A5:A6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('B5:B6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('C5:C6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('D5:D6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('E5:E6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('F5:F6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('G5:G6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('H5:H6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('I5:I6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('J5:J6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('K5:K6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('L5:L6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('M5:M6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('N5:N6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('O5:O6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('P5:P6')->getAlignment()->setWrapText(true);
+
+$spreadsheet->getActiveSheet()->getStyle('Q5:R5')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('T5:U5')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('V5:W5')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('Z5:AA5')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AB5:AC5')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AD5:AE5')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AF5:AF6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AG5:AH5')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AI5:AJ5')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AK5:AL5')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AM5:AN5')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AO5:AO6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AU5:AU6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AV5:AV6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AW5:AW6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AX5:AX6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AY5:AY6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('AZ5:AZ6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('BA5:BA6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('BC5:BC6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('BD5:BD6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('BE5:BE6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('BF5:BF6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('BG5:BG6')->getAlignment()->setWrapText(true);
+$spreadsheet->getActiveSheet()->getStyle('BH5:BH6')->getAlignment()->setWrapText(true);
+
+
 
 /*border color set for cells*/
 
@@ -854,6 +949,8 @@ $spreadsheet->getActiveSheet()->getStyle('P5:P6')->applyFromArray($styleThinBlac
 $spreadsheet->getActiveSheet()->getStyle('Q5:Q6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('R5:R6')->applyFromArray($styleThinBlackBorderOutline);
 
+$spreadsheet->getActiveSheet()->getStyle('Q5:Q5')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('R5:R5')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('S5:S5')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('T5:T5')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('U5:U5')->applyFromArray($styleThinBlackBorderOutline);
@@ -895,7 +992,10 @@ $spreadsheet->getActiveSheet()->getStyle('BD5:BD5')->applyFromArray($styleThinBl
 $spreadsheet->getActiveSheet()->getStyle('BE5:BE5')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('BF5:BF5')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('BG5:BG5')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('BH5:BH5')->applyFromArray($styleThinBlackBorderOutline);
 
+$spreadsheet->getActiveSheet()->getStyle('Q6:Q6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('R6:R6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('S6:S6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('T6:T6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('U6:U6')->applyFromArray($styleThinBlackBorderOutline);
@@ -936,6 +1036,7 @@ $spreadsheet->getActiveSheet()->getStyle('BD6:BD6')->applyFromArray($styleThinBl
 $spreadsheet->getActiveSheet()->getStyle('BE6:BE6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('BF6:BF6')->applyFromArray($styleThinBlackBorderOutline);
 $spreadsheet->getActiveSheet()->getStyle('BG6:BG6')->applyFromArray($styleThinBlackBorderOutline);
+$spreadsheet->getActiveSheet()->getStyle('BH6:BH6')->applyFromArray($styleThinBlackBorderOutline);
 
 $charList = array('1' => 'A', '2' => 'B', '3' => 'C', '4' => 'D', '5' => 'E', '6' => 'F', '7' => 'G', '8' => 'H', '9' => 'I', '10' => 'J', '11' => 'K', '12' => 'L', '13' => 'M', '14' => 'N', '15' => 'O');
 
@@ -964,57 +1065,63 @@ foreach ($resultdata as $key => $row) {
 		->SetCellValue('F' . $j, $row['Village'])
 		->SetCellValue('G' . $j, $row['FarmerName'])
 		->SetCellValue('H' . $j, $row['FatherName'])
-		->SetCellValue('I' . $j, $row['MotherName'])
-		->SetCellValue('J' . $j, $row['HusbandWifeName'])
-		->SetCellValue('K' . $j, $row['NameOfTheFarm'])
-		->SetCellValue('L' . $j, $row['Phone'])
-		->SetCellValue('M' . $j, $row['GenderName'])
-		->SetCellValue('N' . $j, $row['IsDisabilityStatus'])
-		->SetCellValue('O' . $j, $row['NID'])
-		->SetCellValue('P' . $j, $row['IsPGMemberStatus'])
-		->SetCellValue('Q' . $j, $row['Latitute'])
-		->SetCellValue('R' . $j, $row['Longitute'])
-		->SetCellValue('S' . $j, $row['CowNative']==''?0:$row['CowNative'])
-		->SetCellValue('T' . $j, $row['CowCross']==''?0:$row['CowCross'])
-		->SetCellValue('U' . $j, $row['CowBullNative']==''?0:$row['CowBullNative'])
-		->SetCellValue('V' . $j, $row['CowBullCross']==''?0:$row['CowBullCross'])
-		->SetCellValue('W' . $j, $row['CowCalfMaleNative']==''?0:$row['CowCalfMaleNative'])
-		->SetCellValue('X' . $j, $row['CowCalfMaleCross']==''?0:$row['CowCalfMaleCross'])
-		->SetCellValue('Y' . $j, $row['CowCalfFemaleNative']==''?0:$row['CowCalfFemaleNative'])
-		->SetCellValue('Z' . $j, $row['CowCalfFemaleCross']==''?0:$row['CowCalfFemaleCross'])
-		->SetCellValue('AA' . $j, $row['CowMilkProductionNative']==''?0:$row['CowMilkProductionNative'])
-		->SetCellValue('AB' . $j, $row['CowMilkProductionCross']==''?0:$row['CowMilkProductionCross'])
-		->SetCellValue('AC' . $j, $row['BuffaloAdultMale']==''?0:$row['BuffaloAdultMale'])
-		->SetCellValue('AD' . $j, $row['BuffaloAdultFemale']==''?0:$row['BuffaloAdultFemale'])
-		->SetCellValue('AE' . $j, $row['BuffaloCalfMale']==''?0:$row['BuffaloCalfMale'])
-		->SetCellValue('AF' . $j, $row['BuffaloCalfFemale']==''?0:$row['BuffaloCalfFemale'])
-		->SetCellValue('AG' . $j, $row['BuffaloMilkProduction']==''?0:$row['BuffaloMilkProduction'])
-		->SetCellValue('AH' . $j, $row['GoatAdultMale']==''?0:$row['GoatAdultMale'])
-		->SetCellValue('AI' . $j, $row['GoatAdultFemale']==''?0:$row['GoatAdultFemale'])
-		->SetCellValue('AJ' . $j, $row['GoatCalfMale']==''?0:$row['GoatCalfMale'])
-		->SetCellValue('AK' . $j, $row['GoatCalfFemale']==''?0:$row['GoatCalfFemale'])
-		->SetCellValue('AL' . $j, $row['SheepAdultMale']==''?0:$row['SheepAdultMale'])
-		->SetCellValue('AM' . $j, $row['SheepAdultFemale']==''?0:$row['SheepAdultFemale'])
-		->SetCellValue('AN' . $j, $row['SheepCalfMale']==''?0:$row['SheepCalfMale'])
-		->SetCellValue('AO' . $j, $row['SheepCalfFemale']==''?0:$row['SheepCalfFemale'])
-		->SetCellValue('AP' . $j, $row['GoatSheepMilkProduction']==''?0:$row['GoatSheepMilkProduction'])
-		->SetCellValue('AQ' . $j, $row['ChickenNative']==''?0:$row['ChickenNative'])
-		->SetCellValue('AR' . $j, $row['ChickenLayer']==''?0:$row['ChickenLayer'])
-		->SetCellValue('AS' . $j, $row['ChickenSonaliFayoumiCockerelOthers']==''?0:$row['ChickenSonaliFayoumiCockerelOthers'])
-		->SetCellValue('AT' . $j, $row['ChickenBroiler']==''?0:$row['ChickenBroiler'])
+		/* ->SetCellValue('I' . $j, $row['MotherName'])
+		->SetCellValue('J' . $j, $row['HusbandWifeName']) */
+		->SetCellValue('I' . $j, $row['NameOfTheFarm'])
+		->SetCellValue('J' . $j, $row['Phone'])
+		->SetCellValue('K' . $j, $row['GenderName'])
+		/* ->SetCellValue('N' . $j, $row['IsDisabilityStatus']) */
+		->SetCellValue('L' . $j, $row['NID'])
+		->SetCellValue('M' . $j, $row['IsPGMemberStatus'])
+
+		->SetCellValue('N' . $j, $row['FamilyMember']==''?0:$row['FamilyMember'])
+		->SetCellValue('O' . $j, $row['Latitute'])
+		->SetCellValue('P' . $j, $row['Longitute'])
+		->SetCellValue('Q' . $j, $row['CowNative']==''?0:$row['CowNative'])
+		->SetCellValue('R' . $j, $row['CowCross']==''?0:$row['CowCross'])
+		->SetCellValue('S' . $j, $row['MilkCow']==''?0:$row['MilkCow'])
+		->SetCellValue('T' . $j, $row['CowBullNative']==''?0:$row['CowBullNative'])
+		->SetCellValue('U' . $j, $row['CowBullCross']==''?0:$row['CowBullCross'])
+		->SetCellValue('V' . $j, $row['CowCalfMaleNative']==''?0:$row['CowCalfMaleNative'])
+		->SetCellValue('W' . $j, $row['CowCalfMaleCross']==''?0:$row['CowCalfMaleCross'])
+		->SetCellValue('X' . $j, $row['CowCalfFemaleNative']==''?0:$row['CowCalfFemaleNative'])
+		->SetCellValue('Y' . $j, $row['CowCalfFemaleCross']==''?0:$row['CowCalfFemaleCross'])
+		->SetCellValue('Z' . $j, $row['CowMilkProductionNative']==''?0:$row['CowMilkProductionNative'])
+		->SetCellValue('AA' . $j, $row['CowMilkProductionCross']==''?0:$row['CowMilkProductionCross'])
+		->SetCellValue('AB' . $j, $row['BuffaloAdultMale']==''?0:$row['BuffaloAdultMale'])
+		->SetCellValue('AC' . $j, $row['BuffaloAdultFemale']==''?0:$row['BuffaloAdultFemale'])
+		->SetCellValue('AD' . $j, $row['BuffaloCalfMale']==''?0:$row['BuffaloCalfMale'])
+		->SetCellValue('AE' . $j, $row['BuffaloCalfFemale']==''?0:$row['BuffaloCalfFemale'])
+		->SetCellValue('AF' . $j, $row['BuffaloMilkProduction']==''?0:$row['BuffaloMilkProduction'])
+		->SetCellValue('AG' . $j, $row['GoatAdultMale']==''?0:$row['GoatAdultMale'])
+		->SetCellValue('AH' . $j, $row['GoatAdultFemale']==''?0:$row['GoatAdultFemale'])
+		->SetCellValue('AI' . $j, $row['GoatCalfMale']==''?0:$row['GoatCalfMale'])
+		->SetCellValue('AJ' . $j, $row['GoatCalfFemale']==''?0:$row['GoatCalfFemale'])
+		->SetCellValue('AK' . $j, $row['SheepAdultMale']==''?0:$row['SheepAdultMale'])
+		->SetCellValue('AL' . $j, $row['SheepAdultFemale']==''?0:$row['SheepAdultFemale'])
+		->SetCellValue('AM' . $j, $row['SheepCalfMale']==''?0:$row['SheepCalfMale'])
+		->SetCellValue('AN' . $j, $row['SheepCalfFemale']==''?0:$row['SheepCalfFemale'])
+		->SetCellValue('AO' . $j, $row['GoatSheepMilkProduction']==''?0:$row['GoatSheepMilkProduction'])
+		->SetCellValue('AP' . $j, $row['ChickenNative']==''?0:$row['ChickenNative'])
+		->SetCellValue('AQ' . $j, $row['ChickenLayer']==''?0:$row['ChickenLayer'])
+		->SetCellValue('AR' . $j, $row['ChickenBroiler']==''?0:$row['ChickenBroiler'])
+		->SetCellValue('AS' . $j, $row['ChickenSonali']==''?0:$row['ChickenSonali'])
+		->SetCellValue('AT' . $j, $row['ChickenSonaliFayoumiCockerelOthers']==''?0:$row['ChickenSonaliFayoumiCockerelOthers'])
 		->SetCellValue('AU' . $j, $row['ChickenEgg']==''?0:$row['ChickenEgg'])
 		->SetCellValue('AV' . $j, $row['DucksNumber']==''?0:$row['DucksNumber'])
 		->SetCellValue('AW' . $j, $row['DucksEgg']==''?0:$row['DucksEgg'])
 		->SetCellValue('AX' . $j, $row['PigeonNumber']==''?0:$row['PigeonNumber'])
-		->SetCellValue('AY' . $j, $row['FamilyMember']==''?0:$row['FamilyMember'])
-		->SetCellValue('AZ' . $j, $row['LandTotal']==''?0:$row['LandTotal'])
-		->SetCellValue('BA' . $j, $row['LandOwn']==''?0:$row['LandOwn'])
-		->SetCellValue('BB' . $j, $row['LandLeased']==''?0:$row['LandLeased'])
-		->SetCellValue('BC' . $j, $row['DataCollectionDate']==''?0:$row['DataCollectionDate'])
-		->SetCellValue('BD' . $j, $row['DataCollectorName']==''?0:$row['DataCollectorName'])
-		->SetCellValue('BE' . $j, $row['DesignationName']==''?0:$row['DesignationName'])
-		->SetCellValue('BF' . $j, $row['PhoneNumber']==''?0:$row['PhoneNumber'])
-		->SetCellValue('BG' . $j, $row['Remarks']==''?0:$row['Remarks'])
+		->SetCellValue('AY' . $j, $row['QuailNumber']==''?0:$row['QuailNumber'])
+		->SetCellValue('AZ' . $j, $row['OtherAnimalNumber']==''?0:$row['OtherAnimalNumber'])
+		
+		->SetCellValue('BA' . $j, $row['LandTotal']==''?0:$row['LandTotal'])
+		->SetCellValue('BB' . $j, $row['LandOwn']==''?0:$row['LandOwn'])
+		->SetCellValue('BC' . $j, $row['LandLeased']==''?0:$row['LandLeased'])
+		->SetCellValue('BD' . $j, $row['DataCollectionDate']==''?'':$row['DataCollectionDate'])
+		->SetCellValue('BE' . $j, $row['DataCollectorName']==''?'':$row['DataCollectorName'])
+		->SetCellValue('BF' . $j, $row['DesignationName']==''?'':$row['DesignationName'])
+		->SetCellValue('BG' . $j, $row['PhoneNumber']==''?'':$row['PhoneNumber'])
+		->SetCellValue('BH' . $j, $row['Remarks']==''?'':$row['Remarks'])
 
 		;
 
@@ -1077,6 +1184,7 @@ foreach ($resultdata as $key => $row) {
 	$spreadsheet->getActiveSheet()->getStyle('BE' . $j . ':BE' . $j)->applyFromArray($styleThinBlackBorderOutline);
 	$spreadsheet->getActiveSheet()->getStyle('BF' . $j . ':BF' . $j)->applyFromArray($styleThinBlackBorderOutline);
 	$spreadsheet->getActiveSheet()->getStyle('BG' . $j . ':BG' . $j)->applyFromArray($styleThinBlackBorderOutline);
+	$spreadsheet->getActiveSheet()->getStyle('BH' . $j . ':BH' . $j)->applyFromArray($styleThinBlackBorderOutline);
 
 
 	$spreadsheet->getActiveSheet()->getStyle('A' . $j . ':A' . $j)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);

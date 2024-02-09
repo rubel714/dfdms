@@ -146,7 +146,7 @@ const FarmerDataEntryNonPG = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "13%",
     },
     {
       field: "GenderName",
@@ -173,7 +173,7 @@ const FarmerDataEntryNonPG = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "12%",
+      width: "14%",
     },
     {
       field: "IsPGMemberStatus",
