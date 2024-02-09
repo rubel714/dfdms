@@ -746,6 +746,8 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
       "DataCollectionDate",
       "DataCollectorName",
       "Phone",
+      "Latitute",
+	    "Longitute",
     ];
     if (currentRow.RelationWithHeadOfHH === 2) {
       validateFields.push("ifOtherSpecify");
@@ -1242,13 +1244,14 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
           </div>
 
           <div className="formControl-mobile">
-            <label>Latitude (অক্ষাংশ)</label>
+            <label>Latitude (অক্ষাংশ) *</label>
             <input
               type="text"
               id="Latitute"
               name="Latitute"
               disabled="true"
               placeholder=""
+              class={errorObject.Latitute}
               value={currentRow.Latitute}
               onChange={(e) => handleChange(e)}
             />
@@ -1257,7 +1260,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
           </div>
 
           <div className="formControl-mobile">
-            <label>Longitude (দ্রাঘিমাংশ)</label>
+            <label>Longitude (দ্রাঘিমাংশ) *</label>
             <div className="autocompleteContainer">
               <input
                 type="text"
@@ -1265,6 +1268,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                 disabled="true"
                 name="Longitute"
                 placeholder=""
+                class={errorObject.Longitute}
                 value={currentRow.Longitute}
                 onChange={(e) => handleChange(e)}
               />
