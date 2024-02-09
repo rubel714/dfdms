@@ -176,6 +176,8 @@ use PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+
 
 $spreadsheet = new Spreadsheet();
 
@@ -1125,6 +1127,7 @@ foreach ($resultdata as $key => $row) {
 
 		;
 
+
 	$spreadsheet->getActiveSheet()->getStyle('A' . $j . ':A' . $j)->applyFromArray($styleThinBlackBorderOutline);
 	$spreadsheet->getActiveSheet()->getStyle('B' . $j . ':B' . $j)->applyFromArray($styleThinBlackBorderOutline);
 	$spreadsheet->getActiveSheet()->getStyle('C' . $j . ':C' . $j)->applyFromArray($styleThinBlackBorderOutline);
@@ -1221,6 +1224,14 @@ foreach ($resultdata as $key => $row) {
 	$spreadsheet->getActiveSheet()->getStyle('L' . $j . ':L' . $j)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
 
+	$spreadsheet->getActiveSheet()->setCellValueExplicit('L' . $j, $row['NID'], \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+
+
+	/* $spreadsheet->getActiveSheet()->getStyle('L' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER);
+ */
+	
+	/* $spreadsheet->getActiveSheet()->getStyle('L' . $j . ':L' . $j)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+ */
 
  /*    $spreadsheet->getActiveSheet()->getStyle('S' . $j)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 	$spreadsheet->getActiveSheet()->getStyle('S' . $j)->getNumberFormat()->setFormatCode('#,##0.0');
