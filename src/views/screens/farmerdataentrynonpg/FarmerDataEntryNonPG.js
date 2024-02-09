@@ -1,4 +1,5 @@
 import React, { forwardRef, useRef,  useEffect } from "react";
+import Cookies from 'js-cookie';
 import swal from "sweetalert";
 import { DeleteOutline, Edit } from "@material-ui/icons";
 import {Button}  from "../../../components/CustomControl/Button";
@@ -31,6 +32,11 @@ const FarmerDataEntryNonPG = (props) => {
   const [currDivisionId, setCurrDivisionId] = useState(UserInfo.DivisionId);
   const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
   const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
+  const Cookie_UnionId = Cookies.get('Cookie_UnionId') || "";
+  const Cookie_DataCollectorName = Cookies.get('Cookie_DataCollectorName') || "";
+  const Cookie_DesignationId = Cookies.get('Cookie_DesignationId') || UserInfo.DesignationId;
+  const Cookie_PhoneNumber = Cookies.get('Cookie_PhoneNumber') || "";
+
 
   const [currentDate, setCurrentDate] = useState(moment().format("YYYY-MM-DD"));
 
@@ -104,13 +110,13 @@ const FarmerDataEntryNonPG = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "17%",
     },
     {
       field: "MotherName",
       label: "Mother’s Name (মাতার নাম)",
       align: "left",
-      visible: true,
+      visible: false,
       sort: true,
       filter: true,
       width: "10%",
@@ -119,10 +125,10 @@ const FarmerDataEntryNonPG = (props) => {
       field: "HusbandWifeName",
       label: "Husband’s/Wife’s Name (স্বামীর / স্ত্রীর নাম)",
       align: "left",
-      visible: true,
+      visible: false,
       sort: true,
       filter: true,
-      width: "12%",
+      width: "17%",
     },
     {
       field: "NameOfTheFarm",
@@ -131,7 +137,7 @@ const FarmerDataEntryNonPG = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "10%",
+      width: "15%",
     },
     {
       field: "Phone",
@@ -155,7 +161,7 @@ const FarmerDataEntryNonPG = (props) => {
       field: "IsDisabilityStatus",
       label: "Is there any disability (প্রতিবন্ধি কিনা)",
       align: "left",
-      visible: true,
+      visible: false,
       sort: true,
       filter: true,
       width: "7%",
@@ -167,7 +173,7 @@ const FarmerDataEntryNonPG = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "7%",
+      width: "12%",
     },
     {
       field: "IsPGMemberStatus",
@@ -252,7 +258,7 @@ const FarmerDataEntryNonPG = (props) => {
             DivisionId: UserInfo.DivisionId,
             DistrictId: UserInfo.DistrictId,
             UpazilaId: UserInfo.UpazilaId,
-            UnionId: "",
+            UnionId: Cookie_UnionId,
             Ward: "",
             Village: "",
             FarmerName: "",
@@ -269,6 +275,7 @@ const FarmerDataEntryNonPG = (props) => {
             Longitute: "",
             CowNative: "",
             CowCross: "",
+            MilkCow: "",
             CowBullNative: "",
             CowBullCross: "",
             CowCalfMaleNative: "",
@@ -295,18 +302,21 @@ const FarmerDataEntryNonPG = (props) => {
             ChickenLayer: "",
             ChickenSonaliFayoumiCockerelOthers: "",
             ChickenBroiler: "",
+            ChickenSonali: "",
             ChickenEgg: "",
             DucksNumber: "",
             DucksEgg: "",
             PigeonNumber: "",
+            QuailNumber: "",
+            OtherAnimalNumber: "",
             FamilyMember: "",
             LandTotal: "",
             LandOwn: "",
             LandLeased: "",
             DataCollectionDate: "",
-            DataCollectorName: UserInfo.UserName,
-            DesignationId: UserInfo.DesignationId,
-            PhoneNumber: UserInfo.Phone,
+            DataCollectorName: Cookie_DataCollectorName,
+            DesignationId: Cookie_DesignationId,
+            PhoneNumber: Cookie_PhoneNumber,
             DataCollectionDate: currentDate,
             UserId: UserInfo.UserId,
             Remarks: "",

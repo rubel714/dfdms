@@ -1273,6 +1273,10 @@ input[type=search] {
     border: 3px solid #039829;
 }
 
+.border12 {
+    border: 3px solid #034e60;
+}
+
 .tg-Nonpg-99sb {
     background-color: #f4bbfb5c;
   }
@@ -1283,6 +1287,11 @@ input[type=search] {
 .tg-Nonpg-st {
     background-color: #53cdf75c;
   }
+
+  .tg-Nonpg-an {
+    background-color: #80eeb55c;
+  }
+
 
 .tg-Nonpg-ab {
     background-color: #787df75c;
@@ -1317,3 +1326,7 @@ input[type=search] {
 .fixed-width-td {
     width: 120px;
 }
+
+.hidden {
+    display: none;
+  }

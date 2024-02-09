@@ -1,4 +1,6 @@
 import React, { forwardRef, useRef, useEffect, useState } from "react";
+import Cookies from 'js-cookie';
+
 import { Button } from "../../../components/CustomControl/Button";
 import {
   apiCall,
@@ -734,9 +736,10 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
       "UpazilaId",
       "UnionId",
       "FarmerName",
-      "NID",
+      "Gender",
       "DataCollectionDate",
       "DataCollectorName",
+      "Phone",
     ];
     if (currentRow.RelationWithHeadOfHH === 2) {
       validateFields.push("ifOtherSpecify");
@@ -788,6 +791,11 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
       apiCall.post(serverpage, { params }, apiOption()).then((res) => {
         // console.log('res: ', res);
+
+        Cookies.set('Cookie_UnionId', currentRow.UnionId);
+        Cookies.set('Cookie_DataCollectorName', currentRow.DataCollectorName);
+        Cookies.set('Cookie_DesignationId', currentRow.DesignationId);
+        Cookies.set('Cookie_PhoneNumber', currentRow.PhoneNumber);
 
         props.masterProps.openNoticeModal({
           isOpen: true,
@@ -1051,7 +1059,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
            
           </div>
 
-          <div class="formControl-mobile">
+          <div class="formControl-mobile hidden">
             <label>Mother’s Name (মাতার নাম) </label>
             <input
               type="text"
@@ -1063,7 +1071,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
             />
           </div>
 
-          <div class="formControl-mobile">
+          <div class="formControl-mobile hidden">
             <label>Husband’s/Wife’s Name (স্বামীর / স্ত্রীর নাম)</label>
             <input
               type="text"
@@ -1091,19 +1099,20 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
           
           
             <div class="formControl-mobile">
-            <label>Mobile number (মোবাইল নং) </label>
+            <label>Mobile number (মোবাইল নং) *</label>
             <input
               type="text"
               id="Phone"
               name="Phone"
               placeholder=""
+              class={errorObject.Phone}
               value={currentRow.Phone}
               onChange={(e) => handleChange(e)}
             />
           </div>
 
           <div class="formControl-mobile">
-            <label>Gender (জেন্ডার)</label>
+            <label>Gender (জেন্ডার) *</label>
             <select
               id="Gender"
               name="Gender"
@@ -1123,7 +1132,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
        
 
-          <div class="formControl-mobile">
+          <div class="formControl-mobile hidden">
           <label>Is there any disability (প্রতিবন্ধি কিনা)</label>
           <div className="checkbox-label">
               <label className="radio-label">
@@ -1168,13 +1177,13 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
 
           <div class="formControl-mobile">
-            <label>NID (জাতীয় পরিচয় পত্র/ ভোটার আইডি কার্ড নম্বর) *</label>
+            <label>NID (জাতীয় পরিচয় পত্র/ ভোটার আইডি কার্ড নম্বর)</label>
             <input
               type="text"
               id="NID"
               name="NID"
               //disabled={currentRow.id?true:false}
-              class={errorObject.NID}
+              
               placeholder=""
               value={currentRow.NID}
               onChange={(e) => handleChange(e)}
@@ -1209,6 +1218,21 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                 No
               </label>
           </div>
+          </div>
+
+          <div class="formControl-mobile">
+            <label>Number of family members (পরিবারের মোট সদস্য সংখ্যা)</label>
+            <input
+              type="number"
+              id="FamilyMember"
+              name="FamilyMember"
+              //disabled={currentRow.id?true:false}
+              
+              placeholder="0"
+              value={currentRow.FamilyMember}
+              onChange={(e) => handleChange(e)}
+              onBlur={handleBlur}
+            />
           </div>
 
           <div className="formControl-mobile">
@@ -1299,6 +1323,24 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                             />
                         </td>
                       </tr>
+
+                        <tr>
+                          <td className="tg-Nonpg-sl  bgncoa8" colSpan="2">
+                             এখন দুধ দিচ্ছে এমন গাভীর সংখ্যা
+                          </td>
+                          
+                          <td className="tg-Nonpg-22sb bgncoa8" >
+                            <input
+                            id="MilkCow"
+                            name="MilkCow"
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.MilkCow}
+                            onChange={(e) => handleChange(e)}
+                            />
+                          </td>
+                        </tr>
 
 
                       <tr>
@@ -1503,7 +1545,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                       </tr>
                       <tr>
                         <td className="tg-Nonpg-22sb bgncoa2">
-                           Female (গাভী)
+                           Female (স্ত্রী)
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa2 maxwidthinp">
                             <input
@@ -1524,7 +1566,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                            Calf Buffalo (বাছুর মহিষের সংখ্যা)	
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa2" >
-                             Male (এঁড়ে)
+                             Male (এঁড়ে বাছুর)
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa2" >
                             <input
@@ -1644,7 +1686,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
                       <tr>
                         <td className="tg-Nonpg-sl NonpgEven bgncoa1" rowSpan="2">
-                            Calf (ছাগল ছানার সংখ্যা) 
+                            Calf (ছাগল বাচ্চার সংখ্যা) 
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa1" >
                              Male (পুং) 
@@ -1720,7 +1762,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                       
                       <tr>
                         <td className="tg-Nonpg-sl NonpgEven bgncoa1" rowSpan="2">
-                            Calf (ভেড়া ছানার সংখ্যা)
+                            Calf (ভেড়া বাচ্চার সংখ্যা)
                         </td>
                         <td className="tg-Nonpg-22sb bgncoa1" >
                              Male (পুং) 
@@ -1801,7 +1843,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
                        
                         <tr>
-                          <td className="tg-Nonpg-sl NonpgOdd bgnco" rowSpan="4">
+                          <td className="tg-Nonpg-sl NonpgOdd bgnco" rowSpan="5">
                               Chicken (মুরগির সংখ্যা) 
                           </td>
                           <td className="tg-Nonpg-22sb bgnco" >
@@ -1837,24 +1879,6 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                         </tr>
 
                         <tr>
-                          
-                          <td className="tg-Nonpg-22sb bgnco" >
-                          Sonali/Fayoumi/ Cockerel (সোনালী / ফাউমি / ককরেল)
-                          </td>
-                          <td className="tg-Nonpg-22sb bgnco" >
-                              <input
-                              id="ChickenSonaliFayoumiCockerelOthers"
-                              name="ChickenSonaliFayoumiCockerelOthers"
-                              type="number"
-                              className="numberInput"
-                              placeholder="0"
-                              value={currentRow.ChickenSonaliFayoumiCockerelOthers}
-                              onChange={(e) => handleChange(e)}
-                              />
-                          </td>
-                        </tr>
-
-                        <tr>
                           <td className="tg-Nonpg-22sb bgnco">
                           Broiler (ব্রয়লার)
                           </td>
@@ -1870,6 +1894,43 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                               />
                           </td>
                         </tr>
+
+                        <tr>
+                          <td className="tg-Nonpg-22sb bgnco">
+                            Sonali (সোনালী)
+                          </td>
+                          <td className="tg-Nonpg-22sb bgnco">
+                            <input
+                            id="ChickenSonali"
+                            name="ChickenSonali"
+                            type="number"
+                            className="numberInput"
+                            placeholder="0"
+                            value={currentRow.ChickenSonali}
+                            onChange={(e) => handleChange(e)}
+                            />
+                          </td>
+                        </tr>
+
+                        <tr>
+                          
+                          <td className="tg-Nonpg-22sb bgnco" >
+                          Other Poultry (Fayoumi/ Cockerel/ Turkey)( ফাউমি / ককরেল/ টারকি)
+                          </td>
+                          <td className="tg-Nonpg-22sb bgnco" >
+                              <input
+                              id="ChickenSonaliFayoumiCockerelOthers"
+                              name="ChickenSonaliFayoumiCockerelOthers"
+                              type="number"
+                              className="numberInput"
+                              placeholder="0"
+                              value={currentRow.ChickenSonaliFayoumiCockerelOthers}
+                              onChange={(e) => handleChange(e)}
+                              />
+                          </td>
+                        </tr>
+
+                       
 
                         <tr>
                         <td className="tg-Nonpg-sl NonpgEven bgnco" colSpan="2">
@@ -1984,8 +2045,77 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
 
 
+                           {/* Start Quail Number Table */}
+                           <div className="formControl-mobile">
+                            <label></label>
+                            <div className="newTableDivNonpg">
+                                <table className="tg-Nonpg border7">
+                                  <thead>
+
+                                      <tr>
+                                        <td className="tg-Nonpg-st" >
+                                            Number of Quail (কোয়েলের সংখ্যা)
+                                        </td>
+                                        <td className="tg-Nonpg-st fixed-width-td" >
+                                            <input
+                                            id="QuailNumber"
+                                            name="QuailNumber"
+                                            type="number"
+                                            className="numberInput"
+                                            placeholder="0"
+                                            value={currentRow.QuailNumber}
+                                            onChange={(e) => handleChange(e)}
+                                            />
+                                        </td>
+                                      </tr>
+                                      
+
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                                </table>
+                            </div>
+                          </div> 
+                          {/* End Quail Number    */}
+
+
+                           {/* Start Other Animal Number Table */}
+                           <div className="formControl-mobile">
+                            <label></label>
+                            <div className="newTableDivNonpg">
+                                <table className="tg-Nonpg border12">
+                                  <thead>
+
+                                      <tr>
+                                        <td className="tg-Nonpg-an" >
+                                            Number of other animals (Pig/Horse) (অন্যান্য প্রাণীর সংখ্যা (শুকর/ঘোড়া))
+                                        </td>
+                                        <td className="tg-Nonpg-an fixed-width-td" >
+                                            <input
+                                            id="OtherAnimalNumber"
+                                            name="OtherAnimalNumber"
+                                            type="number"
+                                            className="numberInput"
+                                            placeholder="0"
+                                            value={currentRow.OtherAnimalNumber}
+                                            onChange={(e) => handleChange(e)}
+                                            />
+                                        </td>
+                                      </tr>
+                                      
+
+                                  </thead>
+                                  <tbody>
+                                  </tbody>
+                                </table>
+                            </div>
+                          </div> 
+                          {/* End Other Animal Number    */}
+
+
+
                       {/* Start family members Table */}
-                      <div className="formControl-mobile">
+                          {/* <div className="formControl-mobile">
                             <label></label>
                             <div className="newTableDivNonpg">
                                 <table className="tg-Nonpg border7">
@@ -2014,7 +2144,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                                   </tbody>
                                 </table>
                             </div>
-                          </div>
+                          </div> */}
                           {/* End family members    */}
 
 

@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import Cookies from 'js-cookie';
+
 import { apiCall, apiOption, LoginUserInfo, language } from "../../actions/api";
 
 function AfterLoginNavbar(props) {
@@ -492,6 +494,13 @@ function AfterLoginNavbar(props) {
                       href="javascript:void(0)"
                       onClick={(e) => {
                         e.preventDefault();
+
+                        // Remove cookies
+                        Cookies.remove('Cookie_UnionId');
+                        Cookies.remove('Cookie_DataCollectorName');
+                        Cookies.remove('Cookie_DesignationId');
+                        Cookies.remove('Cookie_PhoneNumber');
+                        
                         sessionStorage.clear();
                         setTimeout(() => {
                           props.history.push("/login");

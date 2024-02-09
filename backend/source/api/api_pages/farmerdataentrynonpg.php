@@ -101,6 +101,10 @@ function getDataList($data){
 			a.`UpdateTs`,
 			a.`CreateTs`,
 			b.GenderName,
+			a.`MilkCow`,
+			a.`ChickenSonali`,
+			a.`QuailNumber`,
+			a.`OtherAnimalNumber`,
 			case when a.IsDisability=1 then 'Yes' else 'No' end IsDisabilityStatus,
 			case when a.IsPGMember=1 then 'Yes' else 'No' end IsPGMemberStatus
 			
@@ -161,12 +165,13 @@ function dataAddEdit($data) {
 		$Phone = $data->rowData->Phone ? $data->rowData->Phone : null;
 		$Gender = $data->rowData->Gender ? $data->rowData->Gender : null;
 		$IsDisability = $data->rowData->IsDisability ? $data->rowData->IsDisability : 0;
-		$NID =  $data->rowData->NID ? $data->rowData->NID : null;
+		$NID =  $data->rowData->NID ? $data->rowData->NID : "";
 		$IsPGMember = $data->rowData->IsPGMember ? $data->rowData->IsPGMember : 0;
 		$Latitute =  $data->rowData->Latitute ? $data->rowData->Latitute : null;
 		$Longitute =  $data->rowData->Longitute ? $data->rowData->Longitute : null;
 		$CowNative =  $data->rowData->CowNative ? $data->rowData->CowNative : null;
 		$CowCross =  $data->rowData->CowCross ? $data->rowData->CowCross : null;
+		$MilkCow =  $data->rowData->MilkCow ? $data->rowData->MilkCow : null;
 		$CowBullNative =  $data->rowData->CowBullNative ? $data->rowData->CowBullNative : null;
 		$CowBullCross =  $data->rowData->CowBullCross ? $data->rowData->CowBullCross : null;
 		$CowCalfMaleNative =  $data->rowData->CowCalfMaleNative ? $data->rowData->CowCalfMaleNative : null;
@@ -193,10 +198,13 @@ function dataAddEdit($data) {
 		$ChickenLayer =  $data->rowData->ChickenLayer ? $data->rowData->ChickenLayer : null;
 		$ChickenSonaliFayoumiCockerelOthers =  $data->rowData->ChickenSonaliFayoumiCockerelOthers ? $data->rowData->ChickenSonaliFayoumiCockerelOthers : null;
 		$ChickenBroiler =  $data->rowData->ChickenBroiler ? $data->rowData->ChickenBroiler : null;
+		$ChickenSonali =  $data->rowData->ChickenSonali ? $data->rowData->ChickenSonali : null;
 		$ChickenEgg =  $data->rowData->ChickenEgg ? $data->rowData->ChickenEgg : null;
 		$DucksNumber =  $data->rowData->DucksNumber ? $data->rowData->DucksNumber : null;
 		$DucksEgg =  $data->rowData->DucksEgg ? $data->rowData->DucksEgg : null;
 		$PigeonNumber =  $data->rowData->PigeonNumber ? $data->rowData->PigeonNumber : null;
+		$QuailNumber =  $data->rowData->QuailNumber ? $data->rowData->QuailNumber : null;
+		$OtherAnimalNumber =  $data->rowData->OtherAnimalNumber ? $data->rowData->OtherAnimalNumber : null;
 		$FamilyMember =  $data->rowData->FamilyMember ? $data->rowData->FamilyMember : null;
 		$LandTotal =  $data->rowData->LandTotal ? $data->rowData->LandTotal : null;
 		$LandOwn =  $data->rowData->LandOwn ? $data->rowData->LandOwn : null;
@@ -243,6 +251,7 @@ function dataAddEdit($data) {
 						'Longitute',
 						'CowNative',
 						'CowCross',
+						'MilkCow',
 						'CowBullNative',
 						'CowBullCross',
 						'CowCalfMaleNative',
@@ -269,10 +278,13 @@ function dataAddEdit($data) {
 						'ChickenLayer',
 						'ChickenSonaliFayoumiCockerelOthers',
 						'ChickenBroiler',
+						'ChickenSonali',
 						'ChickenEgg',
 						'DucksNumber',
 						'DucksEgg',
 						'PigeonNumber',
+						'QuailNumber',
+						'OtherAnimalNumber',
 						'FamilyMember',
 						'LandTotal',
 						'LandOwn',
@@ -306,6 +318,7 @@ function dataAddEdit($data) {
 					$Longitute,
 					$CowNative,
 					$CowCross,
+					$MilkCow,
 					$CowBullNative,
 					$CowBullCross,
 					$CowCalfMaleNative,
@@ -332,10 +345,13 @@ function dataAddEdit($data) {
 					$ChickenLayer,
 					$ChickenSonaliFayoumiCockerelOthers,
 					$ChickenBroiler,
+					$ChickenSonali,
 					$ChickenEgg,
 					$DucksNumber,
 					$DucksEgg,
 					$PigeonNumber,
+					$QuailNumber,
+					$OtherAnimalNumber,
 					$FamilyMember,
 					$LandTotal,
 					$LandOwn,
@@ -379,6 +395,7 @@ function dataAddEdit($data) {
 						'Longitute',
 						'CowNative',
 						'CowCross',
+						'MilkCow',
 						'CowBullNative',
 						'CowBullCross',
 						'CowCalfMaleNative',
@@ -405,10 +422,13 @@ function dataAddEdit($data) {
 						'ChickenLayer',
 						'ChickenSonaliFayoumiCockerelOthers',
 						'ChickenBroiler',
+						'ChickenSonali',
 						'ChickenEgg',
 						'DucksNumber',
 						'DucksEgg',
 						'PigeonNumber',
+						'QuailNumber',
+						'OtherAnimalNumber',
 						'FamilyMember',
 						'LandTotal',
 						'LandOwn',
@@ -442,6 +462,7 @@ function dataAddEdit($data) {
 					$Longitute,
 					$CowNative,
 					$CowCross,
+					$MilkCow,
 					$CowBullNative,
 					$CowBullCross,
 					$CowCalfMaleNative,
@@ -468,10 +489,13 @@ function dataAddEdit($data) {
 					$ChickenLayer,
 					$ChickenSonaliFayoumiCockerelOthers,
 					$ChickenBroiler,
+					$ChickenSonali,
 					$ChickenEgg,
 					$DucksNumber,
 					$DucksEgg,
 					$PigeonNumber,
+					$QuailNumber,
+					$OtherAnimalNumber,
 					$FamilyMember,
 					$LandTotal,
 					$LandOwn,
