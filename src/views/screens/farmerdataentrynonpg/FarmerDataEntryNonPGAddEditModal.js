@@ -648,6 +648,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
       data["Phone"] = limitedValue;
     }
 
+    if (name == "PhoneNumber") {
+      const onlyNums = value.replace(/[^0-9]/g, "");
+      const limitedValue = onlyNums.slice(0, 11);
+      data["PhoneNumber"] = limitedValue;
+    }
+
     if (name === "dob") {
       const dob = new Date(value);
       const today = new Date();

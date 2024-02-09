@@ -116,6 +116,10 @@ $i = 0;
 	a.`UpdateTs`,
 	a.`CreateTs`,
 	b.GenderName,
+	a.`MilkCow`,
+	a.`ChickenSonali`,
+	a.`QuailNumber`,
+	a.`OtherAnimalNumber`,
 	case when a.IsDisability=1 then 'Yes' else 'No' end IsDisabilityStatus,
 	case when a.IsPGMember=1 then 'Yes' else 'No' end IsPGMemberStatus,
 	us.UserName, de.DesignationName
@@ -442,19 +446,6 @@ $spreadsheet->getActiveSheet()
 	$spreadsheet->getActiveSheet()->mergeCells('BG5:BG6');
 
 
-	/* $spreadsheet->getActiveSheet()->mergeCells('D5:E5');
-	$spreadsheet->getActiveSheet()->mergeCells('F5:G5');
-	$spreadsheet->getActiveSheet()->mergeCells('H5:I5');
-	$spreadsheet->getActiveSheet()->mergeCells('J5:K5');
-	$spreadsheet->getActiveSheet()->mergeCells('L5:M5');
-	$spreadsheet->getActiveSheet()->mergeCells('N5:O5');
-	$spreadsheet->getActiveSheet()->mergeCells('P5:Q5');
-	$spreadsheet->getActiveSheet()->mergeCells('R5:S5');
-	$spreadsheet->getActiveSheet()->mergeCells('T5:U5');
-
-
-	$spreadsheet->getActiveSheet()->mergeCells('V5:V6');
-	$spreadsheet->getActiveSheet()->mergeCells('W5:W6'); */
 
 /*Font Size for Cells*/
 //$spreadsheet -> getActiveSheet()->getStyle('A6') -> applyFromArray(array('font' => array('size' => '12', 'bold' => true)), 'A6');	
