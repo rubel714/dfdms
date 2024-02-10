@@ -18,7 +18,6 @@ const PgEntryForm = (props) => {
   const serverpage = "pgentryform"; // this is .php server page
 
   const { useState } = React;
-  const [listEditPanelToggle, setListEditPanelToggle] = useState(true);
   const [bFirst, setBFirst] = useState(true);
   const [currentRow, setCurrentRow] = useState([]);
   const [showModal, setShowModal] = useState(false); //true=show modal, false=hide modal
@@ -344,8 +343,7 @@ const PgEntryForm = (props) => {
       BankId: "",
       DateofPgInformation: "",
     });
-    /* openModal(); */
-    setListEditPanelToggle(false);
+    openModal();
   };
 
   const editData = (rowData) => {
@@ -353,8 +351,7 @@ const PgEntryForm = (props) => {
     // console.log("dataList: ", dataList);
 
     setCurrentRow(rowData);
-   /*  openModal(); */
-   setListEditPanelToggle(false);
+    openModal();
   };
 
   function openModal() {
@@ -370,7 +367,6 @@ const PgEntryForm = (props) => {
     }
 
     setShowModal(false); //true=modal show, false=modal hide
-    setListEditPanelToggle(true);
   }
 
   const deleteData = (rowData) => {
@@ -734,35 +730,13 @@ const PgEntryForm = (props) => {
     // console.log("rows: ", rows);
   };
 
-
-  const backToList = () => {
-    setListEditPanelToggle(true); // true = show list and hide add/edit panel
-  };
-
   return (
     <>
       <div class="bodyContainer">
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
           <h4>Home ❯ Admin ❯ PG Profile</h4>
-
-          {!listEditPanelToggle ? (
-              <>
-                <Button
-                  label={"Back To List"}
-                  class={"btnClose"}
-                  onClick={backToList}
-                />
-              </>
-            ) : (
-              <></>
-            )}
-            
         </div>
-
-
-        {listEditPanelToggle && (
-          <>
 
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
         <div class="searchAdd3">
@@ -899,38 +873,16 @@ const PgEntryForm = (props) => {
             />
           </div>
         </div>
-        </>
-)}
-
-
-
-{!listEditPanelToggle && (
-                  <>
-                    {/* {!currentInvoice.BPosted && ( */}
-                    {1 == 1 && (
-
-                    <PgEntryFormAddEditModal
-                    masterProps={props}
-                    currentRow={currentRow}
-                    modalCallback={modalCallback}
-                    />
-              )}
-              </>
-            )}
-            
-
       </div>
-
-
       {/* <!-- BODY CONTAINER END --> */}
 
-      {/* {showModal && (
+      {showModal && (
         <PgEntryFormAddEditModal
           masterProps={props}
           currentRow={currentRow}
           modalCallback={modalCallback}
         />
-      )} */}
+      )}
     </>
   );
 };

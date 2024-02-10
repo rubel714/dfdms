@@ -1218,6 +1218,11 @@ input[type=search] {
     padding: 2px 15px;
 }
 
+textarea {
+    width: 100%;
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+  }
+
 /* input {
     width: 100%;
     padding: 8px;
