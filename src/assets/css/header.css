@@ -187,9 +187,9 @@
 }
 
 
-/* @media screen and (max-width: 768px) {
-    .menuBar {
+ @media screen and (max-width: 768px) {
+    .menuIconBar {
       display: none;
  }
 
-} */
+} 
