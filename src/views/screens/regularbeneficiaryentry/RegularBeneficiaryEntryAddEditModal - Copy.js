@@ -9,7 +9,6 @@ import {
 
 import { Typography, TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { CloudUploadOutlined, Clear } from "@material-ui/icons";
 
 const RegularBeneficiaryEntryAddEditModal = (props) => {
   // console.log('props modal: ', props);
@@ -1020,7 +1019,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div> */}
 
-          <div class="formControl-mobile">
+          <div class="contactmodalBodyOnePage pt-10">
             <label>Is Regular Beneficiary?</label>
             <select
               id="IsRegular"
@@ -1036,24 +1035,21 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 })}
             </select>
 
-            </div>
-            <div class="formControl-mobile">
-
-                <label>Beneficiary NID* </label>
-                <input
-                  type="text"
-                  id="NID"
-                  name="NID"
-                  //disabled={currentRow.id?true:false}
-                  class={errorObject.NID}
-                  placeholder="Enter Beneficiary NID"
-                  value={currentRow.NID}
-                  onChange={(e) => handleChange(e)}
-                  onBlur={handleBlur}
-                />
+            <label>Beneficiary NID* </label>
+            <input
+              type="text"
+              id="NID"
+              name="NID"
+              //disabled={currentRow.id?true:false}
+              class={errorObject.NID}
+              placeholder="Enter Beneficiary NID"
+              value={currentRow.NID}
+              onChange={(e) => handleChange(e)}
+              onBlur={handleBlur}
+            />
           </div>
 
-          {/* <div className="formControl-mobile">
+          <div className="contactmodalBodyOnePage pt-10">
             <label>NID Front Photo</label>
             <input
               type="file"
@@ -1065,7 +1061,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
 
             {previewImages.NidFrontPhoto && (
-              <div className=" image-preview-nid-mobile">
+              <div className="image-preview-nid">
                 <img
                   //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidFrontPhoto}`}
                   src={
@@ -1078,56 +1074,20 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 />
               </div>
             )}
-            
-          </div> */}
+          </div>
 
-
-          <div className="formControl-mobile file_browse_box tp-file-upload">
-            <label>NID Front Photo</label>
-            <input
-              type="file"
-              id="NidFrontPhoto"
-              name="NidFrontPhoto"
-              accept="image/*"
-              className="tp-form-control"
-              //onChange={handleFileChange}
-              onChange={(e) => handleFileChange(e, "NidFrontPhoto")}
-            />
-
-            {previewImages.NidFrontPhoto && (
-              <div className=" image-preview-nid-mobile up_image_card">
-                <img
-                  //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidFrontPhoto}`}
-                  src={
-                    currentRow.NidFrontPhoto
-                      ? `${baseUrl}src/assets/farmerimage/${currentRow.NidFrontPhoto}`
-                      : previewImage
-                  }
-                  alt="NID Front Preview"
-                  className="preview-image"
-                />
-              </div>
-            )}
-            
-          </div> 
-
-
-
-            
-
-          <div className="formControl-mobile file_browse_box tp-file-upload">
+          <div className="contactmodalBodyOnePage pt-10">
             <label>NID Back Photo</label>
             <input
               type="file"
               id="NidBackPhoto"
               name="NidBackPhoto"
               accept="image/*"
-              className="tp-form-control"
               onChange={(e) => handleFileChange(e, "NidBackPhoto")}
             />
 
             {previewImages.NidBackPhoto && (
-              <div className="image-preview-nid-mobile up_image_card">
+              <div className="image-preview-nid">
                 <img
                   //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.NidBackPhoto}`}
                   src={
@@ -1142,7 +1102,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             )}
           </div>
 
-          <div class="formControl-mobile">
+          <div class="contactmodalBodyOnePage pt-10">
             <label>Beneficiary Name *</label>
             <input
               type="text"
@@ -1155,10 +1115,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               onChange={(e) => handleChange(e)}
             />
 
-          </div>
-
-          <div className="formControl-mobile">
-
             <label>Mobile Number </label>
             <input
               type="text"
@@ -1170,18 +1126,17 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div class="formControl-mobile file_browse_box tp-file-upload">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Beneficiary Photo</label>
             <input
               type="file"
               id="BeneficiaryPhoto"
               name="BeneficiaryPhoto"
               accept="image/*"
-              className="tp-form-control"
               onChange={(e) => handleFileChange(e, "BeneficiaryPhoto")}
             />
             {previewImages.BeneficiaryPhoto && (
-              <div className="image-preview up_image_card">
+              <div className="image-preview">
                 <img
                   //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.BeneficiaryPhoto}`}
                   src={
@@ -1196,7 +1151,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             )}
           </div>
 
-          <div class="formControl-mobile ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Father's Name </label>
             <input
               type="text"
@@ -1206,10 +1161,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               value={currentRow.FatherName}
               onChange={(e) => handleChange(e)}
             />
-
-          </div>
-
-          <div className="formControl-mobile">
 
             <label>Spouse Name </label>
             <input
@@ -1222,7 +1173,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div class="formControl-mobile ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Mother's Name </label>
             <input
               type="text"
@@ -1232,10 +1183,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               value={currentRow.MotherName}
               onChange={(e) => handleChange(e)}
             />
-
-          </div>
-
-          <div className="formControl-mobile">
 
             <label>Date of Birth* </label>
             <input
@@ -1249,7 +1196,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div class="formControl-mobile ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Gender*</label>
             <select
               id="Gender"
@@ -1264,10 +1211,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 })}
             </select>
 
-             </div>
-
-          <div className="formControl-mobile">
-
             <label>Farmer's Age* </label>
             <input
               type="text"
@@ -1281,7 +1224,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div class="formControl-mobile ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Disability Status</label>
             <select
               id="DisabilityStatus"
@@ -1363,7 +1306,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </>
           )}
 
-          <div class="formControl-mobile ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Farmer's Head of HH Sex</label>
             <select
               id="HeadOfHHSex"
@@ -1446,7 +1389,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             )}
           </div>
 
-          <div class="formControl-mobile ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Type Of Member*</label>
             <select
               id="TypeOfMember"
@@ -1510,7 +1453,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             )}
           </div>
 
-          <div class="formControl-mobile">
+          <div class="contactmodalBodyOnePage pt-10">
             <label>PG Farmer Code* </label>
             <input
               type="text"
@@ -1537,7 +1480,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
           </div>
 
-          <div class="formControl-mobile">
+          <div class="contactmodalBodyOnePage pt-10">
             <label>Division *</label>
             <select
               id="DivisionId"
@@ -1567,7 +1510,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
           </div>
 
-          <div class="formControl-mobile">
+          <div class="contactmodalBodyOnePage pt-10">
             <label>Upazila *</label>
             <select
               id="UpazilaId"
@@ -1597,7 +1540,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
           </div>
 
-          <div className="formControl-mobile">
+          <div className="contactmodalBodyOnePage pt-10">
             <label>Value Chain*</label>
             <select
               id="ValuechainId"
@@ -1627,7 +1570,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
           </div>
 
-          <div class="formControl-mobile">
+          <div class="contactmodalBodyOnePage pt-10">
             {/* <label>Name of Producer Group</label>
             <select
               id="PGId"
@@ -1676,7 +1619,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select> */}
           </div>
 
-          <div class="formControl-mobile ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>City Corporation/ Municipality</label>
             <select
               id="CityCorporation"
@@ -1713,8 +1656,17 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             /> */}
           </div>
 
-          <div className="formControl-mobile">
-            
+          <div className="contactmodalBodyOnePage pt-10">
+            <label>Latitute</label>
+            <input
+              type="text"
+              id="Latitute"
+              name="Latitute"
+              disabled="true"
+              placeholder="Enter Latitute"
+              value={currentRow.Latitute}
+              onChange={(e) => handleChange(e)}
+            />
 
             <label>Are You Head of The Group?</label>
             <div className="checkbox-label">
@@ -1743,17 +1695,6 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               </label>
             </div>
 
-            <label>Latitute</label>
-            <input
-              type="text"
-              id="Latitute"
-              name="Latitute"
-              disabled="true"
-              placeholder="Enter Latitute"
-              value={currentRow.Latitute}
-              onChange={(e) => handleChange(e)}
-            />
-
             {/* <label>Address* </label>
             <input
               type="text"
@@ -1766,7 +1707,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             /> */}
           </div>
 
-          <div className="formControl-mobile">
+          <div className="contactmodalBodyOnePage pt-10">
             <label>Longitute</label>
             <div className="autocompleteContainer">
               <input
@@ -1814,7 +1755,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </div> */}
           </div>
 
-          <div class="formControl-mobile ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>When Did you start to operate your farm? </label>
             <input
               type="date"
@@ -1828,7 +1769,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div class="formControl-mobile ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Number of Months of your operation </label>
             <input
               type="text"
@@ -1883,7 +1824,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </div>
           </div>
 
-          <div class="formControl-mobile ">
+          <div class="contactmodalBodyOnePage pt-10 ">
             <label>Registration Date </label>
             <input
               type="date"
@@ -1913,7 +1854,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             />
           </div>
 
-          <div className="formControl-mobile file_browse_box tp-file-upload">
+          <div className="contactmodalBodyOnePage pt-10">
             <label>Farm's Photo</label>
             <input
               type="file"
@@ -1921,12 +1862,11 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               name="FarmsPhoto"
               accept="image/*"
               //onChange={handleFileChange}
-              className="tp-form-control"
               onChange={(e) => handleFileChange(e, "FarmsPhoto")}
             />
 
             {previewImages.FarmsPhoto && (
-              <div className="image-preview up_image_card">
+              <div className="image-preview">
                 <img
                   //src={`${baseUrl}/dfdms/src/assets/farmerimage/${currentRow.FarmsPhoto}`}
                   src={
@@ -1941,7 +1881,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             )}
           </div>
 
-          {/*  <div className="formControl-mobile">
+          {/*  <div className="contactmodalBodyOnePage pt-10">
             <label>Value Chain</label>
             <select
               id="ValuechainId"
@@ -1957,7 +1897,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
           </div> */}
 
-          {/* <div class="formControl-mobile">
+          {/* <div class="contactmodalBodyOnePage pt-10">
             <label>Type of Farmers:</label>
           </div>
 
@@ -1992,7 +1932,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                   />
               </div> */}
 
-          <div class="modalItem-mobile">
+          <div class="modalItem">
             <Button label={"Close"} class={"btnClose"} onClick={modalClose} />
             {props.currentRow.id && (
               <Button

@@ -185,3 +185,11 @@
     color: greenyellow;
     font-size: .8rem;
 }
+
+
+@media screen and (max-width: 768px) {
+    .menuBar {
+      display: none;
+ }
+
+}
