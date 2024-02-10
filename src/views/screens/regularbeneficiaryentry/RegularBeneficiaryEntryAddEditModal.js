@@ -1348,7 +1348,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
           {currentRow.RelationWithHeadOfHH === 2 && (
             <>
-              <div class="modalItem modalItemCondition">
+              <div class="formControl-mobile modalItemCondition">
                 <label>If others, specify* </label>
                 <input
                   type="text"
