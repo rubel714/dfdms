@@ -1516,7 +1516,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               type="text"
               id="PGFarmerCode"
               name="PGFarmerCode"
-              placeholder="Enter PGF armer Code"
+              placeholder="Enter PG Farmer Code"
               class={errorObject.PGFarmerCode}
               value={currentRow.PGFarmerCode}
               onChange={(e) => handleChange(e)}
@@ -1647,7 +1647,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               type="text"
               id="Ward"
               name="Ward"
-              placeholder="Enter Village Name"
+              placeholder="Enter Ward"
               value={currentRow.Ward}
               onChange={(e) => handleChange(e)}
             />
