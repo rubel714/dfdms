@@ -748,6 +748,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
       "Phone",
       "Latitute",
 	    "Longitute",
+	    "PhoneNumber",
     ];
     if (currentRow.RelationWithHeadOfHH === 2) {
       validateFields.push("ifOtherSpecify");
@@ -816,6 +817,12 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
           setUploadCompleted(0);
           props.modalCallback("addedit");
         }
+      });
+    }else {
+      props.masterProps.openNoticeModal({
+        isOpen: true,
+        msg: "Please enter required fields.",
+        msgtype: 0,
       });
     }
   }
@@ -2329,13 +2336,14 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
                                       <tr>
                                         <td className="tg-Nonpg-99sbx" >
-                                        Cell No. of Enumerator
+                                        Cell No. of Enumerator *
                                         </td>
                                         <td className="tg-Nonpg-99sbx" >
                                             <input
                                             id="PhoneNumber"
                                             name="PhoneNumber"
                                             type="text"
+                                            class={errorObject.PhoneNumber}
                                             value={currentRow.PhoneNumber}
                                             onChange={(e) => handleChange(e)}
                                             />
