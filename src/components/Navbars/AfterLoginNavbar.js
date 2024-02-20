@@ -201,6 +201,19 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+                    {menuShowPermision("householdlivestocksurveydataentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() =>
+                            props.history.push("householdlivestocksurveydataentry")
+                          }
+                        >
+                          Household Livestock Survey 2024 Data Entry
+                        </a>
+                      </li>
+                    )}
+
                     {/* 
                   {menuShowPermision("pgdatacollection") === 1 && (
                       <li>
