@@ -61,7 +61,7 @@ else if (
 }
 // IF THERE ARE NO EMPTY FIELDS THEN-
 else {
- 
+
     $Email = trim($data->email);
     $Passowrd = trim($data->password);
 
@@ -69,7 +69,7 @@ else {
     $RoleId = 0;
     $memuList = array();
 
-    try{
+    try {
         $userRow = array();
 
         $sql = "SELECT * FROM t_users 
@@ -80,20 +80,20 @@ else {
         $query_u->execute();
 
 
-        if($query_u->rowCount() === 0){
-            $returnData = msg(0,422,'User not found!');
+        if ($query_u->rowCount() === 0) {
+            $returnData = msg(0, 422, 'User not found!');
             echo json_encode($returnData);
             return;
-
-        }else if($query_u->rowCount() === 1){
+        } else if ($query_u->rowCount() === 1) {
             $uRow = $query_u->fetch(PDO::FETCH_ASSOC);
             $UserId = $uRow['UserId'];
         }
 
         // $UserId = 33333333333333;
-        
+
         $sql = "SELECT a.`UserId`,a.`UserName`,a.`LoginName`,a.`Email`,a.`Password`,
-        a.`DesignationId`,a.`IsActive`,a.PhotoUrl,a.DivisionId,b.DivisionName,a.DistrictId,c.DistrictName,a.UpazilaId,d.UpazilaName,a.Phone
+        a.`DesignationId`,a.`IsActive`,a.PhotoUrl,a.DivisionId,b.DivisionName,a.DistrictId,
+        c.DistrictName,a.UpazilaId,d.UpazilaName,a.Phone
             FROM `t_users` a
             left join t_division b on a.DivisionId=b.DivisionId
             left join t_district c on a.DistrictId=c.DistrictId
@@ -110,15 +110,15 @@ else {
         inner join t_roles b on a.RoleId=b.RoleId 
         WHERE a.`UserId`=:UserId";
         $query_stmtrole = $conn->prepare($fetch_userrole_by_user);
-        $query_stmtrole->bindValue(':UserId', $UserId,PDO::PARAM_STR);
+        $query_stmtrole->bindValue(':UserId', $UserId, PDO::PARAM_STR);
         $query_stmtrole->execute();
-        
+
         $rowrole = $query_stmtrole->fetchAll(PDO::FETCH_ASSOC);
 
 
-        if(count($rowrole)>0){
+        if (count($rowrole) > 0) {
 
-            foreach($rowrole as $r){
+            foreach ($rowrole as $r) {
 
                 $RoleId = $r['RoleId'];
                 $userRow["RoleId"][] = $r["RoleId"];
@@ -129,22 +129,20 @@ else {
                 // $userRow["DefaultRedirect"] = $rowrole['DefaultRedirect'];
 
             }
-        }
-        else{
+        } else {
             $RoleId = 0;
             $userRow["RoleId"] = [];
             $userRow["DefaultRedirect"] = "/home";
-
         }
 
         //when maintenance mode on then only Admin role user able to login
-        if($query_stmt->rowCount()){
-            
-            if(loginonlyadmin==1){
+        if ($query_stmt->rowCount()) {
+
+            if (loginonlyadmin == 1) {
 
                 //role id = 1 = Super Admin. If site is maintenance mode then only super admin able to login
-                if(!in_array(1,$userRow["RoleId"])){
-                // if($RoleId != 1){
+                if (!in_array(1, $userRow["RoleId"])) {
+                    // if($RoleId != 1){
                     $returnData = [
                         "success" => 0,
                         "status" => 404,
@@ -154,52 +152,52 @@ else {
                     echo json_encode($returnData);
                     return;
                 }
-                
             }
         }
 
 
 
-         // IF THE USER IS FOUNDED
-         if($query_stmt->rowCount()){
+        // IF THE USER IS FOUNDED
+        if ($query_stmt->rowCount()) {
             $check_password = password_verify($Passowrd, $userRow['Password']);
 
             //if passord is valid
-            if($check_password){
+            if ($check_password) {
 
                 $jwt = new JwtHandler();
                 $token = $jwt->_jwt_encode_data(
                     'http://localhost/php_auth_api/',
-                    array("UserId"=> $UserId)
+                    array("UserId" => $UserId)
                 );
 
-                
-                $RoleIds = implode(',',$userRow["RoleId"]);
-                 $query = "SELECT DISTINCT a.MenuId,a.MenuKey,a.MenuTitle,a.Url,a.ParentId,a.MenuLevel,a.SortOrder
+
+                $RoleIds = implode(',', $userRow["RoleId"]);
+                $query = "SELECT DISTINCT a.MenuId,a.MenuKey,a.MenuTitle,a.Url,a.ParentId,a.MenuLevel,a.SortOrder
                 FROM t_menu a
                 INNER JOIN t_role_menu_map b ON a.MenuId=b.MenuId 
                 and b.RoleId IN ($RoleIds)
                 order by a.SortOrder ASC;";
 
                 $dataMenu = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
-                if(count($dataMenu)==0){
+                if (count($dataMenu) == 0) {
                     $returnData = [
                         "success" => 0,
                         "status" => 404,
                         "message" => "You have no assigned any menu"
                     ];
-                }
-                else{
+                } else {
 
-                    foreach($dataMenu as $key => $menu) {
+                    foreach ($dataMenu as $key => $menu) {
                         $memuList[] = $menu;
                     }
-
                 }
 
                 $userRow["UserAllowdMenuList"] = $memuList;
                 $userRow["Password"] = "HIDDEN";
                 $userRow["StatusChangeAllow"] = getStatusChangeAllow($conn, $userRow["RoleId"]);
+                $userRow["MetaData"] = getMetaData($conn, $userRow);
+
+                
                 // $userRow["StatusChangeAllow"] = ["Submit","Accept","Approve"];
 
                 $returnData = [
@@ -208,42 +206,26 @@ else {
                     'token' => $token,
                     'user_data' => $userRow
                 ];
-
+            } else {
+                $returnData = msg(0, 422, 'Invalid Password!');
             }
-            else{
-                $returnData = msg(0,422,'Invalid Password!');
-            }
-
-         }
-         else{
-            $returnData = msg(0,422,'User not found!');
-         }
-
-
-
-
-
-
+        } else {
+            $returnData = msg(0, 422, 'User not found!');
+        }
+    } catch (PDOException $e) {
+        $returnData = msg(0, 500, $e->getMessage());
     }
-    catch(PDOException $e){
-        $returnData = msg(0,500,$e->getMessage());
-    }
-
-
-
-
-
-
 }
 
 echo json_encode($returnData);
 
 
 
-function getStatusChangeAllow($conn, $RoleList){
+function getStatusChangeAllow($conn, $RoleList)
+{
     // $status = array();
 
-    
+
     // getStatusChangeAllow($conn, $userRow["RoleId"]);
     // $userRow["StatusChangeAllow"] = ["Submit","Accept","Approve"];
     $StatusChangeAllow = array();
@@ -254,30 +236,69 @@ function getStatusChangeAllow($conn, $RoleList){
     $query = "SELECT StatusId,StatusName,RoleIds FROM t_status;";
     $result = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
     $statusList = array();
-    foreach($result as $row){
+    foreach ($result as $row) {
         $statusList[$row["StatusId"]] = $row;
     }
 
-    $submitArr = explode(",",$statusList[2]["RoleIds"]);
-    if(count(array_intersect($RoleList,$submitArr))>0){
+    $submitArr = explode(",", $statusList[2]["RoleIds"]);
+    if (count(array_intersect($RoleList, $submitArr)) > 0) {
         $StatusChangeAllow[] = "Submit";
     }
 
-    $acceptArr = explode(",",$statusList[3]["RoleIds"]);
-    if(count(array_intersect($RoleList,$acceptArr))>0){
+    $acceptArr = explode(",", $statusList[3]["RoleIds"]);
+    if (count(array_intersect($RoleList, $acceptArr)) > 0) {
         $StatusChangeAllow[] = "Accept";
     }
     // print_r($acceptArr);
 
-    
-    $publishArr = explode(",",$statusList[5]["RoleIds"]);
-    if(count(array_intersect($RoleList,$publishArr))>0){
+
+    $publishArr = explode(",", $statusList[5]["RoleIds"]);
+    if (count(array_intersect($RoleList, $publishArr)) > 0) {
         $StatusChangeAllow[] = "Approve";
     }
 
-   // print_r(explode(",",$statusList[2]["RoleIds"]));
+    // print_r(explode(",",$statusList[2]["RoleIds"]));
 
-//    print_r($StatusChangeAllow);
-    
+    //    print_r($StatusChangeAllow);
+
     return $StatusChangeAllow;
+}
+
+
+
+function getMetaData($conn, $userRow)
+{
+
+
+    $UpazilaId = $userRow["UpazilaId"];
+    $UpazilaId = $UpazilaId == "" ? 0 : $UpazilaId;
+
+    $dataList = array();
+
+    $query = "SELECT UnionId,UnionName FROM t_union where UpazilaId=$UpazilaId order by UnionName;";
+    $result = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    $unionList = array();
+    foreach ($result as $row) {
+        $unionList[] = $row;
+    }
+    $dataList["UnionList"] = $unionList;
+
+
+    $query = "SELECT GenderId,GenderName FROM t_gender order by GenderId;";
+    $result = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    $genderList = array();
+    foreach ($result as $row) {
+        $genderList[] = $row;
+    }
+    $dataList["GenderList"] = $genderList;
+
+    $query = "SELECT DesignationId,DesignationName FROM t_designation order by DesignationId;";
+    $result = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    $designationList = array();
+    foreach ($result as $row) {
+        $designationList[] = $row;
+    }
+    $dataList["DesignationList"] = $designationList;
+    
+    return $dataList;
 }
