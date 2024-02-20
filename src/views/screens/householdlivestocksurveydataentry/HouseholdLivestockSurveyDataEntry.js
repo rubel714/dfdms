@@ -13,7 +13,7 @@ import {
 } from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
-import RegularBeneficiaryEntryAddEditModal from "./HouseholdLivestockSurveyDataEntryAddEditModal";
+import HouseholdLivestockSurveyDataEntryAddEditModal from "./HouseholdLivestockSurveyDataEntryAddEditModal";
 import moment from "moment";
 
 const HouseholdLivestockSurveyDataEntry = (props) => {
@@ -25,7 +25,14 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
   const [currentRow, setCurrentRow] = useState([]);
   const [showModal, setShowModal] = useState(false); //true=show modal, false=hide modal
 
-  const { isLoading, data: dataList, error, ExecuteQuery } = ExecuteQueryHook(); //Fetch data
+ /*  const { isLoading, data: dataList, error, ExecuteQuery } = ExecuteQueryHook(); //Fetch data
+ */
+  let dataList = JSON.parse(localStorage.getItem("householdlivestocksurveydataentry")) || [];
+  
+  console.log('dataList: ', dataList);
+
+
+
   const UserInfo = LoginUserInfo();
   console.log('UserInfo: ', UserInfo.RoleId[0]);
 
@@ -219,7 +226,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
     };
     // console.log('LoginUserInfo params: ', params);
     return;
-    ExecuteQuery(serverpage, params);
+    /* ExecuteQuery(serverpage, params); */
   }
 
   /** Action from table row buttons*/
@@ -355,6 +362,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
   }
 
   const deleteData = (rowData) => {
+    return;
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this data!",
@@ -480,12 +488,49 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
     setListEditPanelToggle(true); // true = show list and hide add/edit panel
   };
 
+
+
+  function syncData() {
+    let currentDataList = JSON.parse(localStorage.getItem("householdlivestocksurveydataentry")) || [];
+  
+    let params = {
+      action: "dataSyncUpload",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DivisionId: UserInfo.DivisionId,
+      DistrictId: UserInfo.DistrictId,
+      UpazilaId: UserInfo.UpazilaId,
+      rowData: currentDataList,
+    };
+
+    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+   
+   
+      /* props.masterProps.openNoticeModal({
+        isOpen: true,
+        msg: res.data.message,
+        msgtype: res.data.success,
+      });
+
+      if (res.data.success === 1) {
+        setUploadCompleted(0);
+        props.modalCallback("addedit");
+      }
+      setIsServerLoading(false); */
+
+
+    }); 
+
+
+
+  }
+
   return (
     <>
       <div class="bodyContainer">
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
-          <h4>Home ❯ Admin ❯ Household Livestock Survey 2024</h4>
+          <h4>Home ❯ Admin ❯ Household Livestock Survey 2024 Data Entry</h4>
 
           {!listEditPanelToggle ? (
             <>
@@ -506,7 +551,17 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
             <div class="searchAdd3">
               <div class="formControl-filter-data-label">
                 <label for="DivisionId">Division (বিভাগ): </label>
-                <select
+
+                <input
+                  id="DivisionName"
+                  name="DivisionName"
+                  type="text"
+                  disabled={true}
+                  value={UserInfo.DivisionName}
+
+                  />
+
+                {/* <select
                   class="dropdown_filter"
                   id="DivisionId"
                   name="DivisionId"
@@ -517,12 +572,21 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
                     divisionList.map((item, index) => {
                       return <option value={item.id}>{item.name}</option>;
                     })}
-                </select>
+                </select> */}
               </div>
 
               <div class="formControl-filter-data-label">
                 <label for="DistrictId">District (জেলা): </label>
-                <select
+                  <input
+                    id="DistrictName"
+                    name="DistrictName"
+                    type="text"
+                    disabled={true}
+                    value={UserInfo.DistrictName}
+
+                    />
+
+                {/* <select
                   class="dropdown_filter"
                   id="DistrictId"
                   name="DistrictId"
@@ -533,12 +597,20 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
                     districtList.map((item, index) => {
                       return <option value={item.id}>{item.name}</option>;
                     })}
-                </select>
+                </select> */}
               </div>
 
               <div class="formControl-filter-data-label">
                 <label for="UpazilaId">Upazila (উপজেলা): </label>
-                <select
+                <input
+                  id="UpazilaName"
+                  name="UpazilaName"
+                  type="text"
+                  disabled={true}
+                  value={UserInfo.UpazilaName}
+
+                  />
+                {/* <select
                   id="UpazilaId"
                   name="UpazilaId"
                   class="dropdown_filter"
@@ -549,11 +621,13 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
                     upazilaList.map((item, index) => {
                       return <option value={item.id}>{item.name}</option>;
                     })}
-                </select>
+                </select> */}
               </div>
 
               <div class="filter-button">
                 <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
+
+                <Button label={"Data Sync to Web"} class={"btnSync"} onClick={syncData} />
                 {/* <Button
                   label={"Export"}
                   class={"btnPrint"}
@@ -570,7 +644,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
                   columns={columnList}
                   rows={dataList ? dataList : {}}
                   actioncontrol={actioncontrol}
-                  isLoading={isLoading}
+                  /* isLoading={isLoading} */
                 />
               </div>
             </div>
@@ -581,7 +655,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
           <>
             {/* {!currentInvoice.BPosted && ( */}
             {1 == 1 && (
-              <RegularBeneficiaryEntryAddEditModal
+              <HouseholdLivestockSurveyDataEntryAddEditModal
                 masterProps={props}
                 currentRow={currentRow}
                 modalCallback={modalCallback}

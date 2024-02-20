@@ -97,6 +97,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
 
   const [DesignationList, setDesignationList] = useState(null);
 
+
+  let dataSaveInLocal = JSON.parse(localStorage.getItem("householdlivestocksurveydataentry")) || [];
+
+
   const relationWith = {
     1: "Himself/Herself",
     2: "Others",
@@ -778,7 +782,74 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
     }
 
     if (validateForm()) {
-      let params = {
+     
+
+      Cookies.set("Cookie_UnionId", currentRow.UnionId);
+      Cookies.set("Cookie_DataCollectorName", currentRow.DataCollectorName);
+      Cookies.set("Cookie_DesignationId", currentRow.DesignationId);
+      Cookies.set("Cookie_PhoneNumber", currentRow.PhoneNumber);
+     
+
+     if (currentRow.id === "") {
+          currentRow.id = Math.floor(Date.now() / 1000);
+          currentRow.HouseHoldId = Math.floor(Date.now() / 1000);
+          
+          dataSaveInLocal.push(currentRow);
+
+          localStorage.setItem(
+            "householdlivestocksurveydataentry",
+            JSON.stringify(dataSaveInLocal)
+         );		
+
+         props.masterProps.openNoticeModal({
+          isOpen: true,
+          msg: "New Data Added Successfully",
+          msgtype: 1,
+        });
+
+      }else {
+        let dataUpdated = false;
+    
+       
+        for (let i = 0; i < dataSaveInLocal.length; i++) {
+            if (dataSaveInLocal[i].id === currentRow.id) {
+                dataSaveInLocal[i] = currentRow;
+                dataUpdated = true;
+                break;
+            }
+        }
+    
+       
+        if (dataUpdated) {
+            localStorage.setItem(
+                "householdlivestocksurveydataentry",
+                JSON.stringify(dataSaveInLocal)
+            );	
+
+            props.masterProps.openNoticeModal({
+              isOpen: true,
+              msg: "Data Updated Successfully",
+              msgtype: 1,
+            });
+
+
+        } else {
+            console.log("No matching id found to update.");
+        }
+    }
+
+      
+     		  
+
+
+     
+
+      setUploadCompleted(0);
+      props.modalCallback("addedit");
+      setIsServerLoading(false);
+        
+     
+      /* let params = {
         action: "dataAddEdit",
         lan: language(),
         UserId: UserInfo.UserId,
@@ -786,8 +857,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
       };
 
       apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-        // console.log('res: ', res);
-
+     
         Cookies.set("Cookie_UnionId", currentRow.UnionId);
         Cookies.set("Cookie_DataCollectorName", currentRow.DataCollectorName);
         Cookies.set("Cookie_DesignationId", currentRow.DesignationId);
@@ -799,13 +869,16 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
           msgtype: res.data.success,
         });
 
-        // console.log('props modal: ', props);
         if (res.data.success === 1) {
           setUploadCompleted(0);
           props.modalCallback("addedit");
         }
         setIsServerLoading(false);
-      });
+      }); */
+
+
+
+
     } else {
       setIsServerLoading(false);
       props.masterProps.openNoticeModal({
@@ -926,7 +999,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
         {/* <!-- Modal content --> */}
         <div class="modal-contentX">
           <div class="text-center">
-            <h2>Household Livestock Survey 2024</h2>
+            <h2>Household Livestock Survey 2024 Data Entry</h2>
           </div>
 
           {/* <div class="modalHeaderWithButton">
