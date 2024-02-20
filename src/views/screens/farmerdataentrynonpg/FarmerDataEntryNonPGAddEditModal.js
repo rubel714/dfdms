@@ -17,6 +17,8 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
   const serverpage = "farmerdataentrynonpg"; // this is .php server page
   const [currentRow, setCurrentRow] = useState(props.currentRow);
   const [errorObject, setErrorObject] = useState({});
+  const [isServerLoading, setIsServerLoading] = useState(false);
+
   const UserInfo = LoginUserInfo();
   const baseUrl = process.env.REACT_APP_FRONT_URL;
 
@@ -731,8 +733,6 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
       "DataCollectionDate",
       "DataCollectorName",
       "Phone",
-      "Latitute",
-      "Longitute",
       "PhoneNumber",
     ];
     if (currentRow.RelationWithHeadOfHH === 2) {
@@ -759,6 +759,8 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
   };
 
   function addEditAPICall() {
+    setIsServerLoading(true);
+  
     if (currentRow.NID.length > 0) {
       if (
         currentRow.NID.length !== 10 &&
@@ -770,7 +772,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
           msg: "NID must be either 10 or 13 or 17 Digits",
           msgtype: 0,
         });
-
+         setIsServerLoading(false);
         return;
       }
     }
@@ -802,8 +804,10 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
           setUploadCompleted(0);
           props.modalCallback("addedit");
         }
+        setIsServerLoading(false);
       });
     } else {
+      setIsServerLoading(false);
       props.masterProps.openNoticeModal({
         isOpen: true,
         msg: "Please enter required fields.",
@@ -1205,21 +1209,21 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
           </div>
 
           <div className="formControl-mobile">
-            <label>Latitude (অক্ষাংশ) *</label>
+            <label>Latitude (অক্ষাংশ)</label>
             <input
               type="text"
               id="Latitute"
               name="Latitute"
               disabled="true"
               placeholder=""
-              class={errorObject.Latitute}
+              /* class={errorObject.Latitute} */
               value={currentRow.Latitute}
               onChange={(e) => handleChange(e)}
             />
           </div>
 
           <div className="formControl-mobile">
-            <label>Longitude (দ্রাঘিমাংশ) *</label>
+            <label>Longitude (দ্রাঘিমাংশ)</label>
             <div className="autocompleteContainer">
               <input
                 type="text"
@@ -1227,7 +1231,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
                 disabled="true"
                 name="Longitute"
                 placeholder=""
-                class={errorObject.Longitute}
+                /* class={errorObject.Longitute} */
                 value={currentRow.Longitute}
                 onChange={(e) => handleChange(e)}
               />
@@ -2182,6 +2186,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
               <Button
                 label={"Update"}
                 class={"btnUpdate"}
+                disabled = {isServerLoading}
                 onClick={addEditAPICall}
               />
             )}
@@ -2189,6 +2194,7 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
               <Button
                 label={"Save"}
                 class={"btnSave"}
+                disabled = {isServerLoading}
                 onClick={addEditAPICall}
               />
             )}

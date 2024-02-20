@@ -30,6 +30,7 @@ function LoginPage(props) {
 
   const [isLoading, setLoading] = useState(false);
   const [bFirst, setBFirst] = useState(true);
+  const [isServerLoading, setIsServerLoading] = useState(false);
 
   React.useEffect(() => {
     document.body.classList.add("login-page");
@@ -59,6 +60,7 @@ function LoginPage(props) {
 
 
       setLoading(true);
+      setIsServerLoading(true);
 
       const body = {
         email: state.email,
@@ -68,6 +70,7 @@ function LoginPage(props) {
       state.service.default
         .postApi("source/login.php", body)
         .then((res) => {
+            setIsServerLoading(false);
           if (res.success == 1) {
             sessionStorage.setItem("token", res.token);
             sessionStorage.setItem("User_info", JSON.stringify(res.user_data));
@@ -84,7 +87,7 @@ function LoginPage(props) {
             };
 
             setLoading(false);
-
+          
             window.location.href = res.user_data.DefaultRedirect;
             // window.location.href = process.env.REACT_APP_BASE_NAME + `/check-permission`;
           } else if (res.success == 0) {
@@ -187,7 +190,7 @@ function LoginPage(props) {
             </div>
 
               <div class={"btnLoginDiv"} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Button label={"Login"} class={"btnLogin"} onClick={LoginPage} style={{ marginTop: '0px', marginBottom: '5px' }} />
+                <Button disabled = {isServerLoading} label={"Login"} class={"btnLogin"} onClick={LoginPage} style={{ marginTop: '0px', marginBottom: '5px' }} />
                </div>
 
             

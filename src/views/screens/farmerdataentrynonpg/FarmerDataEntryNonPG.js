@@ -218,7 +218,7 @@ const FarmerDataEntryNonPG = (props) => {
       UpazilaId: currUpazilaId,
     };
     // console.log('LoginUserInfo params: ', params);
-
+    return;
     ExecuteQuery(serverpage, params);
   }
 
@@ -554,12 +554,12 @@ const FarmerDataEntryNonPG = (props) => {
 
               <div class="filter-button">
                 <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
-                <Button
+                {/* <Button
                   label={"Export"}
                   class={"btnPrint"}
                   onClick={PrintPDFExcelExportFunction}
-                />
-                {/* <Button label={"All Data Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunctionAll} /> */}
+                /> */}
+                
               </div>
             </div>
 
