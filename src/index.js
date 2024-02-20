@@ -23,8 +23,8 @@ import RoleToMenuPermissionEntry from "views/screens/roletomenupermissionentry/i
 import PGDataCollectionEntry from "views/screens/datacollectionentry/index.js";
 import FarmersDataCollectionEntry from "views/screens/datacollectionentry/indexfarmer.js";
 import LGDDataCollectionEntry from "views/screens/datacollectionentry/indexlgd.js";
-import HouseholdLivestockSurveyDataEntry from "views/screens/farmerdataentrynonpg/index.js";
-import FarmerDataEntryNonPG from "views/screens/householdlivestocksurveydataentry/index.js";
+import FarmerDataEntryNonPG from "views/screens/farmerdataentrynonpg/index.js";
+import HouseholdLivestockSurveyDataEntry from "views/screens/householdlivestocksurveydataentry/index.js";
 
 import PGDataCollection from "views/screens/pgdatacollection/index.js";
 import FarmersDataCollection from "views/screens/farmersdatacollection/index.js";
