@@ -493,41 +493,72 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
     if (currentDataList.length === 0) {
       props.openNoticeModal({
         isOpen: true,
-        msg: "No data available to sync.",
+        msg: "No data available to upload.",
         msgtype: 0,
       });
       setIsServerLoading(false); 
       return; 
     }
 
-    let params = {
-      action: "dataSyncUpload",
-      lan: language(),
-      UserId: UserInfo.UserId,
-      DivisionId: UserInfo.DivisionId,
-      DistrictId: UserInfo.DistrictId,
-      UpazilaId: UserInfo.UpazilaId,
-      rowData: currentDataList,
-    };
 
-    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-   
-      props.openNoticeModal({
-        isOpen: true,
-        msg: res.data.message,
-        msgtype: res.data.success,
-      });
-
-      if (res.data.success === 1) {
-        
-        localStorage.removeItem("householdlivestocksurveydataentry");
-        dataList = JSON.parse(localStorage.getItem("householdlivestocksurveydataentry")) || [];
-
+    swal({
+      title: "Are you sure?",
+      text: "ডাটা আপলোড করার জন্য অবশ্যই ইন্টারনেট থাকতে হবে। সারাদিন ডাটা এন্ট্রি করার পর দিন শেষে নিচের Yes বাটন চাপবেন। Yes বাটন চাপলে আপনার ডাটা আপলোড হয়ে যাবে।",
+      icon: "warning",
+      buttons: {
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+        cancel: {
+          text: "No",
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+      },
+      dangerMode: false,
+    }).then((allowAction) => {
+      if (allowAction) {
+        let params = {
+          action: "dataSyncUpload",
+          lan: language(),
+          UserId: UserInfo.UserId,
+          DivisionId: UserInfo.DivisionId,
+          DistrictId: UserInfo.DistrictId,
+          UpazilaId: UserInfo.UpazilaId,
+          rowData: currentDataList,
+        };
+    
+        apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+       
+          props.openNoticeModal({
+            isOpen: true,
+            msg: res.data.message,
+            msgtype: res.data.success,
+          });
+    
+          if (res.data.success === 1) {
+            
+            localStorage.removeItem("householdlivestocksurveydataentry");
+            dataList = JSON.parse(localStorage.getItem("householdlivestocksurveydataentry")) || [];
+    
+          }
+          setIsServerLoading(false); 
+    
+    
+        }); 
+      }else{
+        setIsServerLoading(false);
       }
-      setIsServerLoading(false); 
+    });
 
 
-    }); 
+   
 
 
 
@@ -635,7 +666,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
               <div class="filter-button">
                 <Button disabled = {isServerLoading} label={"ADD"} class={"btnAdd"} onClick={addData} />
 
-                <Button disabled = {isServerLoading} label={"Data Sync to Web"} class={"btnSync"} onClick={syncData} />
+                <Button disabled = {isServerLoading} label={"Data Upload"} class={"btnSync"} onClick={syncData} />
                 {/* <Button
                   label={"Export"}
                   class={"btnPrint"}

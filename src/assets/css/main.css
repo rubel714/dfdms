@@ -194,7 +194,7 @@ button:hover {
  
 }
 .btnSync {
-    background-color: rgb(13, 156, 109);    
+    background-color: rgb(88, 13, 159);    
     min-width: 90px;
  
 }
@@ -1376,4 +1376,8 @@ textarea {
         max-height: 300px; /* Set maximum height for vertical scrollbar */
       }
       
+  }
+
+  .swal-text { 
+    color: red;
   }
