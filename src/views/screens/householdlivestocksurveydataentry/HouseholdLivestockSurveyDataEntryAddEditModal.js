@@ -43,7 +43,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
 
   const [uploadCompleted, setUploadCompleted] = useState(0);
 
-  const [gender, setGender] = useState(null);
+  const [gender, setGender] = useState([{ GenderId: "", GenderName: "Select Gender" }].concat(UserInfo.MetaData.GenderList));
   const [currGender, setCurrGender] = useState(null);
 
   const [disabilityStatus, setDisabilityStatus] = useState([
@@ -82,8 +82,8 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
   const [divisionList, setDivisionList] = useState(null);
   const [districtList, setDistrictList] = useState(null);
   const [upazilaList, setUpazilaList] = useState(null);
-  const [unionList, setUnionList] = useState(null);
-
+  const [unionList, setUnionList] = useState([{ UnionId: "", UnionName: "Select Union" }].concat(UserInfo.MetaData.UnionList));
+ 
   const [currDivisionId, setCurrDivisionId] = useState(null);
   const [currDistrictId, setCurrDistrictId] = useState(null);
   const [currUpazilaId, setCurrUpazilaId] = useState(null);
@@ -95,8 +95,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() + 1);
 
-  const [DesignationList, setDesignationList] = useState(null);
-
+  const [DesignationList, setDesignationList] = useState([{ DesignationId: "", DesignationName: "Select Designation" }].concat(UserInfo.MetaData.DesignationList));
 
   let dataSaveInLocal = JSON.parse(localStorage.getItem("householdlivestocksurveydataentry")) || [];
 
@@ -107,29 +106,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
   };
 
   React.useEffect(() => {
-    getDivision(
-      props.currentRow.DivisionId,
-      props.currentRow.DistrictId,
-      props.currentRow.UpazilaId,
-      props.currentRow.UnionId,
-      props.currentRow.ValuechainId,
-      props.currentRow.PGId
-    );
+ 
 
-    getRoleList(props.currentRow.TypeOfFarmerId);
-    getIsRegularBeneficiaryList(props.currentRow.IsRegular);
-    /*   getParentQuestion(
-      !props.currentRow.id ? "" : props.currentRow.QuestionParentId
-    ); */
-
-    getGenderList(props.currentRow.Gender);
-    getDepartmentList(props.currentRow.DepartmentId);
-    getDisabilityStatusList(props.currentRow.DisabilityStatus);
-    getHeadOfHHSexList(props.currentRow.HeadOfHHSex);
-    getTypeOfMemberList(props.currentRow.TypeOfMember);
-    getFamilyOccupationList(props.currentRow.OccupationId);
-    getCityCorporationList(props.currentRow.CityCorporation);
-    getDesignation();
+    setCurrUnionId(currentRow.UnionId);
+    setCurrGender(currentRow.Gender);
 
     // Set the initial value of RelationWithHeadOfHH
     if (
@@ -176,424 +156,25 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
     }
   }, []);
 
-  function getDesignation() {
-    let params = {
-      action: "DesignationList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDesignationList(
-        [{ id: "", name: "Select Designation" }].concat(res.data.datalist)
-      );
-
-      // setCurrDesignationId(selectDesignationId);
-    });
-  }
-
-  function getDivision(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId,
-    selectUnionId,
-    selectValuechainId,
-    selectPGId
-  ) {
-    let params = {
-      action: "DivisionList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDivisionList(
-        [{ id: "", name: "Select Division" }].concat(res.data.datalist)
-      );
-
-      setCurrDivisionId(selectDivisionId);
-
-      getDistrict(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId,
-        selectUnionId,
-        selectValuechainId,
-        selectPGId
-      );
-    });
-  }
-
-  function getDistrict(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId,
-    selectUnionId,
-    selectValuechainId,
-    selectPGId
-  ) {
-    let params = {
-      action: "DistrictList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-      DivisionId: selectDivisionId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDistrictList(
-        [{ id: "", name: "Select District" }].concat(res.data.datalist)
-      );
-      setErrorObject({ ...errorObject, ["DistrictId"]: null });
-
-      setCurrDistrictId(SelectDistrictId);
-      getUpazila(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId,
-        selectUnionId,
-        selectValuechainId,
-        selectPGId
-      );
-    });
-  }
-
-  function getUpazila(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId,
-    selectUnionId,
-    selectValuechainId,
-    selectPGId
-  ) {
-    let params = {
-      action: "UpazilaList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-      DivisionId: selectDivisionId,
-      DistrictId: SelectDistrictId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setUpazilaList(
-        [{ id: "", name: "Select Upazila" }].concat(res.data.datalist)
-      );
-      setErrorObject({ ...errorObject, ["UpazilaId"]: null });
-
-      setCurrUpazilaId(selectUpazilaId);
-      getUnion(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId,
-        selectUnionId,
-        selectValuechainId,
-        selectPGId
-      );
-    });
-  }
-
-  function getUnion(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId,
-    selectUnionId,
-    selectValuechainId,
-    selectPGId
-  ) {
-    let params = {
-      action: "UnionList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-      DivisionId: selectDivisionId,
-      DistrictId: SelectDistrictId,
-      UpazilaId: selectUpazilaId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setUnionList(
-        [{ id: "", name: "Select Union" }].concat(res.data.datalist)
-      );
-      setErrorObject({ ...errorObject, ["UnionId"]: null });
-
-      setCurrUnionId(selectUnionId);
-
-      getValuechainIdList(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId,
-        selectUnionId,
-        selectValuechainId,
-        selectPGId
-      );
-
-      getPGIdList(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId,
-        selectUnionId,
-        selectValuechainId,
-        selectPGId
-      );
-    });
-  }
-
-  function getValuechainIdList(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId,
-    selectUnionId,
-    selectValuechainId,
-    selectPGId
-  ) {
-    let params = {
-      action: "QuestionMapCategoryList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setValuechainId(
-        [{ id: "", name: "Select Value Chain" }].concat(res.data.datalist)
-      );
-
-      setCurrValuechainId(selectValuechainId);
-
-      getPGIdList(
-        selectDivisionId,
-        SelectDistrictId,
-        selectUpazilaId,
-        selectUnionId,
-        selectValuechainId,
-        selectPGId
-      );
-    });
-  }
-
-  function getGenderList(selectGender) {
-    let params = {
-      action: "GenderListNonPG",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setGender([{ id: "", name: "Select Gender" }].concat(res.data.datalist));
-
-      setCurrGender(selectGender);
-    });
-  }
-
-  function getDepartmentList(selectDepartment) {
-    let params = {
-      action: "AgencyDepartmntList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDepartment(
-        [{ id: "", name: "Select Agency/Department" }].concat(res.data.datalist)
-      );
-
-      setCurrDepartment(selectDepartment);
-    });
-  }
-
-  function getDisabilityStatusList(selectDisabilityStatus) {
-    let params = {
-      action: "DisabilityStatusList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDisabilityStatus(
-        /* [{ id: "", name: "Select Disability Status" }].concat(res.data.datalist) */
-        res.data.datalist
-      );
-
-      setCurrDisabilityStatus(selectDisabilityStatus || 2);
-    });
-  }
-
-  function getHeadOfHHSexList(selectHeadOfHHSex) {
-    let params = {
-      action: "HeadOfHHSexList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setHeadOfHHSex(
-        [{ id: "", name: "Select Head of HH Sex" }].concat(res.data.datalist)
-      );
-
-      setCurrHeadOfHHSex(selectHeadOfHHSex);
-    });
-  }
-
-  function getTypeOfMemberList(selectTypeOfMember) {
-    let params = {
-      action: "TypeOfMemberList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setTypeOfMember(
-        [{ id: "", name: "Select Type of Member" }].concat(res.data.datalist)
-      );
-
-      setCurrTypeOfMember(selectTypeOfMember);
-    });
-  }
-
-  function getRoleList(selectRoleId) {
-    let params = {
-      action: "QuestionMapCategoryList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setRoleList(res.data.datalist);
-
-      //setCurrDesignationId(selectRoleId);
-    });
-  }
-
-  function getFamilyOccupationList(selectFamilyOccupation) {
-    let params = {
-      action: "FamilyOccupationList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setFamilyOccupation(
-        [{ id: "", name: "Select Occupation" }].concat(res.data.datalist)
-      );
-
-      setCurrFamilyOccupation(selectFamilyOccupation);
-    });
-  }
-
-  function getCityCorporationList(selectCityCorporation) {
-    let params = {
-      action: "CityCorporationList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setCityCorporation(
-        [{ id: "", name: "সিটি কর্পোরেশন/পৌরসভা নির্বাচন করুন" }].concat(
-          res.data.datalist
-        )
-      );
-
-      setCurrCityCorporation(selectCityCorporation);
-    });
-  }
-
-  function getPGIdList(
-    selectDivisionId,
-    SelectDistrictId,
-    selectUpazilaId,
-    selectUnionId,
-    selectValuechainId,
-    selectPGId
-  ) {
-    let params = {
-      action: "PgGroupListByUnion",
-      lan: language(),
-      UserId: UserInfo.UserId,
-      DivisionId: selectDivisionId,
-      DistrictId: SelectDistrictId,
-      UpazilaId: selectUpazilaId,
-      UnionId: selectUnionId,
-      ValuechainId: selectValuechainId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setPGId(
-        [{ id: "", name: "Select Producer Group" }].concat(res.data.datalist)
-      );
-
-      setCurrPGId(selectPGId);
-    });
-  }
-
-  function getIsRegularBeneficiaryList(selectIsRegularBeneficiary) {
-    let params = {
-      action: "IsRegularBeneficiaryList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setIsRegularBeneficiaryList(res.data.datalist);
-
-      setCurrIsRegularBeneficiary(selectIsRegularBeneficiary);
-    });
-  }
-
-  function getParentQuestion(selectParentQuestion) {
-    let params = {
-      action: "ParentQuestionList",
-      lan: language(),
-      UserId: UserInfo.UserId,
-    };
-
-    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setParentQuestionList(
-        [{ id: "", name: "Select Parent Question" }].concat(res.data.datalist)
-      );
-
-      setCurrParentQuestion(selectParentQuestion);
-    });
-  }
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     let data = { ...currentRow };
     data[name] = value;
-    console.log("value ffff : ", value);
+
 
     setCurrentRow(data);
 
     setErrorObject({ ...errorObject, [name]: null });
 
     //for dependancy
-    if (name === "DivisionId") {
-      setCurrDivisionId(value);
-
-      setCurrDistrictId("");
-      setCurrUpazilaId("");
-      getDistrict(value, "", "", "", "", "");
-      getUpazila(value, "", "", "", "", "");
-      getUnion(value, "", "", "", "", "");
-      /* getWardList(value, "", "", "", ""); */
-      getPGIdList(value, "", "", "", "", "");
-    } else if (name === "DistrictId") {
-      setCurrDistrictId(value);
-      getUpazila(currentRow.DivisionId, value, "", "", "", "");
-    } else if (name === "UpazilaId") {
-      setCurrUpazilaId(value);
-      getUnion(currentRow.DivisionId, currentRow.DistrictId, value, "", "", "");
-    } else if (name === "UnionId") {
+   if (name === "UnionId") {
       setCurrUnionId(value);
-      /* getWardList(currentRow.DivisionId, currentRow.DistrictId, currentRow.UpazilaId, value, ""); */
-      getPGIdList(
-        currentRow.DivisionId,
-        currentRow.DistrictId,
-        currentRow.UpazilaId,
-        value,
-        currentRow.ValuechainId,
-        ""
-      );
+   
     }
 
-    if (name === "ValuechainId") {
+   /*  if (name === "ValuechainId") {
       setCurrValuechainId(value);
       getPGIdList(
         currentRow.DivisionId,
@@ -603,7 +184,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
         value,
         ""
       );
-    }
+    } */
 
     if (name === "Gender") {
       setCurrGender(value);
@@ -728,9 +309,6 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
   const validateForm = () => {
     // let validateFields = ["FarmerName", "DiscountAmount", "DiscountPercentage"]
     let validateFields = [
-      "DivisionId",
-      "DistrictId",
-      "UpazilaId",
       "UnionId",
       "FarmerName",
       "Gender",
@@ -890,7 +468,6 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
   }
 
   function modalClose() {
-    console.log("props modal: ", props);
     props.modalCallback("close");
   }
 
@@ -964,7 +541,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
   const [selectedRoles, setSelectedRoles] = useState([]);
 
   React.useEffect(() => {
-    console.log("TypeOfFarmerId===edit: ", props.currentRow.TypeOfFarmerId);
+
     if (
       props.currentRow.TypeOfFarmerId &&
       typeof props.currentRow.TypeOfFarmerId === "string"
@@ -1013,7 +590,16 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
 
           <div class="formControl-mobile">
             <label>Division (বিভাগ) *</label>
-            <select
+            <input
+                  id="DivisionName"
+                  name="DivisionName"
+                  type="text"
+                  disabled={true}
+                  value={UserInfo.DivisionName}
+
+                  />
+
+            {/* <select
               id="DivisionId"
               name="DivisionId"
               class={errorObject.DivisionId}
@@ -1024,11 +610,23 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                 divisionList.map((item, index) => {
                   return <option value={item.id}>{item.name}</option>;
                 })}
-            </select>
+            </select> */}
+
+             
           </div>
           <div class="formControl-mobile">
             <label>District (জেলা) *</label>
-            <select
+
+            <input
+              id="DistrictName"
+              name="DistrictName"
+              type="text"
+              disabled={true}
+              value={UserInfo.DistrictName}
+
+              />
+              
+            {/* <select
               id="DistrictId"
               name="DistrictId"
               class={errorObject.DistrictId}
@@ -1039,12 +637,20 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                 districtList.map((item, index) => {
                   return <option value={item.id}>{item.name}</option>;
                 })}
-            </select>
+            </select> */}
           </div>
 
           <div class="formControl-mobile">
             <label>Upazila (উপজেলা) *</label>
-            <select
+             <input
+                id="UpazilaName"
+                name="UpazilaName"
+                type="text"
+                disabled={true}
+                value={UserInfo.UpazilaName}
+
+                />
+           {/*  <select
               id="UpazilaId"
               name="UpazilaId"
               class={errorObject.UpazilaId}
@@ -1055,7 +661,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                 upazilaList.map((item, index) => {
                   return <option value={item.id}>{item.name}</option>;
                 })}
-            </select>
+            </select> */}
           </div>
           <div class="formControl-mobile">
             <label>Union (ইউনিয়ন) *</label>
@@ -1068,7 +674,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
             >
               {unionList &&
                 unionList.map((item, index) => {
-                  return <option value={item.id}>{item.name}</option>;
+                  return <option value={item.UnionId}>{item.UnionName}</option>;
                 })}
             </select>
           </div>
@@ -1185,7 +791,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
             >
               {gender &&
                 gender.map((item, index) => {
-                  return <option value={item.id}>{item.name}</option>;
+                  return <option value={item.GenderId}>{item.GenderName}</option>;
                 })}
             </select>
           </div>
@@ -2190,12 +1796,12 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         name="DesignationId"
                         autoComplete
                         options={DesignationList ? DesignationList : []}
-                        getOptionLabel={(option) => option.name}
+                        getOptionLabel={(option) => option.DesignationName}
                         value={
                           DesignationList
                             ? DesignationList[
                                 DesignationList.findIndex(
-                                  (list) => list.id == currentRow.DesignationId
+                                  (list) => list.DesignationId == currentRow.DesignationId
                                 )
                               ]
                             : null
@@ -2203,12 +1809,12 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         onChange={(event, valueobj) =>
                           handleChangeChoosenMaster(
                             "DesignationId",
-                            valueobj ? valueobj.id : ""
+                            valueobj ? valueobj.DesignationId : ""
                           )
                         }
                         renderOption={(option) => (
                           <Typography className="chosen_dropdown_font">
-                            {option.name}
+                            {option.DesignationName}
                           </Typography>
                         )}
                         renderInput={(params) => (

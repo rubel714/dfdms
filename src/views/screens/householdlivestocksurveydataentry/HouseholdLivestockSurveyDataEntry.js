@@ -24,18 +24,14 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
   const [bFirst, setBFirst] = useState(true);
   const [currentRow, setCurrentRow] = useState([]);
   const [showModal, setShowModal] = useState(false); //true=show modal, false=hide modal
+  const [isServerLoading, setIsServerLoading] = useState(false);
 
  /*  const { isLoading, data: dataList, error, ExecuteQuery } = ExecuteQueryHook(); //Fetch data
  */
   let dataList = JSON.parse(localStorage.getItem("householdlivestocksurveydataentry")) || [];
   
-  console.log('dataList: ', dataList);
-
-
-
   const UserInfo = LoginUserInfo();
-  console.log('UserInfo: ', UserInfo.RoleId[0]);
-
+  
   const [currentFilter, setCurrentFilter] = useState([]);
   const [divisionList, setDivisionList] = useState(null);
   const [districtList, setDistrictList] = useState(null);
@@ -61,7 +57,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
     let finalUrl =
       EXCEL_EXPORT_URL + "report/household_livestock_survey_excel.php";
 
-    let DivisionName =
+   /*  let DivisionName =
       divisionList[
         divisionList.findIndex(
           (divisionList_List) => divisionList_List.id == currDivisionId
@@ -79,7 +75,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
           (upazilaList_List) => upazilaList_List.id == currUpazilaId
         )
       ].name;
-
+ */
     window.open(
       finalUrl +
         "?action=MembersbyPGataExport" +
@@ -90,12 +86,12 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
         currDistrictId +
         "&UpazilaId=" +
         currUpazilaId +
-        "&DivisionName=" +
+       /*  "&DivisionName=" +
         DivisionName +
         "&DistrictName=" +
         DistrictName +
         "&UpazilaName=" +
-        UpazilaName +
+        UpazilaName + */
         "&TimeStamp=" +
         Date.now()
     );
@@ -162,7 +158,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
       field: "GenderName",
       label: "Gender (জেন্ডার)",
       align: "left",
-      visible: true,
+      visible: false,
       sort: true,
       filter: true,
       width: "7%",
@@ -210,7 +206,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
   if (bFirst) {
     /**First time call for datalist */
 
-    getDivision(UserInfo.DivisionId, UserInfo.DistrictId, UserInfo.UpazilaId);
+    /* getDivision(UserInfo.DivisionId, UserInfo.DistrictId, UserInfo.UpazilaId); */
     setBFirst(false);
   }
 
@@ -247,14 +243,14 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
           }}
         /> */}
 
-      {!(UserInfo.RoleId[0] == 10 || UserInfo.RoleId[0] == 11) && (
+    {/*   {!(UserInfo.RoleId[0] == 10 || UserInfo.RoleId[0] == 11) && (
             <DeleteOutline
             className={"table-delete-icon"}
             onClick={() => {
               deleteData(rowData);
             }}
           />
-        )} 
+        )}  */}
 
 
 
@@ -401,7 +397,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
 
     // apiCall.post("productgroup", { params }, apiOption()).then((res) => {
     apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-      console.log("res: ", res);
+     
       props.openNoticeModal({
         isOpen: true,
         msg: res.data.message,
@@ -411,7 +407,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
     });
   }
 
-  function getDivision(selectDivisionId, SelectDistrictId, selectUpazilaId) {
+  /* function getDivision(selectDivisionId, SelectDistrictId, selectUpazilaId) {
     let params = {
       action: "DivisionFilterList",
       lan: language(),
@@ -456,7 +452,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
       setCurrUpazilaId(selectUpazilaId);
     });
   }
-
+ */
   const handleChange = (e) => {
     const { name, value } = e.target;
     let data = { ...currentFilter };
@@ -465,7 +461,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
     setCurrentFilter(data);
 
     //for dependancy
-    if (name === "DivisionId") {
+    /* if (name === "DivisionId") {
       setCurrDivisionId(value);
 
       setCurrDistrictId("");
@@ -477,7 +473,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
       getUpazila(currentFilter.DivisionId, value, "");
     } else if (name === "UpazilaId") {
       setCurrUpazilaId(value);
-    }
+    } */
   };
 
   useEffect(() => {
@@ -491,8 +487,19 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
 
 
   function syncData() {
+    setIsServerLoading(true);
     let currentDataList = JSON.parse(localStorage.getItem("householdlivestocksurveydataentry")) || [];
   
+    if (currentDataList.length === 0) {
+      props.openNoticeModal({
+        isOpen: true,
+        msg: "No data available to sync.",
+        msgtype: 0,
+      });
+      setIsServerLoading(false); 
+      return; 
+    }
+
     let params = {
       action: "dataSyncUpload",
       lan: language(),
@@ -505,18 +512,19 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
 
     apiCall.post(serverpage, { params }, apiOption()).then((res) => {
    
-   
-      /* props.masterProps.openNoticeModal({
+      props.openNoticeModal({
         isOpen: true,
         msg: res.data.message,
         msgtype: res.data.success,
       });
 
       if (res.data.success === 1) {
-        setUploadCompleted(0);
-        props.modalCallback("addedit");
+        
+        localStorage.removeItem("householdlivestocksurveydataentry");
+        dataList = JSON.parse(localStorage.getItem("householdlivestocksurveydataentry")) || [];
+
       }
-      setIsServerLoading(false); */
+      setIsServerLoading(false); 
 
 
     }); 
@@ -625,9 +633,9 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
               </div>
 
               <div class="filter-button">
-                <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
+                <Button disabled = {isServerLoading} label={"ADD"} class={"btnAdd"} onClick={addData} />
 
-                <Button label={"Data Sync to Web"} class={"btnSync"} onClick={syncData} />
+                <Button disabled = {isServerLoading} label={"Data Sync to Web"} class={"btnSync"} onClick={syncData} />
                 {/* <Button
                   label={"Export"}
                   class={"btnPrint"}
