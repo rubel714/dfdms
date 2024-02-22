@@ -328,6 +328,9 @@ function exec_query($aQuerys, $jUserId = '1', $sLang = 'en_GB', $bSqlLog = TRUE,
         $msg['aaData'] = $aData;
         $msg['id'] = $lastInsertedId;
 		// echo json_encode($msg);
+       
+        $dbh->CloseConnection();
+        
         return $msg;
     }
     catch (Exception $e) {
@@ -360,6 +363,9 @@ function exec_query($aQuerys, $jUserId = '1', $sLang = 'en_GB', $bSqlLog = TRUE,
         if (is_object($result)) {
             $msg['msg'] = $strErrors . 'But Error Log Saved Fail';
         }
+        
+        $dbh->CloseConnection();
+        
         return $msg;
     }
 }

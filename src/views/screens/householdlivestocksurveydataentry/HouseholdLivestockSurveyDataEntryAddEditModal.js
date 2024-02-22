@@ -889,7 +889,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
           </div>
 
           <div className="formControl-mobile">
-            <label>Latitude (অক্ষাংশ)</label>
+            <label>Latitude (অক্ষাংশ) *</label>
             <input
               type="text"
               id="Latitute"
@@ -903,7 +903,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
           </div>
 
           <div className="formControl-mobile">
-            <label>Longitude (দ্রাঘিমাংশ)</label>
+            <label>Longitude (দ্রাঘিমাংশ) *</label>
             <div className="autocompleteContainer">
               <input
                 type="text"
