@@ -25,11 +25,16 @@ function dataSyncUpload($data)
 
 		$lan = trim($data->lan);
 		$UserId = trim($data->UserId);
+
+		$DivisionId = trim($data->DivisionId);
+		$DistrictId = trim($data->DistrictId);
+		$UpazilaId = trim($data->UpazilaId);
+		$YearId = 2024;
 		$rowData = $data->rowData;
 
-// echo "<pre>";
-// 		print_r($rowData);
-// exit;
+		// echo "<pre>";
+		// 		print_r($rowData);
+		// exit;
 		// $HouseHoldId = $data->rowData->id;
 		// $DivisionId = $data->rowData->DivisionId? $data->rowData->DivisionId : null;
 		// $DistrictId = $data->rowData->DistrictId? $data->rowData->DistrictId : null;
@@ -86,13 +91,32 @@ function dataSyncUpload($data)
 		// $PigeonNumber =  $data->rowData->PigeonNumber ? $data->rowData->PigeonNumber : null;
 		// $QuailNumber =  $data->rowData->QuailNumber ? $data->rowData->QuailNumber : null;
 		// $OtherAnimalNumber =  $data->rowData->OtherAnimalNumber ? $data->rowData->OtherAnimalNumber : null;
-	
+
 
 		try {
 
 			$dbh = new Db();
 			$aQuerys = array();
 
+
+
+
+
+			$query1 = "SELECT HouseHoldId,YearId,DivisionId,DistrictId,UpazilaId,UnionId,Phone
+		FROM t_householdlivestocksurvey
+		WHERE YearId = $YearId
+		AND DivisionId = $DivisionId
+		AND DistrictId = $DistrictId
+		AND UpazilaId = $UpazilaId;";
+			$resultdata1 = $dbh->query($query1);
+
+			$old_DataList = array();
+			foreach ($resultdata1 as $row1) {
+				$old_DataList[$row1["YearId"] . '_' . $row1["DivisionId"] . '_' . $row1["DistrictId"] . '_' . $row1["UpazilaId"] . '_' . $row1["UnionId"] . '_' . $row1["Phone"]] = $row1["HouseHoldId"];
+			}
+			// 		echo "<pre>";
+			// 		print_r($old_DataList);
+			// exit;
 			foreach ($rowData as $row) {
 				$row = (array)$row;
 				// print_r($row);
@@ -162,6 +186,13 @@ function dataSyncUpload($data)
 				$Remarks = $row["Remarks"];
 				$UserId = $row["UserId"];
 
+
+				if (array_key_exists($YearId . '_' . $DivisionId . '_' . $DistrictId . '_' . $UpazilaId . '_' . $UnionId . '_' . $Phone, $old_DataList)) {
+					/**when duplicate then skip */
+					continue;
+				}
+
+
 				$q = new insertq();
 				$q->table = 't_householdlivestocksurvey';
 				$q->columns = [
@@ -215,4 +246,3 @@ function dataSyncUpload($data)
 		return $returnData;
 	}
 }
-
