@@ -107,9 +107,8 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
 
   React.useEffect(() => {
  
-
-    setCurrUnionId(currentRow.UnionId);
-    setCurrGender(currentRow.Gender);
+    setCurrUnionId(props.currentRow.UnionId);
+    setCurrGender(props.currentRow.Gender);
 
     // Set the initial value of RelationWithHeadOfHH
     if (

@@ -49,6 +49,36 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
 
   const [currentDate, setCurrentDate] = useState(moment().format("YYYY-MM-DD"));
 
+
+
+  
+
+  /* ===== Start Check duplicate ==== */
+
+  
+
+  const findDuplicates = (dataList) => {
+    const seen = {};
+    const duplicates = [];
+
+    dataList.forEach((item) => {
+      const key = `${item.YearId}-${item.DivisionId}-${item.DistrictId}-${item.UpazilaId}-${item.UnionId}-${item.Phone}`;
+      if (seen[key]) {
+        duplicates.push(key);
+      } else {
+        seen[key] = true;
+      }
+    });
+
+    return duplicates;
+  };
+
+  const duplicateKeys = findDuplicates(dataList);
+
+
+  /* =====  End Check duplicate ==== */
+
+
   /* =====Start of Excel Export Code==== */
 
   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
@@ -220,7 +250,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
       DistrictId: currDistrictId,
       UpazilaId: currUpazilaId,
     };
-    // console.log('LoginUserInfo params: ', params);
+    // 
     return;
     /* ExecuteQuery(serverpage, params); */
   }
@@ -236,12 +266,12 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
           }}
         />
 
-       {/*  <DeleteOutline
+       <DeleteOutline
           className={"table-delete-icon"}
           onClick={() => {
             deleteData(rowData);
           }}
-        /> */}
+        />
 
     {/*   {!(UserInfo.RoleId[0] == 10 || UserInfo.RoleId[0] == 11) && (
             <DeleteOutline
@@ -259,10 +289,11 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
   }
 
   const addData = () => {
-    // console.log("rowData: ", rowData);
+    // 
     setCurrentRow({
       id: "",
       HouseHoldId: "",
+      YearId: "2024",
       DivisionId: UserInfo.DivisionId,
       DistrictId: UserInfo.DistrictId,
       UpazilaId: UserInfo.UpazilaId,
@@ -358,7 +389,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
   }
 
   const deleteData = (rowData) => {
-    return;
+   
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this data!",
@@ -388,6 +419,24 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
   };
 
   function deleteApi(rowData) {
+  
+    const indexToRemove = dataList.findIndex(item => item.id === rowData.id);
+    const dataSaveInLocal = [...dataList.slice(0, indexToRemove), ...dataList.slice(indexToRemove + 1)];
+    localStorage.setItem(
+      "householdlivestocksurveydataentry",
+      JSON.stringify(dataSaveInLocal)
+    );
+
+    props.openNoticeModal({
+      isOpen: true,
+      msg: "Data Removed Successfully",
+      msgtype: 1,
+    });
+
+
+  } 
+
+   /* function XXXXdeleteApi(rowData) {
     let params = {
       action: "deleteData",
       lan: language(),
@@ -395,7 +444,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
       rowData: rowData,
     };
 
-    // apiCall.post("productgroup", { params }, apiOption()).then((res) => {
+    
     apiCall.post(serverpage, { params }, apiOption()).then((res) => {
      
       props.openNoticeModal({
@@ -405,7 +454,7 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
       });
       getDataList();
     });
-  }
+  }  */
 
   /* function getDivision(selectDivisionId, SelectDistrictId, selectUpazilaId) {
     let params = {
@@ -501,6 +550,38 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
     }
 
 
+
+  if (duplicateKeys.length > 0) {
+  
+      swal({
+        title: "Are you sure?",
+        text: "আপনার লিস্টে ডুপ্লিকেট ডেটা রয়েছে, যা লাল রং দিয়ে চিহ্নিত করা হয়েছে। ডুপ্লিকেট ডেটা ডিলিট করে পুনরায় চেষ্টা করুন।",
+        icon: "warning",
+        buttons: {
+         
+          cancel: {
+            text: "Close",
+            value: null,
+            visible: true,
+            className: "",
+            closeModal: true,
+          },
+        },
+        dangerMode: true,
+      }).then((allowAction) => {
+        if (allowAction) {
+        
+          setIsServerLoading(false); 
+        
+        }else{
+          setIsServerLoading(false);
+        }
+      });
+        return;
+ 
+    }
+
+
     swal({
       title: "Are you sure?",
       text: "ডাটা আপলোড করার জন্য অবশ্যই ইন্টারনেট থাকতে হবে। সারাদিন ডাটা এন্ট্রি করার পর দিন শেষে নিচের Yes বাটন চাপবেন। Yes বাটন চাপলে আপনার ডাটা আপলোড হয়ে যাবে।",
@@ -563,6 +644,9 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
 
 
   }
+
+
+
 
   return (
     <>
@@ -683,6 +767,13 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
                   columns={columnList}
                   rows={dataList ? dataList : {}}
                   actioncontrol={actioncontrol}
+                  rowStyle={(row) =>
+                    duplicateKeys.includes(
+                      `${row.YearId}-${row.DivisionId}-${row.DistrictId}-${row.UpazilaId}-${row.UnionId}-${row.Phone}`
+                    )
+                      ? { backgroundColor: '#b2022e' }
+                      : {}
+                  }
                   /* isLoading={isLoading} */
                 />
               </div>

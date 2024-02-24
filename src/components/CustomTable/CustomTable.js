@@ -13,9 +13,11 @@ function CustomTable({
   params = {},
   handleRowClick,
   selectedRows = [], // Provide a default value to avoid undefined
+  rowStyle,
 }) {
 
-  
+  /* console.log('rowStyle: ', rowStyle); */
+
   // console.log('isLoading: ', isLoading);
 
   // const columns2 = [
@@ -202,6 +204,9 @@ function CustomTable({
             {!isLoading &&
               calculatedRows.length > 0 &&
               calculatedRows.map((row, rowsl) => {
+
+                const rowStyling = typeof rowStyle === 'function' ? rowStyle(row) : {}; 
+
                 // Assuming this part is inside your map function
                 {
                   if (handleRowClick) {
@@ -211,6 +216,7 @@ function CustomTable({
                         className={
                           selectedRows.includes(row) ? "selected-row" : ""
                         }
+                        
                         onClick={() => {
                           handleRowClick(row);
                         }}
@@ -248,7 +254,7 @@ function CustomTable({
                   } else {
                     // Render a basic row without the onClick handler
                     return (
-                      <tr key={row.id}>
+                      <tr key={row.id} style={rowStyling}>
                         {columns.map((column, i) => {
                           if (columns[i].visible) {
                             if (column.field === "custom") {
