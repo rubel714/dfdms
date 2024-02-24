@@ -554,8 +554,8 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
   if (duplicateKeys.length > 0) {
   
       swal({
-        title: "Are you sure?",
-        text: "আপনার লিস্টে ডুপ্লিকেট ডেটা রয়েছে, যা লাল রং দিয়ে চিহ্নিত করা হয়েছে। ডুপ্লিকেট ডেটা ডিলিট করে পুনরায় চেষ্টা করুন।",
+        title: "",
+        text: "আপনার লিস্টে ডুপ্লিকেট ডেটা রয়েছে, যা লাল রং দিয়ে চিহ্নিত করা হয়েছে। ডুপ্লিকেট ডেটা আপডেট/ডিলিট করে পুনরায় আপলোড করুন।",
         icon: "warning",
         buttons: {
          
