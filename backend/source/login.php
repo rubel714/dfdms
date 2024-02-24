@@ -150,6 +150,9 @@ else {
                     ];
 
                     echo json_encode($returnData);
+                    
+                    $conn=null; /**Close database connection */
+                    
                     return;
                 }
             }
@@ -217,6 +220,7 @@ else {
     }
 }
 
+$conn=null; /**Close database connection */
 echo json_encode($returnData);
 
 

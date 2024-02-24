@@ -33,7 +33,8 @@ function dataSyncUpload($data)
 		$rowData = $data->rowData;
 
 		// echo "<pre>";
-		// 		print_r($rowData);
+		// echo count($rowData);
+		// print_r($rowData);
 		// exit;
 		// $HouseHoldId = $data->rowData->id;
 		// $DivisionId = $data->rowData->DivisionId? $data->rowData->DivisionId : null;
@@ -117,6 +118,9 @@ function dataSyncUpload($data)
 			// 		echo "<pre>";
 			// 		print_r($old_DataList);
 			// exit;
+			$isDuplicateInCurrList = array();
+			$hasDuplicate = 0;
+
 			foreach ($rowData as $row) {
 				$row = (array)$row;
 				// print_r($row);
@@ -187,7 +191,20 @@ function dataSyncUpload($data)
 				$UserId = $row["UserId"];
 
 
-				if (array_key_exists($YearId . '_' . $DivisionId . '_' . $DistrictId . '_' . $UpazilaId . '_' . $UnionId . '_' . $Phone, $old_DataList)) {
+				$duplicate_key = $YearId . '_' . $DivisionId . '_' . $DistrictId . '_' . $UpazilaId . '_' . $UnionId . '_' . $Phone;
+
+				if (array_key_exists($duplicate_key, $isDuplicateInCurrList)) {
+					$isDuplicateInCurrList[$duplicate_key] += 1;
+					$hasDuplicate = 1;
+				} else {
+					$isDuplicateInCurrList[$duplicate_key] = 1;
+				}
+
+
+
+				/**Duplicate check with database. */
+				/**If found duplicate then just ignore this row */
+				if (array_key_exists($duplicate_key, $old_DataList)) {
 					/**when duplicate then skip */
 					continue;
 				}
@@ -229,16 +246,33 @@ function dataSyncUpload($data)
 				$aQuerys[] = $q;
 			}
 
-			$res = exec_query($aQuerys, $UserId, $lan);
-			$success = ($res['msgType'] == 'success') ? 1 : 0;
-			$status = ($res['msgType'] == 'success') ? 200 : 500;
 
-			$returnData = [
-				"success" => $success,
-				"status" => $status,
-				"UserId" => $UserId,
-				"message" => $res['msg']
-			];
+			if ($hasDuplicate > 0) {
+				$returnData = [
+					"success" => 0,
+					"status" => 500,
+					"UserId" => $UserId,
+					"message" => "Found duplicate data"
+				];
+			} else if (count($aQuerys) > 0) {
+				$res = exec_query($aQuerys, $UserId, $lan, false);
+				$success = ($res['msgType'] == 'success') ? 1 : 0;
+				$status = ($res['msgType'] == 'success') ? 200 : 500;
+
+				$returnData = [
+					"success" => $success,
+					"status" => $status,
+					"UserId" => $UserId,
+					"message" => $res['msg']
+				];
+			} else {
+				$returnData = [
+					"success" => 1,
+					"status" => 200,
+					"UserId" => $UserId,
+					"message" => "Data uploaded successfully"
+				];
+			}
 		} catch (PDOException $e) {
 			$returnData = msg(0, 500, $e->getMessage());
 		}

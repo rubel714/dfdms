@@ -64,6 +64,7 @@ function getDataList($data){
 		$returnData = msg(0,500,$e->getMessage());
 	}
 	
+	$dbh->CloseConnection();  /**Close database connection */
 	return $returnData;
 }
 
@@ -124,6 +125,7 @@ function getGenderwisePGMemberDataList($data){
 		$returnData = msg(0,500,$e->getMessage());
 	}
 	
+	$dbh->CloseConnection();  /**Close database connection */
 	return $returnData;
 }
 
@@ -176,6 +178,7 @@ function getValueChainwisePGDistributionDataList($data){
 		$returnData = msg(0,500,$e->getMessage());
 	}
 	
+	$dbh->CloseConnection();  /**Close database connection */
 	return $returnData;
 }
 
@@ -233,6 +236,7 @@ function getValueChainwisePGDMemberistributionDataList($data){
 		$returnData = msg(0,500,$e->getMessage());
 	}
 	
+	$dbh->CloseConnection();  /**Close database connection */
 	return $returnData;
 }
 
