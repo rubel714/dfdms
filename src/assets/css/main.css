@@ -226,6 +226,11 @@ button:hover {
     background-color:rgb(105, 175, 178);
     min-width: 90px;
 }
+.btnPrintExt {
+    background-color: rgb(46 106 235);
+    min-width: 162px;
+    min-height: 40px;
+}
 
 .btnClose {
     background-color: rgb(150, 75, 75);

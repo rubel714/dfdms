@@ -130,6 +130,17 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
+                    {menuShowPermision("totalhouseholdinformation") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("totalhouseholdinformation")}
+                        >
+                          Total Household Information
+                        </a>
+                      </li>
+                    )}
+
                     {menuShowPermision("report2") === 1 && (
                       <li>
                         <a

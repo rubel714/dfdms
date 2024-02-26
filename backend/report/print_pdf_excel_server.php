@@ -46,6 +46,10 @@ switch($task){
 			MembersbyPGataExport();
 			break;
 			
+		case "TotalHouseholdInformationExport":
+			TotalHouseholdInformationExport();
+			break;
+			
 		case "UserDataExport":
 			UserDataExport();
 			break;
@@ -374,6 +378,75 @@ function MembersbyPGataExport() {
 	
 	//Report save name. Not allow any type of special character
 	$tableProperties["report_save_name"] = 'PG_Members_List';
+}
+ 
+ 
+
+function TotalHouseholdInformationExport() {
+
+	global $sql, $tableProperties, $TEXT, $siteTitle;
+
+	$DivisionId = $_REQUEST['DivisionId']?$_REQUEST['DivisionId']:0;
+	$DistrictId = $_REQUEST['DistrictId']?$_REQUEST['DistrictId']:0;
+	$UpazilaId =  $_REQUEST['UpazilaId']?$_REQUEST['UpazilaId']:0;
+	$StartDate =  $_REQUEST['StartDate']?$_REQUEST['StartDate']:"";
+	$EndDate =  $_REQUEST['EndDate']?$_REQUEST['EndDate']:"";
+
+	
+	$sql = "SELECT c.`DivisionName`,d.`DistrictName`,e.`UpazilaName`,f.`UnionName`,
+		COUNT(`HouseHoldId`) DataCount,a.`DataCollectorName`,b.`DesignationName`,a.`PhoneNumber`
+		FROM `t_householdlivestocksurvey` a
+		INNER JOIN `t_designation` b ON a.DesignationId=b.`DesignationId`
+		INNER JOIN `t_division` c ON a.`DivisionId`=c.DivisionId
+		INNER JOIN `t_district` d ON a.`DistrictId`=d.DistrictId
+		INNER JOIN `t_upazila` e ON a.`UpazilaId`=e.UpazilaId
+		INNER JOIN `t_union` f ON a.`UnionId`=f.UnionId
+		WHERE a.`DataCollectionDate` BETWEEN '$StartDate' AND '$EndDate'
+		GROUP BY c.`DivisionName`,d.`DistrictName`,e.`UpazilaName`,f.`UnionName`,
+		a.`DataCollectorName`,b.`DesignationName`,a.`PhoneNumber`;";
+
+
+		$db = new Db();
+		$sqlrresultHeader = $db->query($sql);
+
+
+		/* if($DivisionId == 0){
+			$DivisionName = "Division: All, ";
+		}else{
+			$DivisionName =  "Division: ".$sqlrresultHeader[0]['DivisionName'];
+		}
+
+		if($DistrictId == 0){
+			$DistrictName = ", District: All, ";
+		}else{
+			$DistrictName = ", District: ". $sqlrresultHeader[0]['DistrictName'];
+		}
+		if($UpazilaId == 0){
+			$UpazilaName = ", Upazila: All";
+		}else{
+			$UpazilaName = ", Upazila: ". $sqlrresultHeader[0]['UpazilaName'];
+		} */
+
+	
+    $tableProperties["query_field"] = array('DivisionName','DistrictName','UpazilaName','UnionName','DataCount','DataCollectorName', 'DesignationName', 'PhoneNumber');
+    $tableProperties["table_header"] = array("Division","District","Upazila","Union/Pourashava","Number of Household","Name of Enumerator","Enumerator Designation", "Cell No. of Enumerator");
+    $tableProperties["align"] = array("left","left","left","left","right","left","left","left");
+    $tableProperties["width_print_pdf"] = array("30%","30%","30%","30%","30%","30%","30%","30%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("15","15","15","15","20","30","17","23");
+    $tableProperties["precision"] = array("string","string","string","string",0,"string","string","string"); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0,0,0,0,0,0,0,0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0,0,0,0,0,0,0,0); //colorcode field = 1 not color code field = 0
+	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
+    $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
+    
+	//Report header list
+	$tableProperties["header_list"][0] = $siteTitle;
+	$tableProperties["header_list"][1] = 'Total Household Information';
+	$tableProperties["header_list"][2] = "From Date: ".$StartDate. ", To Date: ".$EndDate;
+	// $tableProperties["header_list"][1] = 'Heading 2';
+	
+	//Report save name. Not allow any type of special character
+	$tableProperties["report_save_name"] = 'Total_Household_Information';
 }
  
  
