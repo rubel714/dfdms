@@ -49,6 +49,10 @@ switch($task){
 		case "TotalHouseholdInformationExport":
 			TotalHouseholdInformationExport();
 			break;
+
+		case "TotalHouseholdAnimalInformationExport":
+			TotalHouseholdAnimalInformationExport();
+			break;
 			
 		case "UserDataExport":
 			UserDataExport();
@@ -447,6 +451,151 @@ function TotalHouseholdInformationExport() {
 	
 	//Report save name. Not allow any type of special character
 	$tableProperties["report_save_name"] = 'Total_Household_Information';
+}
+ 
+ 
+
+function TotalHouseholdAnimalInformationExport() {
+
+	global $sql, $tableProperties, $TEXT, $siteTitle;
+
+	$DivisionId = $_REQUEST['DivisionId']?$_REQUEST['DivisionId']:0;
+	$DistrictId = $_REQUEST['DistrictId']?$_REQUEST['DistrictId']:0;
+	$UpazilaId =  $_REQUEST['UpazilaId']?$_REQUEST['UpazilaId']:0;
+	$StartDate =  $_REQUEST['StartDate']?$_REQUEST['StartDate']:"";
+	$EndDate =  $_REQUEST['EndDate']?$_REQUEST['EndDate']:"";
+
+	
+	/* $sql = "SELECT c.`DivisionName`,d.`DistrictName`,e.`UpazilaName`,f.`UnionName`,
+		COUNT(`HouseHoldId`) DataCount,a.`DataCollectorName`,b.`DesignationName`,a.`PhoneNumber`
+		FROM `t_householdlivestocksurvey` a
+		INNER JOIN `t_designation` b ON a.DesignationId=b.`DesignationId`
+		INNER JOIN `t_division` c ON a.`DivisionId`=c.DivisionId
+		INNER JOIN `t_district` d ON a.`DistrictId`=d.DistrictId
+		INNER JOIN `t_upazila` e ON a.`UpazilaId`=e.UpazilaId
+		INNER JOIN `t_union` f ON a.`UnionId`=f.UnionId
+		WHERE a.`DataCollectionDate` BETWEEN '$StartDate' AND '$EndDate'
+		GROUP BY c.`DivisionName`,d.`DistrictName`,e.`UpazilaName`,f.`UnionName`,
+		a.`DataCollectorName`,b.`DesignationName`,a.`PhoneNumber`;"; */
+
+
+$sql = "SELECT 
+	q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,
+	u.UnionName,
+	a.`HouseHoldId`,
+	a.`HouseHoldId` id,
+	a.`YearId`,
+	a.`DivisionId`,
+	a.`DistrictId`,
+	a.`UpazilaId`,
+	a.`UnionId`,
+	a.`Ward`,
+	a.`Village`,
+	a.`FarmerName`,
+	a.`FatherName`,
+	a.`MotherName`,
+	a.`HusbandWifeName`,
+	a.`NameOfTheFarm`,
+	a.`Phone`,
+	a.`Gender`,
+	a.`IsDisability`,
+	a.`NID`,
+	a.`IsPGMember`,
+	a.`Latitute`,
+	a.`Longitute`,
+	a.`CowNative`,
+	a.`CowCross`,
+	a.`CowBullNative`,
+	a.`CowBullCross`,
+	a.`CowCalfMaleNative`,
+	a.`CowCalfMaleCross`,
+	a.`CowCalfFemaleNative`,
+	a.`CowCalfFemaleCross`,
+	a.`CowMilkProductionNative`,
+	a.`CowMilkProductionCross`,
+	a.`BuffaloAdultMale`,
+	a.`BuffaloAdultFemale`,
+	a.`BuffaloCalfMale`,
+	a.`BuffaloCalfFemale`,
+	a.`BuffaloMilkProduction`,
+	a.`GoatAdultMale`,
+	a.`GoatAdultFemale`,
+	a.`GoatCalfMale`,
+	a.`GoatCalfFemale`,
+	a.`SheepAdultMale`,
+	a.`SheepAdultFemale`,
+	a.`SheepCalfMale`,
+	a.`SheepCalfFemale`,
+	a.`GoatSheepMilkProduction`,
+	a.`ChickenNative`,
+	a.`ChickenLayer`,
+	a.`ChickenSonaliFayoumiCockerelOthers`,
+	a.`ChickenBroiler`,
+	a.`ChickenEgg`,
+	a.`DucksNumber`,
+	a.`DucksEgg`,
+	a.`PigeonNumber`,
+	a.`FamilyMember`,
+	a.`LandTotal`,
+	a.`LandOwn`,
+	a.`LandLeased`,
+	a.`DataCollectionDate`,
+	a.`DataCollectorName`,
+	a.`DesignationId`,
+	a.`PhoneNumber`,
+	a.`Remarks`,
+	a.`UserId`,
+	a.`UpdateTs`,
+	a.`CreateTs`,
+	b.GenderName,
+	a.`MilkCow`,
+	a.`ChickenSonali`,
+	a.`QuailNumber`,
+	a.`OtherAnimalNumber`,
+	case when a.IsDisability=1 then 'Yes' else 'No' end IsDisabilityStatus,
+	case when a.IsPGMember=1 then 'Yes' else 'No' end IsPGMemberStatus,
+	 de.DesignationName
+	
+  FROM
+  `t_householdlivestocksurvey` a 
+  Inner Join t_gender b ON a.Gender = b.GenderId
+  INNER JOIN `t_division` q ON a.`DivisionId`=q.`DivisionId`
+	INNER JOIN `t_district` r ON a.`DistrictId`=r.`DistrictId`
+	INNER JOIN `t_upazila` s ON a.`UpazilaId`=s.`UpazilaId`
+	INNER JOIN `t_union` u ON a.`UnionId`=u.`UnionId`
+	LEFT JOIN `t_designation` de ON a.`DesignationId`=de.`DesignationId`
+	WHERE a.`DataCollectionDate` BETWEEN '$StartDate' AND '$EndDate'
+	AND a.`YearId` = 2024
+	ORDER BY q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,u.`UnionName`
+	;";
+
+	/* echo $sql;
+	exit;
+ */
+		$db = new Db();
+		$sqlrresultHeader = $db->query($sql);
+
+
+	
+    $tableProperties["query_field"] = array('DivisionName','DistrictName','UpazilaName','UnionName','FamilyMember','CowNative', 'CowCross', 'MilkCow','CowBullNative','CowBullCross','CowCalfMaleNative','CowCalfMaleCross','CowCalfFemaleNative','CowCalfFemaleCross','CowMilkProductionNative','CowMilkProductionCross','BuffaloAdultMale','BuffaloAdultFemale','BuffaloCalfMale','BuffaloCalfFemale','BuffaloMilkProduction','GoatAdultMale','GoatAdultFemale','GoatCalfMale','GoatCalfFemale','SheepAdultMale','SheepAdultFemale','SheepCalfMale','SheepCalfFemale','GoatSheepMilkProduction','ChickenNative','ChickenLayer','ChickenBroiler','ChickenSonali','ChickenSonaliFayoumiCockerelOthers','ChickenEgg','DucksNumber','DucksEgg','PigeonNumber','QuailNumber','OtherAnimalNumber','LandTotal','LandOwn','LandLeased');
+    $tableProperties["table_header"] = array("Division","District","Upazila","Union/Pourashava","Number of family members","Cow (Native)","Cow (Cross)", "এখন দুধ দিচ্ছে এমন গাভীর সংখ্যা", "Bull/Castrated Bull (Native)", "Bull/Castrated Bull (Cross)", "Calf Male (Native)", "Calf Male (Cross)", "Calf Female (Native)", "Calf Female (Cross)","Household/Farm Total (Cows) Milk Production per day (Liter) (Native)","Household/Farm Total (Cows) Milk Production per day (Liter) (Cross)","Adult Buffalo (Male)","Adult Buffalo (Female)", "Calf Buffalo (Male)", "Calf Buffalo (Female)", "Household/Farm Total (Buffalo) Milk Production per day (Liter)","Adult Goat (Male)","Adult Goat (Female)", "Calf Goat (Male)", "Calf Goat (Female)","Adult Sheep (Male)","Adult Sheep (Female)", "Calf Sheep (Male)", "Calf Sheep (Female)","Household/Farm Total (Goat) Milk Production per day (Liter)","Chicken (Native)","Chicken (Layer)","Chicken (Broiler)","Chicken (Sonali)","Chicken (Other Poultry (Fayoumi/ Cockerel/ Turkey)","Household/Farm Total (Chicken) Daily Egg Production","Number of Ducks/Swan","Household/Farm Total (Duck) Daily Egg Production","Number of Pigeon","Number of Quail","Number of other animals (Pig/Horse)","Total cultivable land in decimal","Own land for Fodder cultivation","Leased land for fodder cultivation");
+    $tableProperties["align"] = array("left","left","left","left","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right");
+    $tableProperties["width_print_pdf"] = array("30%","30%","30%","30%","30%","30%","30%","30%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("15","15","15","15","15","15","15","15");
+    $tableProperties["precision"] = array("string","string","string","string",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0,0,0,0,0,0,0,0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0,0,0,0,0,0,0,0); //colorcode field = 1 not color code field = 0
+	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
+    $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
+    
+	//Report header list
+	$tableProperties["header_list"][0] = $siteTitle;
+	$tableProperties["header_list"][1] = 'Total Household Animal Information';
+	$tableProperties["header_list"][2] = "From Date: ".$StartDate. ", To Date: ".$EndDate;
+	// $tableProperties["header_list"][1] = 'Heading 2';
+	
+	//Report save name. Not allow any type of special character
+	$tableProperties["report_save_name"] = 'Total_Household_Animal_Information';
 }
  
  

@@ -36,6 +36,7 @@ import UserEntry from "views/screens/userentry/index.js";
 import DatatypeQuestionsMap from "views/screens/datatypequestionsmap/index.js";
 import MembersByPg from "views/screens/membersbypg/index.js";
 import TotalHouseholdInformation from "views/screens/totalhouseholdinformation/index.js";
+import TotalHouseholdAnimalInformation from "views/screens/totalhouseholdanimalinformation/index.js";
 import GenderWisePGMembers from "views/screens/genderwisepgmembers/index.js";
 import ValueChainWisePGDistribution from "views/screens/valuechainwisepgdistribution/index.js";
 import ValueChainWisePGMemberDistribution from "views/screens/valuechainwisepgmemberdistribution/index.js";
@@ -146,6 +147,10 @@ ReactDOM.render(
           <Route
             path="/totalhouseholdinformation"
             render={(props) => <TotalHouseholdInformation {...props} />}
+          />
+          <Route
+            path="/totalhouseholdanimalinformation"
+            render={(props) => <TotalHouseholdAnimalInformation {...props} />}
           />
           <Route
             path="/genderwisepgmembers"
