@@ -614,12 +614,15 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
           UpazilaId: UserInfo.UpazilaId,
           rowData: currentDataList,
         };
+
+        var tableRowCount = currentDataList.length;
     
         apiCall.post(serverpage, { params }, apiOption()).then((res) => {
        
           props.openNoticeModal({
             isOpen: true,
-            msg: res.data.message,
+            msg: 'আপনার '+tableRowCount+' টি ডাটা সফলভাবে আপলোড হয়েছে।',
+            // msg: res.data.message,
             msgtype: res.data.success,
           });
     

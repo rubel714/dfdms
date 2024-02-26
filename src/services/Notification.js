@@ -6,7 +6,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const Notification = ({ ...props }) => {
-  const [duration, setDuration] = React.useState(3000);
+  const [duration, setDuration] = React.useState(8000);
 
   return (
     <Snackbar
