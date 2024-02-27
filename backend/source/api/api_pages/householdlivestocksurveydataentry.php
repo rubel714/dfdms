@@ -198,9 +198,9 @@ function dataSyncUpload($data)
 					$isDuplicateInCurrList[$duplicate_key] += 1;
 					$hasDuplicate = 1;
 					if($duplicatePhone == ""){
-						$duplicatePhone = $Phone;
+						$duplicatePhone = $FarmerName.'-'.$Phone;
 					}else{
-						$duplicatePhone .= ", ".$Phone;
+						$duplicatePhone .= ", ".$FarmerName.'-'.$Phone;
 					}
 				} else {
 					$isDuplicateInCurrList[$duplicate_key] = 1;
