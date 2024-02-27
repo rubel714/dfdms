@@ -1037,8 +1037,22 @@ input[type=search] {
     grid-template-columns: 50% 50% 57% 13%;
 }
 
+.onedashboardCard {
+    margin-top: 7px;
+    margin-bottom: 7px;
+    display: grid;
+    grid-template-columns: 15% 70% 30%;
+    align-content: center;
+    justify-items: stretch;
+    align-items: center;
+}
+
 .margin-left10 {
     margin-left: 10px;
+}
+
+.stat-cell-color-aa {
+    background: #3c930d;
 }
 
 

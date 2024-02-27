@@ -62,6 +62,19 @@ function AfterLoginNavbar(props) {
                 </li>
               )}
 
+              {menuShowPermision("householddashboard") === 1 && (
+                <li class="dropdownMenu">
+                  {" "}
+                  <a
+                    class="parentMenu"
+                    href="javascript:void(0)"
+                    onClick={() => props.history.push("householddashboard")}
+                  >
+                    Household Dashborad
+                  </a>
+                </li>
+              )}
+
               {menuShowPermision("reports") === 1 && (
                 <li class="dropdownMenu">
                   {" "}
