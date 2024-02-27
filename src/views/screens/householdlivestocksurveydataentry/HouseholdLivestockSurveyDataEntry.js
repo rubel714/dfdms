@@ -619,18 +619,24 @@ const HouseholdLivestockSurveyDataEntry = (props) => {
     
         apiCall.post(serverpage, { params }, apiOption()).then((res) => {
        
-          props.openNoticeModal({
-            isOpen: true,
-            msg: 'আপনার '+tableRowCount+' টি ডাটা সফলভাবে আপলোড হয়েছে।',
-            // msg: res.data.message,
-            msgtype: res.data.success,
-          });
-    
-          if (res.data.success === 1) {
             
+          if (res.data.success === 1) {
+            props.openNoticeModal({
+              isOpen: true,
+              msg: 'আপনার '+tableRowCount+' টি ডাটা সফলভাবে আপলোড হয়েছে।',
+              // msg: res.data.message,
+              msgtype: res.data.success,
+            });
+
             localStorage.removeItem("householdlivestocksurveydataentry");
             dataList = JSON.parse(localStorage.getItem("householdlivestocksurveydataentry")) || [];
     
+          }else{
+            props.openNoticeModal({
+              isOpen: true,
+              msg: res.data.message,
+              msgtype: res.data.success,
+            });
           }
           setIsServerLoading(false); 
     

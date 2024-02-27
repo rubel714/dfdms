@@ -120,6 +120,7 @@ function dataSyncUpload($data)
 			// exit;
 			$isDuplicateInCurrList = array();
 			$hasDuplicate = 0;
+			$duplicatePhone = "";
 
 			foreach ($rowData as $row) {
 				$row = (array)$row;
@@ -196,6 +197,11 @@ function dataSyncUpload($data)
 				if (array_key_exists($duplicate_key, $isDuplicateInCurrList)) {
 					$isDuplicateInCurrList[$duplicate_key] += 1;
 					$hasDuplicate = 1;
+					if($duplicatePhone == ""){
+						$duplicatePhone = $Phone;
+					}else{
+						$duplicatePhone .= ", ".$Phone;
+					}
 				} else {
 					$isDuplicateInCurrList[$duplicate_key] = 1;
 				}
@@ -246,13 +252,13 @@ function dataSyncUpload($data)
 				$aQuerys[] = $q;
 			}
 
-
+			
 			if ($hasDuplicate > 0) {
 				$returnData = [
 					"success" => 0,
 					"status" => 500,
 					"UserId" => $UserId,
-					"message" => "Found duplicate data"
+					"message" => "Found duplicate data. ".$duplicatePhone
 				];
 			} else if (count($aQuerys) > 0) {
 				$res = exec_query($aQuerys, $UserId, $lan, false);
