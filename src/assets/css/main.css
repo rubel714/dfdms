@@ -1400,3 +1400,7 @@ textarea {
   .swal-text { 
     color: red;
   }
+
+  .exceededLimit {
+    border: 1px solid red;
+}
