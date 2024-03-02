@@ -283,22 +283,52 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
     const inputValue = data["NID"];
    
     const inputValueFamilyMember = data[fieldName];
-    if (inputValueFamilyMember > maxLimit) {
-        setExceededLimits(prevState => ({
-            ...prevState,
-            [fieldName]: true
-        }));
-        props.masterProps.openNoticeModal({
-            isOpen: true,
-            msg: `Max limit is ${maxLimit} for this input filed.`,
-            msgtype: 0,
-        });
+    // if (inputValueFamilyMember > maxLimit) {
+    //     setExceededLimits(prevState => ({
+    //         ...prevState,
+    //         [fieldName]: true
+    //     }));
+    //     props.masterProps.openNoticeModal({
+    //         isOpen: true,
+    //         msg: `Max limit is ${maxLimit} for this input filed.`,
+    //         msgtype: 0,
+    //     });
+    // } else {
+    //     setExceededLimits(prevState => ({
+    //         ...prevState,
+    //         [fieldName]: false
+    //     }));
+    // }
+
+    if (inputValueFamilyMember < 0) {
+      // Prevent negative values
+      setExceededLimits(prevState => ({
+        ...prevState,
+        [fieldName]: true
+      }));
+      props.masterProps.openNoticeModal({
+        isOpen: true,
+        msg: "Negative values are not allowed.",
+        msgtype: 0,
+      });
+    } else if (inputValueFamilyMember > maxLimit) {
+      // Prevent exceeding maximum limit
+      setExceededLimits(prevState => ({
+        ...prevState,
+        [fieldName]: true
+      }));
+      props.masterProps.openNoticeModal({
+        isOpen: true,
+        msg: `Max limit is ${maxLimit} for this input field.`,
+        msgtype: 0,
+      });
     } else {
-        setExceededLimits(prevState => ({
-            ...prevState,
-            [fieldName]: false
-        }));
+      setExceededLimits(prevState => ({
+        ...prevState,
+        [fieldName]: false
+      }));
     }
+    
 
 
     if (
@@ -360,6 +390,70 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
       }
     });
 
+
+  /**Not allowd negative */
+  let validateFieldsNegNotAllow = [
+    "CowNative",
+    "CowCross",
+    "MilkCow",
+    "CowBullNative",
+    "CowBullCross",
+    "CowCalfMaleNative",
+    "CowCalfMaleCross",
+    "CowCalfFemaleNative",
+    "CowCalfFemaleCross",
+    "CowMilkProductionNative",
+    "CowMilkProductionCross",
+    "BuffaloAdultMale",
+    "BuffaloAdultFemale",
+    "BuffaloCalfMale",
+    "BuffaloCalfFemale",
+    "BuffaloMilkProduction",
+    "GoatAdultMale",
+    "GoatAdultFemale",
+    "GoatCalfMale",
+    "GoatCalfFemale",
+    "SheepAdultMale",
+    "SheepAdultFemale",
+    "SheepCalfMale",
+    "SheepCalfFemale",
+    "GoatSheepMilkProduction",
+    "ChickenNative",
+    "ChickenLayer",
+    "ChickenBroiler",
+    "ChickenSonali",
+    "ChickenSonaliFayoumiCockerelOthers",
+    "ChickenEgg",
+    "DucksNumber",
+    "DucksEgg",
+    "PigeonNumber",
+    "QuailNumber",
+    "OtherAnimalNumber",
+    "LandTotal",
+    "LandOwn",
+    "LandLeased",
+  ];
+    validateFieldsNegNotAllow.map((field) => {
+      if (currentRow[field] < 0) {
+        errorData[field] = "validation-style";
+        isValid = false;
+      }
+    });
+
+      /**Allowd grater than 0 */
+      let validateFieldsGraterZeroAllow = [
+        "FamilyMember",
+      ];
+      validateFieldsGraterZeroAllow.map((field) => {
+        if (currentRow[field] < 1) {
+          errorData[field] = "validation-style";
+          isValid = false;
+        }
+      });
+
+
+    // FamilyMember
+
     setErrorObject(errorData);
     return isValid;
   };
@@ -372,7 +466,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
     if (anyFieldExceeded) {
         props.masterProps.openNoticeModal({
             isOpen: true,
-            msg: "Max limit for one or more fields has been exceeded",
+            msg: "Max or Min limit for one or more fields has been exceeded",
             msgtype: 0,
         });
 
@@ -943,10 +1037,11 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
 
               placeholder="0"
               value={currentRow.FamilyMember}
+              class={errorObject.FamilyMember}
               onChange={(e) => handleChange(e)}
               onBlur={() => handleBlur("FamilyMember", 20)}
               max="20"
-              min="0"
+              min="1"
               style={{ color: exceededLimits["FamilyMember"] ? 'red' : '' }}
               
             />
@@ -1013,6 +1108,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.CowNative}
+                        class={errorObject.CowNative}
                         onChange={(e) => handleChange(e)}
                         onBlur={() => handleBlur("CowNative", 500)}
                         max="500"
@@ -1031,6 +1127,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.CowCross}
+                        class={errorObject.CowCross}
                         onChange={(e) => handleChange(e)}
                         max="2000"
                         min="0"
@@ -1053,6 +1150,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.MilkCow}
+                        class={errorObject.MilkCow}
                         onChange={(e) => handleChange(e)}
                         max="500"
                         min="0"
@@ -1075,6 +1173,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.CowBullNative}
+                        class={errorObject.CowBullNative}
                         onChange={(e) => handleChange(e)}
                         max="500"
                         min="0"
@@ -1093,6 +1192,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.CowBullCross}
+                        class={errorObject.CowBullCross}
                         onChange={(e) => handleChange(e)}
                         max="5000"
                         min="0"
@@ -1115,6 +1215,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.CowCalfMaleNative}
+                        class={errorObject.CowCalfMaleNative}
                         onChange={(e) => handleChange(e)}
                         max="500"
                         min="0"
@@ -1133,6 +1234,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.CowCalfMaleCross}
+                        class={errorObject.CowCalfMaleCross}
                         onChange={(e) => handleChange(e)}
                         max="5000"
                         min="0"
@@ -1155,6 +1257,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.CowCalfFemaleNative}
+                        class={errorObject.CowCalfFemaleNative}
                         onChange={(e) => handleChange(e)}
                         max="500"
                         min="0"
@@ -1173,6 +1276,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.CowCalfFemaleCross}
+                        class={errorObject.CowCalfFemaleCross}
                         onChange={(e) => handleChange(e)}
                         max="5000"
                         min="0"
@@ -1196,6 +1300,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.CowMilkProductionNative}
+                        class={errorObject.CowMilkProductionNative}
                         onChange={(e) => handleChange(e)}
                         max="10000"
                         min="0"
@@ -1214,6 +1319,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.CowMilkProductionCross}
+                        class={errorObject.CowMilkProductionCross}
                         onChange={(e) => handleChange(e)}
                         max="20000"
                         min="0"
@@ -1255,6 +1361,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.BuffaloAdultMale}
+                        class={errorObject.BuffaloAdultMale}
                         onChange={(e) => handleChange(e)}
                         max="1000"
                         min="0"
@@ -1273,6 +1380,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.BuffaloAdultFemale}
+                        class={errorObject.BuffaloAdultFemale}
                         onChange={(e) => handleChange(e)}
                         max="1000"
                         min="0"
@@ -1295,6 +1403,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.BuffaloCalfMale}
+                        class={errorObject.BuffaloCalfMale}
                         onChange={(e) => handleChange(e)}
                         max="1000"
                         min="0"
@@ -1313,6 +1422,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.BuffaloCalfFemale}
+                        class={errorObject.BuffaloCalfFemale}
                         onChange={(e) => handleChange(e)}
                         max="1000"
                         min="0"
@@ -1336,6 +1446,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.BuffaloMilkProduction}
+                        class={errorObject.BuffaloMilkProduction}
                         onChange={(e) => handleChange(e)}
                         max="10000"
                         min="0"
@@ -1377,6 +1488,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.GoatAdultMale}
+                        class={errorObject.GoatAdultMale}
                         onChange={(e) => handleChange(e)}
                         max="20000"
                         min="0"
@@ -1395,6 +1507,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.GoatAdultFemale}
+                        class={errorObject.GoatAdultFemale}
                         onChange={(e) => handleChange(e)}
                         max="20000"
                         min="0"
@@ -1417,6 +1530,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.GoatCalfMale}
+                        class={errorObject.GoatCalfMale}
                         onChange={(e) => handleChange(e)}
                         max="20000"
                         min="0"
@@ -1435,6 +1549,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.GoatCalfFemale}
+                        class={errorObject.GoatCalfFemale}
                         onChange={(e) => handleChange(e)}
                         max="20000"
                         min="0"
@@ -1457,6 +1572,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.SheepAdultMale}
+                        class={errorObject.SheepAdultMale}
                         onChange={(e) => handleChange(e)}
                         max="20000"
                         min="0"
@@ -1475,6 +1591,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.SheepAdultFemale}
+                        class={errorObject.SheepAdultFemale}
                         onChange={(e) => handleChange(e)}
                         max="20000"
                         min="0"
@@ -1497,6 +1614,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.SheepCalfMale}
+                        class={errorObject.SheepCalfMale}
                         onChange={(e) => handleChange(e)}
                         max="20000"
                         min="0"
@@ -1515,6 +1633,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.SheepCalfFemale}
+                        class={errorObject.SheepCalfFemale}
                         onChange={(e) => handleChange(e)}
                         max="20000"
                         min="0"
@@ -1538,6 +1657,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.GoatSheepMilkProduction}
+                        class={errorObject.GoatSheepMilkProduction}
                         onChange={(e) => handleChange(e)}
                         max="20000"
                         min="0"
@@ -1574,6 +1694,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.ChickenNative}
+                        class={errorObject.ChickenNative}
                         onChange={(e) => handleChange(e)}
                         max="200000"
                         min="0"
@@ -1592,6 +1713,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.ChickenLayer}
+                        class={errorObject.ChickenLayer}
                         onChange={(e) => handleChange(e)}
                         max="1000000"
                         min="0"
@@ -1611,6 +1733,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.ChickenBroiler}
+                        class={errorObject.ChickenBroiler}
                         onChange={(e) => handleChange(e)}
                         max="2000000"
                         min="0"
@@ -1630,6 +1753,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.ChickenSonali}
+                        class={errorObject.ChickenSonali}
                         onChange={(e) => handleChange(e)}
                         max="2000000"
                         min="0"
@@ -1652,6 +1776,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.ChickenSonaliFayoumiCockerelOthers}
+                        class={errorObject.ChickenSonaliFayoumiCockerelOthers}
                         onChange={(e) => handleChange(e)}
                         max="2000000"
                         min="0"
@@ -1675,6 +1800,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.ChickenEgg}
+                        class={errorObject.ChickenEgg}
                         onChange={(e) => handleChange(e)}
                         max="30000000"
                         min="0"
@@ -1709,6 +1835,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.DucksNumber}
+                        class={errorObject.DucksNumber}
                         onChange={(e) => handleChange(e)}
                         max="1000000"
                         min="0"
@@ -1730,6 +1857,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.DucksEgg}
+                        class={errorObject.DucksEgg}
                         onChange={(e) => handleChange(e)}
                         max="30000000"
                         min="0"
@@ -1763,6 +1891,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.PigeonNumber}
+                        class={errorObject.PigeonNumber}
                         onChange={(e) => handleChange(e)}
                         max="50000"
                         min="0"
@@ -1796,6 +1925,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.QuailNumber}
+                        class={errorObject.QuailNumber}
                         onChange={(e) => handleChange(e)}
                         max="1000000"
                         min="0"
@@ -1830,6 +1960,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.OtherAnimalNumber}
+                        class={errorObject.OtherAnimalNumber}
                         onChange={(e) => handleChange(e)}
                         max="1000"
                         min="0"
@@ -1897,6 +2028,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.LandTotal}
+                        class={errorObject.LandTotal}
                         onChange={(e) => handleChange(e)}
                         max="100000"
                         min="0"
@@ -1919,6 +2051,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.LandOwn}
+                        class={errorObject.LandOwn}
                         onChange={(e) => handleChange(e)}
                         max="100000"
                         min="0"
@@ -1941,6 +2074,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         className="numberInput"
                         placeholder="0"
                         value={currentRow.LandLeased}
+                        class={errorObject.LandLeased}
                         onChange={(e) => handleChange(e)}
                         max="100000"
                         min="0"
