@@ -42,6 +42,7 @@ import ValueChainWisePGDistribution from "views/screens/valuechainwisepgdistribu
 import ValueChainWisePGMemberDistribution from "views/screens/valuechainwisepgmemberdistribution/index.js";
 import PGandPGmembersInformation from "views/screens/pgandpgmembersinformation/index.js";
 import DashboardPage from "views/screens/DashboardPage";
+import HouseholdDashboard from "views/screens/HouseholdDashboard";
 import SurveyTitleEntry from "views/screens/surveytitleentry/index.js";
 import UnionEntry from "views/screens/unionentry/index.js";
 import TrainingAdd from "views/screens/trainingadd/index.js";
@@ -174,6 +175,10 @@ ReactDOM.render(
           <Route
             path="/dashboard"
             render={(props) => <DashboardPage {...props} />}
+          />
+          <Route
+            path="/householddashboard"
+            render={(props) => <HouseholdDashboard {...props} />}
           />
 
           <Route

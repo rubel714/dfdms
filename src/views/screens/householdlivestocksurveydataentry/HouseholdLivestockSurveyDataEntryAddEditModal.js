@@ -173,6 +173,8 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
    
     }
 
+
+
    /*  if (name === "ValuechainId") {
       setCurrValuechainId(value);
       getPGIdList(
@@ -273,9 +275,31 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
     /* setErrorObject({ ...errorObject, [name]: null }); */
   };
 
-  function handleBlur() {
+
+  const [exceededLimits, setExceededLimits] = useState({});
+
+  function handleBlur(fieldName, maxLimit) {
     let data = { ...currentRow };
     const inputValue = data["NID"];
+   
+    const inputValueFamilyMember = data[fieldName];
+    if (inputValueFamilyMember > maxLimit) {
+        setExceededLimits(prevState => ({
+            ...prevState,
+            [fieldName]: true
+        }));
+        props.masterProps.openNoticeModal({
+            isOpen: true,
+            msg: `Max limit is ${maxLimit} for this input filed.`,
+            msgtype: 0,
+        });
+    } else {
+        setExceededLimits(prevState => ({
+            ...prevState,
+            [fieldName]: false
+        }));
+    }
+
 
     if (
       inputValue.length !== 10 &&
@@ -342,6 +366,19 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
 
   function addEditAPICall() {
     setIsServerLoading(true);
+
+    const anyFieldExceeded = Object.values(exceededLimits).some(limitExceeded => limitExceeded);
+
+    if (anyFieldExceeded) {
+        props.masterProps.openNoticeModal({
+            isOpen: true,
+            msg: "Max limit for one or more fields has been exceeded",
+            msgtype: 0,
+        });
+
+        setIsServerLoading(false);
+        return;
+    }
   
     if (currentRow.NID.length > 0) {
       if (
@@ -366,7 +403,31 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
       Cookies.set("Cookie_DataCollectorName", currentRow.DataCollectorName);
       Cookies.set("Cookie_DesignationId", currentRow.DesignationId);
       Cookies.set("Cookie_PhoneNumber", currentRow.PhoneNumber);
-     
+
+
+      
+      if(currentRow.Phone.length < 11){
+        props.masterProps.openNoticeModal({
+          isOpen: true,
+          msg: "Mobile number not valid.",
+          msgtype: 0,
+        });
+        setIsServerLoading(false);
+        return;
+
+      }
+
+      if(currentRow.PhoneNumber.length < 11){
+        props.masterProps.openNoticeModal({
+          isOpen: true,
+          msg: "Cell No. of Enumerator not valid.",
+          msgtype: 0,
+        });
+        setIsServerLoading(false);
+        return;
+
+      }
+
 
      if (currentRow.id === "") {
           currentRow.id = Math.floor(Date.now() / 1000);
@@ -836,7 +897,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
               placeholder=""
               value={currentRow.NID}
               onChange={(e) => handleChange(e)}
-              onBlur={handleBlur}
+              onBlur={() => handleBlur("NID", 99999999999999999999)}
             />
           </div>
 
@@ -883,7 +944,11 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
               placeholder="0"
               value={currentRow.FamilyMember}
               onChange={(e) => handleChange(e)}
-              onBlur={handleBlur}
+              onBlur={() => handleBlur("FamilyMember", 20)}
+              max="20"
+              min="0"
+              style={{ color: exceededLimits["FamilyMember"] ? 'red' : '' }}
+              
             />
           </div>
 
@@ -949,6 +1014,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.CowNative}
                         onChange={(e) => handleChange(e)}
+                        onBlur={() => handleBlur("CowNative", 500)}
+                        max="500"
+                        min="0"
+                        style={{ color: exceededLimits["CowNative"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -963,6 +1032,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.CowCross}
                         onChange={(e) => handleChange(e)}
+                        max="2000"
+                        min="0"
+                        onBlur={() => handleBlur("CowCross", 2000)}
+                        style={{ color: exceededLimits["CowCross"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -981,6 +1054,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.MilkCow}
                         onChange={(e) => handleChange(e)}
+                        max="500"
+                        min="0"
+                        onBlur={() => handleBlur("MilkCow", 500)}
+                        style={{ color: exceededLimits["MilkCow"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -999,6 +1076,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.CowBullNative}
                         onChange={(e) => handleChange(e)}
+                        max="500"
+                        min="0"
+                        onBlur={() => handleBlur("CowBullNative", 500)}
+                        style={{ color: exceededLimits["CowBullNative"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1013,6 +1094,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.CowBullCross}
                         onChange={(e) => handleChange(e)}
+                        max="5000"
+                        min="0"
+                        onBlur={() => handleBlur("CowBullCross", 5000)}
+                        style={{ color: exceededLimits["CowBullCross"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1031,6 +1116,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.CowCalfMaleNative}
                         onChange={(e) => handleChange(e)}
+                        max="500"
+                        min="0"
+                        onBlur={() => handleBlur("CowCalfMaleNative", 500)}
+                        style={{ color: exceededLimits["CowCalfMaleNative"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1045,6 +1134,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.CowCalfMaleCross}
                         onChange={(e) => handleChange(e)}
+                        max="5000"
+                        min="0"
+                        onBlur={() => handleBlur("CowCalfMaleCross", 5000)}
+                        style={{ color: exceededLimits["CowCalfMaleCross"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1063,6 +1156,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.CowCalfFemaleNative}
                         onChange={(e) => handleChange(e)}
+                        max="500"
+                        min="0"
+                        onBlur={() => handleBlur("CowCalfFemaleNative", 500)}
+                        style={{ color: exceededLimits["CowCalfFemaleNative"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1077,6 +1174,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.CowCalfFemaleCross}
                         onChange={(e) => handleChange(e)}
+                        max="5000"
+                        min="0"
+                        onBlur={() => handleBlur("CowCalfFemaleCross", 5000)}
+                        style={{ color: exceededLimits["CowCalfFemaleCross"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1096,6 +1197,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.CowMilkProductionNative}
                         onChange={(e) => handleChange(e)}
+                        max="10000"
+                        min="0"
+                        onBlur={() => handleBlur("CowMilkProductionNative", 10000)}
+                        style={{ color: exceededLimits["CowMilkProductionNative"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1110,6 +1215,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.CowMilkProductionCross}
                         onChange={(e) => handleChange(e)}
+                        max="20000"
+                        min="0"
+                        onBlur={() => handleBlur("CowMilkProductionCross", 20000)}
+                        style={{ color: exceededLimits["CowMilkProductionCross"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1147,6 +1256,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.BuffaloAdultMale}
                         onChange={(e) => handleChange(e)}
+                        max="1000"
+                        min="0"
+                        onBlur={() => handleBlur("BuffaloAdultMale", 1000)}
+                        style={{ color: exceededLimits["BuffaloAdultMale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1161,6 +1274,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.BuffaloAdultFemale}
                         onChange={(e) => handleChange(e)}
+                        max="1000"
+                        min="0"
+                        onBlur={() => handleBlur("BuffaloAdultFemale", 1000)}
+                        style={{ color: exceededLimits["BuffaloAdultFemale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1179,6 +1296,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.BuffaloCalfMale}
                         onChange={(e) => handleChange(e)}
+                        max="1000"
+                        min="0"
+                        onBlur={() => handleBlur("BuffaloCalfMale", 1000)}
+                        style={{ color: exceededLimits["BuffaloCalfMale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1193,6 +1314,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.BuffaloCalfFemale}
                         onChange={(e) => handleChange(e)}
+                        max="1000"
+                        min="0"
+                        onBlur={() => handleBlur("BuffaloCalfFemale", 1000)}
+                        style={{ color: exceededLimits["BuffaloCalfFemale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1212,6 +1337,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.BuffaloMilkProduction}
                         onChange={(e) => handleChange(e)}
+                        max="10000"
+                        min="0"
+                        onBlur={() => handleBlur("BuffaloMilkProduction", 10000)}
+                        style={{ color: exceededLimits["BuffaloMilkProduction"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1249,6 +1378,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.GoatAdultMale}
                         onChange={(e) => handleChange(e)}
+                        max="20000"
+                        min="0"
+                        onBlur={() => handleBlur("GoatAdultMale", 20000)}
+                        style={{ color: exceededLimits["GoatAdultMale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1263,6 +1396,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.GoatAdultFemale}
                         onChange={(e) => handleChange(e)}
+                        max="20000"
+                        min="0"
+                        onBlur={() => handleBlur("GoatAdultFemale", 20000)}
+                        style={{ color: exceededLimits["GoatAdultFemale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1281,6 +1418,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.GoatCalfMale}
                         onChange={(e) => handleChange(e)}
+                        max="20000"
+                        min="0"
+                        onBlur={() => handleBlur("GoatCalfMale", 20000)}
+                        style={{ color: exceededLimits["GoatCalfMale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1295,6 +1436,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.GoatCalfFemale}
                         onChange={(e) => handleChange(e)}
+                        max="20000"
+                        min="0"
+                        onBlur={() => handleBlur("GoatCalfFemale", 20000)}
+                        style={{ color: exceededLimits["GoatCalfFemale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1313,6 +1458,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.SheepAdultMale}
                         onChange={(e) => handleChange(e)}
+                        max="20000"
+                        min="0"
+                        onBlur={() => handleBlur("SheepAdultMale", 20000)}
+                        style={{ color: exceededLimits["SheepAdultMale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1327,6 +1476,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.SheepAdultFemale}
                         onChange={(e) => handleChange(e)}
+                        max="20000"
+                        min="0"
+                        onBlur={() => handleBlur("SheepAdultFemale", 20000)}
+                        style={{ color: exceededLimits["SheepAdultFemale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1345,6 +1498,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.SheepCalfMale}
                         onChange={(e) => handleChange(e)}
+                        max="20000"
+                        min="0"
+                        onBlur={() => handleBlur("SheepCalfMale", 20000)}
+                        style={{ color: exceededLimits["SheepCalfMale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1359,6 +1516,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.SheepCalfFemale}
                         onChange={(e) => handleChange(e)}
+                        max="20000"
+                        min="0"
+                        onBlur={() => handleBlur("SheepCalfFemale", 20000)}
+                        style={{ color: exceededLimits["SheepCalfFemale"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1378,6 +1539,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.GoatSheepMilkProduction}
                         onChange={(e) => handleChange(e)}
+                        max="20000"
+                        min="0"
+                        onBlur={() => handleBlur("GoatSheepMilkProduction", 20000)}
+                        style={{ color: exceededLimits["GoatSheepMilkProduction"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1410,6 +1575,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.ChickenNative}
                         onChange={(e) => handleChange(e)}
+                        max="200000"
+                        min="0"
+                        onBlur={() => handleBlur("ChickenNative", 200000)}
+                        style={{ color: exceededLimits["ChickenNative"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1424,6 +1593,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.ChickenLayer}
                         onChange={(e) => handleChange(e)}
+                        max="1000000"
+                        min="0"
+                        onBlur={() => handleBlur("ChickenLayer", 1000000)}
+                        style={{ color: exceededLimits["ChickenLayer"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1439,6 +1612,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.ChickenBroiler}
                         onChange={(e) => handleChange(e)}
+                        max="2000000"
+                        min="0"
+                        onBlur={() => handleBlur("ChickenBroiler", 2000000)}
+                        style={{ color: exceededLimits["ChickenBroiler"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1454,6 +1631,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.ChickenSonali}
                         onChange={(e) => handleChange(e)}
+                        max="2000000"
+                        min="0"
+                        onBlur={() => handleBlur("ChickenSonali", 2000000)}
+                        style={{ color: exceededLimits["ChickenSonali"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1472,6 +1653,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.ChickenSonaliFayoumiCockerelOthers}
                         onChange={(e) => handleChange(e)}
+                        max="2000000"
+                        min="0"
+                        onBlur={() => handleBlur("ChickenSonaliFayoumiCockerelOthers", 2000000)}
+                        style={{ color: exceededLimits["ChickenSonaliFayoumiCockerelOthers"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1491,6 +1676,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.ChickenEgg}
                         onChange={(e) => handleChange(e)}
+                        max="30000000"
+                        min="0"
+                        onBlur={() => handleBlur("ChickenEgg", 30000000)}
+                        style={{ color: exceededLimits["ChickenEgg"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1510,7 +1699,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                 <thead>
                   <tr>
                     <td className="tg-Nonpg-s1">
-                      Number of Ducks/Swan (হাঁসের/রাজহাঁসের সংখ্যা)
+                      Number of Ducks/Goose (হাঁসের/রাজহাঁসের সংখ্যা)
                     </td>
                     <td className="tg-Nonpg-s1">
                       <input
@@ -1521,6 +1710,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.DucksNumber}
                         onChange={(e) => handleChange(e)}
+                        max="1000000"
+                        min="0"
+                        onBlur={() => handleBlur("DucksNumber", 1000000)}
+                        style={{ color: exceededLimits["DucksNumber"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1538,6 +1731,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.DucksEgg}
                         onChange={(e) => handleChange(e)}
+                        max="30000000"
+                        min="0"
+                        onBlur={() => handleBlur("DucksEgg", 30000000)}
+                        style={{ color: exceededLimits["DucksEgg"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1567,6 +1764,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.PigeonNumber}
                         onChange={(e) => handleChange(e)}
+                        max="50000"
+                        min="0"
+                        onBlur={() => handleBlur("PigeonNumber", 50000)}
+                        style={{ color: exceededLimits["PigeonNumber"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1596,6 +1797,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.QuailNumber}
                         onChange={(e) => handleChange(e)}
+                        max="1000000"
+                        min="0"
+                        onBlur={() => handleBlur("QuailNumber", 1000000)}
+                        style={{ color: exceededLimits["QuailNumber"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1626,6 +1831,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.OtherAnimalNumber}
                         onChange={(e) => handleChange(e)}
+                        max="1000"
+                        min="0"
+                        onBlur={() => handleBlur("OtherAnimalNumber", 1000)}
+                        style={{ color: exceededLimits["OtherAnimalNumber"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1689,6 +1898,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.LandTotal}
                         onChange={(e) => handleChange(e)}
+                        max="100000"
+                        min="0"
+                        onBlur={() => handleBlur("LandTotal", 100000)}
+                        style={{ color: exceededLimits["LandTotal"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1707,6 +1920,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.LandOwn}
                         onChange={(e) => handleChange(e)}
+                        max="100000"
+                        min="0"
+                        onBlur={() => handleBlur("LandOwn", 100000)}
+                        style={{ color: exceededLimits["LandOwn"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1725,6 +1942,10 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         placeholder="0"
                         value={currentRow.LandLeased}
                         onChange={(e) => handleChange(e)}
+                        max="100000"
+                        min="0"
+                        onBlur={() => handleBlur("LandLeased", 100000)}
+                        style={{ color: exceededLimits["LandLeased"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
@@ -1834,6 +2055,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         class={errorObject.PhoneNumber}
                         value={currentRow.PhoneNumber}
                         onChange={(e) => handleChange(e)}
+                        
                       />
                     </td>
                   </tr>
