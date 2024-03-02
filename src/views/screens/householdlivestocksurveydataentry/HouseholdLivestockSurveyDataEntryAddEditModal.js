@@ -1096,8 +1096,8 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         onChange={(e) => handleChange(e)}
                         max="5000"
                         min="0"
-                        onBlur={() => handleBlur("CowBullNative", 5000)}
-                        style={{ color: exceededLimits["CowBullNative"] ? 'red' : '' }}
+                        onBlur={() => handleBlur("CowBullCross", 5000)}
+                        style={{ color: exceededLimits["CowBullCross"] ? 'red' : '' }}
                       />
                     </td>
                   </tr>
