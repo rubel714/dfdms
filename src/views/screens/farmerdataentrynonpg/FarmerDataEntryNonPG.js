@@ -426,7 +426,8 @@ const FarmerDataEntryNonPG = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDistrictList([{ id: "", name: "All" }].concat(res.data.datalist));
+      /* setDistrictList([{ id: "", name: "All" }].concat(res.data.datalist)); */
+      setDistrictList(res.data.datalist);
 
       setCurrDistrictId(SelectDistrictId);
       getUpazila(selectDivisionId, SelectDistrictId, selectUpazilaId);
