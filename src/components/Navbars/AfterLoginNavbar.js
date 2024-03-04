@@ -165,7 +165,7 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
-                    {/* {menuShowPermision("householdlocation") === 1 && (
+                    {menuShowPermision("householdlocation") === 1 && (
                       <li>
                         <a
                           href="javascript:void(0)"
@@ -174,7 +174,7 @@ function AfterLoginNavbar(props) {
                         Household Location Report
                         </a>
                       </li>
-                    )} */}
+                    )}
                   </ul>
                 </li>
               )}
