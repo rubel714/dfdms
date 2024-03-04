@@ -21,28 +21,23 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
 import { Button } from "reactstrap";
 
- 
 const GMap = ({ ...props }) => {
-  console.log('propssssssssssssssssssss: ', props.formData);
-  console.log('propssssssssssssssssssss: ', props.latlng);
-
-  
+  console.log("propssssssssssssssssssss: ", props);
 
   const mapStyles = {
-    width: "35.5%",
-    height: "46.1%",
+    width: "90%",
+    height: "80%",
     overflow: "hidden !important",
   };
 
   const { useState } = React;
-  const DispensingLanguage = JSON.parse(
-    localStorage.getItem("DispensingLanguage")
-  );
-  const lan = localStorage.getItem("LangCode");
-  const menukey = "facility";
+  // const DispensingLanguage = JSON.parse(
+  //   localStorage.getItem("DispensingLanguage")
+  // );
+  // const lan = localStorage.getItem("LangCode");
+  // const menukey = "facility";
   const classes = useStyles();
 
-   
   const [loaded, setLoaded] = useState(false);
 
   const [state, setState] = useState({
@@ -51,19 +46,22 @@ const GMap = ({ ...props }) => {
     selectedPlace: {},
     markerParams: {},
   });
-  const fitBounds = map => {
+
+  const fitBounds = (map) => {
     console.log("jbhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
     const bounds = new window.google.maps.LatLngBounds();
-    
+
     map.fitBounds(bounds);
   };
-  const loadHandler = map => {
+  const loadHandler = (map) => {
     console.log("jbhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
     fitBounds(map);
   };
 
   const onMarkerClick = (props, marker, e) => {
-    console.log(props.params);
+    console.log("onMarkerClick onMarkerClick props",props.params);
+    // console.log("onMarkerClick onMarkerClick marker",marker);
+    // console.log("onMarkerClick onMarkerClick e",e);
     setState({
       selectedPlace: props,
       markerParams: props.params,
@@ -71,8 +69,6 @@ const GMap = ({ ...props }) => {
       showingInfoWindow: true,
     });
   };
-
-  
 
   const onClose = (props) => {
     if (state.showingInfoWindow) {
@@ -88,54 +84,49 @@ const GMap = ({ ...props }) => {
     return location.lat + location.lng;
   }
 
-  const changeMarkerPosition =(e)=>{
+  // const changeMarkerPosition =(e)=>{
 
-   // alert("vhs")
-    console.log('e: ', e);
+  //  // alert("vhs")
+  //   console.log('e: ', e);
 
+  //   // this.setState({
+  //   // ...this.state,
+  //   //   details:{
+  //   //     ...this.state.details,
+  //   //     lat:e.lat,
+  //   //     lng:e.lng
+  //   //   }
+  //   // })
+  // }
 
-    // this.setState({
-    // ...this.state,
-    //   details:{
-    //     ...this.state.details,
-    //     lat:e.lat,
-    //     lng:e.lng
-    //   }
-    // })
-  }
+  // const onMarkerDragEnd = evt => {
 
+  //   let newLat = evt.latLng.lat(),
 
-  
-  const onMarkerDragEnd = evt => {
+  // 	    newLng = evt.latLng.lng();
+  //       console.log('newLat: ', newLat+'+++++++++++'+newLng);
 
-    let newLat = evt.latLng.lat(),
-    
-		    newLng = evt.latLng.lng();
-        console.log('newLat: ', newLat+'+++++++++++'+newLng);
+  //   console.log('6666: ',evt);
+  //  // console.log('888888888888888888: ',evt.onDragend.onMarkerDragEnd());
+  //   //props.formData['location']=evt.position.lat+','+evt.position.lng;
+  //  // props.updateLatLang(evt.position.lat,evt.position.lng);
+  //  // props.latlng=[evt.position.lat,evt.position.lng];
+  //   console.log('6666: ', evt.position);
+  //  // console.log(evt.google.maps.Marker.getPosition().lat());
+  // };
 
-
-    console.log('6666: ',evt);
-   // console.log('888888888888888888: ',evt.onDragend.onMarkerDragEnd());
-    //props.formData['location']=evt.position.lat+','+evt.position.lng;
-   // props.updateLatLang(evt.position.lat,evt.position.lng);
-   // props.latlng=[evt.position.lat,evt.position.lng];
-    console.log('6666: ', evt.position);
-   // console.log(evt.google.maps.Marker.getPosition().lat());
-  };
-   
-
-  const onMarkerDragEndss = (coord, index) => {
-    console.log('coord: ', coord);
-    const { latLng } = coord;
-    const lat = latLng.lat();
-    const lng = latLng.lng();
-return;
-    this.setState(prevState => {
-      const markers = [...this.state.markers];
-      markers[index] = { ...markers[index], position: { lat, lng } };
-      return { markers };
-    });
-  };
+  //   const onMarkerDragEndss = (coord, index) => {
+  //     console.log('coord: ', coord);
+  //     const { latLng } = coord;
+  //     const lat = latLng.lat();
+  //     const lng = latLng.lng();
+  // return;
+  //     this.setState(prevState => {
+  //       const markers = [...this.state.markers];
+  //       markers[index] = { ...markers[index], position: { lat, lng } };
+  //       return { markers };
+  //     });
+  //   };
 
   const options = {
     imagePath:
@@ -144,37 +135,26 @@ return;
 
   return (
     <>
-       
-
-                <Map
-                  
-                  google={props.google}
-                  zoom={10}
-                  style={mapStyles}
-                  initialCenter={{ 
-                     lat: 9.314623823,
-                     lng: 2.31184834
-                   //  lat:  props.latlng[0],
-                   //  lng: props.latlng[1]
-                  //  lat: props.formData.Latitude,
-                   // lng: props.formData.Longitude
-                  }}
-                  center={
-                    { 
-                      // lat: 9.314623823,
-                       //lng: 2.31184834
-                     //  lat:  props.latlng[0],
-                     //  lng: props.latlng[1]
-                      lat: props.formData.Latitude,
-                      lng: props.formData.Longitude
-                    }
-                  }
-                  draggable={true} 
-                  onClick = {changeMarkerPosition}
-                >
-
-                  
-                  {
+      <Map
+        google={props.google}
+        zoom={12}
+        style={mapStyles}
+        initialCenter={{
+          lat: 23.86255968977096,
+          lng: 90.33998265335906
+        }}
+        // center={
+        //   {
+        //     lat: 23.73180007001292,
+        //    lng: 90.42627216534802
+        //     // lat: props.formData.Latitude,
+        //     // lng: props.formData.Longitude
+        //   }
+        // }
+        // draggable={true}
+        // onClick = {changeMarkerPosition}
+      >
+        {/* {
                    props.addProductForm?(
                       <Marker
                          
@@ -182,89 +162,73 @@ return;
                         params={props.formData}
                         position={{ lat:props.latlng[0], lng:  props.latlng[1] }}
                         onClick={onMarkerClick}
-                        draggable={true}
-                    //    onDragend={onMarkerDragEnd}
-                  //  {(t, map, coord) => this.onMarkerDragEnd(coord, index)}
-
-                        onDragend={(t, map, coord) => {
+                        // draggable={true}
+                        // onDragend={(t, map, coord) => {
                           
-                          console.log('dragEnd', coord.latLng.lng() )
+                        //   console.log('dragEnd', coord.latLng.lng() )
 
 
-                           props.formData['location']=coord.latLng.lat()+','+coord.latLng.lng();
-                            props.updateLatLang(coord.latLng.lat(),coord.latLng.lng());
-                            props.latlng=[coord.latLng.lat(),coord.latLng.lng()];
+                        //    props.formData['location']=coord.latLng.lat()+','+coord.latLng.lng();
+                        //     props.updateLatLang(coord.latLng.lat(),coord.latLng.lng());
+                        //     props.latlng=[coord.latLng.lat(),coord.latLng.lng()];
 
                         
-                        }}
-                        params={props.formData} 
-                        
-                      //  onDragEnd={(e) => {console.log('dragEnd',e)}}
-                        
-                    //    onPositionChanged={onPositionChanged}
-
-                       // options={options}
+                        // }}
+                        // params={props.formData} 
+             
                         icon={{
-                          url: require("assets/img/marker_icon.png")  ,
-                        //  anchor: { x: 16, y: 16 },
-                        //  scaledSize: { height: 16, width: 16 },  
+                          url: require("assets/img/marker_icon.png")  , 
                   
                       }}
                   
-                      />):(
+                      />):( */}
 
-                        <Marker
-                        ref={refmap => refmap}
-                        params={props.formData}
-                        position={{ lat:props.formData.Latitude, lng:  props.formData.Longitude }}
-                        onClick={onMarkerClick}
-                        draggable={true}
-                       // onDragend={onMarkerDragEnd}
-                        //onDragEnd={(e) => {console.log('dragEnd', e)}}
+        {props.formData.map((item, index) => {
+          return (
+            <Marker
+              ref={(refmap) => refmap}
+              position={{ lat: item.Latitute, lng: item.Longitute }}
+              onClick={onMarkerClick}
+              params={item}
+              icon={{
+                url: require("assets/img/marker_icon.png"),
+              }}
+            />
+          );
+        })}
 
-                        onDragend={(t, map, coord) => {
-                          
-                          console.log('dragEnd', coord.latLng.lng() )
+        {/* <Marker
+          ref={(refmap) => refmap}
+          // params={props.formData}
+          // position={{ lat:props.formData.Latitude, lng:  props.formData.Longitude }}
+          position={{ lat: 23.73180007001292, lng: 90.42627216534802 }}
+          onClick={onMarkerClick}
+          // draggable={true}
 
+          // onDragend={(t, map, coord) => {
 
-                            props.formData['location']=coord.latLng.lat()+','+coord.latLng.lng();
-                            props.updateLatLang(coord.latLng.lat(),coord.latLng.lng());
-                            props.latlng=[coord.latLng.lat(),coord.latLng.lng()];
-                            props.formData.Latitude = coord.latLng.lat();
-                            props.formData.Longitude = coord.latLng.lng();
-                        
-                        }}
+          //   console.log('dragEnd', coord.latLng.lng() )
 
-                        params={props.formData} 
-                        
-                       // options={options}
-                        icon={{
+          //     props.formData['location']=coord.latLng.lat()+','+coord.latLng.lng();
+          //     props.updateLatLang(coord.latLng.lat(),coord.latLng.lng());
+          //     props.latlng=[coord.latLng.lat(),coord.latLng.lng()];
+          //     props.formData.Latitude = coord.latLng.lat();
+          //     props.formData.Longitude = coord.latLng.lng();
 
-                          url: require("assets/img/marker_icon.png")  ,
-                        //  anchor: { x: 16, y: 16 },
-                        //  scaledSize: { height: 16, width: 16 },  
-                  
-                      }}
-                  
-                      />
-                      )
-                   
+          // }}
 
-                    //   <MarkerClusterer >
-                    //   {(clusterer) =>
-                    //     // locations.map((location) => (
-                    //     //   <Marker key={createKey(location)} position={location} clusterer={clusterer} />
-                    //     // ))   options={options}  key={createKey(item)}  onClick={onMarkerClick}
+          // params={props.formData}
 
-                    //     MapLatitudeLongitude.map((item)=>(
+          icon={{
+            url: require("assets/img/marker_icon.png"),
+          }}
+        /> */}
 
-                    //         <Marker  params={item}  clusterer={clusterer}  position={{ lat: item.Latitude, lng: item.Longitude}} />
+        {/* ) */}
 
-                    //     ))
-                    //   }
-                    // </MarkerClusterer>
-                  }
-                  {  
+        {/* // } */}
+
+        {  
                   
                   
       <InfoWindow
@@ -284,10 +248,10 @@ return;
                                       "borderRight": "1px solid antiquewhite",
                                     }}
                                   >
-                                  {DispensingLanguage[lan][menukey]["Facility Name"]}
+                                  {"Division"}
                                   </TableCell>
                                   <TableCell >
-                                  {state.markerParams.FacilityName}
+                                  {state.markerParams.DivisionName}
                                   </TableCell>
                                   </TableRow>
                                   <TableRow>
@@ -298,7 +262,7 @@ return;
                                     }}
                                     align="left"
                                   >
-                                   {DispensingLanguage[lan][menukey]["Commune Name"]}
+                                   {"District"}
                                   </TableCell>
                                   
                                   <TableCell > {state.markerParams.DistrictName}  </TableCell>
@@ -311,9 +275,9 @@ return;
                                     }}
                                     align="left"
                                   >
-                                   {DispensingLanguage[lan][menukey]["ZS Name"]}
+                                   {"Upazila"}
                                   </TableCell>
-                                  <TableCell >  {state.markerParams.ZoneName} </TableCell>
+                                  <TableCell >  {state.markerParams.UpazilaName} </TableCell>
                                   </TableRow>
                                   <TableRow>
                                   <TableCell
@@ -322,9 +286,9 @@ return;
                                       "borderRight": "1px solid antiquewhite",
                                     }}
                                   >
-                                  {DispensingLanguage[lan][menukey]["Department Name"] }
+                                  {"Union" }
                                   </TableCell>
-                                  <TableCell > {state.markerParams.RegionName} </TableCell>
+                                  <TableCell > {state.markerParams.UnionName} </TableCell>
                                    
                                 </TableRow>
 
@@ -335,9 +299,9 @@ return;
                                       "borderRight": "1px solid antiquewhite",
                                     }}
                                   >
-                                  {DispensingLanguage[lan][menukey]["Facility Type"] }
+                                  {"Farmer" }
                                   </TableCell>
-                                  <TableCell > {state.markerParams.FTypeName} </TableCell>
+                                  <TableCell > {state.markerParams.FarmerName} </TableCell>
                                    
                                 </TableRow>
 
@@ -348,12 +312,11 @@ return;
                                       "borderRight": "1px solid antiquewhite",
                                     }}
                                   >
-                                  {DispensingLanguage[lan][menukey]["Facility Address"] }
+                                  {"Gender"}
                                   </TableCell>
-                                  <TableCell > {state.markerParams.FacilityAddress} </TableCell>
+                                  <TableCell > {state.markerParams.GenderName} </TableCell>
                                    
                                 </TableRow>
-
 
                                 <TableRow>
                                 <TableCell
@@ -362,11 +325,14 @@ return;
                                       "borderRight": "1px solid antiquewhite",
                                     }}
                                   >
-                                  {DispensingLanguage[lan][menukey]["Facility Phone"] }
+                                  {"Phone"}
                                   </TableCell>
-                                  <TableCell > {state.markerParams.FacilityPhone} </TableCell>
+                                  <TableCell > {state.markerParams.Phone} </TableCell>
                                    
                                 </TableRow>
+
+
+                      
 
                               </TableBody>
                              
@@ -376,8 +342,7 @@ return;
            
           </div>
         </InfoWindow> }
-                </Map>
-               
+      </Map>
     </>
   );
 };
@@ -388,25 +353,25 @@ export default GoogleApiWrapper({
 //export default FacilityMap;
 
 const useStyles = makeStyles({
-  facilityPageTitle: {
-    marginTop: "60px",
-    color: "white",
-    background: "whitesmoke",
-    color: "black",
-    borderRadius: "10px",
-    padding: "1rem",
-  },
-  tableContainer: {
-    backgroundColor: "whitesmoke",
-    borderRadius: "10px",
-    padding: "2rem",
-    color: "black",
-  },
-  fullWidth: {
-    width: "95%",
-  },
-  filterDiv: {
-    width: "80%",
-    display: "flex",
-  },
+  // facilityPageTitle: {
+  //   marginTop: "60px",
+  //   color: "white",
+  //   background: "whitesmoke",
+  //   color: "black",
+  //   borderRadius: "10px",
+  //   padding: "1rem",
+  // },
+  // tableContainer: {
+  //   backgroundColor: "whitesmoke",
+  //   borderRadius: "10px",
+  //   padding: "2rem",
+  //   color: "black",
+  // },
+  // fullWidth: {
+  //   width: "95%",
+  // },
+  // filterDiv: {
+  //   width: "80%",
+  //   display: "flex",
+  // },
 });

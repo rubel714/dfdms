@@ -558,7 +558,8 @@ function TotalHouseholdAnimalInformationExport() {
 // 	;";
 
 $sql="SELECT q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,u.UnionName,
-	COUNT(a.HouseHoldId) NameOfTheFarm,
+	COUNT(a.HouseHoldId) NameOfTheFarmer,
+	SUM(case when a.NameOfTheFarm != '' then 1 else 0 end) NameOfTheFarm,
 	SUM(CASE WHEN a.`Gender`=1 THEN 1 ELSE 0 END) NumberOfMale,
 	SUM(CASE WHEN a.`Gender`=2 THEN 1 ELSE 0 END) NumberOfFemale,
 	SUM(CASE WHEN a.`Gender`=5 THEN 1 ELSE 0 END) NumberOfTransgender,
@@ -604,19 +605,19 @@ GROUP BY q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,u.UnionName";
 		$sqlrresultHeader = $db->query($sql);
 
 	
-    $tableProperties["query_field"] = array('DivisionName','DistrictName','UpazilaName','UnionName','NameOfTheFarm',
+    $tableProperties["query_field"] = array('DivisionName','DistrictName','UpazilaName','UnionName','NameOfTheFarmer','NameOfTheFarm',
 	'NumberOfMale','NumberOfFemale','NumberOfTransgender','NumberOfBoth','NumberOfOthers','NumberOfNID','NumberOfPGMember',
 	'CowNative', 'CowCross', 'MilkCow','CowBullNative','CowBullCross','CowCalfMaleNative','CowCalfMaleCross','CowCalfFemaleNative','CowCalfFemaleCross','CowMilkProductionNative','CowMilkProductionCross','BuffaloAdultMale','BuffaloAdultFemale','BuffaloCalfMale','BuffaloCalfFemale','BuffaloMilkProduction','GoatAdultMale','GoatAdultFemale','GoatCalfMale','GoatCalfFemale','SheepAdultMale','SheepAdultFemale','SheepCalfMale','SheepCalfFemale','GoatSheepMilkProduction','ChickenNative','ChickenLayer','ChickenBroiler','ChickenSonali','ChickenSonaliFayoumiCockerelOthers','ChickenEgg','DucksNumber','DucksEgg','PigeonNumber','QuailNumber','OtherAnimalNumber','LandTotal','LandOwn','LandLeased');
-    $tableProperties["table_header"] = array("Division","District","Upazila","Union/Pourashava","Total Number of Farmers",
+    $tableProperties["table_header"] = array("Division","District","Upazila","Union/Pourashava","Total Number of Farmers","Total Number of Farm",
 	"Total Number of Male","Total Number of Female","Total Number of Transgender",
 	"Total Number of Male-Female","Total Number of Others","Total Number of NID","Total Number of PG Member",
 	"Cow (Native)","Cow (Cross)", "এখন দুধ দিচ্ছে এমন গাভীর সংখ্যা", "Bull/Castrated Bull (Native)", "Bull/Castrated Bull (Cross)", "Calf Male (Native)", "Calf Male (Cross)", "Calf Female (Native)", "Calf Female (Cross)","Household/Farm Total (Cows) Milk Production per day (Liter) (Native)","Household/Farm Total (Cows) Milk Production per day (Liter) (Cross)","Adult Buffalo (Male)","Adult Buffalo (Female)", "Calf Buffalo (Male)", "Calf Buffalo (Female)", "Household/Farm Total (Buffalo) Milk Production per day (Liter)","Adult Goat (Male)","Adult Goat (Female)", "Calf Goat (Male)", "Calf Goat (Female)","Adult Sheep (Male)","Adult Sheep (Female)", "Calf Sheep (Male)", "Calf Sheep (Female)","Household/Farm Total (Goat) Milk Production per day (Liter)","Chicken (Native)","Chicken (Layer)","Chicken (Broiler)","Chicken (Sonali)","Chicken (Other Poultry (Fayoumi/ Cockerel/ Turkey)","Household/Farm Total (Chicken) Daily Egg Production","Number of Ducks/Swan","Household/Farm Total (Duck) Daily Egg Production","Number of Pigeon","Number of Quail","Number of other animals (Pig/Horse)","Total cultivable land in decimal","Own land for Fodder cultivation","Leased land for fodder cultivation");
-    $tableProperties["align"] = array("left","left","left","left","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right");
-    $tableProperties["width_print_pdf"] = array("30%","30%","30%","30%","30%","30%","30%","30%","30%","30%","30%","30%","30%","30%","30%"); //when exist serial then here total 95% and 5% use for serial
-    $tableProperties["width_excel"] = array("15","15","15","15","15","15","15","15","15","15","15","15","15","15","15");
-    $tableProperties["precision"] = array("string","string","string","string",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); //string,date,datetime,0,1,2,3,4
-    $tableProperties["total"] = array(0,0,0,0,0,0,0,0); //not total=0, total=1
-    $tableProperties["color_code"] = array(0,0,0,0,0,0,0,0); //colorcode field = 1 not color code field = 0
+    $tableProperties["align"] = array("left","left","left","left","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right","right");
+    $tableProperties["width_print_pdf"] = array("30%","30%","30%","30%","30%","30%","30%","30%","30%","30%","30%","30%","30%","30%","30%","30%"); //when exist serial then here total 95% and 5% use for serial
+    $tableProperties["width_excel"] = array("15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15");
+    $tableProperties["precision"] = array("string","string","string","string",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); //string,date,datetime,0,1,2,3,4
+    $tableProperties["total"] = array(0,0,0,0,0,0,0,0,0); //not total=0, total=1
+    $tableProperties["color_code"] = array(0,0,0,0,0,0,0,0,0); //colorcode field = 1 not color code field = 0
 	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
     $tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
     

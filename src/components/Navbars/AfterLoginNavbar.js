@@ -165,16 +165,16 @@ function AfterLoginNavbar(props) {
                       </li>
                     )}
 
-                    {menuShowPermision("report2") === 1 && (
+                    {/* {menuShowPermision("householdlocation") === 1 && (
                       <li>
                         <a
                           href="javascript:void(0)"
-                          onClick={() => props.history.push("report2")}
+                          onClick={() => props.history.push("householdlocation")}
                         >
-                          Report 2
+                        Household Location Report
                         </a>
                       </li>
-                    )}
+                    )} */}
                   </ul>
                 </li>
               )}
