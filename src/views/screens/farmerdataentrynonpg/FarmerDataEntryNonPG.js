@@ -218,7 +218,7 @@ const FarmerDataEntryNonPG = (props) => {
       UpazilaId: currUpazilaId,
     };
     // console.log('LoginUserInfo params: ', params);
-    return;
+    //return;
     ExecuteQuery(serverpage, params);
   }
 
