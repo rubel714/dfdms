@@ -140,7 +140,7 @@ const HouseHoldLocation = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDivisionList([{ id: "", name: "All" }].concat(res.data.datalist));
+      setDivisionList([{ id: "", name: "Select Division" }].concat(res.data.datalist));
 
       // setCurrDivisionId(selectDivisionId);
 
@@ -157,7 +157,7 @@ const HouseHoldLocation = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setDistrictList([{ id: "", name: "All" }].concat(res.data.datalist));
+      setDistrictList([{ id: "", name: "Select District" }].concat(res.data.datalist));
 
       setCurrDistrictId(SelectDistrictId);
       getUpazila(selectDivisionId, SelectDistrictId, selectUpazilaId);
@@ -174,7 +174,7 @@ const HouseHoldLocation = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setUpazilaList([{ id: "", name: "All" }].concat(res.data.datalist));
+      setUpazilaList([{ id: "", name: "Select Upazila" }].concat(res.data.datalist));
 
       setCurrUpazilaId(selectUpazilaId);
     });

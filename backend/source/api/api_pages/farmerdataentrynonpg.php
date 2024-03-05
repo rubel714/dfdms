@@ -111,11 +111,10 @@ function getDataList($data){
 		  FROM
 		  `t_householdlivestocksurvey` a 
 		  Inner Join t_gender b ON a.Gender = b.GenderId
-		  WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
-			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
-			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
-			AND a.`YearId` = 2024
-		  ;";
+		  WHERE (a.DivisionId = $DivisionId)
+			AND (a.DistrictId = $DistrictId)
+			AND (a.UpazilaId = $UpazilaId)
+			AND a.`YearId` = 2024;";
 		  
 
 		$resultdata = $dbh->query($query);

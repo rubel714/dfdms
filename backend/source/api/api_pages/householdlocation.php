@@ -33,9 +33,9 @@ function getDataList($data)
 		INNER JOIN `t_upazila` d ON a.`UpazilaId`=d.`UpazilaId`
 		INNER JOIN `t_union` e ON a.`UnionId`=e.`UnionId`
 		INNER JOIN `t_gender` f ON a.`Gender`=f.`GenderId`
-		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
-		 AND (a.DistrictId = $DistrictId OR $DistrictId=0)
-		 AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0);";
+		WHERE (a.DivisionId = $DivisionId)
+		 AND (a.DistrictId = $DistrictId)
+		 AND (a.UpazilaId = $UpazilaId);";
 
 		$resultdata = $dbh->query($query);
 
