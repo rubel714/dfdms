@@ -2182,22 +2182,22 @@ const FarmerDataEntryNonPGAddEditModal = (props) => {
 
           <div class="modalItem-mobile ">
             <Button label={"Close"} class={"btnClose"} onClick={modalClose} />
-            {props.currentRow.id && (
+            {/* {props.currentRow.id && (
               <Button
                 label={"Update"}
                 class={"btnUpdate"}
                 disabled = {isServerLoading}
                 onClick={addEditAPICall}
               />
-            )}
-            {!props.currentRow.id && (
+            )} */}
+            {/* {!props.currentRow.id && (
               <Button
                 label={"Save"}
                 class={"btnSave"}
                 disabled = {isServerLoading}
                 onClick={addEditAPICall}
               />
-            )}
+            )} */}
           </div>
         </div>
       </div>

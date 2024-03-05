@@ -231,7 +231,7 @@ function AfterLoginNavbar(props) {
                             props.history.push("farmerdataentrynonpg")
                           }
                         >
-                          Household Livestock Survey 2024
+                          Household Livestock Survey 2024 View
                         </a>
                       </li>
                     )}

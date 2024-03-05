@@ -233,21 +233,16 @@ const FarmerDataEntryNonPG = (props) => {
           }}
         />
 
-       {/*  <DeleteOutline
-          className={"table-delete-icon"}
-          onClick={() => {
-            deleteData(rowData);
-          }}
-        /> */}
+       
 
-      {!(UserInfo.RoleId[0] == 10 || UserInfo.RoleId[0] == 11) && (
+     {/*  {!(UserInfo.RoleId[0] == 10 || UserInfo.RoleId[0] == 11) && (
             <DeleteOutline
             className={"table-delete-icon"}
             onClick={() => {
               deleteData(rowData);
             }}
           />
-        )} 
+        )}  */}
 
 
 
@@ -426,8 +421,8 @@ const FarmerDataEntryNonPG = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      /* setDistrictList([{ id: "", name: "All" }].concat(res.data.datalist)); */
-      setDistrictList(res.data.datalist);
+      setDistrictList([{ id: "", name: "Select District" }].concat(res.data.datalist));
+      /* setDistrictList(res.data.datalist); */
 
       setCurrDistrictId(SelectDistrictId);
       getUpazila(selectDivisionId, SelectDistrictId, selectUpazilaId);
@@ -444,7 +439,8 @@ const FarmerDataEntryNonPG = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setUpazilaList([{ id: "", name: "All" }].concat(res.data.datalist));
+      setUpazilaList([{ id: "", name: "Select Upazila" }].concat(res.data.datalist));
+      /* setUpazilaList(res.data.datalist); */
 
       setCurrUpazilaId(selectUpazilaId);
     });
@@ -486,7 +482,7 @@ const FarmerDataEntryNonPG = (props) => {
       <div class="bodyContainer">
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
-          <h4>Home ❯ Admin ❯ Household Livestock Survey 2024</h4>
+          <h4>Home ❯ Admin ❯ Household Livestock Survey 2024 View</h4>
 
           {!listEditPanelToggle ? (
             <>
@@ -554,7 +550,7 @@ const FarmerDataEntryNonPG = (props) => {
               </div>
 
               <div class="filter-button">
-                <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
+                {/*<Button label={"ADD"} class={"btnAdd"} onClick={addData} />*/}
                 {/* <Button
                   label={"Export"}
                   class={"btnPrint"}
