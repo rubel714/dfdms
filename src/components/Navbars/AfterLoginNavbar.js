@@ -248,6 +248,18 @@ function AfterLoginNavbar(props) {
                         </a>
                       </li>
                     )}
+                    {menuShowPermision("householdlivestocksurveyforuser") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() =>
+                            props.history.push("householdlivestocksurveyforuser")
+                          }
+                        >
+                          Household Livestock Survey 2024 View for User
+                        </a>
+                      </li>
+                    )}
 
                     {/* 
                   {menuShowPermision("pgdatacollection") === 1 && (

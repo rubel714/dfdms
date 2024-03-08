@@ -24,6 +24,7 @@ import PGDataCollectionEntry from "views/screens/datacollectionentry/index.js";
 import FarmersDataCollectionEntry from "views/screens/datacollectionentry/indexfarmer.js";
 import LGDDataCollectionEntry from "views/screens/datacollectionentry/indexlgd.js";
 import FarmerDataEntryNonPG from "views/screens/farmerdataentrynonpg/index.js";
+import HouseholdLivestockSurveyForUser from "views/screens/householdlivestocksurveyforuser/index.js";
 import HouseholdLivestockSurveyDataEntry from "views/screens/householdlivestocksurveydataentry/index.js";
 
 import PGDataCollection from "views/screens/pgdatacollection/index.js";
@@ -116,6 +117,10 @@ ReactDOM.render(
           <Route
             path="/farmerdataentrynonpg"
             render={(props) => <FarmerDataEntryNonPG {...props} />}
+          />
+          <Route
+            path="/householdlivestocksurveyforuser"
+            render={(props) => <HouseholdLivestockSurveyForUser {...props} />}
           />
           <Route
             path="/householdlivestocksurveydataentry"

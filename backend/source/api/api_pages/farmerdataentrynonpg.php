@@ -35,6 +35,8 @@ function getDataList($data){
 
 	
 	$query = "SELECT 
+		q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,
+			u.UnionName,
 			a.`HouseHoldId`,
 			a.`HouseHoldId` id,
 			a.`YearId`,
@@ -106,15 +108,23 @@ function getDataList($data){
 			a.`QuailNumber`,
 			a.`OtherAnimalNumber`,
 			case when a.IsDisability=1 then 'Yes' else 'No' end IsDisabilityStatus,
-			case when a.IsPGMember=1 then 'Yes' else 'No' end IsPGMemberStatus
+			case when a.IsPGMember=1 then 'Yes' else 'No' end IsPGMemberStatus,
+			us.UserName, de.DesignationName
 			
 		  FROM
 		  `t_householdlivestocksurvey` a 
+		  INNER JOIN `t_division` q ON a.`DivisionId`=q.`DivisionId`
+		  INNER JOIN `t_district` r ON a.`DistrictId`=r.`DistrictId`
+		  INNER JOIN `t_upazila` s ON a.`UpazilaId`=s.`UpazilaId`
+		  INNER JOIN `t_union` u ON a.`UnionId`=u.`UnionId`
 		  Inner Join t_gender b ON a.Gender = b.GenderId
+		  INNER JOIN `t_users` us ON a.`UserId`=us.`UserId`
+		  LEFT JOIN `t_designation` de ON a.`DesignationId`=de.`DesignationId`
 		  WHERE (a.DivisionId = $DivisionId)
 			AND (a.DistrictId = $DistrictId)
 			AND (a.UpazilaId = $UpazilaId)
-			AND a.`YearId` = 2024;";
+			AND a.`YearId` = 2024
+		  ORDER BY q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,u.UnionName;";
 		  
 
 		$resultdata = $dbh->query($query);

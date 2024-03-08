@@ -13,11 +13,10 @@ import {
 } from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
-import RegularBeneficiaryEntryAddEditModal from "./FarmerDataEntryNonPGAddEditModal";
 import moment from "moment";
 
-const FarmerDataEntryNonPG = (props) => {
-  const serverpage = "farmerdataentrynonpg"; // this is .php server page
+const HouseholdLivestockSurveyForUser = (props) => {
+  const serverpage = "householdlivestocksurveyforuser"; // this is .php server page
 
   const { useState } = React;
   const [listEditPanelToggle, setListEditPanelToggle] = useState(true);
@@ -51,10 +50,11 @@ const FarmerDataEntryNonPG = (props) => {
   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
   const PrintPDFExcelExportFunction = (reportType) => {
-   /*  let finalUrl =
-      EXCEL_EXPORT_URL + "report/household_livestock_survey_excel.php"; */
 
-      let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+    /* let finalUrl =
+    EXCEL_EXPORT_URL + "report/household_livestock_survey_for_user_excel.php"; */
+
+    let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
 
     let DivisionName =
       divisionList[
@@ -77,7 +77,7 @@ const FarmerDataEntryNonPG = (props) => {
 
     window.open(
       finalUrl +
-        "?action=HouseholdLiveStockSurveyViewExport" +
+        "?action=HouseholdLiveStockSurveyForUserExport" +
         "&reportType=excel" +
         "&DivisionId=" +
         currDivisionId +
@@ -91,6 +91,7 @@ const FarmerDataEntryNonPG = (props) => {
         DistrictName +
         "&UpazilaName=" +
         UpazilaName +
+        "&UserId=" + UserInfo.UserId+
         "&TimeStamp=" +
         Date.now()
     );
@@ -719,7 +720,7 @@ const FarmerDataEntryNonPG = (props) => {
     {
       field: "PhoneNumber",
       label:
-        "Cell No. of Enumerator ",
+        "Cell No. of Enumerator",
       align: "left",
       visible: true,
       sort: true,
@@ -727,7 +728,7 @@ const FarmerDataEntryNonPG = (props) => {
       width: 100,
     },
 
-     {
+    /* {
       field: "custom",
       label: "Action",
       width: "5%",
@@ -735,7 +736,7 @@ const FarmerDataEntryNonPG = (props) => {
       visible: true,
       sort: false,
       filter: false,
-    }, 
+    }, */
   ];
 
   if (bFirst) {
@@ -1020,7 +1021,7 @@ const FarmerDataEntryNonPG = (props) => {
       <div class="bodyContainer">
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
-          <h4>Home ❯ Admin ❯ Household Livestock Survey 2024 View</h4>
+          <h4>Home ❯ Admin ❯ Household Livestock Survey 2024 View for User</h4>
 
           {!listEditPanelToggle ? (
             <>
@@ -1041,7 +1042,15 @@ const FarmerDataEntryNonPG = (props) => {
             <div class="searchAdd3">
               <div class="formControl-filter-data-label">
                 <label for="DivisionId">Division (বিভাগ): </label>
-                <select
+                <input
+                  id="DivisionName"
+                  name="DivisionName"
+                  type="text"
+                  disabled={true}
+                  value={UserInfo.DivisionName}
+
+                  />
+                {/* <select
                   class="dropdown_filter"
                   id="DivisionId"
                   name="DivisionId"
@@ -1052,12 +1061,20 @@ const FarmerDataEntryNonPG = (props) => {
                     divisionList.map((item, index) => {
                       return <option value={item.id}>{item.name}</option>;
                     })}
-                </select>
+                </select> */}
               </div>
 
               <div class="formControl-filter-data-label">
                 <label for="DistrictId">District (জেলা): </label>
-                <select
+                <input
+                    id="DistrictName"
+                    name="DistrictName"
+                    type="text"
+                    disabled={true}
+                    value={UserInfo.DistrictName}
+
+                    />
+                {/* <select
                   class="dropdown_filter"
                   id="DistrictId"
                   name="DistrictId"
@@ -1068,12 +1085,20 @@ const FarmerDataEntryNonPG = (props) => {
                     districtList.map((item, index) => {
                       return <option value={item.id}>{item.name}</option>;
                     })}
-                </select>
+                </select> */}
               </div>
 
               <div class="formControl-filter-data-label">
                 <label for="UpazilaId">Upazila (উপজেলা): </label>
-                <select
+                <input
+                  id="UpazilaName"
+                  name="UpazilaName"
+                  type="text"
+                  disabled={true}
+                  value={UserInfo.UpazilaName}
+
+                  />
+                {/* <select
                   id="UpazilaId"
                   name="UpazilaId"
                   class="dropdown_filter"
@@ -1084,7 +1109,7 @@ const FarmerDataEntryNonPG = (props) => {
                     upazilaList.map((item, index) => {
                       return <option value={item.id}>{item.name}</option>;
                     })}
-                </select>
+                </select> */}
               </div>
 
               <div class="filter-button">
@@ -1112,22 +1137,11 @@ const FarmerDataEntryNonPG = (props) => {
           </>
         )}
 
-        {!listEditPanelToggle && (
-          <>
-            {/* {!currentInvoice.BPosted && ( */}
-            {1 == 1 && (
-              <RegularBeneficiaryEntryAddEditModal
-                masterProps={props}
-                currentRow={currentRow}
-                modalCallback={modalCallback}
-              />
-            )}
-          </>
-        )}
+       
       </div>
       {/* <!-- BODY CONTAINER END --> */}
     </>
   );
 };
 
-export default FarmerDataEntryNonPG;
+export default HouseholdLivestockSurveyForUser;

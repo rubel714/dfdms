@@ -1404,3 +1404,10 @@ textarea {
   .exceededLimit {
     border: 1px solid red;
 }
+
+
+.CustomScroll {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 450px;
+  }
