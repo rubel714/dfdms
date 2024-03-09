@@ -226,7 +226,7 @@ function dataSyncUpload($data)
 					"success" => 0,
 					"status" => 500,
 					"UserId" => $UserId,
-					"message" => "Found duplicate data into server. ".$duplicatePhone
+					"message" => "Found duplicate data into server. ".$duplicatePhoneWithServer
 				];
 			} else if (count($aQuerys) > 0) {
 				$res = exec_query($aQuerys, $UserId, $lan, false);
