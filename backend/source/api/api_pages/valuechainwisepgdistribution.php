@@ -124,6 +124,7 @@ function getDataList($data){
 		$returnData = msg(0,500,$e->getMessage());
 	}
 	
+	$dbh->CloseConnection();  /**Close database connection */
 	return $returnData;
 }
 
