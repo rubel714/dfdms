@@ -773,14 +773,14 @@ const FarmerDataEntryNonPG = (props) => {
 
        
 
-     {/*  {!(UserInfo.RoleId[0] == 10 || UserInfo.RoleId[0] == 11) && (
+       {(UserInfo.RoleId[0] == 1) && (
             <DeleteOutline
             className={"table-delete-icon"}
             onClick={() => {
               deleteData(rowData);
             }}
           />
-        )}  */}
+        )} 
 
 
 

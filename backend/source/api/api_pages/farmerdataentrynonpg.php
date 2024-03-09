@@ -446,8 +446,7 @@ function dataAddEdit($data) {
 						'DataCollectorName',
 						'DesignationId',
 						'PhoneNumber',
-						'Remarks',
-						'UserId'
+						'Remarks'
 					];
 				$u->values = [
 					$YearId,
@@ -513,8 +512,7 @@ function dataAddEdit($data) {
 					$DataCollectorName,
 					$DesignationId,
 					$PhoneNumber,
-					$Remarks,
-					$UserId
+					$Remarks
 				];
 				$u->pks = ['HouseHoldId'];
 				$u->pk_values = [$HouseHoldId];

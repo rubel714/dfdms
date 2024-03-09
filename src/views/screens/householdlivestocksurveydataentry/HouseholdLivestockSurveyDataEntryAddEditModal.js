@@ -369,6 +369,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
       "DataCollectorName",
       "Phone",
       "PhoneNumber",
+      "DesignationId",
 
     ];
     if (currentRow.RelationWithHeadOfHH === 2) {
@@ -2142,7 +2143,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                                       </tr> */}
 
                   <tr>
-                    <td className="tg-Nonpg-99sbx">Enumerator Designation</td>
+                    <td className="tg-Nonpg-99sbx">Enumerator Designation *</td>
                     <td className="tg-Nonpg-99sbx">
                       <Autocomplete
                         autoHighlight
@@ -2152,6 +2153,7 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         autoComplete
                         options={DesignationList ? DesignationList : []}
                         getOptionLabel={(option) => option.DesignationName}
+                        class={errorObject.DesignationId}
                         value={
                           DesignationList
                             ? DesignationList[
