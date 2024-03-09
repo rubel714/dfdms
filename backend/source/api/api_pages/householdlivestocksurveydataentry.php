@@ -32,6 +32,8 @@ function dataSyncUpload($data)
 		$YearId = 2024;
 		$rowData = $data->rowData;
 
+
+
 		// echo "<pre>";
 		// echo count($rowData);
 		// print_r($rowData);
@@ -99,7 +101,19 @@ function dataSyncUpload($data)
 			$dbh = new Db();
 			$aQuerys = array();
 
+			$currTime = date("YmdHis");
+			$query1 = "SELECT LoginName FROM t_users
+			WHERE UserId = $UserId;";
+			$resultdata1 = $dbh->query($query1);
 
+			$re = array();
+			$LoginName = $UserId;
+			foreach ($re as $r) {
+				$LoginName = $r["LoginName"];
+			}
+			$logFileName = "../../../Logs/Sync_Upload_Files/".$LoginName."_".$currTime.".txt";
+			file_put_contents($logFileName, "Params: ".json_encode($data). PHP_EOL , FILE_APPEND | LOCK_EX);
+			
 
 
 
@@ -119,8 +133,11 @@ function dataSyncUpload($data)
 			// 		print_r($old_DataList);
 			// exit;
 			$isDuplicateInCurrList = array();
+			$isDuplicateInCurrListWithServer = array();
 			$hasDuplicate = 0;
+			$hasDuplicateWithServer = 0;
 			$duplicatePhone = "";
+			$duplicatePhoneWithServer = "";
 
 			foreach ($rowData as $row) {
 				$row = (array)$row;
@@ -212,7 +229,16 @@ function dataSyncUpload($data)
 				/**If found duplicate then just ignore this row */
 				if (array_key_exists($duplicate_key, $old_DataList)) {
 					/**when duplicate then skip */
-					continue;
+					//continue;
+					$hasDuplicateWithServer = 1;
+
+					// $isDuplicateInCurrListWithServer = array(); 
+					if($duplicatePhoneWithServer == ""){
+						$duplicatePhoneWithServer = $FarmerName.'-'.$Phone;
+					}else{
+						$duplicatePhoneWithServer .= ", ".$FarmerName.'-'.$Phone;
+					}
+
 				}
 
 
@@ -259,6 +285,13 @@ function dataSyncUpload($data)
 					"status" => 500,
 					"UserId" => $UserId,
 					"message" => "Found duplicate data. ".$duplicatePhone
+				];
+			}else if ($hasDuplicateWithServer > 0) {
+				$returnData = [
+					"success" => 0,
+					"status" => 500,
+					"UserId" => $UserId,
+					"message" => "Found duplicate data into server. ".$duplicatePhone
 				];
 			} else if (count($aQuerys) > 0) {
 				$res = exec_query($aQuerys, $UserId, $lan, false);
