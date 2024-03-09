@@ -40,10 +40,9 @@ function dataSyncUpload($data)
 			$currTime = date("YmdHis");
 			$query1 = "SELECT LoginName FROM t_users
 			WHERE UserId = $UserId;";
-			$resultdata1 = $dbh->query($query1);
+			$re = $dbh->query($query1);
 
-			$re = array();
-			$LoginName = $UserId;
+			$LoginName = 0;
 			foreach ($re as $r) {
 				$LoginName = $r["LoginName"];
 			}
