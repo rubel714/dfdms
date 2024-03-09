@@ -46,7 +46,9 @@ function dataSyncUpload($data)
 			foreach ($re as $r) {
 				$LoginName = $r["LoginName"];
 			}
-			$logFileName = "../../../logs/sync_upload_files/".$LoginName."_".$currTime.".txt";
+			// $logFileName = "../../../logs/sync_upload_files/".$LoginName."_".$currTime.".txt";
+			$logFileName = "../../../logs/sync_upload_files/".$LoginName.".txt";
+			file_put_contents($logFileName, "\n\n====Data Upload:".date("Y-m-d H:i:s"). PHP_EOL , FILE_APPEND | LOCK_EX);
 			file_put_contents($logFileName, json_encode($rowData). PHP_EOL , FILE_APPEND | LOCK_EX);
 			
 
