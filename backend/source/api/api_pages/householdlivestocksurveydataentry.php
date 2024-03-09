@@ -32,70 +32,6 @@ function dataSyncUpload($data)
 		$YearId = 2024;
 		$rowData = $data->rowData;
 
-
-
-		// echo "<pre>";
-		// echo count($rowData);
-		// print_r($rowData);
-		// exit;
-		// $HouseHoldId = $data->rowData->id;
-		// $DivisionId = $data->rowData->DivisionId? $data->rowData->DivisionId : null;
-		// $DistrictId = $data->rowData->DistrictId? $data->rowData->DistrictId : null;
-		// $UpazilaId = $data->rowData->UpazilaId? $data->rowData->UpazilaId : null;
-		// $UnionId = $data->rowData->UnionId? $data->rowData->UnionId : null;
-
-		// $YearId = 2024;
-		// $Village = $data->rowData->Village ? $data->rowData->Village : null;
-		// $FarmerName =  $data->rowData->FarmerName ? $data->rowData->FarmerName : null;
-		// $FatherName =  $data->rowData->FatherName ? $data->rowData->FatherName : null;
-		// $MotherName =  $data->rowData->MotherName ? $data->rowData->MotherName : null;
-		// $HusbandWifeName =  $data->rowData->HusbandWifeName ? $data->rowData->HusbandWifeName : null;
-		// $NameOfTheFarm =  $data->rowData->NameOfTheFarm ? $data->rowData->NameOfTheFarm : null;
-		// $Phone = $data->rowData->Phone ? $data->rowData->Phone : null;
-		// $Gender = $data->rowData->Gender ? $data->rowData->Gender : null;
-		// $IsDisability = $data->rowData->IsDisability ? $data->rowData->IsDisability : 0;
-		// $NID =  $data->rowData->NID ? $data->rowData->NID : "";
-		// $IsPGMember = $data->rowData->IsPGMember ? $data->rowData->IsPGMember : 0;
-		// $Latitute =  $data->rowData->Latitute ? $data->rowData->Latitute : null;
-		// $Longitute =  $data->rowData->Longitute ? $data->rowData->Longitute : null;
-		// $CowNative =  $data->rowData->CowNative ? $data->rowData->CowNative : null;
-		// $CowCross =  $data->rowData->CowCross ? $data->rowData->CowCross : null;
-		// $MilkCow =  $data->rowData->MilkCow ? $data->rowData->MilkCow : null;
-		// $CowBullNative =  $data->rowData->CowBullNative ? $data->rowData->CowBullNative : null;
-		// $CowBullCross =  $data->rowData->CowBullCross ? $data->rowData->CowBullCross : null;
-		// $CowCalfMaleNative =  $data->rowData->CowCalfMaleNative ? $data->rowData->CowCalfMaleNative : null;
-		// $CowCalfMaleCross =  $data->rowData->CowCalfMaleCross ? $data->rowData->CowCalfMaleCross : null;
-		// $CowCalfFemaleNative =  $data->rowData->CowCalfFemaleNative ? $data->rowData->CowCalfFemaleNative : null;
-		// $CowCalfFemaleCross =  $data->rowData->CowCalfFemaleCross ? $data->rowData->CowCalfFemaleCross : null;
-		// $CowMilkProductionNative =  $data->rowData->CowMilkProductionNative ? $data->rowData->CowMilkProductionNative : null;
-		// $CowMilkProductionCross =  $data->rowData->CowMilkProductionCross ? $data->rowData->CowMilkProductionCross : null;
-		// $BuffaloAdultMale =  $data->rowData->BuffaloAdultMale ? $data->rowData->BuffaloAdultMale : null;
-		// $BuffaloAdultFemale =  $data->rowData->BuffaloAdultFemale ? $data->rowData->BuffaloAdultFemale : null;
-		// $BuffaloCalfMale =  $data->rowData->BuffaloCalfMale ? $data->rowData->BuffaloCalfMale : null;
-		// $BuffaloCalfFemale =  $data->rowData->BuffaloCalfFemale ? $data->rowData->BuffaloCalfFemale : null;
-		// $BuffaloMilkProduction =  $data->rowData->BuffaloMilkProduction ? $data->rowData->BuffaloMilkProduction : null;
-		// $GoatAdultMale =  $data->rowData->GoatAdultMale ? $data->rowData->GoatAdultMale : null;
-		// $GoatAdultFemale =  $data->rowData->GoatAdultFemale ? $data->rowData->GoatAdultFemale : null;
-		// $GoatCalfMale =  $data->rowData->GoatCalfMale ? $data->rowData->GoatCalfMale : null;
-		// $GoatCalfFemale =  $data->rowData->GoatCalfFemale ? $data->rowData->GoatCalfFemale : null;
-		// $SheepAdultMale =  $data->rowData->SheepAdultMale ? $data->rowData->SheepAdultMale : null;
-		// $SheepAdultFemale =  $data->rowData->SheepAdultFemale ? $data->rowData->SheepAdultFemale : null;
-		// $SheepCalfMale =  $data->rowData->SheepCalfMale ? $data->rowData->SheepCalfMale : null;
-		// $SheepCalfFemale =  $data->rowData->SheepCalfFemale ? $data->rowData->SheepCalfFemale : null;
-		// $GoatSheepMilkProduction =  $data->rowData->GoatSheepMilkProduction ? $data->rowData->GoatSheepMilkProduction : null;
-		// $ChickenNative =  $data->rowData->ChickenNative ? $data->rowData->ChickenNative : null;
-		// $ChickenLayer =  $data->rowData->ChickenLayer ? $data->rowData->ChickenLayer : null;
-		// $ChickenSonaliFayoumiCockerelOthers =  $data->rowData->ChickenSonaliFayoumiCockerelOthers ? $data->rowData->ChickenSonaliFayoumiCockerelOthers : null;
-		// $ChickenBroiler =  $data->rowData->ChickenBroiler ? $data->rowData->ChickenBroiler : null;
-		// $ChickenSonali =  $data->rowData->ChickenSonali ? $data->rowData->ChickenSonali : null;
-		// $ChickenEgg =  $data->rowData->ChickenEgg ? $data->rowData->ChickenEgg : null;
-		// $DucksNumber =  $data->rowData->DucksNumber ? $data->rowData->DucksNumber : null;
-		// $DucksEgg =  $data->rowData->DucksEgg ? $data->rowData->DucksEgg : null;
-		// $PigeonNumber =  $data->rowData->PigeonNumber ? $data->rowData->PigeonNumber : null;
-		// $QuailNumber =  $data->rowData->QuailNumber ? $data->rowData->QuailNumber : null;
-		// $OtherAnimalNumber =  $data->rowData->OtherAnimalNumber ? $data->rowData->OtherAnimalNumber : null;
-
-
 		try {
 
 			$dbh = new Db();
@@ -112,7 +48,7 @@ function dataSyncUpload($data)
 				$LoginName = $r["LoginName"];
 			}
 			$logFileName = "../../../Logs/Sync_Upload_Files/".$LoginName."_".$currTime.".txt";
-			file_put_contents($logFileName, "Params: ".json_encode($data). PHP_EOL , FILE_APPEND | LOCK_EX);
+			file_put_contents($logFileName, "Params: ".json_encode($rowData). PHP_EOL , FILE_APPEND | LOCK_EX);
 			
 
 
