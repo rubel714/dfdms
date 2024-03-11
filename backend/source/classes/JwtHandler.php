@@ -16,7 +16,7 @@ class JwtHandler {
     public function __construct()
     {
         // set your default time-zone
-        date_default_timezone_set('Asia/Kolkata');
+        date_default_timezone_set('Asia/Dhaka');
         $this->issuedAt = time();
         
         // Token Validity (3600 second = 1hr)

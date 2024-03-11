@@ -35,7 +35,7 @@
 
 function getCurrentDateTimeSA()
 {
-    date_default_timezone_set('Africa/Porto-Novo');
+    date_default_timezone_set('Asia/Dhaka');
     return date("Y-m-d H:i:s");
 }
  

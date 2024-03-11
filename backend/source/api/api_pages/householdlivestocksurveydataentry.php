@@ -41,20 +41,29 @@ function dataSyncUpload($data)
 			$query1 = "SELECT LoginName FROM t_users
 			WHERE UserId = $UserId;";
 			$re = $dbh->query($query1);
-
 			$LoginName = 0;
 			foreach ($re as $r) {
 				$LoginName = $r["LoginName"];
 			}
 			// $logFileName = "../../../logs/sync_upload_files/".$LoginName."_".$currTime.".txt";
-			$logFileName = "../../../logs/sync_upload_files/".$LoginName.".txt";
+
+
+
+
+			$dailyfolder = date('Y_m_d');
+			if (!file_exists("../../../logs/sync_upload_files/$dailyfolder")) {
+				mkdir("../../../logs/sync_upload_files/$dailyfolder", 0777, true);
+			}
+
+			$pcName = gethostname();
+			$logFileName = "../../../logs/sync_upload_files/".$dailyfolder."/".$LoginName."_".$pcName."_".$dailyfolder.".txt";
 			file_put_contents($logFileName, "\n\n====Data Upload:".date("Y-m-d H:i:s"). PHP_EOL , FILE_APPEND | LOCK_EX);
-			file_put_contents($logFileName, json_encode($rowData). PHP_EOL , FILE_APPEND | LOCK_EX);
+			file_put_contents($logFileName, "Input: ". json_encode($rowData). PHP_EOL , FILE_APPEND | LOCK_EX);
 			
 
 
 
-			$query1 = "SELECT HouseHoldId,YearId,DivisionId,DistrictId,UpazilaId,UnionId,Phone
+		$query1 = "SELECT HouseHoldId,YearId,DivisionId,DistrictId,UpazilaId,UnionId,Phone
 		FROM t_householdlivestocksurvey
 		WHERE YearId = $YearId
 		AND DivisionId = $DivisionId
@@ -249,10 +258,16 @@ function dataSyncUpload($data)
 					"message" => "Data uploaded successfully"
 				];
 			}
+
+
+			$dbh->CloseConnection();
+
 		} catch (PDOException $e) {
 			$returnData = msg(0, 500, $e->getMessage());
 		}
 
+
+		file_put_contents($logFileName,"Output: ". json_encode($returnData). PHP_EOL , FILE_APPEND | LOCK_EX);
 		return $returnData;
 	}
 }
