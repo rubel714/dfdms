@@ -34,6 +34,7 @@ const HouseholdDashboard = (props) => {
   const [showModal, setShowModal] = useState(false); //true=show modal, false=hide modal
 
   const { isLoading, data: dataList, error, ExecuteQuery } = ExecuteQueryHook(); //Fetch data
+  const { isLoading2, data: dataListGenderwisePGMember, error2, ExecuteQuery: ExecuteQueryGenderwisePGMember } = ExecuteQueryHook(); //Fetch data
 
   const UserInfo = LoginUserInfo();
 
@@ -64,6 +65,93 @@ const HouseholdDashboard = (props) => {
     ExecuteQuery(serverpage, params);
   }
 
+
+  
+  function getGenderwisePGMemberDataList() {
+    let params = {
+      action: "getGenderwisePGMemberDataList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      DivisionId: currDivisionId,
+      DistrictId: currDistrictId,
+      UpazilaId: currUpazilaId,
+    };
+    // console.log('LoginUserInfo params: ', params);
+
+    ExecuteQueryGenderwisePGMember(serverpage, params);
+  }
+
+
+
+  
+  // ==========Start Pie Chart==========
+  const GenderWisePGMemberData = {
+    chart: {
+      type: "pie",
+    },
+    title: {
+      text: "Gender wise Total Number of household livestock Members",
+    },
+    yAxis: {
+      min: 0,
+      max: 100,
+      // title: {
+      //   text: "",
+      // },
+    },
+    legend: {
+      enabled: true,
+    },
+    credits: {
+      enabled: false,
+    },
+    // tooltip: {
+    //   //    valueSuffix: " %",
+    // },
+    plotOptions: {
+      pie: {
+        showInLegend: true,
+
+        dataLabels: {
+					enabled: true
+					,style: {
+						textShadow: false,
+						textOutline: false 
+					}
+					,format: "{point.name}: <b>{point.y:,.0f} ({point.percentage:.2f} %)"
+					// format: '{point.name}: <b>{point.y:.2f} ({point.percentage:.1f} %)'
+				},
+				showInLegend: true,
+				tooltip: {
+					pointFormat: "{series.name}: <b>{point.y:,.0f} ({point.percentage:.2f}%)",
+					shared:true
+				}
+
+        // dataLabels: {
+        //   enabled: true,
+        //   // crop: true,
+        //   // format: "{point.name}: <b>{point.y:,.1f} ({point.percentage:.1f} %)"
+        //   // formatter: function () {
+        //   //   return "{point.name}: <b>{point.y:,.1f} ({point.percentage:.1f} %)";
+        //   // },
+        // },
+      },
+    },
+    series: [
+      {
+        name: "Gender",
+        data:dataListGenderwisePGMember
+        // data: dataListGenderwisePGMember.map(({ name, y, count, color }) => ({
+        //   name: `${name} - ${y.toFixed(2)}% (${count})`,
+        //   y,
+        //   color,
+        // })),
+      },
+    ],
+  };
+  // ==========End Pie Chart==========
+
+
   
   const goToTotalPGMember = () => {
     window.open(process.env.REACT_APP_BASE_NAME + `/pgandpgmembersinformation`);
@@ -88,6 +176,7 @@ const HouseholdDashboard = (props) => {
   useEffect(() => {
     if (bFirst) {
       getDataList();
+      getGenderwisePGMemberDataList();
       setBFirst(false);
     }
   }, [bFirst]);
@@ -177,6 +266,117 @@ const HouseholdDashboard = (props) => {
         
        </div>
        {/* PG Data */}
+
+
+
+
+        {/* Farms Data */}
+        <div className="row dashboardCard">
+         
+          <div className="">
+            <Card className="sw_card">
+              <CardContent>
+                <div className="row">
+                  <div className="">
+                    <div className="stat-cell stat-cell-color-aa ">
+                      <i className="fa fa-cubes bg-icon"></i>
+                      <span className="text-xlg" id="total-patients">
+                       {/*  {dataList.IndividualFarmers} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.IndividualFarmers
+                          )}
+                      </span>
+
+                      <br></br>
+                      <span id="totalcase" className="text-bg mt-10">
+                      Total Number of Individual Farmers
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="margin-left10">
+            <Card className="sw_card">
+              <CardContent>
+                <div className="row">
+                  <div className="">
+                    <div className="stat-cell stat-cell-color-aa ">
+                      <i className="fa fa-users bg-icon"></i>
+
+                      <span className="text-xlg" id="total-patients">
+                       {/*  {dataList.TotalCowNative} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.TotalFarms
+                          )}
+                      </span>
+
+                      <br></br>
+                      <span id="totalcase" className="text-bg mt-10">
+                      Total Number of Farms
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+        {/* Farms Data*/}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+ {/* PG Data */}
+ <div className="row onedashboardCard">
+  
+  <div className="">
+            
+          </div>
+ 
+          <div className="">
+           
+            <Card className="sw_card">
+            <CardContent>
+                <div className="row">
+                  <div className="">
+                    <HighchartsReact
+                      highcharts={Highcharts}
+                      options={GenderWisePGMemberData}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+ 
+         
+        </div>
+        {/* PG Data */}
+
+
+
+
+
+
+
 
 
         {/* PG Data */}

@@ -10,6 +10,10 @@ switch($task){
 	case "getDataList":
 		$returnData = getDataList($data);
 	break;
+
+	case "getGenderwisePGMemberDataList":
+		$returnData = getGenderwisePGMemberDataList($data);
+	break;
 	
 
 	default :
@@ -63,6 +67,8 @@ function getDataList($data){
 		$LandTotal = 0;
 		$LandOwn = 0;
 		$LandLeased = 0;
+		$IndividualFarmers = 0;
+		$TotalFarms = 0;
 
 		$query = "SELECT COUNT(f.`HouseHoldId`) AS TotalHouseHold FROM `t_householdlivestocksurvey` f;";
 		$resultdata = $dbh->query($query);
@@ -71,6 +77,8 @@ function getDataList($data){
 		}
 
 		$query = "SELECT SUM(f.`FamilyMember`) AS TotalFamilyMember, 
+		SUM(CASE WHEN f.`NameOfTheFarm` = '' THEN 1 ELSE 0 END) AS IndividualFarmers,
+        COUNT(CASE WHEN f.`NameOfTheFarm` != '' THEN f.`NameOfTheFarm` END) AS TotalFarms,
 		SUM(f.`CowNative`) AS TotalCowNative,
 		SUM(f.`CowCross`) AS CowCross,
 		SUM(f.`MilkCow`) AS MilkCow,
@@ -114,6 +122,8 @@ function getDataList($data){
 		FROM `t_householdlivestocksurvey` f;";
 		$resultdata = $dbh->query($query);
 		foreach ($resultdata as $key => $row) {
+			$IndividualFarmers = $row["IndividualFarmers"];
+			$TotalFarms = $row["TotalFarms"];
 			$TotalFamilyMember = $row["TotalFamilyMember"];
 			$TotalCowNative = $row["TotalCowNative"];
 			$CowCross = $row["CowCross"];
@@ -159,6 +169,8 @@ function getDataList($data){
 	
 	
 		$dataList = array("TotalFamilyMember"=>$TotalFamilyMember,
+		"IndividualFarmers"=>$IndividualFarmers,
+		"TotalFarms"=>$TotalFarms,
 		"TotalHouseHold"=>$TotalHouseHold,
 		"TotalCowNative"=>$TotalCowNative,
 		"CowCross"=>$CowCross,
@@ -217,5 +229,42 @@ function getDataList($data){
 	return $returnData;
 }
 
+
+
+
+function getGenderwisePGMemberDataList($data){
+
+	try{
+		$dbh = new Db();
+	
+		$query = "SELECT g.GenderName,g.ColorCode,COUNT(f.`HouseHoldId`) AS TotalMembers
+		FROM `t_householdlivestocksurvey` f
+		INNER JOIN `t_gender` g ON f.`Gender` = g.GenderId
+		group by g.GenderName,g.ColorCode;";
+		$resultdata = $dbh->query($query);
+
+		$dataList = array();
+		foreach ($resultdata as $key => $row) {
+			$TotalMembers = $row["TotalMembers"];
+			settype($TotalMembers,"integer");
+
+			$dataList[] = array("name"=>$row["GenderName"],"y"=>$TotalMembers,"color"=> $row["ColorCode"]);
+		}
+
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $dataList
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	$dbh->CloseConnection();  /**Close database connection */
+	return $returnData;
+}
 
 ?>
