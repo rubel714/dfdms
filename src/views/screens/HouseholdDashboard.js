@@ -172,6 +172,13 @@ const HouseholdDashboard = (props) => {
     );
   };
 
+/*   if (bFirst) {
+   
+    getDataList();
+    getGenderwisePGMemberDataList();
+    setBFirst(false);
+  } */
+
 
   useEffect(() => {
     if (bFirst) {
@@ -179,7 +186,7 @@ const HouseholdDashboard = (props) => {
       getGenderwisePGMemberDataList();
       setBFirst(false);
     }
-  }, [bFirst]);
+  }, [bFirst]); 
 
   return (
     <>
@@ -344,7 +351,7 @@ const HouseholdDashboard = (props) => {
 
 
         
- {/* PG Data */}
+ {/* GenderWiseMemberData Pie Chart */}
  <div className="row onedashboardCard">
   
   <div className="">
@@ -357,10 +364,20 @@ const HouseholdDashboard = (props) => {
             <CardContent>
                 <div className="row">
                   <div className="">
-                    <HighchartsReact
+
+                  {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            <HighchartsReact
+                              highcharts={Highcharts}
+                              options={GenderWisePGMemberData}
+                            />
+                          )}
+
+                    {/* <HighchartsReact
                       highcharts={Highcharts}
                       options={GenderWisePGMemberData}
-                    />
+                    /> */}
                   </div>
                 </div>
               </CardContent>
@@ -369,7 +386,7 @@ const HouseholdDashboard = (props) => {
  
          
         </div>
-        {/* PG Data */}
+        {/* GenderWiseMemberData Pie Chart Data */}
 
 
 
