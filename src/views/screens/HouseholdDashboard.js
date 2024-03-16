@@ -47,17 +47,7 @@ const HouseholdDashboard = (props) => {
   const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
 
 
-  if (bFirst) {
-    /**First time call for datalist */
-   
-    getDataList();
 
-
-    /* getDivision(UserInfo.DivisionId, UserInfo.DistrictId, UserInfo.UpazilaId);
-     */
-    //getDataList();
-    setBFirst(false);
-  }
 
   /**Get data for table list */
   function getDataList() {
@@ -94,6 +84,13 @@ const HouseholdDashboard = (props) => {
     );
   };
 
+
+  useEffect(() => {
+    if (bFirst) {
+      getDataList();
+      setBFirst(false);
+    }
+  }, [bFirst]);
 
   return (
     <>
@@ -147,15 +144,24 @@ const HouseholdDashboard = (props) => {
          </div>
 
          <div className="">
+          
            <Card className="sw_card">
              <CardContent>
                <div className="row">
                  <div className="">
                    <div className="stat-cell stat-cell-color-aa ">
                      <i className="fa fa-cubes bg-icon"></i>
-                     <span className="text-xlg" id="total-patients">
+                     {/* <span className="text-xlg" id="total-patients">
                        {dataList.TotalHouseHold}
-                     </span>
+                     </span> */}
+
+                    <span className="text-xlg" id="total-patients">
+                          {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.TotalHouseHold
+                          )}
+                        </span>
 
                      <br></br>
                      <span id="totalcase" className="text-bg mt-10">
@@ -184,7 +190,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.TotalFamilyMember}
+                       {/*  {dataList.TotalFamilyMember} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.TotalFamilyMember
+                          )}
                       </span>
 
                       <br></br>
@@ -207,7 +218,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.TotalCowNative}
+                       {/*  {dataList.TotalCowNative} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.TotalCowNative
+                          )}
                       </span>
 
                       <br></br>
@@ -236,7 +252,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.CowCross}
+                       {/*  {dataList.CowCross} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.CowCross
+                          )}
                       </span>
 
                       <br></br>
@@ -259,7 +280,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.MilkCow}
+                        {/* {dataList.MilkCow} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.MilkCow
+                          )}
                       </span>
 
                       <br></br>
@@ -288,7 +314,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.CowBullNative}
+                        {/* {dataList.CowBullNative} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.CowBullNative
+                          )}
                       </span>
 
                       <br></br>
@@ -311,7 +342,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.CowBullCross}
+                        {/* {dataList.CowBullCross} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.CowBullCross
+                          )}
                       </span>
 
                       <br></br>
@@ -339,7 +375,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.CowCalfMaleNative}
+                       {/*  {dataList.CowCalfMaleNative} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.CowCalfMaleNative
+                          )}
                       </span>
 
                       <br></br>
@@ -362,7 +403,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.CowCalfMaleCross}
+                        {/* {dataList.CowCalfMaleCross} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.CowCalfMaleCross
+                          )}
                       </span>
 
                       <br></br>
@@ -389,7 +435,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.CowCalfFemaleNative}
+                        {/* {dataList.CowCalfFemaleNative} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.CowCalfFemaleNative
+                          )}
                       </span>
 
                       <br></br>
@@ -412,7 +463,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.CowCalfFemaleCross}
+                        {/* {dataList.CowCalfFemaleCross} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.CowCalfFemaleCross
+                          )}
                       </span>
 
                       <br></br>
@@ -440,7 +496,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.CowMilkProductionNative}
+                       {/*  {dataList.CowMilkProductionNative} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.CowMilkProductionNative
+                          )}
                       </span>
 
                       <br></br>
@@ -463,7 +524,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.CowMilkProductionCross}
+                        {/* {dataList.CowMilkProductionCross} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.CowMilkProductionCross
+                          )}
                       </span>
 
                       <br></br>
@@ -492,7 +558,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.BuffaloAdultMale}
+                        {/* {dataList.BuffaloAdultMale} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.BuffaloAdultMale
+                          )}
                       </span>
 
                       <br></br>
@@ -515,7 +586,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.BuffaloAdultFemale}
+                        {/* {dataList.BuffaloAdultFemale} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.BuffaloAdultFemale
+                          )}
                       </span>
 
                       <br></br>
@@ -544,7 +620,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.BuffaloCalfMale}
+                        {/* {dataList.BuffaloCalfMale} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.BuffaloCalfMale
+                          )}
                       </span>
 
                       <br></br>
@@ -567,7 +648,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.BuffaloCalfFemale}
+                       {/*  {dataList.BuffaloCalfFemale} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.BuffaloCalfFemale
+                          )}
                       </span>
 
                       <br></br>
@@ -595,7 +681,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.BuffaloMilkProduction}
+                        {/* {dataList.BuffaloMilkProduction} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.BuffaloMilkProduction
+                          )}
                       </span>
 
                       <br></br>
@@ -618,7 +709,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.GoatAdultMale}
+                        {/* {dataList.GoatAdultMale} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.GoatAdultMale
+                          )}
                       </span>
 
                       <br></br>
@@ -647,7 +743,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.GoatAdultFemale}
+                       {/*  {dataList.GoatAdultFemale} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.GoatAdultFemale
+                          )}
                       </span>
 
                       <br></br>
@@ -670,7 +771,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.GoatCalfMale}
+                        {/* {dataList.GoatCalfMale} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.GoatCalfMale
+                          )}
                       </span>
 
                       <br></br>
@@ -699,7 +805,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.GoatCalfFemale}
+                        {/* {dataList.GoatCalfFemale} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.GoatCalfFemale
+                          )}
                       </span>
 
                       <br></br>
@@ -722,7 +833,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.SheepAdultMale}
+                        {/* {dataList.SheepAdultMale} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.SheepAdultMale
+                          )}
                       </span>
 
                       <br></br>
@@ -752,7 +868,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.SheepAdultFemale}
+                        {/* {dataList.SheepAdultFemale} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.SheepAdultFemale
+                          )}
                       </span>
 
                       <br></br>
@@ -775,7 +896,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.SheepCalfMale}
+                        {/* {dataList.SheepCalfMale} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.SheepCalfMale
+                          )}
                       </span>
 
                       <br></br>
@@ -802,7 +928,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.SheepCalfFemale}
+                        {/* {dataList.SheepCalfFemale} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.SheepCalfFemale
+                          )}
                       </span>
 
                       <br></br>
@@ -825,7 +956,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.GoatSheepMilkProduction}
+                        {/* {dataList.GoatSheepMilkProduction} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.GoatSheepMilkProduction
+                          )}
                       </span>
 
                       <br></br>
@@ -852,7 +988,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.ChickenNative}
+                        {/* {dataList.ChickenNative} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.ChickenNative
+                          )}
                       </span>
 
                       <br></br>
@@ -875,7 +1016,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.ChickenLayer}
+                        {/* {dataList.ChickenLayer} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.ChickenLayer
+                          )}
                       </span>
 
                       <br></br>
@@ -902,7 +1048,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.ChickenBroiler}
+                       {/*  {dataList.ChickenBroiler} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.ChickenBroiler
+                          )}
                       </span>
 
                       <br></br>
@@ -925,7 +1076,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.ChickenSonali}
+                        {/* {dataList.ChickenSonali} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.ChickenSonali
+                          )}
                       </span>
 
                       <br></br>
@@ -955,7 +1111,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.ChickenSonaliFayoumiCockerelOthers}
+                        {/* {dataList.ChickenSonaliFayoumiCockerelOthers} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.ChickenSonaliFayoumiCockerelOthers
+                          )}
                       </span>
 
                       <br></br>
@@ -978,7 +1139,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.ChickenEgg}
+                        {/* {dataList.ChickenEgg} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.ChickenEgg
+                          )}
                       </span>
 
                       <br></br>
@@ -1007,7 +1173,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.DucksNumber}
+                        {/* {dataList.DucksNumber} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.DucksNumber
+                          )}
                       </span>
 
                       <br></br>
@@ -1030,7 +1201,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.DucksEgg}
+                       {/*  {dataList.DucksEgg} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.DucksEgg
+                          )}
                       </span>
 
                       <br></br>
@@ -1061,7 +1237,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.PigeonNumber}
+                       {/*  {dataList.PigeonNumber} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.PigeonNumber
+                          )}
                       </span>
 
                       <br></br>
@@ -1084,7 +1265,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.QuailNumber}
+                        {/* {dataList.QuailNumber} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.QuailNumber
+                          )}
                       </span>
 
                       <br></br>
@@ -1114,7 +1300,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.OtherAnimalNumber}
+                        {/* {dataList.OtherAnimalNumber} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.OtherAnimalNumber
+                          )}
                       </span>
 
                       <br></br>
@@ -1137,7 +1328,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.LandTotal}
+                        {/* {dataList.LandTotal} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.LandTotal
+                          )}
                       </span>
 
                       <br></br>
@@ -1165,7 +1361,12 @@ const HouseholdDashboard = (props) => {
                     <div className="stat-cell stat-cell-color-a ">
                       <i className="fa fa-cubes bg-icon"></i>
                       <span className="text-xlg" id="total-patients">
-                        {dataList.LandOwn}
+                       {/*  {dataList.LandOwn} */}
+                       {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.LandOwn
+                          )}
                       </span>
 
                       <br></br>
@@ -1188,7 +1389,12 @@ const HouseholdDashboard = (props) => {
                       <i className="fa fa-users bg-icon"></i>
 
                       <span className="text-xlg" id="total-patients">
-                        {dataList.LandLeased}
+                        {/* {dataList.LandLeased} */}
+                        {isLoading ? (
+                            <i className="fas fa-spinner fa-spin"></i> // Font Awesome spinner icon
+                          ) : (
+                            dataList.LandLeased
+                          )}
                       </span>
 
                       <br></br>
