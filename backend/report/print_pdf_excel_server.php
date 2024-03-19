@@ -404,18 +404,32 @@ function TotalHouseholdInformationExport() {
 	$EndDate =  $_REQUEST['EndDate']?$_REQUEST['EndDate']:"";
 
 	
-	$sql = "SELECT c.`DivisionName`,d.`DistrictName`,e.`UpazilaName`,f.`UnionName`,
-		COUNT(`HouseHoldId`) DataCount,g.`UserName`,a.`DataCollectorName`,b.`DesignationName`,a.`PhoneNumber`
-		FROM `t_householdlivestocksurvey` a
-		INNER JOIN `t_designation` b ON a.DesignationId=b.`DesignationId`
-		INNER JOIN `t_division` c ON a.`DivisionId`=c.DivisionId
-		INNER JOIN `t_district` d ON a.`DistrictId`=d.DistrictId
-		INNER JOIN `t_upazila` e ON a.`UpazilaId`=e.UpazilaId
-		INNER JOIN `t_union` f ON a.`UnionId`=f.UnionId
-		INNER JOIN `t_users` g ON a.`UserId`=g.UserId
-		WHERE a.`DataCollectionDate` BETWEEN '$StartDate' AND '$EndDate'
-		GROUP BY c.`DivisionName`,d.`DistrictName`,e.`UpazilaName`,f.`UnionName`,g.`UserName`,
-		a.`DataCollectorName`,b.`DesignationName`,a.`PhoneNumber`;";
+	// $sql = "SELECT c.`DivisionName`,d.`DistrictName`,e.`UpazilaName`,f.`UnionName`,
+	// 	COUNT(`HouseHoldId`) DataCount,g.`UserName`,a.`DataCollectorName`,b.`DesignationName`,a.`PhoneNumber`
+	// 	FROM `t_householdlivestocksurvey` a
+	// 	INNER JOIN `t_designation` b ON a.DesignationId=b.`DesignationId`
+	// 	INNER JOIN `t_division` c ON a.`DivisionId`=c.DivisionId
+	// 	INNER JOIN `t_district` d ON a.`DistrictId`=d.DistrictId
+	// 	INNER JOIN `t_upazila` e ON a.`UpazilaId`=e.UpazilaId
+	// 	INNER JOIN `t_union` f ON a.`UnionId`=f.UnionId
+	// 	INNER JOIN `t_users` g ON a.`UserId`=g.UserId
+	// 	WHERE a.`DataCollectionDate` BETWEEN '$StartDate' AND '$EndDate'
+	// 	GROUP BY c.`DivisionName`,d.`DistrictName`,e.`UpazilaName`,f.`UnionName`,g.`UserName`,
+	// 	a.`DataCollectorName`,b.`DesignationName`,a.`PhoneNumber`;";
+
+
+$sql = "SELECT c.`DivisionName`,d.`DistrictName`,e.`UpazilaName`,f.`UnionName`,
+	g.`UserName`,t.`DataCollectorName`,b.`DesignationName`,t.`PhoneNumber`,t.DataCount FROM
+	(SELECT a.`DivisionId`,a.`DistrictId`,a.`UpazilaId`,a.`UnionId`,a.`UserId`,a.`DataCollectorName`,a.DesignationId,a.`PhoneNumber`,COUNT(a.`HouseHoldId`) DataCount
+	FROM `t_householdlivestocksurvey` a
+	WHERE a.`DataCollectionDate` BETWEEN '2024-03-10' AND '2024-03-19'
+	GROUP BY a.`DivisionId`,a.`DistrictId`,a.`UpazilaId`,a.`UnionId`,a.`UserId`,a.`DataCollectorName`,a.DesignationId,a.`PhoneNumber`) t
+	INNER JOIN `t_designation` b ON t.DesignationId=b.`DesignationId`
+	INNER JOIN `t_division` c ON t.`DivisionId`=c.DivisionId
+	INNER JOIN `t_district` d ON t.`DistrictId`=d.DistrictId
+	INNER JOIN `t_upazila` e ON t.`UpazilaId`=e.UpazilaId
+	INNER JOIN `t_union` f ON t.`UnionId`=f.UnionId
+	INNER JOIN `t_users` g ON t.`UserId`=g.UserId;";
 
 
 		$db = new Db();
