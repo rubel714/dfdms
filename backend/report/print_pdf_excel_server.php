@@ -422,7 +422,7 @@ $sql = "SELECT c.`DivisionName`,d.`DistrictName`,e.`UpazilaName`,f.`UnionName`,
 	g.`UserName`,t.`DataCollectorName`,b.`DesignationName`,t.`PhoneNumber`,t.DataCount FROM
 	(SELECT a.`DivisionId`,a.`DistrictId`,a.`UpazilaId`,a.`UnionId`,a.`UserId`,a.`DataCollectorName`,a.DesignationId,a.`PhoneNumber`,COUNT(a.`HouseHoldId`) DataCount
 	FROM `t_householdlivestocksurvey` a
-	WHERE a.`DataCollectionDate` BETWEEN '2024-03-10' AND '2024-03-19'
+	WHERE a.`DataCollectionDate` BETWEEN '$StartDate' AND '$EndDate'
 	GROUP BY a.`DivisionId`,a.`DistrictId`,a.`UpazilaId`,a.`UnionId`,a.`UserId`,a.`DataCollectorName`,a.DesignationId,a.`PhoneNumber`) t
 	INNER JOIN `t_designation` b ON t.DesignationId=b.`DesignationId`
 	INNER JOIN `t_division` c ON t.`DivisionId`=c.DivisionId
@@ -432,9 +432,9 @@ $sql = "SELECT c.`DivisionName`,d.`DistrictName`,e.`UpazilaName`,f.`UnionName`,
 	INNER JOIN `t_users` g ON t.`UserId`=g.UserId;";
 
 
-		$db = new Db();
+		/*$db = new Db();
 		$sqlrresultHeader = $db->query($sql);
-
+*/
 
 		/* if($DivisionId == 0){
 			$DivisionName = "Division: All, ";
@@ -622,9 +622,9 @@ GROUP BY q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,u.UnionName";
 	/* echo $sql;
 	exit;
  */
-		$db = new Db();
+		/*$db = new Db();
 		$sqlrresultHeader = $db->query($sql);
-
+*/
 	
     $tableProperties["query_field"] = array('DivisionName','DistrictName','UpazilaName','UnionName','NameOfTheFarmer','NameOfTheFarm',
 	'NumberOfMale','NumberOfFemale','NumberOfTransgender','NumberOfBoth','NumberOfOthers','NumberOfNID','NumberOfPGMember',
@@ -762,9 +762,9 @@ function HouseholdLiveStockSurveyForUserExport() {
 		ORDER BY q.`DivisionName`, r.`DistrictName`, s.`UpazilaName`, u.UnionName";
 
 
-		$db = new Db();
+	/*	$db = new Db();
 		$sqlrresultHeader = $db->query($sql);
-
+*/
 	
     $tableProperties["query_field"] = array('DivisionName','DistrictName','UpazilaName','UnionName','Ward','Village',
 	'FarmerName','FatherName','NameOfTheFarm','Phone','GenderName','NID','IsPGMemberStatus',
@@ -907,10 +907,10 @@ function HouseholdLiveStockSurveyViewExport() {
 		AND a.`YearId` = 2024
 		ORDER BY q.`DivisionName`, r.`DistrictName`, s.`UpazilaName`, u.UnionName";
 
-
+/*
 		$db = new Db();
 		$sqlrresultHeader = $db->query($sql);
-
+*/
 	
     $tableProperties["query_field"] = array('DivisionName','DistrictName','UpazilaName','UnionName','Ward','Village',
 	'FarmerName','FatherName','NameOfTheFarm','Phone','GenderName','NID','IsPGMemberStatus',
@@ -1480,7 +1480,7 @@ if($UpazilaId == 0){
 
 	//Execute sql command
 	$result = $db->query($sql);
-
+	$db->CloseConnection();
 	
 
 	$serial = 0;
