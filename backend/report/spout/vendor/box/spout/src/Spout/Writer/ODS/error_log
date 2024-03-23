@@ -1,0 +1,21 @@
+[07-Aug-2019 03:31:31 UTC] PHP Fatal error:  Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15
+[05-Oct-2019 05:47:24 UTC] PHP Fatal error:  Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15
+[31-Dec-2019 05:48:33 UTC] PHP Fatal error:  Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15
+[15-Jan-2020 05:11:47 UTC] PHP Fatal error:  Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15
+[13-Apr-2020 03:34:39 UTC] PHP Fatal error:  Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15
+[15-Apr-2020 03:20:44 UTC] PHP Fatal error:  Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15
+[19-Apr-2020 12:06:09 UTC] PHP Fatal error:  Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15
+[19-Jul-2020 16:34:21 UTC] PHP Fatal error:  Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15
+[09-Sep-2020 16:56:51 UTC] PHP Fatal error:  Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15
+[20-Oct-2020 11:48:18 UTC] PHP Fatal error:  Uncaught Error: Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php:15
+Stack trace:
+#0 {main}
+  thrown in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15
+[21-Oct-2020 10:27:17 UTC] PHP Fatal error:  Uncaught Error: Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php:15
+Stack trace:
+#0 {main}
+  thrown in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15
+[22-Oct-2020 07:01:19 UTC] PHP Fatal error:  Uncaught Error: Class 'Box\Spout\Writer\AbstractMultiSheetsWriter' not found in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php:15
+Stack trace:
+#0 {main}
+  thrown in /home/infomedrdc/public_html/wp-content/themes/betheme-child/report/spout/vendor/box/spout/src/Spout/Writer/ODS/Writer.php on line 15

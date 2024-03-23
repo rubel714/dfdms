@@ -56,7 +56,8 @@ const TotalHouseholdAnimalInformation = (props) => {
  */
 
   const PrintPDFExcelExportFunction = (reportType) => {
-    let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+    /* let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php"; */
+    let finalUrl = EXCEL_EXPORT_URL + "report/TotalHouseholdAnimalInformationExport_csv.php";
 
     window.open(
       finalUrl +
