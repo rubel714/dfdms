@@ -77,8 +77,8 @@ function getDataList($data){
 		}
 
 		$query = "SELECT SUM(f.`FamilyMember`) AS TotalFamilyMember, 
-		SUM(CASE WHEN f.`NameOfTheFarm` = '' THEN 1 ELSE 0 END) AS IndividualFarmers,
-        COUNT(CASE WHEN f.`NameOfTheFarm` != '' THEN f.`NameOfTheFarm` END) AS TotalFarms,
+		SUM(CASE WHEN IFNULL(f.`NameOfTheFarm`,'') = '' THEN 1 ELSE 0 END) AS IndividualFarmers,
+        COUNT(CASE WHEN IFNULL(f.`NameOfTheFarm`,'') != '' THEN f.`NameOfTheFarm` END) AS TotalFarms,
 		SUM(f.`CowNative`) AS TotalCowNative,
 		SUM(f.`CowCross`) AS CowCross,
 		SUM(f.`MilkCow`) AS MilkCow,

@@ -622,7 +622,7 @@ AND a.`YearId` = 2024
 GROUP BY q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,u.UnionName";
 */
  
- 
+ /*
 $sql="SELECT q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,u.UnionName,
 
 t.NameOfTheFarmer,
@@ -697,7 +697,42 @@ WHERE a.`DataCollectionDate` BETWEEN '$StartDate' AND '$EndDate'
 INNER JOIN `t_division` q ON t.`DivisionId`=q.`DivisionId`
 INNER JOIN `t_district` r ON t.`DistrictId`=r.`DistrictId`
 INNER JOIN `t_upazila` s ON t.`UpazilaId`=s.`UpazilaId`
-INNER JOIN `t_union` u ON t.`UnionId`=u.`UnionId`";
+INNER JOIN `t_union` u ON t.`UnionId`=u.`UnionId`";*/
+
+
+
+$sql="SELECT t.`DivisionName`,t.`DistrictName`,t.`UpazilaName`,t.UnionName,
+
+t.NameOfTheFarmer,
+t.NameOfTheFarm,
+t.FamilyMember,
+t.NumberOfMale,
+t.NumberOfFemale,
+t.NumberOfTransgender,
+t.NumberOfBoth,
+t.NumberOfOthers,
+t.NumberOfNID,
+t.NumberOfPGMember,
+
+t.CowNative,t.CowCross,t.MilkCow,
+t.CowBullNative,t.CowBullCross,
+t.CowCalfMaleNative,t.CowCalfMaleCross,
+t.CowCalfFemaleNative,t.CowCalfFemaleCross,
+t.CowMilkProductionNative,t.CowMilkProductionCross,
+t.BuffaloAdultMale,t.BuffaloAdultFemale,
+t.BuffaloCalfMale,t.BuffaloCalfFemale, 
+t.BuffaloMilkProduction,t.GoatAdultMale, 
+t.GoatAdultFemale,t.GoatCalfMale, 
+t.GoatCalfFemale,t.SheepAdultMale, 
+t.SheepAdultFemale,t.SheepCalfMale,
+t.SheepCalfFemale,t.GoatSheepMilkProduction,
+t.ChickenNative,t.ChickenLayer,t.ChickenBroiler,
+t.ChickenSonali,
+t.ChickenSonaliFayoumiCockerelOthers, t.ChickenEgg,	
+t.DucksNumber,t.DucksEgg,t.PigeonNumber,
+t.QuailNumber,t.OtherAnimalNumber,t.LandTotal,
+t.LandOwn,t.LandLeased FROM mv_total_household_animal_information t";
+
 
 	/* echo $sql;
 	exit;
