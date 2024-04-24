@@ -1528,15 +1528,15 @@ $sqlrresultHeader = $db->query($sql);
 
 
 if($DivisionId == 0){
-	$DivisionName = "Division: All, ";
+	$DivisionName = "Division: All";
 }else{
 	$DivisionName =  "Division: ".$sqlrresultHeader[0]['DivisionName'];
 }
 
 if($DistrictId == 0){
-	$DistrictName = ", District: All, ";
+	$DistrictName = " District: All ";
 }else{
-	$DistrictName = ", District: ". $sqlrresultHeader[0]['DistrictName'];
+	$DistrictName = " District: ". $sqlrresultHeader[0]['DistrictName'];
 }
 
 
@@ -1555,7 +1555,7 @@ if($DistrictId == 0){
 	//Report header list
 	$tableProperties["header_list"][0] = $siteTitle;
 	$tableProperties["header_list"][1] = 'Upazila List';
-	$tableProperties["header_list"][2] = $DivisionName. $DistrictName;
+	$tableProperties["header_list"][2] = $DivisionName. ', '.$DistrictName;
 	// $tableProperties["header_list"][1] = 'Heading 2';
 	
 	//Report save name. Not allow any type of special character
