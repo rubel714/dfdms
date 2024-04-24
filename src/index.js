@@ -47,6 +47,7 @@ import DashboardPage from "views/screens/DashboardPage";
 import HouseholdDashboard from "views/screens/HouseholdDashboard";
 import SurveyTitleEntry from "views/screens/surveytitleentry/index.js";
 import UnionEntry from "views/screens/unionentry/index.js";
+import UpazilaEntry from "views/screens/upazilaentry/index.js";
 import TrainingAdd from "views/screens/trainingadd/index.js";
 
 import AuditLot from "views/screens/auditlog/index.js";
@@ -198,6 +199,10 @@ ReactDOM.render(
           <Route
             path="/unionentry"
             render={(props) => <UnionEntry {...props} />}
+          />
+          <Route
+            path="/upazilaentry"
+            render={(props) => <UpazilaEntry {...props} />}
           />
           <Route
             path="/trainingadd"

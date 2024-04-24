@@ -412,6 +412,18 @@ function AfterLoginNavbar(props) {
                         </a>
                       </li>
                     )}
+
+                    {menuShowPermision("upazilaentry") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("upazilaentry")}
+                        >
+                          Upazila Entry
+                        </a>
+                      </li>
+                    )}
+
                     {menuShowPermision("unionentry") === 1 && (
                       <li>
                         <a
