@@ -12,7 +12,7 @@ $count=0;
 foreach($resultdata as $key=>$row){
 	//print_r($row);	
 	// echo strlen($row['Password'])."==";
-	if(strlen($row['Password'])<6){
+	if(strlen($row['Password'])<10){
 		$count++;
 		$Password = password_hash($row['Password'], PASSWORD_DEFAULT);
 		$sql = "update t_users set Password='".$Password."' where UserId=".$row['UserId'].";";
@@ -20,6 +20,6 @@ foreach($resultdata as $key=>$row){
 	}
 }
 
-echo "Updated:".$count;
+echo "Total hash password updated:".$count;
 
 ?>
