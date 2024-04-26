@@ -1716,9 +1716,9 @@ const HouseholdLivestockSurveyDataEntryAddEditModal = (props) => {
                         value={currentRow.ChickenLayer}
                         class={errorObject.ChickenLayer}
                         onChange={(e) => handleChange(e)}
-                        max="80000"
+                        max="5000000"
                         min="0"
-                        onBlur={() => handleBlur("ChickenLayer", 80000)}
+                        onBlur={() => handleBlur("ChickenLayer", 5000000)}
                         style={{ color: exceededLimits["ChickenLayer"] ? 'red' : '' }}
                       />
                     </td>
