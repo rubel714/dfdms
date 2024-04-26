@@ -102,6 +102,8 @@ function dataSyncUpload($data)
 				$hasDuplicateWithServer = 0;
 				$duplicatePhone = "";
 				$duplicatePhoneWithServer = "";
+				$hasNegative = 0;
+				$negativeList = "";
 
 				foreach ($rowData as $row) {
 					$row = (array)$row;
@@ -117,6 +119,7 @@ function dataSyncUpload($data)
 					$FatherName = $row["FatherName"];
 					$MotherName = $row["MotherName"];
 					$HusbandWifeName = $row["HusbandWifeName"];
+					
 					$NameOfTheFarm = $row["NameOfTheFarm"];
 					$Phone = $row["Phone"];
 					$Gender = $row["Gender"];
@@ -171,6 +174,57 @@ function dataSyncUpload($data)
 					$PhoneNumber = $row["PhoneNumber"];
 					$Remarks = $row["Remarks"];
 					$UserId = $row["UserId"];
+					
+					/*Check negative*/
+					if(($NameOfTheFarm < 0) ||
+					($CowNative < 0) ||
+					($CowCross < 0) ||
+					($MilkCow < 0) ||
+					($CowBullNative < 0) ||
+					($CowBullCross < 0) ||
+					($CowCalfMaleNative < 0) ||
+					($CowCalfMaleCross < 0) ||
+					($CowCalfFemaleNative < 0) ||
+					($CowCalfFemaleCross < 0) ||
+					($CowMilkProductionNative < 0) ||
+					($CowMilkProductionCross < 0) ||
+					($BuffaloAdultMale < 0) ||
+					($BuffaloAdultFemale < 0) ||
+					($BuffaloCalfMale < 0) ||
+					($BuffaloCalfFemale < 0) ||
+					($BuffaloMilkProduction < 0) ||
+					($GoatAdultMale < 0) ||
+					($GoatAdultFemale < 0) ||
+					($GoatCalfMale < 0) ||
+					($GoatCalfFemale < 0) ||
+					($SheepAdultMale < 0) ||
+					($SheepAdultFemale < 0) ||
+					($SheepCalfMale < 0) ||
+					($SheepCalfFemale < 0) ||
+					($GoatSheepMilkProduction < 0) ||
+					($ChickenNative < 0) ||
+					($ChickenLayer < 0) ||
+					($ChickenSonaliFayoumiCockerelOthers < 0) ||
+					($ChickenBroiler < 0) ||
+					($ChickenSonali < 0) ||
+					($ChickenEgg < 0) ||
+					($DucksNumber < 0) ||
+					($DucksEgg < 0) ||
+					($PigeonNumber < 0) ||
+					($QuailNumber < 0) ||
+					($OtherAnimalNumber < 0) ||
+					($FamilyMember < 0) ||
+					($LandTotal < 0) ||
+					($LandOwn < 0) ||
+					($LandLeased < 0)){
+						$hasNegative = 1;
+						
+						if ($negativeList == "") {
+							$negativeList = $FarmerName . '-' . $Phone;
+						} else {
+							$negativeList .= ", " . $FarmerName . '-' . $Phone;
+						}
+					}
 
 
 					$duplicate_key = $YearId . '_' . $DivisionId . '_' . $DistrictId . '_' . $UpazilaId . '_' . $UnionId . '_' . $Phone;
@@ -242,7 +296,14 @@ function dataSyncUpload($data)
 				}
 
 
-				if ($hasDuplicate > 0) {
+				if ($hasNegative > 0) {
+					$returnData = [
+						"success" => 0,
+						"status" => 500,
+						"UserId" => $UserId,
+						"message" => "Found negative data. " . $negativeList
+					];
+				}else if ($hasDuplicate > 0) {
 					$returnData = [
 						"success" => 0,
 						"status" => 500,
