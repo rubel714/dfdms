@@ -93,7 +93,7 @@ else {
 
         $sql = "SELECT a.`UserId`,a.`UserName`,a.`LoginName`,a.`Email`,a.`Password`,
         a.`DesignationId`,a.`IsActive`,a.PhotoUrl,a.DivisionId,b.DivisionName,a.DistrictId,
-        c.DistrictName,a.UpazilaId,d.UpazilaName,a.Phone
+        c.DistrictName,a.UpazilaId,d.UpazilaName,a.Phone,d.`IsCityCorporation`
             FROM `t_users` a
             left join t_division b on a.DivisionId=b.DivisionId
             left join t_district c on a.DistrictId=c.DistrictId
@@ -150,13 +150,35 @@ else {
                     ];
 
                     echo json_encode($returnData);
-                    
-                    $conn=null; /**Close database connection */
-                    
+
+                    $conn = null;
+                    /**Close database connection */
+
                     return;
                 }
             }
         }
+
+
+        /**allow only admin,MO,Director,DLO and citycorporation upazila users able to login */
+        if (($RoleId <= 4) || ($userRow["IsCityCorporation"] == 1)) {
+            /**/ //////////// */ 
+        } else {
+            $returnData = [
+                "success" => 0,
+                "status" => 404,
+                "message" => "Only allow to login Admin, MO, Director, DLO and City Corporation Users."
+            ];
+
+            echo json_encode($returnData);
+
+            $conn = null;
+            /**Close database connection */
+
+            return;
+        }
+        /**allow only admin,MO,Director,DLO and citycorporation upazila users able to login */
+
 
 
 
@@ -200,7 +222,7 @@ else {
                 $userRow["StatusChangeAllow"] = getStatusChangeAllow($conn, $userRow["RoleId"]);
                 $userRow["MetaData"] = getMetaData($conn, $userRow);
 
-                
+
                 // $userRow["StatusChangeAllow"] = ["Submit","Accept","Approve"];
 
                 $returnData = [
@@ -220,7 +242,8 @@ else {
     }
 }
 
-$conn=null; /**Close database connection */
+$conn = null;
+/**Close database connection */
 echo json_encode($returnData);
 
 
@@ -303,6 +326,6 @@ function getMetaData($conn, $userRow)
         $designationList[] = $row;
     }
     $dataList["DesignationList"] = $designationList;
-    
+
     return $dataList;
 }
