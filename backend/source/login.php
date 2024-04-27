@@ -311,7 +311,7 @@ function getMetaData($conn, $userRow)
     $dataList["UnionList"] = $unionList;
 
 
-    $query = "SELECT GenderId,GenderName FROM t_gender order by GenderId;";
+    $query = "SELECT GenderId,GenderName FROM t_gender where GenderId !=3 order by GenderId;";
     $result = $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
     $genderList = array();
     foreach ($result as $row) {
