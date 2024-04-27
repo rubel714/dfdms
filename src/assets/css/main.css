@@ -401,6 +401,13 @@ tr:nth-child(odd) {
     color: greenyellow;
 }
 
+.left-content {
+    margin-right: 50px; 
+}
+
+.right-align {
+    text-align: right;
+}
 
 /* LOGIN DESIGN */
 .LoginBody {

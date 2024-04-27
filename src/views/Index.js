@@ -9,6 +9,8 @@ import AfterLoginNavbar from "components/Navbars/AfterLoginNavbar.js";
 import IndexHeader from "components/Headers/IndexHeader.js";
 import DarkFooter from "components/Footers/DarkFooter.js";
 import HomePage from "./screens/HomePage";
+import packageJson from "../../package.json";
+import swal from "sweetalert";
 
 function Index(props) {
   React.useEffect(() => {
@@ -22,6 +24,72 @@ function Index(props) {
       document.body.classList.remove("sidebar-collapse");
     };
   });
+
+
+  
+
+const clearCacheData = () => {
+  caches.keys().then((names) => {
+      names.forEach((name) => {
+          caches.delete(name);
+      });
+  });
+   
+  setTimeout(function(){
+    window.location.reload();
+ }, 1000);
+
+
+};
+
+
+if(localStorage.getItem("sw_Version")==null){
+ 
+  swal({
+    title: "",
+    text:   'A new version of the application is available, Version-'+packageJson.version,
+    icon: "warning",
+    button: 'Refresh',
+    showCancelButton: false,
+    showConfirmButton: false
+    }).then((willDelete) => {
+    if (willDelete) { 
+      localStorage.setItem(
+        "sw_Version",
+        packageJson.version
+      );
+      window.location.href = `${process.env.REACT_APP_BASE_NAME}`;
+      clearCacheData(); 
+      
+    }
+  });
+
+
+
+ }else if(localStorage.getItem("sw_Version")<packageJson.version){
+
+  
+
+  swal({
+    title: "",
+    text:  'A new version of the application is available, press Refresh to update from ['+localStorage.getItem("sw_Version")+'] to ['+packageJson.version+']',
+    icon: "warning",
+    button: 'Refresh',
+    showCancelButton: false,
+    showConfirmButton: false
+    }).then((willDelete) => {
+    if (willDelete) { 
+      localStorage.setItem(
+        "sw_Version",
+        packageJson.version
+      );
+      window.location.href = `${process.env.REACT_APP_BASE_NAME}`;
+      clearCacheData(); 
+    }
+  });
+
+ }
+
 
   return (
     <>

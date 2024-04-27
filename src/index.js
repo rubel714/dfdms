@@ -54,6 +54,8 @@ import AuditLot from "views/screens/auditlog/index.js";
 import ErrorLog from "views/screens/errorlog/index.js";
 
 import UserContextProvider from "./context/user-info-context";
+import packageJson from "../package.json";
+import swal from "sweetalert";
 
 const loading = (
   <div className="pt-3 text-center">
@@ -68,6 +70,74 @@ userInfo = {
   FacilityName: "NA",
   LangId: "en_GB",
 };
+
+
+
+
+
+const clearCacheData = () => {
+  caches.keys().then((names) => {
+      names.forEach((name) => {
+          caches.delete(name);
+      });
+  });
+   
+  setTimeout(function(){
+    window.location.reload();
+ }, 1000);
+
+
+};
+
+
+if(localStorage.getItem("sw_Version")==null){
+ 
+  swal({
+    title: "",
+    text:   'A new version of the application is available, Version-'+packageJson.version,
+    icon: "warning",
+    button: 'Refresh',
+    showCancelButton: false,
+    showConfirmButton: false
+    }).then((willDelete) => {
+    if (willDelete) { 
+      localStorage.setItem(
+        "sw_Version",
+        packageJson.version
+      );
+      window.location.href = `${process.env.REACT_APP_BASE_NAME}`;
+      clearCacheData(); 
+      
+    }
+  });
+
+
+
+ }else if(localStorage.getItem("sw_Version")<packageJson.version){
+
+  
+
+  swal({
+    title: "",
+    text:  'A new version of the application is available, press Refresh to update from ['+localStorage.getItem("sw_Version")+'] to ['+packageJson.version+']',
+    icon: "warning",
+    button: 'Refresh',
+    showCancelButton: false,
+    showConfirmButton: false
+    }).then((willDelete) => {
+    if (willDelete) { 
+      localStorage.setItem(
+        "sw_Version",
+        packageJson.version
+      );
+      window.location.href = `${process.env.REACT_APP_BASE_NAME}`;
+      clearCacheData(); 
+    }
+  });
+
+ } 
+
+
 
 ReactDOM.render(
   <UserContextProvider userInfo={userInfo}>

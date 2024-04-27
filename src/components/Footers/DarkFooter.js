@@ -28,7 +28,8 @@ function DarkFooter() {
         </div> */}
 
         <div class="footer">
-            <h6>Powered By LDDP, DLS. &#169; Department of Livestock Services :Developed by Big O Solution</h6>
+            <h6 > <span class="left-content">Powered By LDDP, DLS. &#169; Department of Livestock Services :Developed by Big O Solution </span>  <span class="right-align">  v{localStorage.getItem("sw_Version")}</span></h6>
+           
         </div>
       </Container>
     </footer>
