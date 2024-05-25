@@ -68,6 +68,10 @@ switch($task){
 		$returnData = QuestionTypeList($data);
 		break;
 
+	case "HouseholdFiledTypeList":
+		$returnData = HouseholdFiledTypeList($data);
+		break;
+
 	case "DesignationList":
 		$returnData = DesignationList($data);
 		break;
@@ -588,6 +592,71 @@ function QuestionTypeList($data) {
 			{"id":"DropDown","name":"DropDown"},
 			{"id":"MultiRadio","name":"MultiRadio"},
 			{"id":"Radio","name":"Radio"}
+		]';
+
+		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
+
+function HouseholdFiledTypeList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+		$jsonData = '[
+			{"id":"CowNative","name":"Cow (গাভীর সংখ্যা) Native (দেশি)"},
+			{"id":"CowCross","name":"Cow (গাভীর সংখ্যা) Cross (শংকর)"},
+			{"id":"MilkCow","name":"এখন দুধ দিচ্ছে এমন গাভীর সংখ্যা"},
+			{"id":"CowBullNative","name":"Bull/Castrated Bull (ষাঁড়/বলদ সংখ্যা) Native (দেশি)"},
+			{"id":"CowBullCross","name":"Bull/Castrated Bull (ষাঁড়/বলদ সংখ্যা) Cross (শংকর)"},
+			{"id":"CowCalfMaleNative","name":"Calf Male (এঁড়ে বাছুর সংখ্যা) Native (দেশি)"},
+			{"id":"CowCalfMaleCross","name":"Calf Male (এঁড়ে বাছুর সংখ্যা) Cross (শংকর)"},
+			{"id":"CowCalfFemaleNative","name":"Calf Female (বকনা বাছুর সংখ্যা)  Native (দেশি)"},
+			{"id":"CowCalfFemaleCross","name":"Calf Female (বকনা বাছুর সংখ্যা)  Cross (শংকর)"},
+			{"id":"CowMilkProductionNative","name":"Household/Farm Total (Cows) Milk Production per day (Liter)(দৈনিক দুধের পরিমাণ (লিটার)) Native (দেশি)"},
+			{"id":"CowMilkProductionCross","name":"Household/Farm Total (Cows) Milk Production per day (Liter)(দৈনিক দুধের পরিমাণ (লিটার)) Cross (শংকর)"},
+			{"id":"BuffaloAdultMale","name":"Adult Buffalo (মহিষের সংখ্যা) Male (ষাঁড়)"},
+			{"id":"BuffaloAdultFemale","name":"Adult Buffalo (মহিষের সংখ্যা) Female (স্ত্রী)"},
+			{"id":"BuffaloCalfMale","name":"Calf Buffalo (বাছুর মহিষের সংখ্যা) Male (এঁড়ে বাছুর)"},
+			{"id":"BuffaloCalfFemale","name":"Calf Buffalo (বাছুর মহিষের সংখ্যা) Female (বকনা)"},
+			{"id":"BuffaloMilkProduction","name":"Household/Farm Total (Buffalo) Milk Production per day (Liter) (দৈনিক দুধের পরিমাণ (লিটার))"},
+			{"id":"GoatAdultMale","name":"Adult Goat (ছাগল সংখ্যা) Male (পাঁঠা/খাসি)"},
+			{"id":"GoatAdultFemale","name":"Adult Goat (ছাগল সংখ্যা) Female (ছাগী)"},
+			{"id":"GoatCalfMale","name":"Calf (ছাগল বাচ্চার সংখ্যা) Male (পুং)"},
+			{"id":"GoatCalfFemale","name":"Calf (ছাগল বাচ্চার সংখ্যা) Female (স্ত্রী)"},
+			{"id":"SheepAdultMale","name":"Adult Sheep (ভেড়ার সংখ্যা) Male (পাঁঠা/খাসি)"},
+			{"id":"SheepAdultFemale","name":"Adult Sheep (ভেড়ার সংখ্যা) Female(ভেড়ি)"},
+			{"id":"SheepCalfMale","name":"Calf (ভেড়া বাচ্চার সংখ্যা)  Male (পুং)"},
+			{"id":"SheepCalfFemale","name":"Calf (ভেড়া বাচ্চার সংখ্যা)  Female (স্ত্রী)"},
+			{"id":"GoatSheepMilkProduction","name":"Household/Farm Total (Goat) Milk Production per day (Liter) (দৈনিক দুধের পরিমাণ (লিটার))"},
+			{"id":"ChickenNative","name":"Chicken (মুরগির সংখ্যা) Native (দেশি)"},
+			{"id":"ChickenLayer","name":"Chicken (মুরগির সংখ্যা) Layer (লেয়ার)"},
+			{"id":"ChickenBroiler","name":"Chicken (মুরগির সংখ্যা) Broiler (ব্রয়লার)"},
+			{"id":"ChickenSonali","name":"Chicken (মুরগির সংখ্যা) Sonali (সোনালী)"},
+			{"id":"ChickenSonaliFayoumiCockerelOthers","name":"Chicken (মুরগির সংখ্যা) Other Poultry (Fayoumi/ Cockerel/ Turkey)( ফাউমি / ককরেল/ টারকি)"},
+			{"id":"ChickenEgg","name":"Household/Farm Total (Chicken) Daily Egg Production (দৈনিক ডিম উৎপাদন)"},
+			{"id":"DucksNumber","name":"Number of Ducks/Goose (হাঁসের/রাজহাঁসের সংখ্যা)"},
+			{"id":"DucksEgg","name":"Household/Farm Total (Duck) Daily Egg Production (দৈনিক ডিম উৎপাদন)"},
+			{"id":"PigeonNumber","name":"Number of Pigeon (কবুতরের সংখ্যা)"},
+			{"id":"QuailNumber","name":"Number of Quail (কোয়েলের সংখ্যা)"},
+			{"id":"OtherAnimalNumber","name":"Number of other animals (Pig/Horse) (অন্যান্য প্রাণীর সংখ্যা (শুকর/ঘোড়া))"},
+			{"id":"LandTotal","name":"Total cultivable land in decimal (মোট চাষ যোগ্য জমির পরিমাণ (শতাংশ))"},
+			{"id":"LandOwn","name":"Own land for Fodder cultivation (নিজস্ব ঘাস চাষের জমি (শতাংশ))"},
+			{"id":"LandLeased","name":"Leased land for fodder cultivation (লিজ নেয়া ঘাস চাষের জমি (শতাংশ))"}
 		]';
 
 		$resultdata = json_decode($jsonData, true);
