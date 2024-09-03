@@ -161,22 +161,22 @@ else {
 
 
         /**allow only admin,MO,Director,DLO and citycorporation upazila users able to login */
-        if (($RoleId <= 4) || ($userRow["IsCityCorporation"] == 1)) {
-            /**/ //////////// */ 
-        } else {
-            $returnData = [
-                "success" => 0,
-                "status" => 404,
-                "message" => "Only allow to login Admin, MO, Director, DLO and City Corporation Users."
-            ];
+        // if (($RoleId <= 4) || ($userRow["IsCityCorporation"] == 1)) {
+        //     /**/ //////////// */ 
+        // } else {
+        //     $returnData = [
+        //         "success" => 0,
+        //         "status" => 404,
+        //         "message" => "Only allow to login Admin, MO, Director, DLO and City Corporation Users."
+        //     ];
 
-            echo json_encode($returnData);
+        //     echo json_encode($returnData);
 
-            $conn = null;
-            /**Close database connection */
+        //     $conn = null;
+        //     /**Close database connection */
 
-            return;
-        }
+        //     return;
+        // }
         /**allow only admin,MO,Director,DLO and citycorporation upazila users able to login */
 
 
