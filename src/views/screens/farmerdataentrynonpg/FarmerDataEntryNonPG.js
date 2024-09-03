@@ -54,7 +54,8 @@ const FarmerDataEntryNonPG = (props) => {
    /*  let finalUrl =
       EXCEL_EXPORT_URL + "report/household_livestock_survey_excel.php"; */
 
-      let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+       //let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
+     let finalUrl = EXCEL_EXPORT_URL + "report/HouseholdLiveStockSurveyViewExport_csv.php";
 
     let DivisionName =
       divisionList[

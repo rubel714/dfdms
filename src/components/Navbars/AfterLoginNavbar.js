@@ -175,6 +175,18 @@ function AfterLoginNavbar(props) {
                         </a>
                       </li>
                     )}
+
+                    {menuShowPermision("dfdmsdatarange") === 1 && (
+                      <li>
+                        <a
+                          href="javascript:void(0)"
+                          onClick={() => props.history.push("dfdmsdatarange")}
+                        >
+                        DFDMS Data Range
+                        </a>
+                      </li>
+                    )}
+
                   </ul>
                 </li>
               )}

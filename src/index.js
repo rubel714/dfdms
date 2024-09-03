@@ -36,6 +36,7 @@ import RegularBeneficiaryEntry from "views/screens/regularbeneficiaryentry/index
 import UserEntry from "views/screens/userentry/index.js";
 import DatatypeQuestionsMap from "views/screens/datatypequestionsmap/index.js";
 import MembersByPg from "views/screens/membersbypg/index.js";
+import DfdmsDataRange from "views/screens/dfdmsdatarange/index.js";
 import TotalHouseholdInformation from "views/screens/totalhouseholdinformation/index.js";
 import TotalHouseholdAnimalInformation from "views/screens/totalhouseholdanimalinformation/index.js";
 import HouseholdLocation from "views/screens/householdlocation/index.js";
@@ -221,6 +222,10 @@ ReactDOM.render(
           <Route
             path="/membersbypg"
             render={(props) => <MembersByPg {...props} />}
+          />
+          <Route
+            path="/dfdmsdatarange"
+            render={(props) => <DfdmsDataRange {...props} />}
           />
           <Route
             path="/totalhouseholdinformation"

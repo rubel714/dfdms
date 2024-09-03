@@ -222,6 +222,10 @@ button:hover {
     background-color: rgb(120, 200, 10);
     width: 80px;
 }
+.btnShowData {
+    background-color: rgb(120, 200, 10);
+    width: 90px;
+}
 .btnPrint {
     background-color:rgb(105, 175, 178);
     min-width: 90px;
@@ -915,6 +919,16 @@ input[type=search] {
     display: flex;
     flex-direction: column;
     margin-bottom: 5px;
+    align-content: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+
+.formControl-filter-data-button {
+    display: flex;
+    flex-direction: column;
+    margin-top: 11px;
     align-content: stretch;
     justify-content: center;
     flex-wrap: wrap;
