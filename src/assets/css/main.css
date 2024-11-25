@@ -549,6 +549,10 @@ input {
     color:black;
     height: 16px !important;
 }
+.table-comment-icon{
+    color:darkmagenta;
+    height: 16px !important;
+}
 
 .table-delete-icon{
     color:red;
@@ -1426,7 +1430,10 @@ textarea {
   }
 
   .swal-text { 
-    color: red;
+    color: black;
+  }
+ .comment-swal   {
+    width: 700px; /* Set your desired width */
   }
 
   .exceededLimit {

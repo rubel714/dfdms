@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef, useContext, useEffect } from "react";
 import swal from "sweetalert";
-import { DeleteOutline, Edit, ViewList } from "@material-ui/icons";
+import { DeleteOutline, Edit, ViewList, InsertCommentTwoTone  } from "@material-ui/icons";
 
 import { Button } from "../../../components/CustomControl/Button";
 import moment from "moment";
@@ -1086,8 +1086,8 @@ const DataCollectionEntry = (props) => {
 
   /** Action from table row buttons*/
   function actioncontrolmaster(rowData) {
-    console.log("UserInfo", UserInfo);
-    console.log("StatusChangeAllow", UserInfo.StatusChangeAllow);
+    // console.log("UserInfo", UserInfo);
+    // console.log("StatusChangeAllow", UserInfo.StatusChangeAllow);
     let StatusChangeAllow = UserInfo.StatusChangeAllow;
     // let sub = StatusChangeAllow.includes("Submit");
     // console.log('sub: ', sub);
@@ -1095,7 +1095,17 @@ const DataCollectionEntry = (props) => {
     return (
       <>
         {/* StatusId */}
-
+ 
+        {(rowData.AcceptReturnComments ||
+           rowData.ApproveReturnComments) && 
+           (<InsertCommentTwoTone
+          className={"table-comment-icon"}
+          onClick={() => {
+            viewCommentData(rowData);
+          }}
+        />
+      )}
+        
         {rowData.StatusId === 1 &&
           UserInfo.UserId == rowData.UserId &&
           StatusChangeAllow.includes("Submit") && (
@@ -1199,6 +1209,56 @@ const DataCollectionEntry = (props) => {
     getQuestionList(rowData.SurveyId, rowData.id);
     // getDataSingleFromServer(rowData.id);
   };
+
+
+  const viewCommentData = (rowData) => {
+    // console.log("viewCommentData rowData: ", rowData);
+    //getQuestionList(rowData.SurveyId, rowData.id);
+    // getDataSingleFromServer(rowData.id);
+    var msg="";
+    if(rowData.AcceptReturnComments){
+      msg="Accept Return Comments: "+rowData.AcceptReturnComments;
+    }
+
+    if(rowData.ApproveReturnComments){
+      if(msg){
+        msg=msg+"\n";
+      }
+      msg=msg+"Approve Return Comments: "+rowData.ApproveReturnComments;
+    }
+
+    swal({
+      title: "Comments",
+      // icon: "info",
+      text: msg,
+      className: "comment-swal",
+      buttons: {
+        // confirm: {
+        //   text: "Yes",
+        //   value: true,
+        //   visible: true,
+        //   className: "",
+        //   closeModal: true,
+        // },
+        cancel: {
+          text: "Ok",
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+      },
+      dangerMode: false,
+    }).then((allowAction) => {
+      // if (allowAction) {
+      //   changeReportStatusAPICall(params);
+      //   closeRetCommentsModal("");
+      // } else {
+      // }
+    });
+
+  };
+
 
   const getDataSingleFromServer = (id) => {
     let params = {
@@ -1554,7 +1614,7 @@ const DataCollectionEntry = (props) => {
   ]);
 
   const handleChangeMany = (e, cType = "") => {
-    console.log("cType: ", cType);
+    // console.log("cType: ", cType);
     // console.log("e: ", e);
 
     const { name, value } = e.target;
@@ -1568,7 +1628,7 @@ const DataCollectionEntry = (props) => {
     }
 
     setManyDataList(data);
-    console.log("data manyDataList: ", data);
+    // console.log("data manyDataList: ", data);
 
     setErrorObjectMany({ ...errorObjectMany, [name]: null });
   };
@@ -1576,8 +1636,8 @@ const DataCollectionEntry = (props) => {
   function handleChangeCheckMany(e) {
     // console.log('e.target.checked: ', e.target.checked);
     const { name, value } = e.target;
-    console.log("name: ", name);
-    console.log("value: ", value);
+    // console.log("name: ", name);
+    // console.log("value: ", value);
 
     let data = { ...manyDataList };
     // data[name] = e.target.checked;
@@ -1588,7 +1648,7 @@ const DataCollectionEntry = (props) => {
     // data["Questions"][name] = e.target.checked;
 
     setManyDataList(data);
-    console.log("data manyDataList: ", data);
+    // console.log("data manyDataList: ", data);
   }
 
   function handleChangeRadioMany(e, qName, questionParentId) {
@@ -1615,7 +1675,7 @@ const DataCollectionEntry = (props) => {
     data[qName] = e.target.checked; //set true only this option under this parent.
 
     setManyDataList(data);
-    console.log("data manyDataList: ", data);
+    // console.log("data manyDataList: ", data);
   }
 
   const handleChangeChoosenMany = (name, value) => {
@@ -1623,7 +1683,7 @@ const DataCollectionEntry = (props) => {
     data[name] = value;
 
     setManyDataList(data);
-    console.log("data manyDataList: ", data);
+    // console.log("data manyDataList: ", data);
 
     setErrorObjectMany({ ...errorObjectMany, [name]: null });
   };
@@ -1660,7 +1720,7 @@ const DataCollectionEntry = (props) => {
       }
     });
 
-    console.log("validateFields: ", validateFields);
+    // console.log("validateFields: ", validateFields);
 
     let errorData = {};
     let isValid = true;
@@ -1671,7 +1731,75 @@ const DataCollectionEntry = (props) => {
       }
     });
     setErrorObjectMany(errorData);
-    console.log("errorData: ", errorData);
+    // console.log("errorData: ", errorData);
+    return isValid;
+  };
+
+  const validateFormManyValueRange = () => {
+    // let errorData = {};
+    let isValid = 1;
+
+    // let validateFields = [];
+    // let validateFieldsForRange = [];
+    questionsList.map((question) => {
+      if (
+        isValid == 1 &&
+        question.QuestionType == "Number" &&
+        (question.RangeStart != null || question.RangeEnd != null)
+      ) {
+        // validateFieldsForRange.push(question.QuestionCode);
+        if (manyDataList[question.QuestionCode]) {
+          if (question.RangeStart != null) {
+            if (manyDataList[question.QuestionCode] < question.RangeStart) {
+              //errorData[question.QuestionCode] = "validation-style";
+              isValid =
+                question.QuestionName +
+                " value range " +
+                question.RangeStart +
+                " to " +
+                question.RangeEnd;
+            }
+          }
+
+          if (question.RangeEnd != null) {
+            if (manyDataList[question.QuestionCode] > question.RangeEnd) {
+              // errorData[question.QuestionCode] = "validation-style";
+              isValid =
+                question.QuestionName +
+                " value range " +
+                question.RangeStart +
+                " to " +
+                question.RangeEnd;
+            }
+          }
+
+          if (question.QuestionParentId > 0) {
+            questionsList.map((obj) => {
+              // console.log('obj: ', obj);
+              // console.log('obj: ', obj.QuestionId);
+              if (question.QuestionParentId == obj.QuestionId) {
+                isValid = obj.QuestionName + " " + isValid;
+              }
+              // if (!manyDataList[field]) {
+              //   errorData[field] = "validation-style";
+              //   isValid = false;
+              // }
+            });
+          }
+        }
+      }
+    });
+
+    // console.log("validateFields: ", validateFields);
+
+    // validateFields.map((field) => {
+    //   if (!manyDataList[field]) {
+    //     errorData[field] = "validation-style";
+    //     isValid = false;
+    //   }
+    // });
+    //setErrorObjectMany(errorData);
+    // console.log("errorData: ", errorData);
     return isValid;
   };
 
@@ -1743,7 +1871,7 @@ const DataCollectionEntry = (props) => {
   }
 
   function commentsAndReturnSave() {
-    console.log("returnCommentsObj: ", returnCommentsObj);
+    // console.log("returnCommentsObj: ", returnCommentsObj);
 
     if (returnCommentsObj.comments != "") {
       changeReportStatus(
@@ -1781,28 +1909,37 @@ const DataCollectionEntry = (props) => {
   function addEditAPICall(params) {
     let validMaster = validateFormMaster();
     let validMany = validateFormMany();
+    let validManyValueRange = validateFormManyValueRange();
     if (validMaster && validMany) {
-      apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-        console.log("res: ", res);
+      if (validManyValueRange == 1) {
+        apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+          console.log("res: ", res);
 
+          props.openNoticeModal({
+            isOpen: true,
+            msg: res.data.message,
+            msgtype: res.data.success,
+          });
+          // console.log('res.success: ', res.success);
+
+          if (res.data.success) {
+            console.log("currentInvoice: ", currentInvoice);
+            if (currentInvoice.id === "") {
+              //New
+              getDataSingleFromServer(res.data.id);
+            } else {
+              //Edit
+              getDataSingleFromServer(currentInvoice.id);
+            }
+          }
+        });
+      } else {
         props.openNoticeModal({
           isOpen: true,
-          msg: res.data.message,
-          msgtype: res.data.success,
+          msg: validManyValueRange,
+          msgtype: 0,
         });
-        // console.log('res.success: ', res.success);
-
-        if (res.data.success) {
-          console.log("currentInvoice: ", currentInvoice);
-          if (currentInvoice.id === "") {
-            //New
-            getDataSingleFromServer(res.data.id);
-          } else {
-            //Edit
-            getDataSingleFromServer(currentInvoice.id);
-          }
-        }
-      });
+      }
     } else {
       props.openNoticeModal({
         isOpen: true,
@@ -2013,7 +2150,9 @@ const DataCollectionEntry = (props) => {
           )}
 
           {dataTypeId === 3 && (
-            <h4>Home ❯ Data Collection ❯ এলজিডি তথ্য (Community Data Collection)</h4>
+            <h4>
+              Home ❯ Data Collection ❯ এলজিডি তথ্য (Community Data Collection)
+            </h4>
           )}
 
           {!listEditPanelToggle ? (
