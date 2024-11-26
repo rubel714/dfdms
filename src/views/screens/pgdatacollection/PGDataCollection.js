@@ -799,7 +799,7 @@ const PGDataCollection = (props) => {
                   </div>
 
                   <div class="formControl">
-                    <label>ট্রান্সজেন্ডার /Transgender:</label>
+                    <label>হিজরা /Hijra:</label>
                     <input
                       type="number"
                       id="BQ4Transgender"

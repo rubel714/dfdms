@@ -910,7 +910,7 @@ function getFarmerInfo($data)
 		CASE
         WHEN a.HeadOfHHSex = 1 THEN 'Male'
         WHEN a.HeadOfHHSex = 2 THEN 'Female'
-        WHEN a.HeadOfHHSex = 5 THEN 'Transgender'
+        WHEN a.HeadOfHHSex = 5 THEN 'Hijra'
         ELSE 'Other'
     	END AS HeadOfHHSex,
 		b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, 

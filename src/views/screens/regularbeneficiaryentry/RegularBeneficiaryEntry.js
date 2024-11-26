@@ -417,6 +417,7 @@ const RegularBeneficiaryEntry = (props) => {
       registrationDate: "",
       IfRegisteredYesRegistrationNo: "",
       FarmsPhoto: "",
+      IsActive: 1,
       //IsRegular: false,
     });
 

@@ -137,7 +137,7 @@
   }
   
   .checkbox-label {
-    display: flex;
+   /*  display: flex; */
     align-items: center;
     margin-bottom: 8px;
   }
@@ -152,6 +152,12 @@
     border-radius: 4px;
     margin-right: 8px;
     cursor: pointer;
+    vertical-align: middle;
+  }
+
+  .checkbox-label label {
+    line-height: 1.5; 
+    vertical-align: middle; 
   }
   
   .checkbox-label input[type="checkbox"]:checked {

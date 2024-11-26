@@ -185,7 +185,7 @@ INNER JOIN `t_union` u ON t.`UnionId`=u.`UnionId`";
 	$writer->addRow([$filterSubHeader]);
 
 	$writer->addRow(['Division','District','Upazila','Union/Pourashava','Total Number of Farmers','Total Number of Farm','Family Member',
-	'Total Number of Male','Total Number of Female','Total Number of Transgender',
+	'Total Number of Male','Total Number of Female','Total Number of Hijra',
 	'Total Number of Male-Female','Total Number of Others','Total Number of NID','Total Number of PG Member',
 	'Cow (Native)','Cow (Cross)', 'এখন দুধ দিচ্ছে এমন গাভীর সংখ্যা', 'Bull/Castrated Bull (Native)', 'Bull/Castrated Bull (Cross)', 'Calf Male (Native)', 'Calf Male (Cross)', 'Calf Female (Native)', 'Calf Female (Cross)','Household/Farm Total (Cows) Milk Production per day (Liter) (Native)','Household/Farm Total (Cows) Milk Production per day (Liter) (Cross)','Adult Buffalo (Male)','Adult Buffalo (Female)', 'Calf Buffalo (Male)', 'Calf Buffalo (Female)', 'Household/Farm Total (Buffalo) Milk Production per day (Liter)','Adult Goat (Male)','Adult Goat (Female)', 'Calf Goat (Male)', 'Calf Goat (Female)','Adult Sheep (Male)','Adult Sheep (Female)', 'Calf Sheep (Male)', 'Calf Sheep (Female)','Household/Farm Total (Goat) Milk Production per day (Liter)','Chicken (Native)','Chicken (Layer)','Chicken (Broiler)','Chicken (Sonali)','Chicken (Other Poultry (Fayoumi/ Cockerel/ Turkey)','Household/Farm Total (Chicken) Daily Egg Production','Number of Ducks/Goose','Household/Farm Total (Duck) Daily Egg Production','Number of Pigeon','Number of Quail','Number of other animals (Pig/Horse)','Total cultivable land in decimal','Own land for Fodder cultivation','Leased land for fodder cultivation']);
 	

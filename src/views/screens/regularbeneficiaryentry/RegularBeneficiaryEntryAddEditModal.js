@@ -92,6 +92,10 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
   const [department, setDepartment] = useState(null);
   const [currDepartment, setCurrDepartment] = useState(null);
+
+  const [currIsActive, setCurrIsActive] = useState(1); // or false
+
+
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() + 1);
 
@@ -175,6 +179,15 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
     } else {
       setCurrAreYouRegisteredYourFirmWithDlsRadioFlag(0);
     }
+
+    // Set the initial value of IsActive
+    if (currentRow.IsActive !== undefined && currentRow.IsActive !== null) {
+      setCurrIsActive(currentRow.IsActive);
+    } else {
+      setCurrIsActive(1);
+    }
+
+
   }, []);
 
   function getDivision(
@@ -1939,6 +1952,35 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 />
               </div>
             )}
+          </div>
+
+          <div class="formControl-mobile">
+            <label>Status</label>
+            <div className="checkbox-label">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="IsActive"
+                  name="IsActive"
+                  value={1}
+                  checked={currentRow.IsActive === 1}
+                  onChange={() => handleChangeMany(1, "IsActive")}
+                />
+                Active
+              </label>
+
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  id="IsActive_false"
+                  name="IsActive"
+                  value={0}
+                  checked={currentRow.IsActive === 0}
+                  onChange={() => handleChangeMany(0, "IsActive")}
+                />
+                Inactive
+              </label>
+            </div>
           </div>
 
           {/*  <div className="formControl-mobile">
