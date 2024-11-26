@@ -40,39 +40,16 @@ function getDataList($data){
 		$DivisionId = trim($data->DivisionId)?trim($data->DivisionId):0; 
 		$DistrictId = trim($data->DistrictId)?trim($data->DistrictId):0; 
 		$UpazilaId = trim($data->UpazilaId)?trim($data->UpazilaId):0; 
+		$FarmerStatusId = trim($data->FarmerStatusId)?trim($data->FarmerStatusId):"All";
+		if ($FarmerStatusId == "All"){
+			$cIsActive = "";
+		}else if ($FarmerStatusId == "Active"){
+			$cIsActive = " AND a.IsActive = 1";
+		}else{
+			$cIsActive = " AND a.IsActive = 0";
+		}
 
-		/* $query = "SELECT 
-			a.`FarmerId` id,
-			a.`DivisionId`,
-			a.`DistrictId`,
-			a.`UpazilaId`,
-			a.`PGId`,
-			a.`FarmerName`,
-			a.`NID`,
-			a.`Phone`,
-			a.`FatherName`,
-			a.`ValueChain`,
-			a.`MotherName`,
-			a.`LiveStockNo`,
-			a.`LiveStockOther`,
-			a.`Address`,
-			a.`IsRegular`,
-			a.`NidFrontPhoto`,
-			a.`NidBackPhoto`,
-			a.`BeneficiaryPhoto`,
-			a.`SpouseName`,
-			a.`Gender` AS GenderId,
-			a.`FarmersAge`,
-			a.`DisabilityStatus`,
-			a.`RelationWithHeadOfHH`,
-			a.`HeadOfHHSex`,
-			a.`PGRegistered`,
-			a.`PGPartnershipWithOtherCompany`,
-			a.`TypeOfMember`,
-			a.`PGFarmerCode`,
-			case when a.IsRegular=1 then 'Regular' else 'No' end IsRegularBeneficiary
-		FROM
-			t_farmer a ;"; */
+		
 		
 	$query = "SELECT 
 			a.`FarmerId`,
@@ -139,6 +116,7 @@ function getDataList($data){
 		  WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+			$cIsActive
 		  ;";
 		  
 

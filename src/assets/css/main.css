@@ -600,6 +600,7 @@ input {
     font-size: 0.8em !important; 
 	/* font-size: 12px !important; */
     width: 100% !important;
+    border: 2px solid black;
 
 }
 
@@ -1446,3 +1447,13 @@ textarea {
     overflow-y: auto;
     max-height: 450px;
   }
+
+  .searchAddFourFilter {
+	display: grid;
+	grid-row-gap: 8px;
+	grid-row-gap: 8px;
+	row-gap: 8px;
+	padding-left: 10px;
+	grid-template-columns: 15% 15% 15% 24% 31%;
+	align-content: stretch;
+}

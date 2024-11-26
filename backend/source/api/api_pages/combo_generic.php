@@ -68,6 +68,10 @@ switch($task){
 		$returnData = QuestionTypeList($data);
 		break;
 
+	case "ActiveStatusList":
+		$returnData = ActiveStatusList($data);
+		break;
+
 	case "HouseholdFiledTypeList":
 		$returnData = HouseholdFiledTypeList($data);
 		break;
@@ -592,6 +596,35 @@ function QuestionTypeList($data) {
 			{"id":"DropDown","name":"DropDown"},
 			{"id":"MultiRadio","name":"MultiRadio"},
 			{"id":"Radio","name":"Radio"}
+		]';
+
+		$resultdata = json_decode($jsonData, true);
+
+		$returnData = [
+			"success" => 1,
+			"status" => 200,
+			"message" => "",
+			"datalist" => $resultdata
+		];
+
+	}catch(PDOException $e){
+		$returnData = msg(0,500,$e->getMessage());
+	}
+	
+	return $returnData;
+}
+
+
+function ActiveStatusList($data) {
+	try{
+	
+		$dbh = new Db();
+	
+	
+		$jsonData = '[
+			{"id":"All","name":"All"},
+			{"id":"Active","name":"Active"},
+			{"id":"Inactive ","name":"Inactive"}
 		]';
 
 		$resultdata = json_decode($jsonData, true);

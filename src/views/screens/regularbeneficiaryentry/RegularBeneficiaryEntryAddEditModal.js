@@ -1955,7 +1955,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>Status</label>
+            <label>Farmer Status</label>
             <div className="checkbox-label">
               <label className="radio-label">
                 <input

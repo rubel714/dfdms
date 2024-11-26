@@ -249,6 +249,14 @@ function RegularBeneficiaryExport()
 	$DivisionId = $_REQUEST['DivisionId'] ? $_REQUEST['DivisionId'] : 0;
 	$DistrictId = $_REQUEST['DistrictId'] ? $_REQUEST['DistrictId'] : 0;
 	$UpazilaId =  $_REQUEST['UpazilaId'] ? $_REQUEST['UpazilaId'] : 0;
+	$FarmerStatusId = $_REQUEST['FarmerStatusId'] ? $_REQUEST['FarmerStatusId'] :"All";
+		if ($FarmerStatusId == "All"){
+			$cIsActive = "";
+		}else if ($FarmerStatusId == "Active"){
+			$cIsActive = " AND a.IsActive = 1";
+		}else{
+			$cIsActive = " AND a.IsActive = 0";
+		}
 
 
 	$sql = "SELECT a.*, CASE WHEN a.IsRegular = 1 THEN 'Regular' ELSE 'Irregular' END AS RegularStatus,
@@ -290,6 +298,7 @@ function RegularBeneficiaryExport()
 		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+		$cIsActive
 		;";
 
 
@@ -328,7 +337,7 @@ function RegularBeneficiaryExport()
 
 	//Report header list
 	$tableProperties["header_list"][0] = $siteTitle;
-	$tableProperties["header_list"][1] = 'Farmer Profile List';
+	$tableProperties["header_list"][1] = $FarmerStatusId.' Farmer Profile List';
 	$tableProperties["header_list"][2] = $DivisionName . $DistrictName . $UpazilaName;
 	// $tableProperties["header_list"][1] = 'Heading 2';
 

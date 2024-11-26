@@ -12,6 +12,9 @@ import {
 } from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
+import { Typography, TextField } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+
 import RegularBeneficiaryEntryAddEditModal from "./RegularBeneficiaryEntryAddEditModal";
 
 const RegularBeneficiaryEntry = (props) => {
@@ -25,6 +28,9 @@ const RegularBeneficiaryEntry = (props) => {
 
   const { isLoading, data: dataList, error, ExecuteQuery } = ExecuteQueryHook(); //Fetch data
   const UserInfo = LoginUserInfo();
+
+  const [farmerStatusList, setFarmerStatusList] = useState([]);
+  const [currFarmerStatusId, setCurrFarmerStatusId] = useState('All');
 
   const [currentFilter, setCurrentFilter] = useState([]);
   const [divisionList, setDivisionList] = useState(null);
@@ -53,6 +59,8 @@ const RegularBeneficiaryEntry = (props) => {
       finalUrl +
         "?action=RegularBeneficiaryExport" +
         "&reportType=excel" +
+        "&FarmerStatusId=" +
+        currFarmerStatusId +
         "&DivisionId=" +
         currDivisionId +
         "&DistrictId=" +
@@ -227,10 +235,28 @@ const RegularBeneficiaryEntry = (props) => {
 
   if (bFirst) {
     /**First time call for datalist */
-
+    getfarmerStatusList();
     getDivision(UserInfo.DivisionId, UserInfo.DistrictId, UserInfo.UpazilaId);
     setBFirst(false);
   }
+
+
+  function getfarmerStatusList() {
+    let params = {
+      action: "ActiveStatusList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+      setCurrFarmerStatusId(res.data.datalist[0]["id"]);
+
+      setFarmerStatusList(res.data.datalist);
+      
+      /* getDataList(res.data.datalist[0]["id"]); */
+    });
+  }
+
 
   /**Get data for table list */
   function getDataList() {
@@ -241,6 +267,7 @@ const RegularBeneficiaryEntry = (props) => {
       DivisionId: currDivisionId,
       DistrictId: currDistrictId,
       UpazilaId: currUpazilaId,
+      FarmerStatusId: currFarmerStatusId,
     };
     // console.log('LoginUserInfo params: ', params);
 
@@ -585,7 +612,7 @@ const RegularBeneficiaryEntry = (props) => {
 
   useEffect(() => {
     getDataList();
-  }, [currDivisionId, currDistrictId, currUpazilaId]);
+  }, [currDivisionId, currDistrictId, currUpazilaId, currFarmerStatusId]);
 
   const backToList = () => {
     setListEditPanelToggle(true); // true = show list and hide add/edit panel
@@ -823,6 +850,18 @@ const RegularBeneficiaryEntry = (props) => {
     // console.log("rows: ", rows);
   };
 
+
+  const handleChangeChoosenMany = (name, value) => {
+
+    if (name === 'DataTypeId'){
+      setCurrFarmerStatusId(value);
+
+    }
+
+  };
+
+
+
   return (
     <>
       <div class="bodyContainer">
@@ -846,7 +885,7 @@ const RegularBeneficiaryEntry = (props) => {
         {listEditPanelToggle && (
           <>
             {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-            <div class="searchAdd3">
+            <div class="searchAddFourFilter">
               <div class="formControl-filter-data-label">
                 <label for="DivisionId">Division: </label>
                 <select
@@ -894,6 +933,43 @@ const RegularBeneficiaryEntry = (props) => {
                     })}
                 </select>
               </div>
+
+
+              <div class="formControl-filter-data-label">
+                  <label>Farmer Status:</label>
+
+                  {/* <div class="plusGroup"> */}
+                  <div class="">
+                    <Autocomplete
+                      autoHighlight
+                      // freeSolo
+                      disableClearable
+                      className="chosen_dropdown"
+                      id="DataTypeId"
+                      name="DataTypeId"
+                      autoComplete
+                      options={farmerStatusList ? farmerStatusList : []}
+                      getOptionLabel={(option) => option.name}
+                      defaultValue={{ id: "All", name: "All" }}
+                      onChange={(event, valueobj) =>
+                        handleChangeChoosenMany(
+                          "DataTypeId",
+                          valueobj ? valueobj.id : ""
+                        )
+                      }
+                      renderOption={(option) => (
+                        <Typography className="chosen_dropdown_font">
+                          {option.name}
+                        </Typography>
+                      )}
+                      renderInput={(params) => (
+                        <TextField {...params} variant="standard" fullWidth />
+                      )}
+                    />
+                  </div>
+                </div>
+
+                
 
               <div class="filter-button">
                 {/* <Button label={"ADD"} class={"btnAdd"} onClick={addData} /> */}
