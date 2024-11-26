@@ -167,6 +167,8 @@ const QuestionsEntry = (props) => {
             QuestionId: "",
             Settings: "",
             IsMandatory: false,
+            RangeStart: "", 
+            RangeEnd: ""
 
           });
     openModal();

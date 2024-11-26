@@ -100,8 +100,11 @@ const PgEntryFormAddEditModal = (props) => {
 
     //for dependancy
     if (name === "QuestionType") {
-      setCurrQuestionType(value);
+      data["RangeStart"] = "";
+      data["RangeEnd"] = "";
 
+      setCurrQuestionType(value);
+      
       if((value === 'Label') || (value === 'MultiOption') || (value === 'MultiRadio') ){
         data['IsMandatory'] = false; 
 
@@ -306,6 +309,33 @@ const PgEntryFormAddEditModal = (props) => {
                   />
 
           </div>
+
+
+          {/* Conditionally render the div */}
+            {currentRow.QuestionType === "Number" && (
+              <div className="contactmodalBody pt-10 valueRangeStartEnd">
+                <label>Value Range Start</label>
+                <input
+                  type="number"
+                  id="RangeStart"
+                  name="RangeStart"
+                  placeholder="Enter Value Range Start"
+                  //value={currentRow.RangeStart || ""}
+                  value={currentRow.RangeStart !== null && currentRow.RangeStart !== undefined ? currentRow.RangeStart : ""}
+                  onChange={(e) => handleChange(e)}
+                />
+
+                <label>Value Range End</label>
+                <input
+                  type="number"
+                  id="RangeEnd"
+                  name="RangeEnd"
+                  placeholder="Enter Value Range End"
+                  value={currentRow.RangeEnd || ""}
+                  onChange={(e) => handleChange(e)}
+                />
+              </div>
+            )}
 
             {/*  <div class="contactmodalBody modalItem">
                 <label> Is Mandatory?</label>

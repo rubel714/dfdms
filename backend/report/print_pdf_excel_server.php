@@ -1254,15 +1254,16 @@ function QuestionDataExport()
 	tp.`QuestionName` AS ParentQuestionName
 	, case when tq.IsMandatory=1 then 'Yes' else 'No' end IsMandatoryName
 	, 0 AS QMapCount
+	, tq.RangeStart, tq.RangeEnd
 FROM `t_questions` tq
 LEFT JOIN `t_questions` tp ON tq.`QuestionParentId` = tp.`QuestionId`
 ORDER BY tq.`QuestionCode`, tq.`SortOrderChild` ;";
 
-	$tableProperties["query_field"] = array("QuestionCode", "QuestionName", "QuestionType", "ParentQuestionName", "Settings", "IsMandatoryName");
-	$tableProperties["table_header"] = array('Code', 'Question', 'Question Type', 'Parent Question', 'Settings', 'Is Mandatory');
+	$tableProperties["query_field"] = array("QuestionCode", "QuestionName", "QuestionType", "ParentQuestionName", "Settings", "IsMandatoryName", "RangeStart", "RangeEnd");
+	$tableProperties["table_header"] = array('Code', 'Question', 'Question Type', 'Parent Question', 'Settings', 'Is Mandatory', 'Value Range Start', 'Value Range End');
 	$tableProperties["align"] = array("left", "left");
 	$tableProperties["width_print_pdf"] = array("30%", "70%"); //when exist serial then here total 95% and 5% use for serial
-	$tableProperties["width_excel"] = array("20", "50", "20", "50", "15", "20");
+	$tableProperties["width_excel"] = array("20", "50", "20", "50", "15", "20", "20", "20");
 	$tableProperties["precision"] = array("string", "string"); //string,date,datetime,0,1,2,3,4
 	$tableProperties["total"] = array(0, 0); //not total=0, total=1
 	$tableProperties["color_code"] = array(0, 0); //colorcode field = 1 not color code field = 0
