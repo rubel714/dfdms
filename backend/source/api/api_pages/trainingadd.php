@@ -55,8 +55,8 @@ function getDataList($data){
 			FROM `t_training` a
 			INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
 			INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
-			INNER JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
-			INNER JOIN t_pg f ON a.`PGId` = f.`PGId`
+			LEFT JOIN t_upazila d ON a.`UpazilaId` = d.`UpazilaId`
+			LEFT JOIN t_pg f ON a.`PGId` = f.`PGId`
 			INNER JOIN t_training_title g ON a.`TrainingTitleId` = g.`TrainingTitleId`
 			INNER JOIN t_venue h ON a.`VenueId` = h.`VenueId`
 			WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)

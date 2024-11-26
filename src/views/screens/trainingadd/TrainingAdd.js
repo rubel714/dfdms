@@ -714,17 +714,20 @@ function getVenueList(
   }
 
   const validateForm = () => {
-    let validateFields = [
+   let validateFields = [
       "TrainingDate",
       "DivisionId",
       "DistrictId",
-      "UpazilaId",
+      /* "UpazilaId",
       "PGId",
-      "ValuechainId",
+      "ValuechainId", */
       "TrainingTitleId",
       "TrainingDescription",
       "VenueId",
-    ];
+    ]; 
+   
+  
+
     let errorData = {};
     let isValid = true;
     validateFields.map((field) => {
@@ -753,21 +756,22 @@ function getVenueList(
       }
 
       // Check if UpazilaId is ""
-      if (currUpazilaId_form === "") {
+     /*  if (currUpazilaId_form === "") {
         setErrorObject_form({
           ...errorObject_form,
           ["UpazilaId"]: "validation-style",
         });
         return;
-      }
+      } */
+
       // Check if UnionId is ""
-      if (currPGId_form === "") {
+      /* if (currPGId_form === "") {
         setErrorObject_form({
           ...errorObject_form,
           ["PGId"]: "validation-style",
         });
         return;
-      }
+      } */
 
       let params = {
         action: "dataAddEdit",
@@ -1253,7 +1257,7 @@ function getVenueList(
                         })}
                     </select>
 
-                    <label>Upazila *</label>
+                    <label>Upazila</label>
                     <select
                       id="UpazilaId"
                       name="UpazilaId"
@@ -1270,7 +1274,7 @@ function getVenueList(
 
                   <div class="contactmodalBodyOnePage pt-10">
                    
-                    <label>Value Chain*</label>
+                    <label>Value Chain</label>
                       <select
                         id="ValuechainId"
                         name="ValuechainId"
@@ -1284,7 +1288,7 @@ function getVenueList(
                           })}
                       </select>
                    
-                    <label>PG *</label>
+                    <label>PG</label>
                     <select
                       id="PGId"
                       name="PGId"
