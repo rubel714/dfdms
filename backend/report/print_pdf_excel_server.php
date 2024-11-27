@@ -281,6 +281,8 @@ function RegularBeneficiaryExport()
 			, a.registrationDate
 			, a.IfRegisteredYesRegistrationNo
 			, a.FarmsPhoto
+			, a.`Latitute`
+			, a.`Longitute`
 			
 		FROM t_farmer a
 		INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
@@ -328,7 +330,7 @@ function RegularBeneficiaryExport()
 	$tableProperties["table_header"] = array("Beneficiary Name", "Is Regular Beneficiary", "Beneficiary NID", "Mobile Number", "Father's Name", "Mother's Name", "Spouse Name", "Gender", "Farmer's Age", "Disability Status", "Farmers Relationship with Head of HH", "If others, specify", "Farmer's Head of HH Sex", "Do your PG/PO Registered?", "Type Of Member", "Do your PG make any productive partnership with any other company?", "PG Farmer Code", "Primary Occupation", "Division", "District", "Upazila", "Union", "Name of Producer Group", "Ward", "City Corporation/ Municipality", "Village", "Address", "Latitute", "Longitute", "Are You Head of The Group?", "Value Chain", "Farmer Type");
 	$tableProperties["align"] = array("left", "left");
 	$tableProperties["width_print_pdf"] = array("30%", "70%"); //when exist serial then here total 95% and 5% use for serial
-	$tableProperties["width_excel"] = array("30", "20", "30", "30", "30", "30", "30");
+	$tableProperties["width_excel"] = array("30", "20", "30", "30", "30", "30", "30","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15");
 	$tableProperties["precision"] = array("string", "string"); //string,date,datetime,0,1,2,3,4
 	$tableProperties["total"] = array(0, 0); //not total=0, total=1
 	$tableProperties["color_code"] = array(0, 0); //colorcode field = 1 not color code field = 0
@@ -1334,7 +1336,7 @@ function PGDataExport()
 	a.PgBankAccountNumber, y.BankName, a.ValuechainId, a.IsLeadByWomen, a.GenderId, a.IsActive, e.ValueChainName, f.UnionName
 	,g.GenderName, a.DateofPgInformation,
 		CASE WHEN a.IsLeadByWomen = 1 THEN 'Yes' ELSE 'No' END AS IsLeadByWomenStatus,
-		CASE WHEN a.IsActive = 1 THEN 'Active' ELSE 'Inactive' END AS ActiveStatus
+		CASE WHEN a.IsActive = 1 THEN 'Active' ELSE 'Inactive' END AS ActiveStatus, a.`Latitute`, a.`Longitute`
 	FROM `t_pg` a
 	INNER JOIN t_division b ON a.`DivisionId` = b.`DivisionId`
 	INNER JOIN t_district c ON a.`DistrictId` = c.`DistrictId`
@@ -1372,12 +1374,12 @@ function PGDataExport()
 
 
 
-	$tableProperties["query_field"] = array("PgGroupCode", "PGName", "PgBankAccountNumber", "BankName", "ValueChainName", "DivisionName", "DistrictName", "UpazilaName", "UnionName", "GenderName", "IsLeadByWomenStatus", "ActiveStatus", "Address", "DateofPgInformation");
-	$tableProperties["table_header"] = array('Group Code', 'PG Name', 'Bank Account Number', 'Bank Name', 'Value Chain', 'Division', 'District', 'Upazila', 'Union', 'Group Members Gender', 'Is the Group Led by Women', 'Status', 'Address', 'Date of Pg Information');
+	$tableProperties["query_field"] = array("PgGroupCode", "PGName", "PgBankAccountNumber", "BankName", "ValueChainName", "DivisionName", "DistrictName", "UpazilaName", "UnionName", "GenderName", "IsLeadByWomenStatus", "ActiveStatus", "Address", "Latitute", "Longitute", "DateofPgInformation");
+	$tableProperties["table_header"] = array('Group Code', 'PG Name', 'Bank Account Number', 'Bank Name', 'Value Chain', 'Division', 'District', 'Upazila', 'Union', 'Group Members Gender', 'Is the Group Led by Women', 'Status', 'Address', 'Latitute','Longitute','Date of Pg Information');
 	$tableProperties["align"] = array("left");
-	$tableProperties["width_print_pdf"] = array("6%", "5%", "15%", "5%", "5%", "5%", "5%", "5%", "5%"); //when exist serial then here total 95% and 5% use for serial
-	$tableProperties["width_excel"] = array("15", "30", "20", "15", "16", "12", "12", "12", "12", "12", "12", "12", "25");
-	$tableProperties["precision"] = array("string", "string", "string", "string", "string", "string", "string", "string", "string", "string", "string", "string"); //string,date,datetime,0,1,2,3,4
+	$tableProperties["width_print_pdf"] = array("6%", "5%", "15%", "5%", "5%", "5%", "5%", "5%", "5%", "5%", "5%", "5%", "5%", "5%", "5%", "5%"); //when exist serial then here total 95% and 5% use for serial
+	$tableProperties["width_excel"] = array("15", "30", "20", "15", "16", "12", "12", "12", "12", "12", "12", "12", "12", "12", "12", "25");
+	$tableProperties["precision"] = array("string", "string", "string", "string", "string", "string", "string", "string", "string", "string", "string", "string", "string", "string", "string", "string"); //string,date,datetime,0,1,2,3,4
 	$tableProperties["total"] = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0); //not total=0, total=1
 	$tableProperties["color_code"] = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0); //colorcode field = 1 not color code field = 0
 	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1

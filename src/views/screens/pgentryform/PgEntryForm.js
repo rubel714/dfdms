@@ -343,6 +343,8 @@ const PgEntryForm = (props) => {
       IsActive: 0,
       BankId: "",
       DateofPgInformation: "",
+      Latitute: "",
+      Longitute: "",
     });
     /* openModal(); */
     setListEditPanelToggle(false);

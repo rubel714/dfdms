@@ -385,6 +385,24 @@ const PgEntryFormAddEditModal = (props) => {
     // Handle other logic as needed
   };
 
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }
+
+  function showPosition(position) {
+    setCurrentRow({
+      ...currentRow,
+      Latitute: position.coords.latitude,
+      Longitute: position.coords.longitude,
+    });
+  }
+
+
   return (
     <>
       {/* <!-- GROUP MODAL START --> */}
@@ -624,6 +642,44 @@ const PgEntryFormAddEditModal = (props) => {
               value={currentRow.Address}
               onChange={(e) => handleChange(e)}
             ></textarea>
+          </div>
+
+
+          <div className="formControl-mobile">
+
+            <label>Latitute</label>
+            <input
+              type="text"
+              id="Latitute"
+              name="Latitute"
+              disabled="true"
+              placeholder="Enter Latitute"
+              value={currentRow.Latitute}
+              onChange={(e) => handleChange(e)}
+            />
+
+          </div>
+
+          <div className="formControl-mobile">
+            <label>Longitute</label>
+            <div className="autocompleteContainer">
+              <input
+                type="text"
+                id="Longitute"
+                disabled="true"
+                name="Longitute"
+                placeholder="Enter Longitute"
+                value={currentRow.Longitute}
+                onChange={(e) => handleChange(e)}
+              />
+
+              <Button
+                label={"Location"}
+                class={"btnDetailsLatLong"}
+                onClick={getLocation}
+              />
+            </div>
+
           </div>
 
           <div class="formControl-mobile">

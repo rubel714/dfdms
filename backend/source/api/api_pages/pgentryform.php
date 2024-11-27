@@ -49,7 +49,7 @@ function getDataList($data){
 			 when a.StatusId=2 then 'Waiting for Accept'
 			 when a.StatusId=3 then 'Waiting for Approve'
 			 when a.StatusId=5 then 'Approved'
-			 else '' end CurrentStatus,h.UserName,a.UserId
+			 else '' end CurrentStatus,h.UserName,a.UserId, a.`Latitute`, a.`Longitute`
 
 
 			FROM `t_pg` a
@@ -109,6 +109,8 @@ function dataAddEdit($data) {
 		$IsActive = isset($data->rowData->IsActive) ? $data->rowData->IsActive : 0;
 		$BankId = isset($data->rowData->BankId) ? $data->rowData->BankId : '';
 		$DateofPgInformation = isset($data->rowData->DateofPgInformation) ? $data->rowData->DateofPgInformation : '';
+		$Latitute =  $data->rowData->Latitute ? $data->rowData->Latitute : null;
+		$Longitute =  $data->rowData->Longitute ? $data->rowData->Longitute : null;
 		
 		
 
@@ -120,8 +122,8 @@ function dataAddEdit($data) {
 			if($PGId == ""){
 				$q = new insertq();
 				$q->table = 't_pg';
-				$q->columns = ['PGName','DivisionId','DistrictId','UpazilaId','Address', 'UnionId','PgGroupCode', 'PgBankAccountNumber','BankName', 'ValuechainId', 'IsLeadByWomen', 'GenderId', 'IsActive','BankId','DateofPgInformation','UserId'];
-				$q->values = [$PGName,$DivisionId,$DistrictId,$UpazilaId,$Address, $UnionId, $PgGroupCode, $PgBankAccountNumber, $BankName, $ValuechainId, $IsLeadByWomen, $GenderId, $IsActive, $BankId, $DateofPgInformation,$UserId];
+				$q->columns = ['PGName','DivisionId','DistrictId','UpazilaId','Address', 'UnionId','PgGroupCode', 'PgBankAccountNumber','BankName', 'ValuechainId', 'IsLeadByWomen', 'GenderId', 'IsActive','BankId','DateofPgInformation','UserId','Latitute','Longitute'];
+				$q->values = [$PGName,$DivisionId,$DistrictId,$UpazilaId,$Address, $UnionId, $PgGroupCode, $PgBankAccountNumber, $BankName, $ValuechainId, $IsLeadByWomen, $GenderId, $IsActive, $BankId, $DateofPgInformation,$UserId,$Latitute,$Longitute];
 				$q->pks = ['PGId'];
 				$q->bUseInsetId = false;
 				$q->build_query();
@@ -129,8 +131,8 @@ function dataAddEdit($data) {
 			}else{
 				$u = new updateq();
 				$u->table = 't_pg';
-				$u->columns = ['PGName','DivisionId','DistrictId','UpazilaId','Address','UnionId','PgGroupCode', 'PgBankAccountNumber', 'BankName', 'ValuechainId', 'IsLeadByWomen', 'GenderId', 'IsActive','BankId','DateofPgInformation'];
-				$u->values = [$PGName,$DivisionId,$DistrictId,$UpazilaId,$Address, $UnionId, $PgGroupCode, $PgBankAccountNumber, $BankName, $ValuechainId, $IsLeadByWomen, $GenderId, $IsActive, $BankId, $DateofPgInformation];
+				$u->columns = ['PGName','DivisionId','DistrictId','UpazilaId','Address','UnionId','PgGroupCode', 'PgBankAccountNumber', 'BankName', 'ValuechainId', 'IsLeadByWomen', 'GenderId', 'IsActive','BankId','DateofPgInformation','Latitute','Longitute'];
+				$u->values = [$PGName,$DivisionId,$DistrictId,$UpazilaId,$Address, $UnionId, $PgGroupCode, $PgBankAccountNumber, $BankName, $ValuechainId, $IsLeadByWomen, $GenderId, $IsActive, $BankId, $DateofPgInformation,$Latitute,$Longitute];
 				$u->pks = ['PGId'];
 				$u->pk_values = [$PGId];
 				$u->build_query();
