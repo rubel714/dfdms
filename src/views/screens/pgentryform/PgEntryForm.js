@@ -329,9 +329,9 @@ const PgEntryForm = (props) => {
     setCurrentRow({
       id: "",
       PGName: "",
-      DivisionId: "",
-      DistrictId: "",
-      UpazilaId: "",
+      DivisionId: UserInfo.DivisionId,
+      DistrictId: UserInfo.DistrictId,
+      UpazilaId: UserInfo.UpazilaId,
       Address: "",
       UnionId: "",
       PgGroupCode: "",

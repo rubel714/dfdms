@@ -418,6 +418,7 @@ const PgEntryFormAddEditModal = (props) => {
             <select
               id="DivisionId"
               name="DivisionId"
+              disabled={true}
               class={errorObject.DivisionId}
               value={currDivisionId}
               onChange={(e) => handleChange(e)}
@@ -433,6 +434,7 @@ const PgEntryFormAddEditModal = (props) => {
             <select
               id="DistrictId"
               name="DistrictId"
+              disabled={true}
               class={errorObject.DistrictId}
               value={currDistrictId}
               onChange={(e) => handleChange(e)}
@@ -448,6 +450,7 @@ const PgEntryFormAddEditModal = (props) => {
             <select
               id="UpazilaId"
               name="UpazilaId"
+              disabled={true}
               class={errorObject.UpazilaId}
               value={currUpazilaId}
               onChange={(e) => handleChange(e)}
