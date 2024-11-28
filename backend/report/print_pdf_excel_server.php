@@ -301,6 +301,7 @@ function RegularBeneficiaryExport()
 		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
 		$cIsActive
+		ORDER BY a.CreateTs DESC
 		;";
 
 
@@ -1348,7 +1349,11 @@ function PGDataExport()
 	WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 	AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 	AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
-	ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`PGName` ASC;";
+	ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName` ASC, a.CreateTs DESC;";
+
+	//ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`PGName` ASC;";
+
+
 
 	$db = new Db();
 	$sqlrresultHeader = $db->query($sql);

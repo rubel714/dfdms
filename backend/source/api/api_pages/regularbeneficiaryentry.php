@@ -117,6 +117,7 @@ function getDataList($data){
 			AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 			AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
 			$cIsActive
+			ORDER BY a.CreateTs DESC
 		  ;";
 		  
 
