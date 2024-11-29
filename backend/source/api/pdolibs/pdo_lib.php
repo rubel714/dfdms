@@ -401,22 +401,26 @@ function getErrors($errorNos, $errors) {
                 $errorStr1 = substr($error, strpos($error, 'for key \'') + 9);
                 $constName = substr($errorStr1, 0, -1);
 				
-				 if ($constName == 'PRIMARY')
+				 if ($constName == 'PRIMARY'){
                     $eMsg .= "* $error";
-                else
-                    $eMsg .= '* ' . $constName . " '" . $constValue . "'";
-
+                 }
+                else{
+                    // $eMsg .= '* ' . $constName . " '" . $constValue . "'";
+                    $eMsg .= '* ' . getErrorMessage($constName) . " '" . $constValue . "'";
+                }
                 break;
             case '1451' :
                 $errorStr = substr($error, strpos($error, 'CONSTRAINT `') + 12);
                 $constName = substr($errorStr, 0, strpos($errorStr, '`'));              
-				$custErr = $constName;
+				$custErr = getErrorMessage($constName);
+				// $custErr = $constName;
                 $eMsg = '* ' . $custErr . '';
                 break;
             case '1452' :
                 $errorStr = substr($error, strpos($error, 'CONSTRAINT `') + 12);
                 $constName = substr($errorStr, 0, strpos($errorStr, '`'));
-				$custErr = $constName . '_1452';
+				$custErr = getErrorMessage($constName) . '_1452';
+				// $custErr = $constName . '_1452';
 				$eMsg = '* ' . $custErr . '';
                 break;
             case '1065' :
@@ -450,7 +454,27 @@ function getErrors($errorNos, $errors) {
         }
     }
     return $eMsg;
+    
+//    return  getErrorMessage($constName) .' - '. $constValue;
 }
+
+function getErrorMessage($msgKey){
+    $dbh = new Db();
+    $retMsg = "";
+    $sql="SELECT LanguageName
+    FROM t_language WHERE LanCode='{$msgKey}';";
+    $Res = $dbh->query($sql);
+
+    if($Res){
+        $retMsg = $Res[0]['LanguageName'];
+    }else{
+        $retMsg = $msgKey;
+    }
+    
+    return $retMsg;
+}
+
+
 /* 
 function gettimestampId($facilityId){
 		    $dbh = new Db();

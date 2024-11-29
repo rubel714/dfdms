@@ -512,6 +512,9 @@ $dataList = array();
 
 
 foreach ($resultdata as $key => $row) {
+	$row["RowTotalPG"]=$row["DairyPG"]+ $row["BuffaloPG"]+$row["BeefFatteningPG"]+$row["GoatPG"]+$row["SheepPG"]+$row["ScavengingChickensPG"]+$row["DuckPG"]+$row["QuailPG"]+$row["PigeonPG"];
+	$row["RowTotalFarmer"]=$row["DairyFarmer"]+ $row["BuffaloFarmer"]+$row["BeefFatteningFarmer"]+$row["GoatFarmer"]+$row["SheepFarmer"]+$row["ScavengingChickensFarmer"]+$row["DuckFarmer"]+$row["QuailFarmer"]+$row["PigeonFarmer"];
+	
 	$dataList[] = $row;
 
 	/**Calculate column total */
@@ -566,7 +569,7 @@ if (count($dataList) > 0) {
 
 			$row["RowTotalPG"]=$TotalRowTotalPG;
 			$row["RowTotalFarmer"]=$TotalRowTotalFarmer;
-	$dataList[] = $row;
+			$dataList[] = $row;
 }
 
 
