@@ -604,7 +604,7 @@ const PgEntryFormAddEditModal = (props) => {
                   checked={currentRow.IsLeadByWomen === 1}
                   onChange={() => handleChangeMany(1, "IsLeadByWomen")}
                 />
-                Yes
+                Yes (হ্যাঁ) 
               </label>
 
               <label className="radio-label">
@@ -616,7 +616,7 @@ const PgEntryFormAddEditModal = (props) => {
                   checked={currentRow.IsLeadByWomen === 0}
                   onChange={() => handleChangeMany(0, "IsLeadByWomen")}
                 />
-                No
+                No (না)
               </label>
             </div>
           </div>

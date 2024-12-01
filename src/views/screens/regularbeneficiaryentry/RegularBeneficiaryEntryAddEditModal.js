@@ -1034,7 +1034,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div> */}
 
           <div class="formControl-mobile">
-            <label>Is Regular Beneficiary?</label>
+            <label>Is Regular Beneficiary? (নিয়মিত সুবিধাভোগী?)</label>
             <select
               id="IsRegular"
               name="IsRegular"
@@ -1052,7 +1052,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </div>
             <div class="formControl-mobile">
 
-                <label>Beneficiary NID* </label>
+                <label>Beneficiary NID (সুবিধাভোগীর এনআইডি)* </label>
                 <input
                   type="text"
                   id="NID"
@@ -1096,7 +1096,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
 
           <div className="formControl-mobile file_browse_box tp-file-upload">
-            <label>NID Front Photo</label>
+            <label>NID Front Photo (এনআইডির সামনের ছবি)</label>
             <input
               type="file"
               id="NidFrontPhoto"
@@ -1129,7 +1129,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             
 
           <div className="formControl-mobile file_browse_box tp-file-upload">
-            <label>NID Back Photo</label>
+            <label>NID Back Photo (এনআইডির পেছনের ছবি)</label>
             <input
               type="file"
               id="NidBackPhoto"
@@ -1156,7 +1156,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>Beneficiary Name *</label>
+            <label>Beneficiary Name (সুবিধাভোগীর নাম) *</label>
             <input
               type="text"
               id="FarmerName"
@@ -1172,7 +1172,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
           <div className="formControl-mobile">
 
-            <label>Mobile Number </label>
+            <label>Mobile Number (মোবাইল নম্বর) </label>
             <input
               type="text"
               id="Phone"
@@ -1184,7 +1184,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile file_browse_box tp-file-upload">
-            <label>Beneficiary Photo</label>
+            <label>Beneficiary Photo (সুবিধাভোগী ছবি)</label>
             <input
               type="file"
               id="BeneficiaryPhoto"
@@ -1210,7 +1210,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile ">
-            <label>Father's Name </label>
+            <label>Father's Name (পিতার নাম) </label>
             <input
               type="text"
               id="FatherName"
@@ -1224,7 +1224,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
           <div className="formControl-mobile">
 
-            <label>Spouse Name </label>
+            <label>Spouse Name (পত্নীর নাম) </label>
             <input
               type="text"
               id="SpouseName"
@@ -1236,7 +1236,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile ">
-            <label>Mother's Name </label>
+            <label>Mother's Name (মায়ের নাম) </label>
             <input
               type="text"
               id="MotherName"
@@ -1250,7 +1250,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
           <div className="formControl-mobile">
 
-            <label>Date of Birth* </label>
+            <label>Date of Birth (জন্ম তারিখ)* </label>
             <input
               type="date"
               id="dob"
@@ -1263,7 +1263,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile ">
-            <label>Gender*</label>
+            <label>Gender (লিঙ্গ)*</label>
             <select
               id="Gender"
               name="Gender"
@@ -1281,7 +1281,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
 
           <div className="formControl-mobile">
 
-            <label>Farmer's Age* </label>
+            <label>Farmer's Age (কৃষকের বয়স)* </label>
             <input
               type="text"
               id="FarmersAge"
@@ -1295,7 +1295,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile ">
-            <label>Disability Status</label>
+            <label>Disability Status (প্রতিবন্ধী অবস্থা)</label>
             <select
               id="DisabilityStatus"
               name="DisabilityStatus"
@@ -1309,7 +1309,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 })}
             </select>
 
-            <label>Farmer's Relationship with Head of HH</label>
+            <label>Farmer's Relationship with Head of HH (এইচ এইচ প্রধানের সাথে কৃষকের সম্পর্ক)</label>
             {/*  <div className="checkbox-label">
               <label className="radio-label">
                 <input
@@ -1362,7 +1362,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           {currentRow.RelationWithHeadOfHH === 2 && (
             <>
               <div class="formControl-mobile modalItemCondition">
-                <label>If others, specify* </label>
+                <label>If others, specify (অন্যান্য হলে, উল্লেখ করুন)* </label>
                 <input
                   type="text"
                   id="ifOtherSpecify"
@@ -1377,7 +1377,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           )}
 
           <div class="formControl-mobile ">
-            <label>Farmer's Head of HH Sex</label>
+            <label>Farmer's Head of HH Sex (কৃষকের প্রধান এইচএইচ এর লিঙ্গ)</label>
             <select
               id="HeadOfHHSex"
               name="HeadOfHHSex"
@@ -1391,7 +1391,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 })}
             </select>
 
-            <label>Do your PG/PO Registered? </label>
+            <label>Do your PG/PO Registered? (আপনার পিজি/পিও কি নিবন্ধিত?) </label>
             <div className="checkbox-label">
               <label className="radio-label">
                 <input
@@ -1402,7 +1402,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                   checked={currentRow.PGRegistered === 1}
                   onChange={() => handleChangeMany(1, "PGRegistered")}
                 />
-                Yes
+                Yes (হ্যাঁ)
               </label>
 
               <label className="radio-label">
@@ -1414,13 +1414,13 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                   checked={currentRow.PGRegistered === 0}
                   onChange={() => handleChangeMany(0, "PGRegistered")}
                 />
-                No
+                No (না)
               </label>
             </div>
 
             {currentRow.PGRegistered === 1 && (
               <>
-                <label>Agency/Department</label>
+                <label>Agency/Department (সংস্থা/বিভাগ)</label>
                 <select
                   id="DepartmentId"
                   name="DepartmentId"
@@ -1434,7 +1434,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                     })}
                 </select>
 
-                <label>Date of Registration </label>
+                <label>Date of Registration (নিবন্ধনের তারিখ) </label>
                 <input
                   type="date"
                   id="DateOfRegistration"
@@ -1445,7 +1445,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                   onChange={(e) => handleChange(e)}
                 />
 
-                <label>Registration No *</label>
+                <label>Registration No (রেজিস্ট্রেশন নং) *</label>
                 <input
                   type="text"
                   id="RegistrationNo"
@@ -1460,7 +1460,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile ">
-            <label>Type Of Member*</label>
+            <label>Type Of Member (সদস্যের ধরন)*</label>
             <select
               id="TypeOfMember"
               name="TypeOfMember"
@@ -1475,7 +1475,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             </select>
 
             <label>
-              Do your PG make any productive partnership with any other company?
+              Do your PG make any productive partnership with any other company? (আপনার পিজি কি অন্য কোন কোম্পানির সাথে কোন উৎপাদনশীল অংশীদারিত্ব করে?)
             </label>
             <div className="checkbox-label">
               <label className="radio-label">
@@ -1489,7 +1489,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                     handleChangeMany(1, "PGPartnershipWithOtherCompany")
                   }
                 />
-                Yes
+                Yes (হ্যাঁ) 
               </label>
 
               <label className="radio-label">
@@ -1503,13 +1503,13 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                     handleChangeMany(0, "PGPartnershipWithOtherCompany")
                   }
                 />
-                No
+                No (না)
               </label>
             </div>
 
             {currentRow.PGPartnershipWithOtherCompany === 1 && (
               <>
-                <label>Name of The Company your PG Partner with* </label>
+                <label>Name of The Company your PG Partner with (কোম্পানির নাম যার সাথে আপনার পিজি পার্টনার)* </label>
                 <input
                   type="text"
                   id="NameOfTheCompanyYourPgPartnerWith"
@@ -1524,7 +1524,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>PG Farmer Code* </label>
+            <label>PG Farmer Code (পিজি ফার্মার কোড)* </label>
             <input
               type="text"
               id="PGFarmerCode"
@@ -1535,7 +1535,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               onChange={(e) => handleChange(e)}
             />
 
-            <label>Primary Occupation</label>
+            <label>Primary Occupation (প্রাথমিক পেশা)</label>
             <select
               id="OccupationId"
               name="OccupationId"
@@ -1551,7 +1551,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>Division *</label>
+            <label>Division (বিভাগ) *</label>
             <select
               id="DivisionId"
               name="DivisionId"
@@ -1565,7 +1565,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 })}
             </select>
 
-            <label>District *</label>
+            <label>District (জেলা) *</label>
             <select
               id="DistrictId"
               name="DistrictId"
@@ -1581,7 +1581,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>Upazila *</label>
+            <label>Upazila (উপজেলা) *</label>
             <select
               id="UpazilaId"
               name="UpazilaId"
@@ -1595,7 +1595,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 })}
             </select>
 
-            <label>Union *</label>
+            <label>Union (ইউনিয়ন) *</label>
             <select
               id="UnionId"
               name="UnionId"
@@ -1611,7 +1611,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div className="formControl-mobile">
-            <label>Value Chain*</label>
+            <label>Value Chain (ভ্যালু চেইন) *</label>
             <select
               id="ValuechainId"
               name="ValuechainId"
@@ -1625,7 +1625,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 })}
             </select>
 
-            <label>Name of Producer Group*</label>
+            <label>Name of Producer Group (প্রডিউসার গ্রুপের নাম) *</label>
             <select
               id="PGId"
               name="PGId"
@@ -1655,7 +1655,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 })}
             </select> */}
 
-            <label>Ward</label>
+            <label>Ward (ওয়ার্ড)</label>
             <input
               type="text"
               id="Ward"
@@ -1665,7 +1665,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               onChange={(e) => handleChange(e)}
             />
 
-            <label>Village</label>
+            <label>Village (গ্রাম)</label>
             <input
               type="text"
               id="VillageName"
@@ -1690,7 +1690,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile ">
-            <label>City Corporation/ Municipality</label>
+            <label>City Corporation/ Municipality (সিটি কর্পোরেশন/পৌরসভা)</label>
             <select
               id="CityCorporation"
               name="CityCorporation"
@@ -1704,7 +1704,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                 })}
             </select>
 
-            <label>Address* </label>
+            <label>Address (ঠিকানা) * </label>
             <input
               type="text"
               id="Address"
@@ -1729,7 +1729,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           <div className="formControl-mobile">
             
 
-            <label>Are You Head of The Group?</label>
+            <label>Are You Head of The Group? (আপনি কি গ্রুপের প্রধান?)</label>
             <div className="checkbox-label">
               <label className="radio-label">
                 <input
@@ -1740,7 +1740,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                   checked={currentRow.IsHeadOfTheGroup === 1}
                   onChange={() => handleChangeMany(1, "IsHeadOfTheGroup")}
                 />
-                Yes
+                Yes (হ্যাঁ)
               </label>
 
               <label className="radio-label">
@@ -1752,11 +1752,11 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                   checked={currentRow.IsHeadOfTheGroup === 0}
                   onChange={() => handleChangeMany(0, "IsHeadOfTheGroup")}
                 />
-                No
+                No (না)
               </label>
             </div>
 
-            <label>Latitute</label>
+            <label>Latitute (অক্ষাংশ)</label>
             <input
               type="text"
               id="Latitute"
@@ -1780,7 +1780,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div className="formControl-mobile">
-            <label>Longitute</label>
+            <label>Longitute (দ্রাঘিমাংশ)</label>
             <div className="autocompleteContainer">
               <input
                 type="text"
@@ -1828,7 +1828,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile ">
-            <label>When Did you start to operate your farm? </label>
+            <label>When Did you start to operate your farm? (আপনি কখন আপনার খামার পরিচালনা শুরু করেছেন?)</label>
             <input
               type="date"
               id="WhenDidYouStartToOperateYourFirm"
@@ -1842,7 +1842,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile ">
-            <label>Number of Months of your operation </label>
+            <label>Number of Months of your operation  (আপনার অপারেশন মাসের সংখ্যা)</label>
             <input
               type="text"
               id="NumberOfMonthsOfYourOperation"
@@ -1854,7 +1854,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               onChange={(e) => handleChange(e)}
             />
 
-            <label>Are you registered your farm with DLS? </label>
+            <label>Are you registered your farm with DLS? (আপনার খামার কি  ডিএলএস এর সাথে নিবন্ধিত?)</label>
             <div className="checkbox-label">
               <label className="radio-label">
                 <input
@@ -1872,7 +1872,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                     )
                   }
                 />
-                Yes
+                Yes (হ্যাঁ)
               </label>
 
               <label className="radio-label">
@@ -1891,13 +1891,13 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                     )
                   }
                 />
-                No
+                No (না)
               </label>
             </div>
           </div>
 
           <div class="formControl-mobile ">
-            <label>Registration Date </label>
+            <label>Registration Date (নিবন্ধনের তারিখ) </label>
             <input
               type="date"
               id="registrationDate"
@@ -1911,7 +1911,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               onChange={(e) => handleChange(e)}
             />
 
-            <label>Registration No. </label>
+            <label>Registration No. (নিবন্ধন নং) </label>
             <input
               type="text"
               id="IfRegisteredYesRegistrationNo"
@@ -1927,7 +1927,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div className="formControl-mobile file_browse_box tp-file-upload">
-            <label>Farm's Photo</label>
+            <label>Farm's Photo (খামারের ছবি)</label>
             <input
               type="file"
               id="FarmsPhoto"
@@ -1955,7 +1955,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>Farmer Status</label>
+            <label>Farmer Status (কৃষকের অবস্থা)</label>
             <div className="checkbox-label">
               <label className="radio-label">
                 <input
@@ -1966,7 +1966,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                   checked={currentRow.IsActive === 1}
                   onChange={() => handleChangeMany(1, "IsActive")}
                 />
-                Active
+                Active (সক্রিয়)
               </label>
 
               <label className="radio-label">
@@ -1978,7 +1978,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
                   checked={currentRow.IsActive === 0}
                   onChange={() => handleChangeMany(0, "IsActive")}
                 />
-                Inactive
+                Inactive (নিষ্ক্রিয়)
               </label>
             </div>
           </div>
