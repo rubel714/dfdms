@@ -38,6 +38,8 @@ function getDataList($data){
 		,COUNT(f.`PGId`) AS GrandTotal
 		FROM `t_pg` f
 		INNER JOIN `t_division` g ON f.`DivisionId` = g.`DivisionId`
+		where f.IsActive=1
+
 		GROUP BY g.DivisionName;";
 
 		$resultdata = $dbh->query($query);
