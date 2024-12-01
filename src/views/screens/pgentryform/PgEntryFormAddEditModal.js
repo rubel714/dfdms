@@ -414,7 +414,7 @@ const PgEntryFormAddEditModal = (props) => {
           </div> */}
 
           <div class="formControl-mobile">
-            <label>Division *</label>
+            <label>Division (বিভাগ) *</label>
             <select
               id="DivisionId"
               name="DivisionId"
@@ -430,7 +430,7 @@ const PgEntryFormAddEditModal = (props) => {
             </select>
           </div>
           <div class="formControl-mobile">
-            <label>District *</label>
+            <label>District (জেলা) *</label>
             <select
               id="DistrictId"
               name="DistrictId"
@@ -446,7 +446,7 @@ const PgEntryFormAddEditModal = (props) => {
             </select>
           </div>
           <div class="formControl-mobile">
-            <label>Upazila *</label>
+            <label>Upazila (উপজেলা) *</label>
             <select
               id="UpazilaId"
               name="UpazilaId"
@@ -462,7 +462,7 @@ const PgEntryFormAddEditModal = (props) => {
             </select>
           </div>
           <div class="formControl-mobile">
-            <label>Union *</label>
+            <label>Union (ইউনিয়ন) *</label>
             <select
               id="UnionId"
               name="UnionId"
@@ -478,7 +478,7 @@ const PgEntryFormAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>PG Name *</label>
+            <label>PG Name (পিজি নাম)*</label>
             <input
               type="text"
               id="PGName"
@@ -490,7 +490,7 @@ const PgEntryFormAddEditModal = (props) => {
             />
           </div>
           <div class="formControl-mobile">
-            <label>Group Code *</label>
+            <label>Group Code (গ্রুপ কোড) *</label>
             <input
               type="text"
               id="PgGroupCode"
@@ -502,7 +502,7 @@ const PgEntryFormAddEditModal = (props) => {
             />
           </div>
           <div class="formControl-mobile">
-            <label>PG Bank Account Number *</label>
+            <label>PG Bank Account Number (পিজি ব্যাঙ্ক অ্যাকাউন্ট নম্বর)*</label>
             <input
               type="text"
               id="PgBankAccountNumber"
@@ -525,7 +525,7 @@ const PgEntryFormAddEditModal = (props) => {
                 /> */}
           </div>
           <div class="formControl-mobile">
-            <label>Bank *</label>
+            <label>Bank (ব্যাঙ্ক) *</label>
             <select
               id="BankId"
               name="BankId"
@@ -541,7 +541,7 @@ const PgEntryFormAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>Value Chain *</label>
+            <label>Value Chain (ভ্যালু চেইন)*</label>
             <select
               id="ValuechainId"
               name="ValuechainId"
@@ -556,7 +556,7 @@ const PgEntryFormAddEditModal = (props) => {
             </select>
           </div>
           <div class="formControl-mobile">
-            <label>Group Members Gender</label>
+            <label>Group Members Gender (গ্রুপ সদস্যদের লিঙ্গ)</label>
             <select
               id="GenderId"
               name="GenderId"
@@ -572,15 +572,28 @@ const PgEntryFormAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>
-              Is the Group Led by Women
+            {/* <label>
+              Is the Group Led by Women (এই গ্রুপের নেতৃত্বে কি নারী ?)
               <span
                 className="tooltip-icon"
-                data-tooltip="If there are 3 female members in the group, select 'Yes'."
+                data-tooltip="If there are 3 female members in the group, select 'Yes'
+                (গ্রুপে 3 জন মহিলা সদস্য থাকলে, 'হ্যাঁ' নির্বাচন করুন)"
               >
                 <InfoOutlined className="info-icon" />
               </span>
-            </label>
+            </label> */}
+
+<label>
+  Is the Group Led by Women (এই গ্রুপের নেতৃত্বে কি নারী ?)
+  <span className="tooltip-icon">
+    <InfoOutlined className="info-icon" />
+    <div className="tooltip-content">
+      If there are 3 female members in the group, select 'Yes' <br />
+      (গ্রুপে 3 জন মহিলা সদস্য থাকলে, 'হ্যাঁ' নির্বাচন করুন)
+    </div>
+  </span>
+</label>
+
             <div className="checkbox-label">
               <label className="radio-label">
                 <input
@@ -608,7 +621,7 @@ const PgEntryFormAddEditModal = (props) => {
             </div>
           </div>
           <div class="formControl-mobile">
-            <label>Status</label>
+            <label>Status (স্ট্যাটাস)</label>
             <div className="checkbox-label">
               <label className="radio-label">
                 <input
@@ -619,7 +632,7 @@ const PgEntryFormAddEditModal = (props) => {
                   checked={currentRow.IsActive === 1}
                   onChange={() => handleChangeMany(1, "IsActive")}
                 />
-                Active
+                Active (সক্রিয়)
               </label>
 
               <label className="radio-label">
@@ -631,13 +644,13 @@ const PgEntryFormAddEditModal = (props) => {
                   checked={currentRow.IsActive === 0}
                   onChange={() => handleChangeMany(0, "IsActive")}
                 />
-                Inactive
+                Inactive (নিষ্ক্রিয়)
               </label>
             </div>
           </div>
 
           <div class="formControl-mobile">
-            <label>Address *</label>
+            <label>Address (ঠিকানা) *</label>
             <textarea
               id="Address"
               name="Address"
@@ -650,7 +663,7 @@ const PgEntryFormAddEditModal = (props) => {
 
           <div className="formControl-mobile">
 
-            <label>Latitute</label>
+            <label>Latitute (অক্ষাংশ)</label>
             <input
               type="text"
               id="Latitute"
@@ -664,7 +677,7 @@ const PgEntryFormAddEditModal = (props) => {
           </div>
 
           <div className="formControl-mobile">
-            <label>Longitute</label>
+            <label>Longitute (দ্রাঘিমাংশ)</label>
             <div className="autocompleteContainer">
               <input
                 type="text"
@@ -686,7 +699,7 @@ const PgEntryFormAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>Date of PG Formation* </label>
+            <label>Date of PG Formation (পিজি গঠনের তারিখ)* </label>
             <input
               type="date"
               id="DateofPgInformation"

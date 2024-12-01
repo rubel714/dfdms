@@ -1457,3 +1457,30 @@ textarea {
 	grid-template-columns: 15% 15% 15% 24% 31%;
 	align-content: stretch;
 }
+
+
+.tooltip-icon {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .tooltip-content {
+    display: none;
+    position: absolute;
+    background-color: #000;
+    color: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    white-space: normal; /* Ensures wrapping */
+    z-index: 1000;
+    width: 250px; /* Adjust width if necessary */
+    top: 20px; /* Adjust tooltip position */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .tooltip-icon:hover .tooltip-content {
+    display: block;
+  }
+  
