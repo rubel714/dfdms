@@ -50,6 +50,7 @@ function getDataList($data){
 			 when a.StatusId=3 then 'Waiting for Approve'
 			 when a.StatusId=5 then 'Approved'
 			 else '' end CurrentStatus,h.UserName,a.UserId, a.`Latitute`, a.`Longitute`
+			 ,a.AcceptReturnComments,a.ApproveReturnComments
 
 
 			FROM `t_pg` a

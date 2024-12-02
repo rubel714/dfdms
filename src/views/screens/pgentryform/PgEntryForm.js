@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef, useEffect } from "react";
 import swal from "sweetalert";
-import { DeleteOutline, Edit, ViewList } from "@material-ui/icons";
+import { DeleteOutline, Edit, ViewList,InsertCommentTwoTone } from "@material-ui/icons";
 import { Button } from "../../../components/CustomControl/Button";
 
 import CustomTable from "components/CustomTable/CustomTable";
@@ -208,8 +208,8 @@ const PgEntryForm = (props) => {
 
   /** Action from table row buttons*/
   function actioncontrol(rowData) {
-    console.log("UserInfo", UserInfo);
-    console.log("StatusChangeAllow", UserInfo.StatusChangeAllow);
+    // console.log("UserInfo", UserInfo);
+    // console.log("StatusChangeAllow", UserInfo.StatusChangeAllow);
     let StatusChangeAllow = UserInfo.StatusChangeAllow;
     // let sub = StatusChangeAllow.includes("Submit");
     // console.log('sub: ', sub);
@@ -229,6 +229,16 @@ const PgEntryForm = (props) => {
             deleteData(rowData);
           }}
         />  */}
+
+      {(rowData.AcceptReturnComments ||
+           rowData.ApproveReturnComments) && 
+           (<InsertCommentTwoTone
+          className={"table-comment-icon"}
+          onClick={() => {
+            viewCommentData(rowData);
+          }}
+        />
+      )}
 
         {rowData.StatusId === 1 &&
           UserInfo.UserId == rowData.UserId &&
@@ -321,6 +331,55 @@ const PgEntryForm = (props) => {
       </>
     );
   }
+
+
+  const viewCommentData = (rowData) => {
+    // console.log("viewCommentData rowData: ", rowData);
+    //getQuestionList(rowData.SurveyId, rowData.id);
+    // getDataSingleFromServer(rowData.id);
+    var msg="";
+    if(rowData.AcceptReturnComments){
+      msg="Accept Return Comments: "+rowData.AcceptReturnComments;
+    }
+
+    if(rowData.ApproveReturnComments){
+      if(msg){
+        msg=msg+"\n";
+      }
+      msg=msg+"Approve Return Comments: "+rowData.ApproveReturnComments;
+    }
+
+    swal({
+      title: "Comments",
+      // icon: "info",
+      text: msg,
+      className: "comment-swal",
+      buttons: {
+        // confirm: {
+        //   text: "Yes",
+        //   value: true,
+        //   visible: true,
+        //   className: "",
+        //   closeModal: true,
+        // },
+        cancel: {
+          text: "Ok",
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+      },
+      dangerMode: false,
+    }).then((allowAction) => {
+      // if (allowAction) {
+      //   changeReportStatusAPICall(params);
+      //   closeRetCommentsModal("");
+      // } else {
+      // }
+    });
+
+  };
 
   const addData = () => {
     // console.log("rowData: ", rowData);

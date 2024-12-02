@@ -107,6 +107,7 @@ function getDataList($data){
 			 when a.StatusId=3 then 'Waiting for Approve'
 			 when a.StatusId=5 then 'Approved'
 			 else '' end CurrentStatus,h.UserName,a.UserId, a.IsActive
+			 ,a.AcceptReturnComments,a.ApproveReturnComments
 		  FROM
 		  `t_farmer` a 
 		  Inner Join t_gender b ON a.Gender = b.GenderId
