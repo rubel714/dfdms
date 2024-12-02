@@ -37,13 +37,13 @@ function getDataList($data){
 		$TotalPG = 0;
 		$TotalPGMember = 0;
 
-		$query = "SELECT COUNT(f.`PGId`) AS TotalPG FROM `t_pg` f;";
+		$query = "SELECT COUNT(f.`PGId`) AS TotalPG FROM `t_pg` f where f.IsActive=1;";
 		$resultdata = $dbh->query($query);
 		foreach ($resultdata as $key => $row) {
 			$TotalPG = $row["TotalPG"];
 		}
 
-		$query = "SELECT COUNT(f.`PGId`) AS TotalFarmer FROM `t_farmer` f;";
+		$query = "SELECT COUNT(f.`PGId`) AS TotalFarmer FROM `t_farmer` f where f.IsActive=1;";
 		$resultdata = $dbh->query($query);
 		foreach ($resultdata as $key => $row) {
 			$TotalPGMember = $row["TotalFarmer"];
@@ -77,6 +77,7 @@ function getGenderwisePGMemberDataList($data){
 		$query = "SELECT g.GenderName,g.ColorCode,COUNT(f.`PGId`) AS TotalPG 
 		FROM `t_farmer` f
 		INNER JOIN `t_gender` g ON f.`Gender` = g.GenderId
+		 where f.IsActive=1
 		group by g.GenderName,g.ColorCode;";
 		$resultdata = $dbh->query($query);
 
@@ -138,6 +139,7 @@ function getValueChainwisePGDistributionDataList($data){
 		$query = "SELECT g.DivisionName,COUNT(f.`PGId`) AS TotalCount
 		FROM `t_pg` f
 		INNER JOIN `t_division` g ON f.`DivisionId` = g.DivisionId
+		where f.IsActive=1
 		group by g.DivisionName;";
 		$resultdata = $dbh->query($query);
 
@@ -194,6 +196,7 @@ function getValueChainwisePGDMemberistributionDataList($data){
 		$query = "SELECT g.DivisionName,COUNT(f.`PGId`) AS TotalCount
 		FROM `t_farmer` f
 		INNER JOIN `t_division` g ON f.`DivisionId` = g.DivisionId
+		where f.IsActive=1
 		group by g.DivisionName;";
 		$resultdata = $dbh->query($query);
 

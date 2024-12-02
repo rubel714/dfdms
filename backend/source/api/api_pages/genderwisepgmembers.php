@@ -41,6 +41,7 @@ function getDataList($data)
 		WHERE (f.DivisionId = $DivisionId OR $DivisionId=0)
 		AND (f.DistrictId = $DistrictId OR $DistrictId=0)
 		AND (f.UpazilaId = $UpazilaId OR $UpazilaId=0)
+		AND f.IsActive=1
 		GROUP BY g.GenderName;";
 		$resultdata = $dbh->query($query);
 

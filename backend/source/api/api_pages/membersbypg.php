@@ -36,6 +36,8 @@ function getDataList($data){
 		WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 		AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 		AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+		AND a.IsActive=1
+		AND f.IsActive=1
 		GROUP BY b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, e.ValueChainName,a.`PGName`;";
 			
 		

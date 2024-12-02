@@ -51,6 +51,7 @@
 	,COUNT(f.`FarmerId`) AS GrandTotal
 	FROM `t_farmer` f
 	INNER JOIN `t_division` g ON f.`DivisionId` = g.`DivisionId`
+	where f.IsActive=1
 	GROUP BY g.DivisionName
 
 	;";
