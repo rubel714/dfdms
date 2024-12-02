@@ -18,6 +18,7 @@ import DataType from "views/screens/datatype/index.js";
 import TrainingTitle from "views/screens/trainingtitle/index.js";
 import Venue from "views/screens/venue/index.js";
 import UserRole from "views/screens/userrole/index.js";
+import Settings from "views/screens/settings/index.js";
 import RoleToMenuPermissionEntry from "views/screens/roletomenupermissionentry/index.js";
 
 import PGDataCollectionEntry from "views/screens/datacollectionentry/index.js";
@@ -156,6 +157,7 @@ ReactDOM.render(
           <Route path="/trainingtitle" render={(props) => <TrainingTitle {...props} />} />
           <Route path="/venue" render={(props) => <Venue {...props} />} />
           <Route path="/userrole" render={(props) => <UserRole {...props} />} />
+          <Route path="/settings" render={(props) => <Settings {...props} />} />
           <Route
             path="/roletomenupermissionentry"
             render={(props) => <RoleToMenuPermissionEntry {...props} />}
