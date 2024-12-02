@@ -283,6 +283,7 @@ function deleteData($data) {
 		$lan = trim($data->lan); 
 		$UserId = trim($data->UserId); 
 
+
 		try{
 
 			$dbh = new Db();
@@ -297,6 +298,30 @@ function deleteData($data) {
 			$res = exec_query($aQuerys, $UserId, $lan);  
 			$success=($res['msgType']=='success')?1:0;
 			$status=($res['msgType']=='success')?200:500;
+
+			if ($success) {
+				// Get the image names
+				$imageNames = [
+					$data->rowData->NidFrontPhoto,
+					$data->rowData->NidBackPhoto,
+					$data->rowData->BeneficiaryPhoto,
+					$data->rowData->FarmsPhoto
+				];
+				
+				// Define the target directory
+				$targetDir = "./../../../src/assets/farmerimage/";
+			
+				// Loop through each image and delete if it exists
+				foreach ($imageNames as $imageName) {
+					if (!empty($imageName)) { // Ensure the image name is not empty
+						$imagePath = $targetDir . $imageName;
+						if (file_exists($imagePath)) {
+							unlink($imagePath);
+						}
+					}
+				}
+			}
+			
 
 			$returnData = [
 				"success" => $success ,

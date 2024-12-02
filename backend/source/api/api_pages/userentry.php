@@ -232,6 +232,7 @@ function deleteData($data) {
 		$id = $data->rowData->id;
 		$lan = trim($data->lan); 
 		$UserId = trim($data->UserId); 
+
 		$aQuerys = array();
 		try{
 
@@ -254,6 +255,21 @@ function deleteData($data) {
 			$res = exec_query($aQuerys, $UserId, $lan);  
 			$success=($res['msgType']=='success')?1:0;
 			$status=($res['msgType']=='success')?200:500;
+
+
+		
+			//delete image from directory
+			if ($success) {
+				$imageName = $data->rowData->PhotoUrl;
+				$targetDir = "./../../../src/assets/img/user/";
+				$imagePath = $targetDir . $imageName;
+
+				if (file_exists($imagePath)) {
+					unlink($imagePath); 
+				}
+
+			}
+
 
 			$returnData = [
 				"success" => $success ,
