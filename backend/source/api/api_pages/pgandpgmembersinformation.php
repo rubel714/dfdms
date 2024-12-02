@@ -54,7 +54,8 @@ function getDataList($data)
 		 WHERE (f.DivisionId = $DivisionId OR $DivisionId=0)
 		 AND (f.DistrictId = $DistrictId OR $DistrictId=0)
 		 AND (f.UpazilaId = $UpazilaId OR $UpazilaId=0)
-		 
+		 AND f.IsActive=1 and f.StatusId=5
+
 		 UNION ALL
 		 
 		 SELECT f.`DivisionId`,f.`DistrictId`,f.`UpazilaId`
@@ -71,6 +72,8 @@ function getDataList($data)
 		 WHERE (f.DivisionId = $DivisionId OR $DivisionId=0)
 		 AND (f.DistrictId = $DistrictId OR $DistrictId=0)
 		 AND (f.UpazilaId = $UpazilaId OR $UpazilaId=0)
+		 AND f.IsActive=1 and f.StatusId=5
+
 		 ) t
 		 INNER JOIN `t_division` q ON t.`DivisionId`=q.`DivisionId`
 		 INNER JOIN `t_district` r ON t.`DistrictId`=r.`DistrictId`

@@ -76,6 +76,7 @@ $query = "SELECT q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,t.`DivisionId
 	AND (f.DistrictId = $DistrictId OR $DistrictId=0)
 	AND (f.UpazilaId = $UpazilaId OR $UpazilaId=0)
 	and f.IsActive=1
+	and f.StatusId=5
 
 	
 	UNION ALL
@@ -95,6 +96,7 @@ $query = "SELECT q.`DivisionName`,r.`DistrictName`,s.`UpazilaName`,t.`DivisionId
 	AND (f.DistrictId = $DistrictId OR $DistrictId=0)
 	AND (f.UpazilaId = $UpazilaId OR $UpazilaId=0)
 	and f.IsActive=1
+	and f.StatusId=5
 
 	) t
 	INNER JOIN `t_division` q ON t.`DivisionId`=q.`DivisionId`

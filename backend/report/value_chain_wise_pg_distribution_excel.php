@@ -52,6 +52,7 @@
 	FROM `t_pg` f
 	INNER JOIN `t_division` g ON f.`DivisionId` = g.`DivisionId`
 	where f.IsActive=1
+	and f.StatusId=5
 
 	GROUP BY g.DivisionName
 
