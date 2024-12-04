@@ -217,10 +217,25 @@ else {
                     }
                 }
 
+
+                $query2 = "SELECT SettingId,SettingName,Status FROM t_settings;";
+                $settingsDataList = $conn->query($query2)->fetchAll(PDO::FETCH_ASSOC);
+                $settingsData = array();
+                foreach ($settingsDataList as $r2) {
+                    $settingsData[$r2["SettingId"]] = $r2["Status"];
+                }
+
+
+
+
                 $userRow["UserAllowdMenuList"] = $memuList;
                 $userRow["Password"] = "HIDDEN";
                 $userRow["StatusChangeAllow"] = getStatusChangeAllow($conn, $userRow["RoleId"]);
                 $userRow["MetaData"] = getMetaData($conn, $userRow);
+                $userRow["Settings"] = $settingsData;
+
+
+
 
 
                 // $userRow["StatusChangeAllow"] = ["Submit","Accept","Approve"];

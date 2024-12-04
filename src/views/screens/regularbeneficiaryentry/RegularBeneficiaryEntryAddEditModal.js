@@ -2043,7 +2043,9 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
               <Button
                 label={"Update"}
                 class={"btnUpdate"}
-                disabled={props.currentRow.StatusId > 1}
+                // disabled={props.currentRow.StatusId > 1}
+                disabled={UserInfo.Settings.AllowEditApprovedData == "1"?false:(props.currentRow.StatusId > 1)}
+
                 onClick={addEditAPICall}
               />
             )}

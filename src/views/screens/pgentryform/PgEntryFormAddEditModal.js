@@ -716,7 +716,9 @@ const PgEntryFormAddEditModal = (props) => {
             {props.currentRow.id && (
               <Button
                 label={"Update"}
-                disabled={props.currentRow.StatusId > 1}
+                // disabled={props.currentRow.StatusId > 1}
+                disabled={UserInfo.Settings.AllowEditApprovedData == "1"?false:(props.currentRow.StatusId > 1)}
+
                 class={"btnUpdate"}
                 onClick={addEditAPICall}
               />

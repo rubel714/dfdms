@@ -1167,7 +1167,9 @@ const DataCollectionEntry = (props) => {
         )}
 
         {/* {rowData.BPosted === 0 && ( */}
-        {rowData.StatusId === 1 && UserInfo.UserId == rowData.UserId && (
+        {/* {rowData.StatusId === 1 && UserInfo.UserId == rowData.UserId && ( */}
+        {((UserInfo.Settings.AllowEditApprovedData == "1") || (rowData.StatusId === 1 && UserInfo.UserId == rowData.UserId)) && (
+
           <Edit
             className={"table-edit-icon"}
             onClick={() => {
@@ -1186,7 +1188,9 @@ const DataCollectionEntry = (props) => {
           />
         )}
 
-        {(rowData.StatusId != 1 || UserInfo.UserId != rowData.UserId) && (
+        {/* {(rowData.StatusId != 1 || UserInfo.UserId != rowData.UserId) && ( */}
+        {(rowData.StatusId != 1 || UserInfo.UserId != rowData.UserId) && (UserInfo.Settings.AllowEditApprovedData == "0") && (
+
           <ViewList
             className={"table-view-icon"}
             onClick={() => {
@@ -4216,8 +4220,9 @@ const DataCollectionEntry = (props) => {
                       label={"সংরক্ষণ করুন (Save)"}
                       class={"btnAddCustom"}
                       onClick={saveData}
-                      disabled={currentInvoice.StatusId > 1}
-                      //  disabled={(currentInvoice.StatusId > 1) || (UserInfo.UserId != currentInvoice.UserId && currentInvoice.id != "")}
+                      // disabled={currentInvoice.StatusId > 1}
+                      disabled={UserInfo.Settings.AllowEditApprovedData == "1"?false:(props.currentRow.StatusId > 1)}
+
                     />
 
                     <Button

@@ -374,7 +374,8 @@ const RegularBeneficiaryEntry = (props) => {
         )}
 
         {/* {rowData.BPosted === 0 && ( */}
-        {rowData.StatusId === 1 && UserInfo.UserId == rowData.UserId && (
+        {/* {rowData.StatusId === 1 && UserInfo.UserId == rowData.UserId && ( */}
+        {((UserInfo.Settings.AllowEditApprovedData == "1") || (rowData.StatusId === 1 && UserInfo.UserId == rowData.UserId)) && (
           <Edit
             className={"table-edit-icon"}
             onClick={() => {
@@ -393,7 +394,7 @@ const RegularBeneficiaryEntry = (props) => {
           />
         )}
 
-        {(rowData.StatusId != 1 || UserInfo.UserId != rowData.UserId) && (
+        {(rowData.StatusId != 1 || UserInfo.UserId != rowData.UserId)&& (UserInfo.Settings.AllowEditApprovedData == "0") && (
           <ViewList
             className={"table-view-icon"}
             onClick={() => {
