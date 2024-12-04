@@ -1217,14 +1217,14 @@ const DataCollectionEntry = (props) => {
     // getDataSingleFromServer(rowData.id);
     var msg="";
     if(rowData.AcceptReturnComments){
-      msg="Accept Return Comments: "+rowData.AcceptReturnComments;
+      msg="Comments from LEO: "+rowData.AcceptReturnComments;
     }
 
     if(rowData.ApproveReturnComments){
       if(msg){
         msg=msg+"\n";
       }
-      msg=msg+"Approve Return Comments: "+rowData.ApproveReturnComments;
+      msg=msg+"Comments from ULO: "+rowData.ApproveReturnComments;
     }
 
     swal({
