@@ -265,7 +265,7 @@ function RegularBeneficiaryExport()
 		CASE WHEN a.PGRegistered = 1 THEN 'Yes' ELSE 'No' END AS PGRegistered,
 		CASE WHEN a.PGPartnershipWithOtherCompany = 1 THEN 'Yes' ELSE 'No' END AS PGPartnershipWithOtherCompany,
 		CASE WHEN a.RelationWithHeadOfHH = 1 THEN 'Himself/Herself' ELSE 'Others' END AS RelationWithHeadOfHH,
-		
+		CASE WHEN a.IsActive = 1 THEN 'Active' ELSE 'Inactive' END AS ActiveStatus,
 		gh.TypeOfMember AS TypeOfMember,
 		oc.OccupationName AS FamilyOccupation,
 		ghh.GenderName AS HeadOfHHSex,
@@ -327,12 +327,12 @@ function RegularBeneficiaryExport()
 	}
 
 
-	$tableProperties["query_field"] = array('FarmerName', 'RegularStatus', 'NID', 'Phone', 'FatherName', 'MotherName', 'SpouseName', 'GenderName', 'FarmersAge', 'isDisabilityStatus', 'RelationWithHeadOfHH', 'ifOtherSpecify', 'HeadOfHHSex', 'PGRegistered', 'TypeOfMember', 'PGPartnershipWithOtherCompany', 'PGFarmerCode', 'FamilyOccupation', 'DivisionName', 'DistrictName', 'UpazilaName', 'UnionName', 'PGName', 'WardName', 'CityCorporationName', 'VillageName', 'Address', 'Latitute', 'Longitute', 'HeadOfTheGroup', 'ValueChainName', 'TypeOfFarmerId');
-	$tableProperties["table_header"] = array("Beneficiary Name", "Is Regular Beneficiary", "Beneficiary NID", "Mobile Number", "Father's Name", "Mother's Name", "Spouse Name", "Gender", "Farmer's Age", "Disability Status", "Farmers Relationship with Head of HH", "If others, specify", "Farmer's Head of HH Sex", "Do your PG/PO Registered?", "Type Of Member", "Do your PG make any productive partnership with any other company?", "PG Farmer Code", "Primary Occupation", "Division", "District", "Upazila", "Union", "Name of Producer Group", "Ward", "City Corporation/ Municipality", "Village", "Address", "Latitute", "Longitute", "Are You Head of The Group?", "Value Chain", "Farmer Type");
+	$tableProperties["query_field"] = array('FarmerName', 'RegularStatus', 'NID', 'Phone', 'FatherName', 'MotherName', 'SpouseName', 'GenderName', 'FarmersAge', 'isDisabilityStatus', 'RelationWithHeadOfHH', 'ifOtherSpecify', 'HeadOfHHSex', 'PGRegistered', 'TypeOfMember', 'PGPartnershipWithOtherCompany', 'PGFarmerCode', 'FamilyOccupation', 'DivisionName', 'DistrictName', 'UpazilaName', 'UnionName', 'PGName', 'WardName', 'CityCorporationName', 'VillageName', 'Address', 'Latitute', 'Longitute', 'HeadOfTheGroup', 'ValueChainName', 'TypeOfFarmerId', 'ActiveStatus');
+	$tableProperties["table_header"] = array("Beneficiary Name", "Is Regular Beneficiary", "Beneficiary NID", "Mobile Number", "Father's Name", "Mother's Name", "Spouse Name", "Gender", "Farmer's Age", "Disability Status", "Farmers Relationship with Head of HH", "If others, specify", "Farmer's Head of HH Sex", "Do your PG/PO Registered?", "Type Of Member", "Do your PG make any productive partnership with any other company?", "PG Farmer Code", "Primary Occupation", "Division", "District", "Upazila", "Union", "Name of Producer Group", "Ward", "City Corporation/ Municipality", "Village", "Address", "Latitute", "Longitute", "Are You Head of The Group?", "Value Chain", "Farmer Type", "Status");
 	$tableProperties["align"] = array("left", "left");
 	$tableProperties["width_print_pdf"] = array("30%", "70%"); //when exist serial then here total 95% and 5% use for serial
-	$tableProperties["width_excel"] = array("30", "20", "30", "30", "30", "30", "30","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15");
-	$tableProperties["precision"] = array("string", "string"); //string,date,datetime,0,1,2,3,4
+	$tableProperties["width_excel"] = array("30", "20", "30", "30", "30", "30", "30","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15","15");
+	$tableProperties["precision"] = array("string", "string", "string"); //string,date,datetime,0,1,2,3,4
 	$tableProperties["total"] = array(0, 0); //not total=0, total=1
 	$tableProperties["color_code"] = array(0, 0); //colorcode field = 1 not color code field = 0
 	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
@@ -1333,6 +1333,15 @@ function PGDataExport()
 	$DivisionId = $_REQUEST['DivisionId'] ? $_REQUEST['DivisionId'] : 0;
 	$DistrictId = $_REQUEST['DistrictId'] ? $_REQUEST['DistrictId'] : 0;
 	$UpazilaId =  $_REQUEST['UpazilaId'] ? $_REQUEST['UpazilaId'] : 0;
+	$FarmerStatusId = $_REQUEST['FarmerStatusId'] ? $_REQUEST['FarmerStatusId'] :"All";
+	if ($FarmerStatusId == "All"){
+		$cIsActive = "";
+	}else if ($FarmerStatusId == "Active"){
+		$cIsActive = " AND a.IsActive = 1";
+	}else{
+		$cIsActive = " AND a.IsActive = 0";
+	}
+
 
 	$sql = "SELECT a.PGId AS id, a.`DivisionId`, a.`DistrictId`, a.`UpazilaId`, a.`PGName`, a.`Address`, 
 	b.`DivisionName`,c.`DistrictName`, d.`UpazilaName`, a.UnionId, a.PgGroupCode, 
@@ -1351,6 +1360,7 @@ function PGDataExport()
 	WHERE (a.DivisionId = $DivisionId OR $DivisionId=0)
 	AND (a.DistrictId = $DistrictId OR $DistrictId=0)
 	AND (a.UpazilaId = $UpazilaId OR $UpazilaId=0)
+	$cIsActive
 	ORDER BY a.CreateTs DESC;";
 
 	//ORDER BY b.`DivisionName`, c.`DistrictName`, d.`UpazilaName`, a.`PGName` ASC;";

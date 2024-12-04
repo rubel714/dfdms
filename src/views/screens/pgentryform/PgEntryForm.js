@@ -12,6 +12,9 @@ import {
 } from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
+import { Typography, TextField } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+
 import PgEntryFormAddEditModal from "./PgEntryFormAddEditModal";
 
 const PgEntryForm = (props) => {
@@ -35,6 +38,9 @@ const PgEntryForm = (props) => {
   const [currDistrictId, setCurrDistrictId] = useState(UserInfo.DistrictId);
   const [currUpazilaId, setCurrUpazilaId] = useState(UserInfo.UpazilaId);
 
+  const [farmerStatusList, setFarmerStatusList] = useState([]);
+  const [currFarmerStatusId, setCurrFarmerStatusId] = useState('Active');
+
   const [showReturnCommentsModal, setShowReturnCommentsModal] = useState(false); //true=show modal, false=hide modal
   const [returnCommentsObj, setReturnCommentsObj] = useState({
     id: 0,
@@ -53,6 +59,8 @@ const PgEntryForm = (props) => {
       finalUrl +
         "?action=PGDataExport" +
         "&reportType=excel" +
+        "&FarmerStatusId=" +
+        currFarmerStatusId +
         "&DivisionId=" +
         currDivisionId +
         "&DistrictId=" +
@@ -184,11 +192,33 @@ const PgEntryForm = (props) => {
 
   if (bFirst) {
     /**First time call for datalist */
-
+    getfarmerStatusList();
     getDivision(UserInfo.DivisionId, UserInfo.DistrictId, UserInfo.UpazilaId);
 
     //getDataList();
     setBFirst(false);
+  }
+
+  function getfarmerStatusList() {
+    let params = {
+      action: "ActiveStatusList",
+      lan: language(),
+      UserId: UserInfo.UserId,
+    };
+
+    apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
+
+      const activeItem = res.data.datalist.find((item) => item.id === "Active");
+
+      // Set the selected value to "Active" or fallback to the first item's id
+      setCurrFarmerStatusId(activeItem ? activeItem.id : res.data.datalist[0]["id"]);
+  
+      //setCurrFarmerStatusId(res.data.datalist[0]["id"]);
+
+      setFarmerStatusList(res.data.datalist);
+      
+      /* getDataList(res.data.datalist[0]["id"]); */
+    });
   }
 
   /**Get data for table list */
@@ -200,6 +230,7 @@ const PgEntryForm = (props) => {
       DivisionId: currDivisionId,
       DistrictId: currDistrictId,
       UpazilaId: currUpazilaId,
+      FarmerStatusId: currFarmerStatusId,
     };
     // console.log('LoginUserInfo params: ', params);
 
@@ -561,7 +592,7 @@ const PgEntryForm = (props) => {
 
   useEffect(() => {
     getDataList();
-  }, [currDivisionId, currDistrictId, currUpazilaId]);
+  }, [currDivisionId, currDistrictId, currUpazilaId, currFarmerStatusId]);
 
   function changeReportStatus(Id, StatusId, StatusNextPrev) {
     let params = {
@@ -800,6 +831,17 @@ const PgEntryForm = (props) => {
     setListEditPanelToggle(true); // true = show list and hide add/edit panel
   };
 
+
+  const handleChangeChoosenMany = (name, value) => {
+
+    if (name === 'ActiveStatusId'){
+      setCurrFarmerStatusId(value);
+
+    }
+
+  };
+
+  
   return (
     <>
       <div class="bodyContainer">
@@ -826,7 +868,7 @@ const PgEntryForm = (props) => {
           <>
 
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
-        <div class="searchAdd3">
+        <div class="searchAddFourFilter">
           <div class="formControl-filter-data-label">
             <label for="DivisionId">Division: </label>
             <select
@@ -874,6 +916,40 @@ const PgEntryForm = (props) => {
                 })}
             </select>
           </div>
+
+          <div class="formControl-filter-data-label">
+                  <label>Status:</label>
+
+                  {/* <div class="plusGroup"> */}
+                  <div class="">
+                    <Autocomplete
+                      autoHighlight
+                      // freeSolo
+                      disableClearable
+                      className="chosen_dropdown"
+                      id="ActiveStatusId"
+                      name="ActiveStatusId"
+                      autoComplete
+                      options={farmerStatusList ? farmerStatusList : []}
+                      getOptionLabel={(option) => option.name}
+                      defaultValue={{ id: "Active", name: "Active" }}
+                      onChange={(event, valueobj) =>
+                        handleChangeChoosenMany(
+                          "ActiveStatusId",
+                          valueobj ? valueobj.id : ""
+                        )
+                      }
+                      renderOption={(option) => (
+                        <Typography className="chosen_dropdown_font">
+                          {option.name}
+                        </Typography>
+                      )}
+                      renderInput={(params) => (
+                        <TextField {...params} variant="standard" fullWidth />
+                      )}
+                    />
+                  </div>
+                </div>
 
           <div class="filter-button">
             {/* <Button label={"ADD"} class={"btnAdd"} onClick={addData} /> */}

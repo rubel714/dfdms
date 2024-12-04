@@ -1555,6 +1555,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             <select
               id="DivisionId"
               name="DivisionId"
+              disabled={true}
               class={errorObject.DivisionId}
               value={currDivisionId}
               onChange={(e) => handleChange(e)}
@@ -1569,6 +1570,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             <select
               id="DistrictId"
               name="DistrictId"
+              disabled={true}
               class={errorObject.DistrictId}
               value={currDistrictId}
               onChange={(e) => handleChange(e)}
@@ -1585,6 +1587,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
             <select
               id="UpazilaId"
               name="UpazilaId"
+              disabled={true}
               class={errorObject.UpazilaId}
               value={currUpazilaId}
               onChange={(e) => handleChange(e)}
@@ -1955,7 +1958,7 @@ const RegularBeneficiaryEntryAddEditModal = (props) => {
           </div>
 
           <div class="formControl-mobile">
-            <label>Farmer Status (কৃষকের অবস্থা)</label>
+            <label>Status (অবস্থা)</label>
             <div className="checkbox-label">
               <label className="radio-label">
                 <input

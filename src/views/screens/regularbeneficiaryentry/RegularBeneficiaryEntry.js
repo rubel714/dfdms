@@ -30,7 +30,7 @@ const RegularBeneficiaryEntry = (props) => {
   const UserInfo = LoginUserInfo();
 
   const [farmerStatusList, setFarmerStatusList] = useState([]);
-  const [currFarmerStatusId, setCurrFarmerStatusId] = useState('All');
+  const [currFarmerStatusId, setCurrFarmerStatusId] = useState('Active');
 
   const [currentFilter, setCurrentFilter] = useState([]);
   const [divisionList, setDivisionList] = useState(null);
@@ -249,7 +249,13 @@ const RegularBeneficiaryEntry = (props) => {
     };
 
     apiCall.post("combo_generic", { params }, apiOption()).then((res) => {
-      setCurrFarmerStatusId(res.data.datalist[0]["id"]);
+
+      const activeItem = res.data.datalist.find((item) => item.id === "Active");
+
+      // Set the selected value to "Active" or fallback to the first item's id
+      setCurrFarmerStatusId(activeItem ? activeItem.id : res.data.datalist[0]["id"]);
+  
+      //setCurrFarmerStatusId(res.data.datalist[0]["id"]);
 
       setFarmerStatusList(res.data.datalist);
       
@@ -476,9 +482,9 @@ const RegularBeneficiaryEntry = (props) => {
       TypeOfMember: "",
       PGFarmerCode: "",
       OccupationId: "",
-      DivisionId: "",
-      DistrictId: "",
-      UpazilaId: "",
+      DivisionId: UserInfo.DivisionId,
+      DistrictId: UserInfo.DistrictId,
+      UpazilaId: UserInfo.UpazilaId,
       UnionId: "",
       CityCorporation: "",
       Ward: "",
@@ -912,7 +918,7 @@ const RegularBeneficiaryEntry = (props) => {
 
   const handleChangeChoosenMany = (name, value) => {
 
-    if (name === 'DataTypeId'){
+    if (name === 'ActiveStatusId'){
       setCurrFarmerStatusId(value);
 
     }
@@ -995,7 +1001,7 @@ const RegularBeneficiaryEntry = (props) => {
 
 
               <div class="formControl-filter-data-label">
-                  <label>Farmer Status:</label>
+                  <label>Status:</label>
 
                   {/* <div class="plusGroup"> */}
                   <div class="">
@@ -1004,15 +1010,15 @@ const RegularBeneficiaryEntry = (props) => {
                       // freeSolo
                       disableClearable
                       className="chosen_dropdown"
-                      id="DataTypeId"
-                      name="DataTypeId"
+                      id="ActiveStatusId"
+                      name="ActiveStatusId"
                       autoComplete
                       options={farmerStatusList ? farmerStatusList : []}
                       getOptionLabel={(option) => option.name}
-                      defaultValue={{ id: "All", name: "All" }}
+                      defaultValue={{ id: "Active", name: "Active" }}
                       onChange={(event, valueobj) =>
                         handleChangeChoosenMany(
-                          "DataTypeId",
+                          "ActiveStatusId",
                           valueobj ? valueobj.id : ""
                         )
                       }
