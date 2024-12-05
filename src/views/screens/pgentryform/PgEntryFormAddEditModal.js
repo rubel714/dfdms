@@ -621,7 +621,7 @@ const PgEntryFormAddEditModal = (props) => {
             </div>
           </div>
           <div class="formControl-mobile">
-            <label>Status (স্ট্যাটাস)</label>
+            <label>Status (অবস্থা)</label>
             <div className="checkbox-label">
               <label className="radio-label">
                 <input

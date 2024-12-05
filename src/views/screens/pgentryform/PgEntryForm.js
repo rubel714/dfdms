@@ -430,7 +430,7 @@ const PgEntryForm = (props) => {
       ValuechainId: "",
       IsLeadByWomen: 0,
       GenderId: "",
-      IsActive: 0,
+      IsActive: 1,
       BankId: "",
       DateofPgInformation: "",
       Latitute: "",
