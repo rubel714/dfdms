@@ -33,12 +33,14 @@ include_once('../source/api/languages/lang_switcher_custom.php');
 
 $db = new Db();
 
-
+// echo "<pre>";
+// print_r($_REQUEST);
+// exit;
 $YearId = isset($_REQUEST['YearId']) ? $_REQUEST['YearId'] : 0;
 $QuarterId = isset($_REQUEST['QuarterId']) ? $_REQUEST['QuarterId'] : 0;
-$DivisionId = isset($_REQUEST['DivisionId']) ? $_REQUEST['DivisionId'] : 0;
-$DistrictId = isset($_REQUEST['DistrictId']) ? $_REQUEST['DistrictId'] : 0;
-$UpazilaId = isset($_REQUEST['UpazilaId']) ? $_REQUEST['UpazilaId'] : 0;
+$DivisionId = (isset($_REQUEST['DivisionId']) && ($_REQUEST['DivisionId'] !='')) ? $_REQUEST['DivisionId'] : 0;
+$DistrictId = (isset($_REQUEST['DistrictId']) && ($_REQUEST['DistrictId'] !=''))? $_REQUEST['DistrictId'] : 0;
+$UpazilaId = (isset($_REQUEST['UpazilaId']) && ($_REQUEST['UpazilaId'] !=''))? $_REQUEST['UpazilaId'] : 0;
 $DataTypeId = isset($_REQUEST['DataTypeId']) ? $_REQUEST['DataTypeId'] : 0;
 
 $QuarterName = isset($_REQUEST['QuarterName']) ? $_REQUEST['QuarterName'] : '';
@@ -81,8 +83,8 @@ $query1 = "SELECT a.SurveyId
 		AND a.QuarterId = $QuarterId
 		ORDER BY a.CreateTs DESC
 		limit 0,1;";
-// echo $query;
-// exit;
+	// echo $query1;
+	// exit;
 $resultdata1 = $db->query($query1);
 foreach ($resultdata1 as $rr) {
 	/**Get surveyid from first row of data */
