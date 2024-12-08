@@ -4221,7 +4221,7 @@ const DataCollectionEntry = (props) => {
                       class={"btnAddCustom"}
                       onClick={saveData}
                       // disabled={currentInvoice.StatusId > 1}
-                      disabled={UserInfo.Settings.AllowEditApprovedData == "1"?false:(props.currentRow.StatusId > 1)}
+                      disabled={UserInfo.Settings.AllowEditApprovedData == "1"?false:(currentInvoice.StatusId > 1)}
 
                     />
 
