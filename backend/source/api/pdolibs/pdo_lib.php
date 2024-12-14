@@ -458,7 +458,15 @@ function getErrors($errorNos, $errors) {
 //    return  getErrorMessage($constName) .' - '. $constValue;
 }
 
-function getErrorMessage($msgKey){
+function getErrorMessage($msgKeys){
+
+    //$str = "t_roles.UK_t_roles_RoleName";
+    //$str = "UK_t_roles_RoleName";
+    $msgList = explode(".",$msgKeys);
+    //echo "<pre>";
+    //print_r (explode(".",$str));
+    $msgKey = $msgList[count($msgList)-1];
+
     $dbh = new Db();
     $retMsg = "";
     $sql="SELECT LanguageName
