@@ -1297,19 +1297,19 @@ function SurveyTitleDataExport()
 	tq.`DataTypeId`,
 	tq.`CurrentSurvey`
 	, CASE WHEN tq.CurrentSurvey=1 THEN 'Yes' ELSE 'No' END CurrentSurveyStatus
-	, b.`DataTypeName`
+	, b.`DataTypeName`,tq.CreateTs
 	FROM `t_survey` tq
 	INNER JOIN `t_datatype` b ON tq.`DataTypeId`= b.DataTypeId
 	ORDER BY b.`DataTypeName`, tq.SurveyTitle ;";
 
-	$tableProperties["query_field"] = array("DataTypeName", "SurveyTitle", "CurrentSurveyStatus");
-	$tableProperties["table_header"] = array('Data Type', 'Survey Title', 'Current Survey');
-	$tableProperties["align"] = array("left", "left");
-	$tableProperties["width_print_pdf"] = array("30%", "70%"); //when exist serial then here total 95% and 5% use for serial
-	$tableProperties["width_excel"] = array("20", "50", "20", "50", "15", "20");
-	$tableProperties["precision"] = array("string", "string"); //string,date,datetime,0,1,2,3,4
-	$tableProperties["total"] = array(0, 0); //not total=0, total=1
-	$tableProperties["color_code"] = array(0, 0); //colorcode field = 1 not color code field = 0
+	$tableProperties["query_field"] = array("DataTypeName", "SurveyTitle", "CurrentSurveyStatus","CreateTs");
+	$tableProperties["table_header"] = array('Data Type', 'Survey Title', 'Current Survey','Create Date');
+	$tableProperties["align"] = array("left", "left", "left", "left");
+	$tableProperties["width_print_pdf"] = array("20%", "60%", "10%", "10%"); //when exist serial then here total 95% and 5% use for serial
+	$tableProperties["width_excel"] = array("20", "50", "18", "20");
+	$tableProperties["precision"] = array("string", "string", "string", "string"); //string,date,datetime,0,1,2,3,4
+	$tableProperties["total"] = array(0, 0,0,0); //not total=0, total=1
+	$tableProperties["color_code"] = array(0, 0,0,0); //colorcode field = 1 not color code field = 0
 	$tableProperties["header_logo"] = 0; //include header left and right logo. 0 or 1
 	$tableProperties["footer_signatory"] = 0; //include footer signatory. 0 or 1
 

@@ -1,10 +1,15 @@
 import React, { forwardRef, useRef } from "react";
 import swal from "sweetalert";
-import { DeleteOutline, Edit } from "@material-ui/icons";
-import {Button}  from "../../../components/CustomControl/Button";
+import { DeleteOutline, Edit, FileCopyOutlined } from "@material-ui/icons";
+import { Button } from "../../../components/CustomControl/Button";
 
 import CustomTable from "components/CustomTable/CustomTable";
-import { apiCall, apiOption , LoginUserInfo, language} from "../../../actions/api";
+import {
+  apiCall,
+  apiOption,
+  LoginUserInfo,
+  language,
+} from "../../../actions/api";
 import ExecuteQueryHook from "../../../components/hooks/ExecuteQueryHook";
 
 import SurveyTitleEntryAddEditModal from "./SurveyTitleEntryAddEditModal";
@@ -17,31 +22,30 @@ const SurveyTitleEntry = (props) => {
   const [currentRow, setCurrentRow] = useState([]);
   const [showModal, setShowModal] = useState(false); //true=show modal, false=hide modal
 
-  const {isLoading, data: dataList, error, ExecuteQuery} = ExecuteQueryHook(); //Fetch data
+  const { isLoading, data: dataList, error, ExecuteQuery } = ExecuteQueryHook(); //Fetch data
   const UserInfo = LoginUserInfo();
 
-   /* =====Start of Excel Export Code==== */
-   const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
+  /* =====Start of Excel Export Code==== */
+  const EXCEL_EXPORT_URL = process.env.REACT_APP_API_URL;
 
-   const PrintPDFExcelExportFunction = (reportType) => {
-     let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
- 
-     window.open(
-       finalUrl +
-         "?action=SurveyTitleDataExport" +
-         "&reportType=excel" +
-         // "&DistrictId=" + UserInfo.DistrictId +
-         // "&UpazilaId=" + UserInfo.UpazilaId +
-         "&TimeStamp=" +
-         Date.now()
-     );
-   };
-   /* =====End of Excel Export Code==== */
+  const PrintPDFExcelExportFunction = (reportType) => {
+    let finalUrl = EXCEL_EXPORT_URL + "report/print_pdf_excel_server.php";
 
+    window.open(
+      finalUrl +
+        "?action=SurveyTitleDataExport" +
+        "&reportType=excel" +
+        // "&DistrictId=" + UserInfo.DistrictId +
+        // "&UpazilaId=" + UserInfo.UpazilaId +
+        "&TimeStamp=" +
+        Date.now()
+    );
+  };
+  /* =====End of Excel Export Code==== */
 
   const columnList = [
     { field: "rownumber", label: "SL", align: "center", width: "3%" },
-   
+
     {
       field: "DataTypeName",
       label: "Data Type",
@@ -49,7 +53,7 @@ const SurveyTitleEntry = (props) => {
       visible: true,
       sort: true,
       filter: true,
-      width: "30%",
+      width: "20%",
     },
     {
       field: "SurveyTitle",
@@ -69,9 +73,18 @@ const SurveyTitleEntry = (props) => {
       width: "10%",
     },
     {
+      field: "CreateTs",
+      label: "Create Date",
+      align: "left",
+      visible: true,
+      sort: true,
+      filter: true,
+      width: "12%",
+    },
+    {
       field: "custom",
       label: "Action",
-      width: "4%",
+      width: "7%",
       align: "center",
       visible: true,
       sort: false,
@@ -79,7 +92,6 @@ const SurveyTitleEntry = (props) => {
     },
   ];
 
-  
   if (bFirst) {
     /**First time call for datalist */
     getDataList();
@@ -87,9 +99,7 @@ const SurveyTitleEntry = (props) => {
   }
 
   /**Get data for table list */
-  function getDataList(){
-
-   
+  function getDataList() {
     let params = {
       action: "getDataList",
       lan: language(),
@@ -102,9 +112,15 @@ const SurveyTitleEntry = (props) => {
 
   /** Action from table row buttons*/
   function actioncontrol(rowData) {
-    console.log('rowData: ', rowData);
+    console.log("rowData: ", rowData);
     return (
       <>
+        <FileCopyOutlined
+          className={"table-edit-icon"}
+          onClick={() => {
+            copyData(rowData);
+          }}
+        />
 
         <Edit
           className={"table-edit-icon"}
@@ -113,14 +129,12 @@ const SurveyTitleEntry = (props) => {
           }}
         />
 
-      <DeleteOutline
+        <DeleteOutline
           className={"table-delete-icon"}
           onClick={() => {
             deleteData(rowData);
           }}
         />
-
-
       </>
     );
   }
@@ -130,14 +144,72 @@ const SurveyTitleEntry = (props) => {
     // console.log("dataList: ", dataList);
 
     setCurrentRow({
-            id: "",
-            SurveyTitle: "",
-            DataTypeId: "",
-            CurrentSurvey: false,
-
-          });
+      id: "",
+      SurveyTitle: "",
+      DataTypeId: "",
+      CurrentSurvey: false,
+    });
     openModal();
   };
+
+  const copyData = (rowData) => {
+    console.log("rowData: ", rowData);
+    // console.log("dataList: ", dataList);
+
+    // setCurrentRow(rowData);
+    // openModalCopy();
+    
+    swal({
+      title: "Are you sure?",
+      text: "You want to copy the survey - "+rowData.SurveyTitle,
+      icon: "warning",
+      className: "comment-swal",
+
+      buttons: {
+        confirm: {
+          text: "Yes",
+          value: true,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+        cancel: {
+          text: "No",
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: true,
+        },
+      },
+      dangerMode: true,
+    }).then((allowAction) => {
+      if (allowAction) {
+        copyApi(rowData);
+      }
+    });
+
+  };
+
+  
+  function copyApi(rowData) {
+    let params = {
+      action: "dataCopy",
+      lan: language(),
+      UserId: UserInfo.UserId,
+      rowData: rowData,
+    };
+
+    // apiCall.post("productgroup", { params }, apiOption()).then((res) => {
+    apiCall.post(serverpage, { params }, apiOption()).then((res) => {
+      console.log("res: ", res);
+      props.openNoticeModal({
+        isOpen: true,
+        msg: res.data.message,
+        msgtype: res.data.success,
+      });
+      getDataList();
+    });
+  }
 
   const editData = (rowData) => {
     // console.log("rowData: ", rowData);
@@ -147,7 +219,6 @@ const SurveyTitleEntry = (props) => {
     openModal();
   };
 
-  
   function openModal() {
     setShowModal(true); //true=modal show, false=modal hide
   }
@@ -155,12 +226,11 @@ const SurveyTitleEntry = (props) => {
   function modalCallback(response) {
     //response = close, addedit
     // console.log('response: ', response);
-    if(response !=='close'){
+    if (response !== "close") {
       getDataList();
     }
 
     setShowModal(false); //true=modal show, false=modal hide
-
   }
 
   const deleteData = (rowData) => {
@@ -193,9 +263,6 @@ const SurveyTitleEntry = (props) => {
   };
 
   function deleteApi(rowData) {
-
-        
- 
     let params = {
       action: "deleteData",
       lan: language(),
@@ -205,7 +272,7 @@ const SurveyTitleEntry = (props) => {
 
     // apiCall.post("productgroup", { params }, apiOption()).then((res) => {
     apiCall.post(serverpage, { params }, apiOption()).then((res) => {
-      console.log('res: ', res);
+      console.log("res: ", res);
       props.openNoticeModal({
         isOpen: true,
         msg: res.data.message,
@@ -213,25 +280,24 @@ const SurveyTitleEntry = (props) => {
       });
       getDataList();
     });
-
   }
-
-
 
   return (
     <>
       <div class="bodyContainer">
         {/* <!-- ######-----TOP HEADER-----####### --> */}
         <div class="topHeader">
-          <h4>
-            Home ❯ Admin ❯ Survey Title
-          </h4>
+          <h4>Home ❯ Admin ❯ Survey Title</h4>
         </div>
 
         {/* <!-- TABLE SEARCH AND GROUP ADD --> */}
         <div class="exportAdd">
           <Button label={"ADD"} class={"btnAdd"} onClick={addData} />
-          <Button label={"Export"} class={"btnPrint"} onClick={PrintPDFExcelExportFunction} />
+          <Button
+            label={"Export"}
+            class={"btnPrint"}
+            onClick={PrintPDFExcelExportFunction}
+          />
         </div>
 
         {/* <!-- ####---THIS CLASS IS USE FOR TABLE GRID PRODUCT INFORMATION---####s --> */}
@@ -239,7 +305,7 @@ const SurveyTitleEntry = (props) => {
           <div className="App">
             <CustomTable
               columns={columnList}
-              rows={dataList?dataList:{}}
+              rows={dataList ? dataList : {}}
               actioncontrol={actioncontrol}
               isLoading={isLoading}
               // paginationsize={20}
@@ -249,9 +315,13 @@ const SurveyTitleEntry = (props) => {
       </div>
       {/* <!-- BODY CONTAINER END --> */}
 
-
-      {showModal && (<SurveyTitleEntryAddEditModal masterProps={props} currentRow={currentRow} modalCallback={modalCallback}/>)}
-
+      {showModal && (
+        <SurveyTitleEntryAddEditModal
+          masterProps={props}
+          currentRow={currentRow}
+          modalCallback={modalCallback}
+        />
+      )}
 
     </>
   );
